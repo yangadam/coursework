@@ -1,0 +1,272 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="BrickManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CommonScreen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Golden.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Greenblue.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Grey.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Lightblue.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Lightgreen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Lightpink.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Orange.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Position.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Purple.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Score.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceLocator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SFMLSoundProvider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundFileCache.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TimeBar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VisibleGameObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="images\Darkgrey.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\golden.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\greenblue.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\grey.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\help.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\lightblue.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\lightgreen.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\lightpink.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\mainmenu.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\mainmenu0.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\orange.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\pause.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\pause1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\purple.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\score.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\settings.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\SplashScreen.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\SplashScreen0.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\SplashScreen1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\timebar.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\开始.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\开始-1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="fonts\dracula.TTF">
+      <Filter>Resource Files</Filter>
+    </Font>
+    <Font Include="fonts\fire.ttf">
+      <Filter>Resource Files</Filter>
+    </Font>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="fonts\msyh.ttc">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="fonts\msyhbd.ttc">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="audio\Soundtrack.ogg">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="audio\blip.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="audio\countdown_warning.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="audio\kaboom.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="audio\speedmatch1.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="audio\speedmatch5.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="audio\speedmatch9.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="audio\voice_awesome.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="audio\voice_excellent.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="audio\voice_getready.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="audio\voice_go.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="audio\voice_good.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="audio\voice_timeup.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Brick.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BrickManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CommonScreen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Golden.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Greenblue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Grey.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IAudioProvider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Lightblue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Lightgreen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Lightpink.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Orange.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Position.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Purple.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Score.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceLocator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SFMLSoundProvider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundFileCache.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeBar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VisibleGameObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
