@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+    <!-- Default Web Encoding -->
+    <constant name="struts.i18n.encoding" value="UTF-8"/>
+    <!-- Whether Cache Static Content -->
+    <constant name="struts.serve.static.browserCache" value="false"/>
+    <!-- Whether Auto Load struts.xml -->
+    <constant name="struts.configuration.xml.reload" value="true"/>
+    <!-- Development Mode -->
+    <constant name="struts.devMode" value="true"/>
+    <!-- default view theme -->
+    <constant name="struts.ui.theme" value="simple"/>
+    <!-- Assigned Action To Spring -->
+    <constant name="struts.objectFactory" value="spring"/>
+    <!-- Extension That Struts Handle -->
+    <constant name="struts.action.extension" value="do"/>
+
+    <package name="comm" extends="struts-default">
+
+        <default-action-ref name="indexPage"/>
+
+        <global-results>
+            <result name="exceptionPage">error/exceptionPage.jsp</result>
+        </global-results>
+
+        <global-exception-mappings>
+            <exception-mapping exception="java.lang.Exception" result="exceptionPage"/>
+        </global-exception-mappings>
+
+        <action name="indexPage">
+            <result>index.jsp</result>
+        </action>
+
+        <action name="add" class="energyRecordAction" method="addEnergyRecord">
+            <result type="redirect">list.do</result>
+        </action>
+
+        <action name="list" class="energyRecordAction" method="listEnergyRecord">
+            <result>energyRecord.jsp</result>
+        </action>
+
+    </package>
+
+</struts>
