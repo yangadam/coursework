@@ -1,17 +1,31 @@
-import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
+package cn.edu.xmu.comm.domain;
+
+import javax.persistence.*;
 
 /**
  * Created by Roger on 2014/12/5 0005.
  */
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class User extends ScopedEntity {
+@Inheritance(strategy = InheritanceType.JOINED)
+public class User {
 
-    private String username;
-    private String password;
-    private String salt;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    Integer id;
+    @Column
+    String username;
+    @Column
+    String password;
+    @Column
+    String salt;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getUsername() {
         return username;

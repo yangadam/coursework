@@ -11,6 +11,6 @@
     <title>Index</title>
 </head>
 <body>
-<a href="energyRecord.jsp">Go to input energy record</a>
+<a href="add.do">Go to input energy record</a>
 </body>
 </html>
