@@ -9,10 +9,12 @@
     <url>http://maven.apache.org</url>
 
     <properties>
+        <junit.version>4.11</junit.version>
         <mysql.version>5.1.34</mysql.version>
         <struts2.version>2.3.16.3</struts2.version>
         <spring.version>4.1.2.RELEASE</spring.version>
         <hibernate.version>4.3.7.Final</hibernate.version>
+        <slf4j.version>1.7.7</slf4j.version>
     </properties>
 
     <dependencies>
@@ -21,7 +23,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.11</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -37,6 +39,12 @@
             <groupId>org.apache.struts</groupId>
             <artifactId>struts2-core</artifactId>
             <version>${struts2.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>javassist</groupId>
+                    <artifactId>javassist</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!--struts spring plugin-->
@@ -88,6 +96,7 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
             <version>${spring.version}</version>
+            <scope>test</scope>
         </dependency>
 
         <!--hibernate-->
@@ -111,7 +120,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.7</version>
+            <version>${slf4j.version}</version>
         </dependency>
 
     </dependencies>

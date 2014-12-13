@@ -7871,7 +7871,7 @@
         ajaxSetup: function (target, settings) {
             return settings ?
 
-                // Building a settings object
+                // cn.edu.xmu.comm.domain.Building a settings object
                 ajaxExtend(ajaxExtend(target, jQuery.ajaxSettings), settings) :
 
                 // Extending ajaxSettings

@@ -7,18 +7,41 @@ import javax.persistence.*;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public class User {
+public class User extends DataEntity {
 
+    //region Instance Variables
+    /**
+     * 用户主键
+     */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    Integer id;
-    @Column
-    String username;
-    @Column
-    String password;
-    @Column
-    String salt;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
+    /**
+     * 用户名
+     */
+    @Column(nullable = false)
+    private String username;
+
+    /**
+     * 加密密码
+     */
+    @Column(nullable = false)
+    private String password;
+
+    /**
+     * 密码盐
+     */
+    @Column(nullable = false)
+    private String salt;
+
+    /**
+     * 姓名
+     */
+    private String name;
+    //endregion
+
+    //region Getters and Setters
     public Integer getId() {
         return id;
     }
@@ -50,4 +73,14 @@ public class User {
     public void setSalt(String salt) {
         this.salt = salt;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    //endregion
+
 }

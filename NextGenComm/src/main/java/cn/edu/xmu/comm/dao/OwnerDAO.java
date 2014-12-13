@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 /**
  * Created by Roger on 2014/12/8 0008.
  */
-@Repository
-public class OwnerDAO extends BaseDaoImpl<Owner, Integer> {
+@Repository("ownerDAO")
+public class OwnerDAO extends BaseDAO<Owner, Integer> {
 
 }

@@ -1,6 +1,6 @@
 <%--
   Created by IntelliJ IDEA.
-  User: Yummy
+  cn.edu.xmu.comm.domain.User: Yummy
   Date: 11/29/2014 0029
   Time: 8:40 PM
   To change this template use File | Settings | File Templates.
@@ -11,6 +11,6 @@
     <title>Index</title>
 </head>
 <body>
-<a href="add.do">Go to input energy record</a>
+<a href="calculate.do">计算</a>
 </body>
 </html>

@@ -6,19 +6,19 @@
 
 <struts>
 
-    <!-- Default Web Encoding -->
+    <!-- 默认编码 -->
     <constant name="struts.i18n.encoding" value="UTF-8"/>
-    <!-- Whether Cache Static Content -->
+    <!-- 不缓存静态内容 -->
     <constant name="struts.serve.static.browserCache" value="false"/>
-    <!-- Whether Auto Load struts.xml -->
+    <!-- 自动加载struts.xml -->
     <constant name="struts.configuration.xml.reload" value="true"/>
-    <!-- Development Mode -->
+    <!-- 开发者模式 -->
     <constant name="struts.devMode" value="true"/>
-    <!-- default view theme -->
+    <!-- 默认主题 -->
     <constant name="struts.ui.theme" value="simple"/>
-    <!-- Assigned Action To Spring -->
+    <!-- 将Action交给Spring管理 -->
     <constant name="struts.objectFactory" value="spring"/>
-    <!-- Extension That Struts Handle -->
+    <!-- Struts处理的扩展名 -->
     <constant name="struts.action.extension" value="do"/>
 
     <package name="comm" extends="struts-default">
@@ -34,21 +34,17 @@
         </global-exception-mappings>
 
         <action name="indexPage">
-            <result>index.jsp</result>
+            <result>/index.jsp</result>
         </action>
 
-        <action name="add" class="userAction">
-            <result>index.jsp</result>
+        <action name="calculate" class="calculateAction">
+            <result>/search.jsp</result>
         </action>
 
-        <!--   <action name="add" class="energyRecordAction" method="addEnergyRecord">
-               <result type="redirect">list.do</result>
-           </action>
+        <action name="search" class="calculateAction" method="search">
+            <result>/show.jsp</result>
+        </action>
 
-           <action name="list" class="energyRecordAction" method="listEnergyRecord">
-               <result>energyRecord.jsp</result>
-           </action>
-   -->
     </package>
 
 </struts>

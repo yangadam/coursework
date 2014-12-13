@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ehcache>
-    <!-- Default Disk Cache Directionary -->
+
+    <!-- 默认磁盘缓冲路径 -->
     <diskStore path="java.io.tmpdir"/>
 
-    <!-- Default Cache Strategy -->
+    <!-- 默认缓冲策略 -->
     <defaultCache
             maxElementsInMemory="10000"
             eternal="false"
@@ -11,7 +12,7 @@
             timeToIdleSeconds="120"
             timeToLiveSeconds="120"/>
 
-    <!-- Integrate Second-Level Cache Of Hibernate: Cache Model Object -->
+    <!-- 集成Hibernate二级缓存：缓存模型对象 -->
     <cache name="cn.edu.xmu.comm.domain.EnergyRecord"
            maxElementsInMemory="10000"
            eternal="false"
@@ -19,7 +20,7 @@
            timeToIdleSeconds="300"
            timeToLiveSeconds="600"/>
 
-    <!-- Integrate Query Cache Of Hibernate ref http://www.cnblogs.com/hoojo/archive/2012/07/12/2587941.html -->
+    <!-- 集成Hibernate查询缓存 ref http://www.cnblogs.com/hoojo/archive/2012/07/12/2587941.html -->
     <cache name="org.hibernate.cache.spi.UpdateTimestampsCache"
            maxElementsInMemory="5000"
            eternal="true"
