@@ -1,7 +1,10 @@
 package cn.edu.xmu.comm.hql;
 
-import cn.edu.xmu.comm.domain.*;
-import cn.edu.xmu.comm.service.FinanceService;
+import cn.edu.xmu.comm.fms.entity.PublicFund;
+import cn.edu.xmu.comm.fms.service.FinanceService;
+import cn.edu.xmu.comm.park.entity.Car;
+import cn.edu.xmu.comm.park.entity.ParkPlace;
+import cn.edu.xmu.comm.pms.entity.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.Test;
@@ -21,7 +24,7 @@ import java.util.List;
  * Created by Yummy on 11/29/2014 0029.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
+@ContextConfiguration(locations = {"classpath:spring-context.xml"})
 @TransactionConfiguration
 @Transactional
 public class TestHql {
@@ -140,7 +143,7 @@ public class TestHql {
 
     public Building newBuilding(Community community) {
         Building building = new Building();
-        building.setNo("13");
+        building.setNo(13);
         building.setName("海韵十三");
         building.setHouseArea(22.0);
         building.setHouseCount(1);
