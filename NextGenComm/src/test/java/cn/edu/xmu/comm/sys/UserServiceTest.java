@@ -28,12 +28,12 @@ public class UserServiceTest {
     @Autowired
     private UserService userService;
 
+
     @Test
     public void testAddUser() {
         User user = new User();
         user.setUsername("admin");
-        user.setPassword("12345678");
-        PasswordUtil passwordHelper = new PasswordUtil();
+        user.setPassword("123");
         PasswordUtil.encryptPassword(user);
         Session session = sessionFactory.openSession();
         session.saveOrUpdate(user);

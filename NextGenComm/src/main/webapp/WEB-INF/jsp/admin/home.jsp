@@ -12,23 +12,23 @@
     <meta content="" name="description"/>
     <meta content="PumpKing" name="author"/>
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
-    <link href="media/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-    <link href="media/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>
-    <link href="media/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
-    <link href="media/css/style-metro.css" rel="stylesheet" type="text/css"/>
-    <link href="media/css/style.css" rel="stylesheet" type="text/css"/>
-    <link href="media/css/style-responsive.css" rel="stylesheet" type="text/css"/>
-    <link href="media/css/default.css" rel="stylesheet" type="text/css" id="style_color"/>
-    <link href="media/css/uniform.default.css" rel="stylesheet" type="text/css"/>
+    <link href="../../../media/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="../../../media/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>
+    <link href="../../../media/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <link href="../../../media/css/style-metro.css" rel="stylesheet" type="text/css"/>
+    <link href="../../../media/css/style.css" rel="stylesheet" type="text/css"/>
+    <link href="../../../media/css/style-responsive.css" rel="stylesheet" type="text/css"/>
+    <link href="../../../media/css/default.css" rel="stylesheet" type="text/css" id="style_color"/>
+    <link href="../../../media/css/uniform.default.css" rel="stylesheet" type="text/css"/>
     <!-- END GLOBAL MANDATORY STYLES -->
     <!-- BEGIN PAGE LEVEL STYLES -->
-    <link href="media/css/jquery.gritter.css" rel="stylesheet" type="text/css"/>
-    <link href="media/css/daterangepicker.css" rel="stylesheet" type="text/css"/>
-    <link href="media/css/fullcalendar.css" rel="stylesheet" type="text/css"/>
-    <link href="media/css/jqvmap.css" rel="stylesheet" type="text/css" media="screen"/>
-    <link href="media/css/jquery.easy-pie-chart.css" rel="stylesheet" type="text/css" media="screen"/>
+    <link href="../../../media/css/jquery.gritter.css" rel="stylesheet" type="text/css"/>
+    <link href="../../../media/css/daterangepicker.css" rel="stylesheet" type="text/css"/>
+    <link href="../../../media/css/fullcalendar.css" rel="stylesheet" type="text/css"/>
+    <link href="../../../media/css/jqvmap.css" rel="stylesheet" type="text/css" media="screen"/>
+    <link href="../../../media/css/jquery.easy-pie-chart.css" rel="stylesheet" type="text/css" media="screen"/>
     <!-- END PAGE LEVEL STYLES -->
-    <link rel="shortcut icon" href="media/image/favicon.ico"/>
+    <link rel="shortcut icon" href="../../../media/image/favicon.ico"/>
 </head>
 <!-- END HEAD -->
 <!-- BEGIN BODY -->
@@ -39,13 +39,13 @@
     <div class="navbar-inner">
         <div class="container-fluid">
             <!-- BEGIN LOGO -->
-            <a class="brand" href="index.jsp">
-                <img src="media/image/logo2.png" alt="logo"/>
+            <a class="brand" href="../../../index.jsp">
+                <img src="../../../media/image/logo2.png" alt="logo"/>
             </a>
             <!-- END LOGO -->
             <!-- BEGIN RESPONSIVE MENU TOGGLER -->
             <a href="javascript:;" class="btn-navbar collapsed" data-toggle="collapse" data-target=".nav-collapse">
-                <img src="media/image/menu-toggler.png" alt=""/>
+                <img src="../../../media/image/menu-toggler.png" alt=""/>
             </a>
             <!-- END RESPONSIVE MENU TOGGLER -->
 
@@ -123,7 +123,7 @@
                         </li>
                         <li>
                             <a href="inbox.html?a=view">
-                                <span class="photo"><img src="media/image/avatar2.jpg" alt=""/></span>
+                                <span class="photo"><img src="../../../media/image/avatar2.jpg" alt=""/></span>
 								<span class="subject">
 								<span class="from">Lisa Wong</span>
 								<span class="time">Just Now</span>
@@ -136,7 +136,7 @@
                         </li>
                         <li>
                             <a href="inbox.html?a=view">
-                                <span class="photo"><img src="./media/image/avatar3.jpg" alt=""/></span>
+                                <span class="photo"><img src="../../../media/image/avatar3.jpg" alt=""/></span>
 								<span class="subject">
 								<span class="from">Richard Doe</span>
 								<span class="time">16 mins</span>
@@ -149,7 +149,7 @@
                         </li>
                         <li>
                             <a href="inbox.html?a=view">
-                                <span class="photo"><img src="./media/image/avatar1.jpg" alt=""/></span>
+                                <span class="photo"><img src="../../../media/image/avatar1.jpg" alt=""/></span>
 								<span class="subject">
 								<span class="from">Bob Nilson</span>
 								<span class="time">2 hrs</span>
@@ -253,7 +253,7 @@
                 <!-- BEGIN USER LOGIN DROPDOWN -->
                 <li class="dropdown user">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <img alt="" src="media/image/avatar1_small.jpg"/>
+                        <img alt="" src="../../../media/image/avatar1_small.jpg"/>
                         <span class="username">杨 猛猛</span>
                         <i class="icon-angle-down"></i>
                     </a>
@@ -298,11 +298,19 @@
                 </form>
                 <!-- END RESPONSIVE QUICK SEARCH FORM -->
             </li>
+
+
             <li class="start active ">
-                <a href="index.jsp">
+                <a href="/admin/home.do">
                     <i class="icon-home"></i>
                     <span class="title">业主服务</span>
                     <span class="selected"></span>
+                </a>
+            </li>
+            <li class="">
+                <a href="admin/listComm.do">
+                    <i class="icon-home"></i>
+                    <span class="title">添加社区</span>
                 </a>
             </li>
             <li class="">
@@ -313,60 +321,60 @@
                 </a>
                 <ul class="sub-menu">
                     <li>
-                        <a href="payment_wait.jsp">
+                        <a href="../../../payment_wait.jsp">
                             <i class="icon-bookmark"></i>
                             待缴清单</a>
                     </li>
                     <li>
-                        <a href="payment_record.jsp">
+                        <a href="../../../payment_record.jsp">
                             <i class="icon-list-ul"></i>
                             缴费记录</a>
                     </li>
                     <li>
-                        <a href="payment_notice.jsp">
+                        <a href="../../../payment_notice.jsp">
                             <i class="icon-question-sign"></i>
                             缴费须知</a>
                     </li>
                 </ul>
             </li>
             <li class="">
-                <a href="report_loss.jsp">
+                <a href="../../../report_loss.jsp">
                     <i class="icon-key"></i>
                     <span class="title">门禁卡挂失</span>
                 </a>
             </li>
             <li class="">
-                <a href="car_rent.jsp">
+                <a href="../../../car_rent.jsp">
                     <i class="icon-umbrella"></i>
                     <span class="title">车位租用</span>
                 </a>
             </li>
             <li class="">
-                <a href="report_repair.jsp">
+                <a href="../../../report_repair.jsp">
                     <i class="icon-briefcase"></i>
                     <span class="title">水电报修</span>
                 </a>
             </li>
 
             <li class="">
-                <a href="social_message.jsp">
+                <a href="../../../social_message.jsp">
                     <i class="icon-leaf"></i>
                     <span class="title">社区公告</span>
                     <span class="arrow"></span>
                 </a>
                 <ul class="sub-menu">
                     <li>
-                        <a href="social_message.jsp">
+                        <a href="../../../social_message.jsp">
                             <i class="icon-bell-alt"></i>
                             社区通知</a>
                     </li>
                     <li>
-                        <a href="social_news.jsp">
+                        <a href="../../../social_news.jsp">
                             <i class="icon-globe"></i>
                             社区要闻</a>
                     </li>
                     <li>
-                        <a href="social_activity.jsp">
+                        <a href="../../../social_activity.jsp">
                             <i class="icon-coffee"></i>
                             社区活动</a>
                     </li>
@@ -374,19 +382,19 @@
             </li>
 
             <li class="">
-                <a href="complaint.jsp">
+                <a href="../../../complaint.jsp">
                     <i class="icon-phone"></i>
                     <span class="title">投诉与建议</span>
                     <span class="arrow "></span>
                 </a>
                 <ul class="sub-menu">
                     <li>
-                        <a href="complaint.jsp">
+                        <a href="../../../complaint.jsp">
                             <i class="icon-group"></i>
                             员工概览</a>
                     </li>
                     <li>
-                        <a href="suggestion.jsp">
+                        <a href="../../../suggestion.jsp">
                             <i class="icon-comments"></i>
                             业主建言</a>
                     </li>
@@ -401,18 +409,19 @@
                 </a>
                 <ul class="sub-menu">
                     <li>
-                        <a href="owner_file.jsp">
+                        <a href="../../../owner_file.jsp">
                             <i class="icon-file"></i>
                             我的资料</a>
                     </li>
                     <li>
-                        <a href="owner_inbox.jsp">
+                        <a href="../../../owner_inbox.jsp">
                             <i class="icon-envelope"></i>
                             我的信箱</a>
                     </li>
                 </ul>
             </li>
-            <!-- END SIDEBAR MENU -->
+        </ul>
+        <!-- END SIDEBAR MENU -->
     </div>
     <!-- END SIDEBAR -->
 
@@ -486,11 +495,11 @@
                     <ul class="breadcrumb">
                         <li>
                             <i class="icon-home"></i>
-                            <a href="index.jsp">主页</a>
+                            <a href="../../../index.jsp">主页</a>
                             <i class="icon-angle-right"></i>
                         </li>
                         <li>
-                            <a href="index.jsp">欢迎面板</a>
+                            <a href="../../../index.jsp">欢迎面板</a>
                         </li>
                     </ul>
                     <!-- END PAGE TITLE & BREADCRUMB-->
@@ -524,11 +533,11 @@
 <!-- END FOOTER -->
 <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
 <!-- BEGIN CORE PLUGINS -->
-<script src="media/js/jquery-1.10.1.min.js" type="text/javascript"></script>
-<script src="media/js/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+<script src="../../../media/js/jquery-1.10.1.min.js" type="text/javascript"></script>
+<script src="../../../media/js/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
 <!-- IMPORTANT! Load jquery-ui-1.10.1.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
-<script src="media/js/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
-<script src="media/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="../../../media/js/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
+<script src="../../../media/js/bootstrap.min.js" type="text/javascript"></script>
 <!--[if lt IE 9]>
 <script src="media/js/excanvas.min.js"></script>
 <script src="media/js/respond.min.js"></script>

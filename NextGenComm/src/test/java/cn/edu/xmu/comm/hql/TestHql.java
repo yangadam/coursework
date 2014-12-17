@@ -129,7 +129,6 @@ public class TestHql {
     public Community newCommunity(PublicFund publicFund) {
         Community community = new Community();
         community.setName("NextGenComm");
-        community.setNo("8888");
         community.setManageFeeType("cn.edu.xmu.comm.commons.AreaManageFeeCalculator");
         community.setManageFee(BigDecimal.valueOf(10.0));
         community.setGarbageFeeType("cn.edu.xmu.comm.commons.FixGarbageFeeCalculator");

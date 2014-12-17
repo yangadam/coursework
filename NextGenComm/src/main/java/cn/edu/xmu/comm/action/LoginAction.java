@@ -2,9 +2,12 @@ package cn.edu.xmu.comm.action;
 
 import cn.edu.xmu.comm.entity.User;
 import cn.edu.xmu.comm.service.UserService;
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+
+import java.util.Map;
 
 /**
  * Created by Yummy on 2014/12/14.
@@ -19,7 +22,8 @@ public class LoginAction extends ActionSupport {
 
     private String password;
 
-    public String login() {
+    @Override
+    public String execute() {
         if (username == null || password == null) {
             return LOGIN;
         }
@@ -32,7 +36,11 @@ public class LoginAction extends ActionSupport {
             addActionError("密码错误");
             return LOGIN;
         }
-        return SUCCESS;
+
+        Map session = ActionContext.getContext().getSession();
+        session.put("USER", user);
+
+        return user.getType();
     }
 
     public String getUsername() {

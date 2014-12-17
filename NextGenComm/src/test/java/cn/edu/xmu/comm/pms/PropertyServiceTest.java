@@ -7,6 +7,7 @@ import cn.edu.xmu.comm.service.PropertyService;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,13 @@ public class PropertyServiceTest {
 
     @Autowired
     private PropertyService propertyService;
+
+
+    @Test
+    public void testComm() {
+        List<Community> communities = propertyService.listCommunities();
+        Assert.assertNotNull(communities);
+    }
 
     @Test
     public void testLazy() {
@@ -62,11 +70,11 @@ public class PropertyServiceTest {
         propertyService.addBuilding(building);
     }
 
-    @Test
-    public void testAddCommunity() {
-        Community community = newCommunity();
-        propertyService.addCommunity(community);
-    }
+//    @Test
+//    public void testAddCommunity() {
+//        Community community = newCommunity();
+//        propertyService.addCommunity(community);
+//    }
 
     private Community newCommunity() {
         Community community = new Community();
