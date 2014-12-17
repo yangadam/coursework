@@ -11,7 +11,7 @@ import java.util.List;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Property extends DataEntity {
+public abstract class Property extends DataEntity {
 
     //region Instance Variables
     /**
@@ -31,29 +31,39 @@ public class Property extends DataEntity {
     /**
      * 房间总数
      */
-    protected Integer houseCount = 0;
+    protected Integer houseCount;
 
     /**
      * 已入住房间总数
      */
-    protected Integer usedHouseCount = 0;
+    protected Integer usedHouseCount;
 
     /**
      * 房产面积
      */
-    protected Double houseArea = 0.0;
+    protected Double houseArea;
 
     /**
      * 已使用的房产面积
      */
-    protected Double usedHouseArea = 0.0;
+    protected Double usedHouseArea;
     //endregion
 
-    public Property(Integer houseCount, Double usedHouseArea, Double houseArea, Integer usedHouseCount) {
+    /**
+     * 无参构造函数
+     */
+    protected Property() {
+        houseCount = 0;
+        houseArea = 0.0;
+        usedHouseCount = 0;
+        usedHouseArea = 0.0;
+    }
+
+    public Property(Integer houseCount, Integer usedHouseCount, Double houseArea, Double usedHouseArea) {
         this.houseCount = houseCount;
-        this.usedHouseArea = usedHouseArea;
-        this.houseArea = houseArea;
         this.usedHouseCount = usedHouseCount;
+        this.houseArea = houseArea;
+        this.usedHouseArea = usedHouseArea;
     }
 
     //region Getters and Setters

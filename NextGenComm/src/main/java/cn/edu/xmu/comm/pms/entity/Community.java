@@ -16,12 +16,6 @@ public class Community extends Property {
 
     //region Instance Variables
     /**
-     * 小区号
-     */
-    @Column(unique = true)
-    private String no;
-
-    /**
      * 小区名称
      */
     @Column(nullable = false)
@@ -67,6 +61,14 @@ public class Community extends Property {
     private BigDecimal garbageFee;
     //endregionss
 
+    public Community() {
+    }
+
+    public Community(String name) {
+        super();
+        this.name = name;
+    }
+
     public Building getBuildingByNo(Integer no) {
         for (Building building : buildingList) {
             if (building.getNo().equals(no)) {
@@ -77,14 +79,6 @@ public class Community extends Property {
     }
 
     //region Getters and Setters
-    public String getNo() {
-        return no;
-    }
-
-    public void setNo(String no) {
-        this.no = no;
-    }
-
     public String getName() {
         return name;
     }

@@ -31,6 +31,14 @@ public class Floor extends Property {
     private List<Room> roomList;
     //endregion
 
+    public Floor() {
+    }
+
+    public Floor(Building building, Integer no) {
+        this.building = building;
+        this.no = no;
+    }
+
     //region Getters and Setters
     public Integer getNo() {
         return no;

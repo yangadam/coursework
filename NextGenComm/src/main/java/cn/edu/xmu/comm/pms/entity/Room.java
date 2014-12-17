@@ -59,6 +59,19 @@ public class Room extends Property {
     private Owner owner;
     //endregion
 
+    public Room() {
+    }
+
+    public Room(Integer houseCount, Integer usedHouseCount, Double houseArea,
+                Double usedHouseArea, String no, Floor floor) {
+        super(houseCount, usedHouseCount, houseArea, usedHouseArea);
+        this.no = no;
+        this.floor = floor;
+        this.building = floor.getBuilding();
+        this.community = floor.getBuilding().getCommunity();
+        this.fullName = building.getName() + "号楼" + this.no;
+    }
+
     //region Public Methods
 
     /**

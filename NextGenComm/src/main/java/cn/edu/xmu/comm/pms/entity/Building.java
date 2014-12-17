@@ -36,10 +36,29 @@ public class Building extends Property {
     private List<Floor> floorList;
     //endregion
 
+
+    //region Constructors
+    public Building() {
+
+    }
+
+    public Building(Integer no, Community community) {
+        this.no = no;
+        this.name = String.valueOf(no);
+        this.community = community;
+    }
+
+    public Building(Integer no, String name, Community community) {
+        this.no = no;
+        this.name = name;
+        this.community = community;
+    }
+    //endregion
+
     public Floor getFloorByNo(Integer no) {
         for (Floor floor : floorList) {
             if (floor.getNo().equals(no)) {
-
+                return floor;
             }
         }
         return null;

@@ -18,7 +18,16 @@ public class TestAction extends ActionSupport {
     @Autowired
     private PropertyService propertyService;
 
-    public String execute() {
+    public String addRoom() {
+        Community community = propertyService.getCommunityByName("海韵公寓");
+        Building building = community.getBuildingByNo(13);
+        Floor floor = building.getFloorByNo(4);
+        Room room = newRoom(floor);
+        propertyService.addFloor(floor);
+        return SUCCESS;
+    }
+
+    public String addFloor() {
         Community community = propertyService.getCommunityByName("海韵公寓");
         Building building = community.getBuildingByNo(13);
         Floor floor = building.getFloorByNo(4);
@@ -33,6 +42,7 @@ public class TestAction extends ActionSupport {
         room.setBuilding(floor.getBuilding());
         room.setFloor(floor);
         room.setNo("407");
+
         return null;
     }
 
