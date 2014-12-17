@@ -1,8 +1,8 @@
 package cn.edu.xmu.comm.sys;
 
-import cn.edu.xmu.comm.sys.entity.User;
-import cn.edu.xmu.comm.sys.security.PasswordUtil;
-import cn.edu.xmu.comm.sys.service.UserService;
+import cn.edu.xmu.comm.commons.security.PasswordUtil;
+import cn.edu.xmu.comm.entity.User;
+import cn.edu.xmu.comm.service.UserService;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.Test;
@@ -34,7 +34,7 @@ public class UserServiceTest {
         user.setUsername("admin");
         user.setPassword("12345678");
         PasswordUtil passwordHelper = new PasswordUtil();
-        passwordHelper.encryptPassword(user);
+        PasswordUtil.encryptPassword(user);
         Session session = sessionFactory.openSession();
         session.saveOrUpdate(user);
         session.flush();

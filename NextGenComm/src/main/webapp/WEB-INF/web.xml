@@ -6,7 +6,7 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          id="WebApp_ID" version="3.0">
 
-    <display-name>Next Generation cn.edu.xmu.comm.pms.entity.Community System</display-name>
+    <display-name>Next Generation cn.edu.xmu.comm.entity.Community System</display-name>
 
     <!-- 配置上下文参数 -->
     <context-param>

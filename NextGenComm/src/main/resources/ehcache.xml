@@ -13,7 +13,7 @@
             timeToLiveSeconds="120"/>
 
     <!-- 集成Hibernate二级缓存：缓存模型对象 -->
-    <cache name="cn.edu.xmu.comm.pms.entity.EnergyRecord"
+    <cache name="cn.edu.xmu.comm.entity.EnergyRecord"
            maxElementsInMemory="10000"
            eternal="false"
            overflowToDisk="false"

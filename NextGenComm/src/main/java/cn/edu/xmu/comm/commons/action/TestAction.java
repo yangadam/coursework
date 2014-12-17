@@ -1,10 +1,10 @@
 package cn.edu.xmu.comm.commons.action;
 
-import cn.edu.xmu.comm.pms.entity.Building;
-import cn.edu.xmu.comm.pms.entity.Community;
-import cn.edu.xmu.comm.pms.entity.Floor;
-import cn.edu.xmu.comm.pms.entity.Room;
-import cn.edu.xmu.comm.pms.service.PropertyService;
+import cn.edu.xmu.comm.entity.Building;
+import cn.edu.xmu.comm.entity.Community;
+import cn.edu.xmu.comm.entity.Floor;
+import cn.edu.xmu.comm.entity.Room;
+import cn.edu.xmu.comm.service.PropertyService;
 import com.opensymphony.xwork2.ActionSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

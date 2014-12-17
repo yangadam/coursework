@@ -1,6 +1,6 @@
 package cn.edu.xmu.comm.commons.calc;
 
-import cn.edu.xmu.comm.pms.entity.Room;
+import cn.edu.xmu.comm.entity.Room;
 
 import java.math.BigDecimal;
 
