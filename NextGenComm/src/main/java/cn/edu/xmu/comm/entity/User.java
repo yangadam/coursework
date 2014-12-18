@@ -12,6 +12,11 @@ import java.util.Set;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@Table(
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"username"})
+        }
+)
 public class User extends DataEntity {
 
     //region Instance Variables
@@ -25,7 +30,8 @@ public class User extends DataEntity {
     /**
      * 用户名
      */
-    @Column(nullable = false)
+
+    @Column(nullable = false, unique = true)
     private String username;
 
     /**
@@ -58,13 +64,18 @@ public class User extends DataEntity {
     private Set<Role> roles = new HashSet<Role>();
 
     /**
+     * 用户类型
+     */
+    private String type;
+
+    /**
      * 姓名
      */
     private String name;
     //endregion
 
     public boolean checkPassword(String password) {
-        return PasswordUtil.encrypt(password, salt).equals(this.password);
+        return PasswordUtil.encrypt(password, getCredentialsSalt()).equals(this.password);
     }
 
     //region Getters and Setters
@@ -118,6 +129,14 @@ public class User extends DataEntity {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getName() {

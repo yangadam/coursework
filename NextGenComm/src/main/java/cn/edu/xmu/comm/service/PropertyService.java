@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created by Yummy on 12/16/2014 0016.
@@ -35,7 +36,8 @@ public class PropertyService extends BaseService {
      * @param community
      */
     @Transactional(readOnly = false)
-    public void addCommunity(Community community) {
+    public void addCommunity(String name) {
+        Community community = new Community(name);
         communityDAO.saveOrUpdate(community);
     }
 
@@ -67,6 +69,13 @@ public class PropertyService extends BaseService {
      */
     public Community getCommunityByName(String name) {
         return communityDAO.getByName(name);
+    }
+
+    /**
+     * 获取所有小区
+     */
+    public List<Community> listCommunities() {
+        return communityDAO.getAll();
     }
 
 }

@@ -96,7 +96,7 @@ public class BaseDAO<T, I extends Serializable> {
      * @return
      */
     public List<T> getAll() {
-        return currentSession().createCriteria(clazz).list();
+        return searchByHql("from " + clazz.getName(), new Parameter());
     }
 
     /**

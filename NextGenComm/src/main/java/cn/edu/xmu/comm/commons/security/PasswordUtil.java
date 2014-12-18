@@ -10,8 +10,8 @@ public class PasswordUtil {
     public static void encryptPassword(User user) {
         byte[] salts = Digests.generateSalt(LENGTH);
         String salt = Encodes.encodeHex(salts);
-        String password = encrypt(user.getPassword(), salt);
         user.setSalt(salt);
+        String password = encrypt(user.getPassword(), user.getCredentialsSalt());
         user.setPassword(password);
     }
 
