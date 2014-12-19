@@ -65,7 +65,7 @@
         </div>
         <div class="form-actions">
             <label class="checkbox">
-                <input type="checkbox" name="remember" value="1"/>记住密码 
+                <s:checkbox name="rememberMe" value="rememberMe" fieldValue="false"/>记住密码 
             </label>
             <s:submit cssClass="btn green pull-right" value="登录"/>
             <!--  <i class="m-icon-swapright m-icon-white"></i> -->

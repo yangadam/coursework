@@ -52,6 +52,31 @@
             <result>/WEB-INF/jsp/admin/home.jsp</result>
         </action>
 
+        <action name="commlist" class="communityList">
+            <result>/WEB-INF/jsp/admin/commList.jsp</result>
+        </action>
+
+        <action name="commform" class="communityForm">
+            <result>/WEB-INF/jsp/admin/commForm.jsp</result>
+            <result name="input">/WEB-INF/jsp/admin/commList.jsp</result>
+        </action>
+
+        <!--<action name="addComm" class="communityAction" method="add">-->
+        <!--<result type="chain">listComm</result>-->
+        <!--</action>-->
+
+        <action name="listBuild" class="buildingAction" method="list">
+            <result>/WEB-INF/jsp/admin/build.jsp</result>
+            <result name="input">/WEB-INF/jsp/admin/build.jsp</result>
+        </action>
+
+        <action name="addBuild" class="buildingAction" method="add">
+            <!--<interceptor-ref name="token"/>
+            <result name="invalid.token">/WEB-INF/jsp/admin/build.jsp</result>-->
+            <result name="input">/WEB-INF/jsp/admin/build.jsp</result>
+            <result type="chain">listBuild</result>
+        </action>
+
     </package>
 
 </struts>

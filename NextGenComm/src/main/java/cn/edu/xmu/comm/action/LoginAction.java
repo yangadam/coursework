@@ -27,6 +27,8 @@ public class LoginAction extends ActionSupport {
 
     private String password;
 
+    private String rememberMe;
+
     @Override
     public String execute() {
 
@@ -61,6 +63,14 @@ public class LoginAction extends ActionSupport {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getRememberMe() {
+        return rememberMe;
+    }
+
+    public void setRememberMe(String rememberMe) {
+        this.rememberMe = rememberMe;
     }
 
 }
