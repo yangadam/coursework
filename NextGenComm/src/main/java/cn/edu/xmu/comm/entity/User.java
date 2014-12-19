@@ -2,6 +2,7 @@ package cn.edu.xmu.comm.entity;
 
 import cn.edu.xmu.comm.commons.persistence.DataEntity;
 import cn.edu.xmu.comm.commons.security.PasswordUtil;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -11,6 +12,7 @@ import java.util.Set;
  * Created by Roger on 2014/12/5 0005.
  */
 @Entity
+@DynamicInsert
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(
         uniqueConstraints = {

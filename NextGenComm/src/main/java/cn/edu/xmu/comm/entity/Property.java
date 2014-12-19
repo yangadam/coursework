@@ -1,6 +1,7 @@
 package cn.edu.xmu.comm.entity;
 
 import cn.edu.xmu.comm.commons.persistence.DataEntity;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.List;
  * Created by Roger on 2014/12/9 0009.
  */
 @Entity
+@DynamicInsert
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Property extends DataEntity {
 

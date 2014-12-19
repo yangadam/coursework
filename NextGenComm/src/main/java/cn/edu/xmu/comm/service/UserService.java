@@ -19,7 +19,9 @@ public class UserService {
 
     private PasswordUtil passwordHelper = new PasswordUtil();
 
+    @Transactional(readOnly = false)
     public void addUser(User user) {
+        System.out.print("sdfsadfasdfasdfasdfsad");
         PasswordUtil.encryptPassword(user);
         userDAO.saveOrUpdate(user);
     }

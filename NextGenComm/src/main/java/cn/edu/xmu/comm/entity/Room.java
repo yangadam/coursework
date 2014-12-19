@@ -4,8 +4,11 @@ import cn.edu.xmu.comm.commons.calc.CalcutorFactory;
 import cn.edu.xmu.comm.commons.calc.IGarbageFeeCalculator;
 import cn.edu.xmu.comm.commons.calc.IManageFeeCalculator;
 import cn.edu.xmu.comm.commons.calc.IShareCalculator;
+import org.hibernate.annotations.DynamicInsert;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +17,7 @@ import java.util.List;
  * Created by Roger on 2014/12/5 0005.
  */
 @Entity
+@DynamicInsert
 public class Room extends Property {
 
     //region Instance Variables
@@ -30,34 +34,33 @@ public class Room extends Property {
     /**
      * 所属小区
      */
-    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Community.class)
+    @ManyToOne(targetEntity = Community.class)
     @JoinColumn(name = "community_id", nullable = false)
     private Community community;
 
     /**
      * 所属楼宇
      */
-    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Building.class)
+    @ManyToOne(targetEntity = Building.class)
     @JoinColumn(name = "building_id", nullable = false)
     private Building building;
 
     /**
      * 所属楼层
      */
-    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Floor.class)
+    @ManyToOne(targetEntity = Floor.class)
     @JoinColumn(name = "floor_id", nullable = false)
     private Floor floor;
 
     /**
      * 拥有者
      */
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER,
-            targetEntity = Owner.class)
+    @ManyToOne(targetEntity = Owner.class)
     @JoinColumn(name = "owner_id", nullable = true)
     private Owner owner;
     //endregion
 
-    public Room() {
+    Room() {
     }
 
     public Room(Integer houseCount, Integer usedHouseCount, Double houseArea,

@@ -33,22 +33,29 @@ public class PropertyService extends BaseService {
     /**
      * 添加小区
      *
-     * @param community
+     * @param name
      */
     @Transactional(readOnly = false)
     public void addCommunity(String name) {
         Community community = new Community(name);
-        communityDAO.saveOrUpdate(community);
+        communityDAO.save(community);
     }
 
     /**
      * 添加楼宇
      *
-     * @param building
+     * @param no
+     * @param name
      */
     @Transactional(readOnly = false)
-    public void addBuilding(Building building) {
-        buildingDAO.saveOrUpdate(building);
+    public void addBuilding(Integer no, String name, Community community) {
+        Building building;
+        if (name == null || name.isEmpty()) {
+            building = new Building(no, community);
+        } else {
+            building = new Building(no, name, community);
+        }
+        buildingDAO.save(building);
     }
 
     /**
@@ -58,7 +65,37 @@ public class PropertyService extends BaseService {
      */
     @Transactional(readOnly = false)
     public void addFloor(Floor floor) {
-        floorDAO.saveOrUpdate(floor);
+        floorDAO.save(floor);
+    }
+
+    /**
+     * 更新小区信息
+     *
+     * @param community
+     */
+    @Transactional(readOnly = false)
+    public void updateCommunity(Community community) {
+        communityDAO.merge(community);
+    }
+
+    /**
+     * 删除小区信息
+     *
+     * @param community
+     */
+    @Transactional(readOnly = false)
+    public void delCommunity(Community community) {
+        communityDAO.delete(community);
+    }
+
+    /**
+     * 通过id获得小区
+     *
+     * @param id
+     * @return
+     */
+    public Community getCommunity(Integer id) {
+        return communityDAO.get(id);
     }
 
     /**
@@ -73,9 +110,23 @@ public class PropertyService extends BaseService {
 
     /**
      * 获取所有小区
+     *
+     * @return
      */
-    public List<Community> listCommunities() {
+    public List<Community> getAllCommunities() {
         return communityDAO.getAll();
     }
+
+    /**
+     * 获取某个小区的所有楼宇
+     *
+     * @param community
+     * @return
+     */
+    public List<Building> searchBuildingsByCommunity(Community community) {
+        return buildingDAO.searchByCommunity(community);
+    }
+
+
 
 }

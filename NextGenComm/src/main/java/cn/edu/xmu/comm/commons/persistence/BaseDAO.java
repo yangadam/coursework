@@ -63,7 +63,32 @@ public class BaseDAO<T, I extends Serializable> {
     }
 
     /**
-     * 持久化或更新实体对象
+     * 立即持久化对象
+     *
+     * @param entity
+     */
+    public void save(T entity) {
+        currentSession().save(entity);
+    }
+
+    /**
+     * 持久化对象（长会话时使用）
+     *
+     * @param entity
+     */
+    public void persist(T entity) {
+        currentSession().persist(entity);
+    }
+
+    /**
+     * @param entity
+     */
+    public void update(T entity) {
+        currentSession().update(entity);
+    }
+
+    /**
+     * 更新实体对象
      *
      * @param entity
      */
@@ -86,8 +111,18 @@ public class BaseDAO<T, I extends Serializable> {
      * @param id
      * @return
      */
-    public T getById(I id) {
+    public T get(I id) {
         return (T) currentSession().get(clazz, id);
+    }
+
+    /**
+     * 加载实体（不立即访问数据库）
+     *
+     * @param id
+     * @return
+     */
+    public T load(I id) {
+        return (T) currentSession().load(clazz, id);
     }
 
     /**

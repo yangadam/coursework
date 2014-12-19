@@ -2,7 +2,6 @@ package cn.edu.xmu.comm.hql;
 
 import cn.edu.xmu.comm.entity.*;
 import cn.edu.xmu.comm.service.FinanceService;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,35 +45,35 @@ public class TestHql {
         return publicFund;
     }
 
-    @Test
-    public void InsertCommunity() {
-        Session session = sessionFactory.openSession();
-
-        PublicFund publicFund = newPublicFund();
-        Community community = newCommunity(publicFund);
-        Building building = newBuilding(community);
-        Floor floor = newFloor(building);
-        Owner owner = newOwner();
-        Room room = newRoom(floor, owner);
-        ParkPlace parkPlace = newParkPlace(community);
-        Car car = newCar(owner, parkPlace);
-        Device device1 = newDevice1(floor);
-        Device device2 = newDevice2(room);
-
-        session.saveOrUpdate(community);
-        session.saveOrUpdate(owner);
-        session.saveOrUpdate(parkPlace);
-        session.saveOrUpdate(car);
-        session.saveOrUpdate(building);
-        session.saveOrUpdate(floor);
-        session.saveOrUpdate(room);
-        session.saveOrUpdate(device1);
-        session.saveOrUpdate(device2);
-
-        session.flush();
-        session.close();
-        System.out.print("DONE");
-    }
+//    @Test
+//    public void InsertCommunity() {
+//        Session session = sessionFactory.openSession();
+//
+//        PublicFund publicFund = newPublicFund();
+//        Community community = newCommunity(publicFund);
+//        Building building = newBuilding(community);
+//        Floor floor = newFloor(building);
+//        Owner owner = newOwner();
+//        Room room = newRoom(floor, owner);
+//        ParkPlace parkPlace = newParkPlace(community);
+//        Car car = newCar(owner, parkPlace);
+//        Device device1 = newDevice1(floor);
+//        Device device2 = newDevice2(room);
+//
+//        session.saveOrUpdate(community);
+//        session.saveOrUpdate(owner);
+//        session.saveOrUpdate(parkPlace);
+//        session.saveOrUpdate(car);
+//        session.saveOrUpdate(building);
+//        session.saveOrUpdate(floor);
+//        session.saveOrUpdate(room);
+//        session.saveOrUpdate(device1);
+//        session.saveOrUpdate(device2);
+//
+//        session.flush();
+//        session.close();
+//        System.out.print("DONE");
+//    }
 
     public Device newDevice1(Floor floor) {
         Device device = new Device();
@@ -126,53 +125,53 @@ public class TestHql {
         return parkPlace;
     }
 
-    public Community newCommunity(PublicFund publicFund) {
-        Community community = new Community();
-        community.setName("NextGenComm");
-        community.setManageFeeType("cn.edu.xmu.comm.commons.AreaManageFeeCalculator");
-        community.setManageFee(BigDecimal.valueOf(10.0));
-        community.setGarbageFeeType("cn.edu.xmu.comm.commons.FixGarbageFeeCalculator");
-        community.setGarbageFee(BigDecimal.valueOf(5.0));
-        community.setPublicFund(publicFund);
-        return community;
-    }
-
-    public Building newBuilding(Community community) {
-        Building building = new Building();
-        building.setNo(13);
-        building.setName("海韵十三");
-        building.setHouseArea(22.0);
-        building.setHouseCount(1);
-        building.setUsedHouseArea(22.0);
-        building.setUsedHouseCount(1);
-        building.setCommunity(community);
-        return building;
-    }
-
-    public Room newRoom(Floor floor, Owner owner) {
-        Room room = new Room();
-        room.setFloor(floor);
-        room.setBuilding(floor.getBuilding());
-        room.setCommunity(floor.getBuilding().getCommunity());
-        room.setFullName("310");
-        room.setOwner(owner);
-        room.setHouseArea(22.0);
-        room.setHouseCount(1);
-        room.setUsedHouseArea(22.0);
-        room.setUsedHouseCount(1);
-        return room;
-    }
-
-    public Floor newFloor(Building building) {
-        Floor floor = new Floor();
-        floor.setNo(3);
-        floor.setHouseArea(22.0);
-        floor.setHouseCount(1);
-        floor.setUsedHouseArea(22.0);
-        floor.setUsedHouseCount(1);
-        floor.setBuilding(building);
-        return floor;
-    }
+//    public Community newCommunity(PublicFund publicFund) {
+//        Community community = new Community();
+//        community.setName("NextGenComm");
+//        community.setManageFeeType("cn.edu.xmu.comm.commons.AreaManageFeeCalculator");
+//        community.setManageFee(BigDecimal.valueOf(10.0));
+//        community.setGarbageFeeType("cn.edu.xmu.comm.commons.FixGarbageFeeCalculator");
+//        community.setGarbageFee(BigDecimal.valueOf(5.0));
+//        community.setPublicFund(publicFund);
+//        return community;
+//    }
+//
+//    public Building newBuilding(Community community) {
+//        Building building = new Building();
+//        building.setNo(13);
+//        building.setName("海韵十三");
+//        building.setHouseArea(22.0);
+//        building.setHouseCount(1);
+//        building.setUsedHouseArea(22.0);
+//        building.setUsedHouseCount(1);
+//        building.setCommunity(community);
+//        return building;
+//    }
+//
+//    public Room newRoom(Floor floor, Owner owner) {
+//        Room room = new Room();
+//        room.setFloor(floor);
+//        room.setBuilding(floor.getBuilding());
+//        room.setCommunity(floor.getBuilding().getCommunity());
+//        room.setFullName("310");
+//        room.setOwner(owner);
+//        room.setHouseArea(22.0);
+//        room.setHouseCount(1);
+//        room.setUsedHouseArea(22.0);
+//        room.setUsedHouseCount(1);
+//        return room;
+//    }
+//
+//    public Floor newFloor(Building building) {
+//        Floor floor = new Floor();
+//        floor.setNo(3);
+//        floor.setHouseArea(22.0);
+//        floor.setHouseCount(1);
+//        floor.setUsedHouseArea(22.0);
+//        floor.setUsedHouseCount(1);
+//        floor.setBuilding(building);
+//        return floor;
+//    }
 
     public Owner newOwner() {
         Owner owner = new Owner();

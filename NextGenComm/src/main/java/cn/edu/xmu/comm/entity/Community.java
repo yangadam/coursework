@@ -1,5 +1,7 @@
 package cn.edu.xmu.comm.entity;
 
+import org.hibernate.annotations.DynamicInsert;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -9,6 +11,7 @@ import java.util.List;
  * Created by Roger on 2014/12/7 0007.
  */
 @Entity
+@DynamicInsert
 public class Community extends Property {
 
     //region Instance Variables
@@ -21,7 +24,7 @@ public class Community extends Property {
     /**
      * 包含的楼宇列表
      */
-    @OneToMany(mappedBy = "community", targetEntity = Building.class)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "community", targetEntity = Building.class)
     private List<Building> buildingList = new ArrayList<Building>();
 
     /**
@@ -58,7 +61,7 @@ public class Community extends Property {
     private BigDecimal garbageFee;
     //endregionss
 
-    public Community() {
+    Community() {
     }
 
     public Community(String name) {

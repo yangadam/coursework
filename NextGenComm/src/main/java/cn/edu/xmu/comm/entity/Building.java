@@ -1,5 +1,7 @@
 package cn.edu.xmu.comm.entity;
 
+import org.hibernate.annotations.DynamicInsert;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -7,6 +9,7 @@ import java.util.List;
  * Created by Roger on 2014/12/7 0007.
  */
 @Entity
+@DynamicInsert
 public class Building extends Property {
 
     //region Instance Variables
@@ -38,13 +41,12 @@ public class Building extends Property {
 
 
     //region Constructors
-    public Building() {
-
+    Building() {
     }
 
     public Building(Integer no, Community community) {
         this.no = no;
-        this.name = String.valueOf(no);
+        this.name = community.getName() + String.valueOf(no);
         this.community = community;
     }
 

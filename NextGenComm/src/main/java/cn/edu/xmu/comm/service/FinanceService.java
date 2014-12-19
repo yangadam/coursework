@@ -14,7 +14,7 @@ import java.util.List;
  * Created by Roger on 2014/12/5 0005.
  */
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public class FinanceService {
 
     @Autowired
@@ -23,11 +23,11 @@ public class FinanceService {
     /**
      * 生成所有业主账单
      */
+    @Transactional(readOnly = false)
     public void generateBill() {
         List<Owner> allOwner = ownerDAO.getAll();
         for (Owner owner : allOwner) {
             owner.generateBill();
-            ownerDAO.flush();
         }
     }
 

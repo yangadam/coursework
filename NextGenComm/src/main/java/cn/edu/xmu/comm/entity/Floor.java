@@ -1,5 +1,7 @@
 package cn.edu.xmu.comm.entity;
 
+import org.hibernate.annotations.DynamicInsert;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -7,6 +9,7 @@ import java.util.List;
  * Created by Roger on 2014/12/7 0007.
  */
 @Entity
+@DynamicInsert
 public class Floor extends Property {
 
     //region Instance Variables
@@ -31,7 +34,7 @@ public class Floor extends Property {
     private List<Room> roomList;
     //endregion
 
-    public Floor() {
+    Floor() {
     }
 
     public Floor(Building building, Integer no) {

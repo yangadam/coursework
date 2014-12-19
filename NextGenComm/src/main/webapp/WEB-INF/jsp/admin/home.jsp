@@ -44,7 +44,7 @@
             </a>
             <!-- END LOGO -->
             <!-- BEGIN RESPONSIVE MENU TOGGLER -->
-            <a href="javascript:;" class="btn-navbar collapsed" data-toggle="collapse" data-target=".nav-collapse">
+            <a href="javascript:" class="btn-navbar collapsed" data-toggle="collapse" data-target=".nav-collapse">
                 <img src="../../../media/image/menu-toggler.png" alt=""/>
             </a>
             <!-- END RESPONSIVE MENU TOGGLER -->
@@ -291,7 +291,7 @@
                 <!-- BEGIN RESPONSIVE QUICK SEARCH FORM -->
                 <form class="sidebar-search">
                     <div class="input-box">
-                        <a href="javascript:;" class="remove"></a>
+                        <a href="javascript:" class="remove"></a>
                         <input type="text" placeholder="搜索..."/>
                         <input type="button" class="submit" value=" "/>
                     </div>
@@ -308,13 +308,13 @@
                 </a>
             </li>
             <li class="">
-                <a href="admin/listComm.do">
+                <a href="admin/commlist.do">
                     <i class="icon-home"></i>
                     <span class="title">添加社区</span>
                 </a>
             </li>
             <li class="">
-                <a href="javascript:;">
+                <a href="javascript:">
                     <i class="icon-shopping-cart"></i>
                     <span class="title">在线缴费</span>
                     <span class="arrow "></span>
@@ -402,7 +402,7 @@
             </li>
 
             <li class="">
-                <a href="javascript:;">
+                <a href="javascript:">
                     <i class="icon-user"></i>
                     <span class="title">个人主页</span>
                     <span class="arrow "></span>
