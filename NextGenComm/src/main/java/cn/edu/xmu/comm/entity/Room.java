@@ -9,7 +9,10 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,8 +51,7 @@ public class Room extends Property {
     /**
      * 拥有者
      */
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER,
-            targetEntity = Owner.class)
+    @ManyToOne(targetEntity = Owner.class, cascade = {CascadeType.MERGE})
     @JoinColumn(name = "owner_id", nullable = true)
     private Owner owner;
     //endregion
@@ -60,8 +62,8 @@ public class Room extends Property {
     public Room(String no, Double houseArea, Floor floor) {
         super();
         this.no = no;
-        this.floor = floor;
         this.fullName = floor.getBuilding().getName() + this.no;
+        floor.addRoom(this);
         registerRoom(houseArea);
     }
 

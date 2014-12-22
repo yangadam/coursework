@@ -1,14 +1,10 @@
 package cn.edu.xmu.comm.service;
 
+import cn.edu.xmu.comm.commons.exception.DifferentCommunityException;
+import cn.edu.xmu.comm.commons.security.SecurityUtil;
 import cn.edu.xmu.comm.commons.service.BaseService;
-import cn.edu.xmu.comm.dao.BuildingDAO;
-import cn.edu.xmu.comm.dao.CommunityDAO;
-import cn.edu.xmu.comm.dao.FloorDAO;
-import cn.edu.xmu.comm.dao.RoomDAO;
-import cn.edu.xmu.comm.entity.Building;
-import cn.edu.xmu.comm.entity.Community;
-import cn.edu.xmu.comm.entity.Floor;
-import cn.edu.xmu.comm.entity.Room;
+import cn.edu.xmu.comm.dao.*;
+import cn.edu.xmu.comm.entity.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +32,9 @@ public class PropertyService extends BaseService {
 
     @Resource
     private RoomDAO roomDAO;
+
+    @Resource
+    private OwnerDAO ownerDAO;
 
     /**
      * 添加小区
@@ -146,6 +145,37 @@ public class PropertyService extends BaseService {
     }
 
     /**
+     * 添加业主,并指定小区
+     *
+     * @param username 用户名
+     * @param password 密码
+     * @param name     姓名
+     */
+    @Transactional(readOnly = false)
+    public void addOwner(String username, String password, String name, Community community) {
+        Owner owner = new Owner(username, password, name, community);
+        SecurityUtil.encryptUser(owner);
+        ownerDAO.persist(owner);
+    }
+
+    /**
+     * 添加业主，并指定房间
+     *
+     * @param username 用户名
+     * @param password 密码
+     * @param name     姓名
+     * @param room     房间
+     */
+    @Transactional(readOnly = false)
+    public void addOwner(String username, String password, String name, Room room)
+            throws DifferentCommunityException {
+        Owner owner = new Owner(username, password, name, room);
+        SecurityUtil.encryptUser(owner);
+        ownerDAO.persist(owner);
+        roomDAO.merge(room);
+    }
+
+    /**
      * 通过名字获得小区
      *
      * @param name 小区名字
@@ -187,7 +217,7 @@ public class PropertyService extends BaseService {
     }
 
     /**
-     * 通过楼层号获取某小区楼宇
+     * 通过楼层号获取某楼层的房间
      *
      * @param no    房间号
      * @param floor 楼层

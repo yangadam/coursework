@@ -46,8 +46,30 @@ public class Floor extends Property {
     }
 
     public Floor(Integer no, Building building) {
-        this.building = building;
         this.no = no;
+        building.addFloor(this);
+    }
+
+    /**
+     * 添加房间
+     *
+     * @param room 要添加的房间
+     */
+    public void addRoom(Room room) {
+        room.setFloor(this);
+        roomList.add(room);
+    }
+
+    /**
+     * 批量添加房间
+     *
+     * @param rooms 房间列表
+     */
+    public void addRooms(List<Room> rooms) {
+        for (Room room : rooms) {
+            room.setFloor(this);
+        }
+        roomList.addAll(rooms);
     }
 
     /**

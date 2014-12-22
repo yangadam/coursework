@@ -21,6 +21,11 @@ import java.util.List;
 @DynamicInsert
 @DynamicUpdate
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Table(
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"name"})
+        }
+)
 public class Community extends Property {
 
     //region Instance Variables
@@ -40,13 +45,14 @@ public class Community extends Property {
     /**
      * 包含的停车位
      */
-    @OneToMany(mappedBy = "community", targetEntity = ParkPlace.class)
+    @OneToMany(mappedBy = "community", targetEntity = ParkPlace.class,
+            cascade = CascadeType.ALL)
     private List<ParkPlace> parkingLot;
 
     /**
      * 管理的公维金
      */
-    @OneToOne(targetEntity = PublicFund.class)
+    @OneToOne(targetEntity = PublicFund.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "public_fund_id")
     private PublicFund publicFund;
 
@@ -77,6 +83,28 @@ public class Community extends Property {
     public Community(String name) {
         super();
         this.name = name;
+    }
+
+    /**
+     * 添加楼宇
+     *
+     * @param building 要添加的楼宇
+     */
+    public void addBuilding(Building building) {
+        building.setCommunity(this);
+        buildingList.add(building);
+    }
+
+    /**
+     * 批量添加楼宇
+     *
+     * @param buildings 楼宇列表
+     */
+    public void addBuildings(List<Building> buildings) {
+        for (Building building : buildings) {
+            building.setCommunity(this);
+        }
+        this.buildingList.addAll(buildings);
     }
 
     /**
@@ -159,5 +187,17 @@ public class Community extends Property {
         this.garbageFee = garbageFee;
     }
     //endregion
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Community)) return false;
+
+        Community community = (Community) o;
+
+        if (name != null ? !name.equals(community.name) : community.name != null) return false;
+        return true;
+    }
 
 }

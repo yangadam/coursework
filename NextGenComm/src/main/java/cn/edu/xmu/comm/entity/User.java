@@ -31,7 +31,7 @@ public class User extends DataEntity {
      * 用户主键
      */
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     /**
@@ -80,6 +80,15 @@ public class User extends DataEntity {
     @Transient
     private String classType;
     //endregion
+
+    User() {
+    }
+
+    public User(String username, String password, String name) {
+        this.username = username;
+        this.password = password;
+        this.name = name;
+    }
 
     /**
      * 判断用户的类型

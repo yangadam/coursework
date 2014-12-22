@@ -59,9 +59,31 @@ public class Building extends Property {
     public Building(Integer no, String name, Community community) {
         this.no = no;
         this.name = name;
-        this.community = community;
+        community.addBuilding(this);
     }
     //endregion
+
+    /**
+     * 添加楼层
+     *
+     * @param floor 要添加的楼层
+     */
+    public void addFloor(Floor floor) {
+        floor.setBuilding(this);
+        floorList.add(floor);
+    }
+
+    /**
+     * 批量添加楼层
+     *
+     * @param floors 楼层列表
+     */
+    public void addFloors(List<Floor> floors) {
+        for (Floor floor : floors) {
+            floor.setBuilding(this);
+        }
+        floorList.addAll(floors);
+    }
 
     /**
      * 通过楼层号获取楼层

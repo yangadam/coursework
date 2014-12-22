@@ -57,12 +57,12 @@ public class BaseDAO<T, I extends Serializable> {
     /**
      * 持久化实体对象，立即生成SQL语句
      *
-     * @param entiry 实体对象
+     * @param entity 实体对象
      * @return 实体对象id
      */
     @SuppressWarnings("unchecked")
-    public I save(T entiry) {
-        return (I) currentSession().save(entiry);
+    public I save(T entity) {
+        return (I) currentSession().save(entity);
     }
 
     /**
