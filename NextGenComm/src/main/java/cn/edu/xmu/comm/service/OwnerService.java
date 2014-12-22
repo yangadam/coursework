@@ -32,7 +32,7 @@ public class OwnerService {
      * @return
      */
     public Owner getById(Integer id) {
-        return ownerDAO.getById(id);
+        return ownerDAO.get(id);
     }
 
     /**
