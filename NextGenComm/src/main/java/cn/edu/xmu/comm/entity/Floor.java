@@ -1,12 +1,23 @@
 package cn.edu.xmu.comm.entity;
 
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
 import javax.persistence.*;
 import java.util.List;
 
 /**
+ * 楼层实体
  * Created by Roger on 2014/12/7 0007.
+ *
+ * @author Mengmeng Yang
+ * @version 2014-12-22
  */
 @Entity
+@DynamicInsert
+@DynamicUpdate
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Floor extends Property {
 
     //region Instance Variables
@@ -19,24 +30,39 @@ public class Floor extends Property {
     /**
      * 所属楼宇
      */
-    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Building.class)
+    @ManyToOne(targetEntity = Building.class, cascade = {CascadeType.MERGE})
     @JoinColumn(name = "building_id", nullable = false)
     private Building building;
 
     /**
      * 包含的房间列表
      */
-    @OneToMany(fetch = FetchType.LAZY, targetEntity = Room.class,
-            cascade = CascadeType.ALL, mappedBy = "floor")
+    @OneToMany(targetEntity = Room.class, mappedBy = "floor",
+            cascade = CascadeType.ALL)
     private List<Room> roomList;
     //endregion
 
-    public Floor() {
+    Floor() {
     }
 
-    public Floor(Building building, Integer no) {
+    public Floor(Integer no, Building building) {
         this.building = building;
         this.no = no;
+    }
+
+    /**
+     * 通过房间号获取房间
+     *
+     * @param no 房间号
+     * @return 房间（未找到为空）
+     */
+    public Room getRoom(String no) {
+        for (Room room : roomList) {
+            if (room.getNo().equals(no)) {
+                return room;
+            }
+        }
+        return null;
     }
 
     //region Getters and Setters
@@ -54,6 +80,10 @@ public class Floor extends Property {
 
     public void setBuilding(Building building) {
         this.building = building;
+    }
+
+    public Community getCommunity() {
+        return building.getCommunity();
     }
 
     public List<Room> getRoomList() {

@@ -7,7 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Roger on 2014/12/9 0009.
+ * 房产类
+ * Created by Roger on 2014/12/7 0007.
+ *
+ * @author Mengmeng Yang
+ * @version 2014-12-22
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -24,8 +28,7 @@ public abstract class Property extends DataEntity {
     /**
      * 设备列表
      */
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER,
-            targetEntity = Device.class, mappedBy = "property")
+    @OneToMany(targetEntity = Device.class, mappedBy = "property")
     protected List<Device> deviceList = new ArrayList<Device>();
 
     /**
@@ -54,16 +57,9 @@ public abstract class Property extends DataEntity {
      */
     protected Property() {
         houseCount = 0;
-        houseArea = 0.0;
         usedHouseCount = 0;
+        houseArea = 0.0;
         usedHouseArea = 0.0;
-    }
-
-    public Property(Integer houseCount, Integer usedHouseCount, Double houseArea, Double usedHouseArea) {
-        this.houseCount = houseCount;
-        this.usedHouseCount = usedHouseCount;
-        this.houseArea = houseArea;
-        this.usedHouseArea = usedHouseArea;
     }
 
     //region Getters and Setters
@@ -115,5 +111,15 @@ public abstract class Property extends DataEntity {
         this.usedHouseArea = usedHouseArea;
     }
     //endregion
+
+    protected void register(Double area) {
+        houseCount++;
+        houseArea += area;
+    }
+
+    protected void checkIn(Double area) {
+        usedHouseCount++;
+        usedHouseArea += area;
+    }
 
 }

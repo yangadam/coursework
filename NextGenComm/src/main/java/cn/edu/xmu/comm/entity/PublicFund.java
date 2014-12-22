@@ -42,8 +42,6 @@ public class PublicFund extends DataEntity {
      * 每户需交费用
      */
     private BigDecimal chargePerRoom;
-
-
     //endregion
 
     //region Public Methods

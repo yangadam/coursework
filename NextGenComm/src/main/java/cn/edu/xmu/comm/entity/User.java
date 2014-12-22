@@ -1,16 +1,23 @@
 package cn.edu.xmu.comm.entity;
 
 import cn.edu.xmu.comm.commons.persistence.DataEntity;
-import cn.edu.xmu.comm.commons.security.PasswordUtil;
+import cn.edu.xmu.comm.commons.security.SecurityUtil;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Created by Roger on 2014/12/5 0005.
+ * 用户
+ *
+ * @author Mengmeng Yang
+ * @version 2014-12-22
  */
 @Entity
+@DynamicInsert
+@DynamicUpdate
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(
         uniqueConstraints = {
@@ -24,13 +31,12 @@ public class User extends DataEntity {
      * 用户主键
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Integer id;
 
     /**
      * 用户名
      */
-
     @Column(nullable = false, unique = true)
     private String username;
 
@@ -46,16 +52,16 @@ public class User extends DataEntity {
     @Column(nullable = false)
     private String salt;
 
-
     /**
      * 用户是否被锁定
      */
+    @Column(nullable = false)
     private Boolean locked = Boolean.FALSE;
 
     /**
      * 角色集合
      */
-    @ManyToMany(fetch = FetchType.LAZY, targetEntity = Role.class)
+    @ManyToMany(targetEntity = Role.class)
     @JoinTable(
             name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -64,19 +70,48 @@ public class User extends DataEntity {
     private Set<Role> roles = new HashSet<Role>();
 
     /**
-     * 用户类型
-     */
-    private String type;
-
-    /**
      * 姓名
      */
     private String name;
+
+    /**
+     * 类型
+     */
+    @Transient
+    private String classType;
     //endregion
 
-    public boolean checkPassword(String password) {
-        return PasswordUtil.encrypt(password, getCredentialsSalt()).equals(this.password);
+    /**
+     * 判断用户的类型
+     *
+     * @return 用户类型
+     */
+    public String getType() {
+        return isAdmin() ? "admin" : classType;
     }
+
+    /**
+     * 判断用户是否是管理员
+     *
+     * @return 判断结果
+     */
+    public Boolean isAdmin() {
+        classType = getClass().getSimpleName();
+        String adminType = User.class.getSimpleName();
+        return classType.equals(adminType);
+    }
+
+    /**
+     * 验证密码
+     *
+     * @param password 原始密码
+     * @return 验证结果
+     */
+    public Boolean checkPassword(String password) {
+        String encryptPwd = SecurityUtil.encrypt(password, getCredentialsSalt());
+        return encryptPwd.equals(this.password);
+    }
+
 
     //region Getters and Setters
     public Integer getId() {
@@ -129,14 +164,6 @@ public class User extends DataEntity {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public String getName() {

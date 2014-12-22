@@ -1,14 +1,26 @@
 package cn.edu.xmu.comm.entity;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 小区实体
  * Created by Roger on 2014/12/7 0007.
+ *
+ * @author Mengmeng Yang
+ * @version 2014-12-22
  */
 @Entity
+@DynamicInsert
+@DynamicUpdate
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Community extends Property {
 
     //region Instance Variables
@@ -21,7 +33,8 @@ public class Community extends Property {
     /**
      * 包含的楼宇列表
      */
-    @OneToMany(mappedBy = "community", targetEntity = Building.class)
+    @OneToMany(mappedBy = "community", targetEntity = Building.class,
+            cascade = CascadeType.ALL)
     private List<Building> buildingList = new ArrayList<Building>();
 
     /**
@@ -58,7 +71,7 @@ public class Community extends Property {
     private BigDecimal garbageFee;
     //endregionss
 
-    public Community() {
+    Community() {
     }
 
     public Community(String name) {
@@ -66,7 +79,13 @@ public class Community extends Property {
         this.name = name;
     }
 
-    public Building getBuildingByNo(Integer no) {
+    /**
+     * 通过楼宇号获取楼宇
+     *
+     * @param no 楼宇号
+     * @return 楼宇（未找到为空）
+     */
+    public Building getBuilding(Integer no) {
         for (Building building : buildingList) {
             if (building.getNo().equals(no)) {
                 return building;

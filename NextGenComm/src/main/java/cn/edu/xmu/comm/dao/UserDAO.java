@@ -6,7 +6,10 @@ import cn.edu.xmu.comm.entity.User;
 import org.springframework.stereotype.Repository;
 
 /**
- * Created by Roger on 2014/12/8 0008.
+ * 用户DAO
+ *
+ * @author Mengmeng Yang
+ * @version 12/22/2014
  */
 @Repository
 public class UserDAO extends BaseDAO<User, Integer> {
@@ -14,11 +17,11 @@ public class UserDAO extends BaseDAO<User, Integer> {
     /**
      * 通过用户名获得用户
      *
-     * @param username
-     * @return
+     * @param username 用户名
+     * @return 用户
      */
     public User getByUsername(String username) {
-        return getByHql("from User where username = :p1", new Parameter(username));
+        return getByQL("from User where username = :p1", new Parameter(username));
     }
 
 }
