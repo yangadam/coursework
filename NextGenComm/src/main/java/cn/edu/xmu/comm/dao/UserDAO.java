@@ -18,7 +18,7 @@ public class UserDAO extends BaseDAO<User, Integer> {
      * @return
      */
     public User getByUsername(String username) {
-        return getByHql("from User where username = :p1", new Parameter(username));
+        return getByQL("from User where username = :p1", new Parameter(username));
     }
 
 }

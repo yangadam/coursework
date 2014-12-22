@@ -1,12 +1,14 @@
 package cn.edu.xmu.comm.action;
 
+import cn.edu.xmu.comm.commons.exception.PasswordIncorrectException;
+import cn.edu.xmu.comm.commons.exception.UserNotFoundException;
 import cn.edu.xmu.comm.entity.User;
-import cn.edu.xmu.comm.service.UserService;
+import cn.edu.xmu.comm.service.SystemService;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import javax.annotation.Resource;
 import java.util.Map;
 
 /**
@@ -15,8 +17,8 @@ import java.util.Map;
 @Controller
 public class LoginAction extends ActionSupport {
 
-    @Autowired
-    private UserService userService;
+    @Resource
+    private SystemService systemService;
 
     private String username;
 
@@ -26,15 +28,14 @@ public class LoginAction extends ActionSupport {
 
     @Override
     public String execute() {
-        if (username == null || password == null) {
-            return LOGIN;
-        }
-        User user = userService.getUserByUsername(username);
-        if (user == null) {
+
+        User user = null;
+        try {
+            user = systemService.login(username, password);
+        } catch (UserNotFoundException e) {
             addActionError("用户不存在");
             return LOGIN;
-        }
-        if (!user.checkPassword(password)) {
+        } catch (PasswordIncorrectException e) {
             addActionError("密码错误");
             return LOGIN;
         }

@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -33,7 +34,7 @@ public class BaseDAO<T, I extends Serializable> {
     /**
      * 获取session
      *
-     * @return
+     * @return session
      */
     public Session currentSession() {
         return sessionFactory.getCurrentSession();
@@ -54,118 +55,158 @@ public class BaseDAO<T, I extends Serializable> {
     }
 
     /**
-     * 持久化或更新实体对象
+     * 持久化实体对象，立即生成SQL语句
      *
-     * @param entity
+     * @param entiry 实体对象
+     * @return 实体对象id
      */
-    public void saveOrUpdate(T entity) {
-        currentSession().saveOrUpdate(entity);
+    @SuppressWarnings("unchecked")
+    public I save(T entiry) {
+        return (I) currentSession().save(entiry);
     }
 
     /**
-     * 立即持久化对象
+     * 持久化实体对象，会话结束时生成SQL语句
      *
-     * @param entity
-     */
-    public void save(T entity) {
-        currentSession().save(entity);
-    }
-
-    /**
-     * 持久化对象（长会话时使用）
-     *
-     * @param entity
+     * @param entity 实体对象
      */
     public void persist(T entity) {
         currentSession().persist(entity);
     }
 
     /**
-     * @param entity
+     * 更新实体对象
+     *
+     * @param entity 实体对象
      */
     public void update(T entity) {
         currentSession().update(entity);
     }
 
     /**
-     * 更新实体对象
+     * 将实体对象属性覆盖到数据库
      *
-     * @param entity
+     * @param entity 实体对象
      */
     public void merge(T entity) {
         currentSession().merge(entity);
     }
 
     /**
-     * 删除实体类
+     * 持久化或更新实体对象
      *
-     * @param entity
+     * @param entity 实体对象
+     */
+    public void saveOrUpdate(T entity) {
+        currentSession().saveOrUpdate(entity);
+    }
+
+    /**
+     * 删除实体对象
+     *
+     * @param entity 实体对象
      */
     public void delete(T entity) {
         currentSession().delete(entity);
     }
 
     /**
-     * 通过id获取实体
+     * 通过id加载实体对象
      *
-     * @param id
-     * @return
+     * @param id 实体对象id
+     * @return 实体对象
      */
-    public T get(I id) {
-        return (T) currentSession().get(clazz, id);
-    }
-
-    /**
-     * 加载实体（不立即访问数据库）
-     *
-     * @param id
-     * @return
-     */
+    @SuppressWarnings("unchecked")
     public T load(I id) {
         return (T) currentSession().load(clazz, id);
     }
 
     /**
-     * 获取所有实体
+     * 通过id加载实体对象
      *
-     * @return
+     * @param entity 目标实体对象
+     * @param id     实体对象id
      */
-    public List<T> getAll() {
-        return searchByHql("from " + clazz.getName(), new Parameter());
+    public void load(T entity, I id) {
+        currentSession().load(entity, id);
     }
 
     /**
-     * 通过Hql语句获取单个实体
+     * 通过id获取实体对象
      *
-     * @param qlString
-     * @param parameter
-     * @return
+     * @param id 实体对象id
+     * @return 实体对象
      */
-    public T getByHql(String qlString, Parameter parameter) {
+    @SuppressWarnings("unchecked")
+    public T get(I id) {
+        return (T) currentSession().get(clazz, id);
+    }
+
+    /**
+     * 获取所有实体对象
+     *
+     * @return 实体对象列表
+     */
+    @SuppressWarnings("unchecked")
+    public List<T> getAll() {
+        return (List<T>) currentSession().createCriteria(clazz).list();
+    }
+
+    /**
+     * 获取所有实体对象的迭代器
+     *
+     * @return 迭代器
+     */
+    @SuppressWarnings("unchecked")
+    public Iterator<T> getAllIterator() {
+        Query query = createQuery("from " + clazz.getSimpleName(), new Parameter());
+        return query.iterate();
+    }
+
+    /**
+     * 通过QL语句获取单个实体
+     *
+     * @param qlString  查询语句
+     * @param parameter 查询参数
+     * @return 实体对象
+     */
+    @SuppressWarnings("unchecked")
+    public T getByQL(String qlString, Parameter parameter) {
         Query query = createQuery(qlString, parameter);
         return (T) query.uniqueResult();
     }
 
     /**
-     * 通过Hql语句查找
+     * 通过QL语句查找，返回迭代器
      *
-     * @param qlString
-     * @param parameter
-     * @return
+     * @param qlString  查询语句
+     * @param parameter 查询参数
+     * @return 实体列表
      */
-    public List<T> searchByHql(String qlString, Parameter parameter) {
+    @SuppressWarnings("unchecked")
+    public List<T> searchByQL(String qlString, Parameter parameter) {
         Query query = createQuery(qlString, parameter);
         return query.list();
     }
+
+    /**
+     * 通过QL语句查找
+     *
+     * @param qlString  查询语句
+     * @param parameter 查询参数
+     * @return 迭代器
+     */
+    @SuppressWarnings("unchecked")
+    public Iterator<T> searchByQLIterator(String qlString, Parameter parameter) {
+        Query query = createQuery(qlString, parameter);
+        return query.iterate();
+    }
+
 
     //region Private Methods
 
     /**
      * 创建 QL 查询对象
-     *
-     * @param qlString
-     * @param parameter
-     * @return
      */
     private Query createQuery(String qlString, Parameter parameter) {
         Query query = currentSession().createQuery(qlString);
@@ -175,16 +216,12 @@ public class BaseDAO<T, I extends Serializable> {
 
     /**
      * 设置查询参数
-     *
-     * @param query
-     * @param parameter
      */
     private void setParameter(Query query, Parameter parameter) {
         if (parameter != null) {
             Set<String> keySet = parameter.keySet();
             for (String string : keySet) {
                 Object value = parameter.get(string);
-                //这里考虑传入的参数是什么类型，不同类型使用的方法不同
                 if (value instanceof Collection<?>) {
                     query.setParameterList(string, (Collection<?>) value);
                 } else if (value instanceof Object[]) {
