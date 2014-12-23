@@ -31,8 +31,8 @@
         </action>
 
         <action name="dologin" class="loginAction">
-            <result name="input" type="redirectAction">login</result>
-            <result name="admin" type="redirectAction">/admin/home</result>
+            <result name="input">login.do</result>
+            <result name="admin" type="redirect">/admin/home.do</result>
         </action>
 
     </package>
@@ -46,6 +46,19 @@
 
         <action name="home">
             <result>/WEB-INF/jsp/admin/home.jsp</result>
+        </action>
+
+        <action name="test">
+            <result>/WEB-INF/jsp/dataTables.jsp</result>
+        </action>
+
+    </package>
+
+    <package name="json" extends="json-default">
+        <action name="jsonAction" class="jsonAction">
+            <result type="json">
+                <param name="root">result</param>
+            </result>
         </action>
 
     </package>

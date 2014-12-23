@@ -43,7 +43,8 @@ public class LoginAction extends ActionSupport {
         Map session = ActionContext.getContext().getSession();
         session.put("USER", user);
 
-        return user.getType();
+        String type = user.getType();
+        return type;
     }
 
     public String getUsername() {

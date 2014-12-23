@@ -76,7 +76,7 @@ public class User extends DataEntity {
 
     public String getType() {
         String type = getClass().getSimpleName().toLowerCase();
-        return type == User.class.getSimpleName() ? "admin" : type;
+        return User.class.getSimpleName().equalsIgnoreCase(type) ? "admin" : type;
     }
 
     public boolean checkPassword(String password) {

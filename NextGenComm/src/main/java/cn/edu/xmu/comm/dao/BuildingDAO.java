@@ -21,7 +21,7 @@ public class BuildingDAO extends BaseDAO<Building, Integer> {
      * @return
      */
     public List<Building> searchByCommunity(Community community) {
-        return searchByHql("from Building where community = :p1", new Parameter(community));
+        return searchByQL("from Building where community = :p1", new Parameter(community));
     }
 
 }
