@@ -46,7 +46,8 @@ public class LoginAction extends ActionSupport {
         Map<String, Object> session = ActionContext.getContext().getSession();
         session.put("USER", user);
 
-        return user.getType();
+        String type = user.getType();
+        return type;
     }
 
     public String getUsername() {

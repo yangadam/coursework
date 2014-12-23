@@ -52,6 +52,19 @@
             <result>/WEB-INF/jsp/admin/home.jsp</result>
         </action>
 
+        <action name="test">
+            <result>/WEB-INF/jsp/dataTables.jsp</result>
+        </action>
+
+    </package>
+
+    <package name="json" extends="json-default">
+        <action name="jsonAction" class="jsonAction">
+            <result type="json">
+                <param name="root">result</param>
+            </result>
+        </action>
+
         <action name="commlist" class="communityList">
             <result>/WEB-INF/jsp/admin/commList.jsp</result>
         </action>
