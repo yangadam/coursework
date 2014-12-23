@@ -1,8 +1,8 @@
 package cn.edu.xmu.comm.commons.calc.impl;
 
 import cn.edu.xmu.comm.commons.calc.IGarbageFeeCalculator;
-import cn.edu.xmu.comm.pms.entity.Community;
-import cn.edu.xmu.comm.pms.entity.Room;
+import cn.edu.xmu.comm.entity.Community;
+import cn.edu.xmu.comm.entity.Room;
 
 import java.math.BigDecimal;
 

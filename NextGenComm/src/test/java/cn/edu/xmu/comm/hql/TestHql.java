@@ -1,10 +1,7 @@
 package cn.edu.xmu.comm.hql;
 
-import cn.edu.xmu.comm.fms.entity.PublicFund;
-import cn.edu.xmu.comm.fms.service.FinanceService;
-import cn.edu.xmu.comm.park.entity.Car;
-import cn.edu.xmu.comm.park.entity.ParkPlace;
-import cn.edu.xmu.comm.pms.entity.*;
+import cn.edu.xmu.comm.entity.*;
+import cn.edu.xmu.comm.service.FinanceService;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.Test;
@@ -130,9 +127,7 @@ public class TestHql {
     }
 
     public Community newCommunity(PublicFund publicFund) {
-        Community community = new Community();
-        community.setName("NextGenComm");
-        community.setNo("8888");
+        Community community = new Community("NextGenComm");
         community.setManageFeeType("cn.edu.xmu.comm.commons.AreaManageFeeCalculator");
         community.setManageFee(BigDecimal.valueOf(10.0));
         community.setGarbageFeeType("cn.edu.xmu.comm.commons.FixGarbageFeeCalculator");
@@ -142,39 +137,18 @@ public class TestHql {
     }
 
     public Building newBuilding(Community community) {
-        Building building = new Building();
-        building.setNo(13);
-        building.setName("海韵十三");
-        building.setHouseArea(22.0);
-        building.setHouseCount(1);
-        building.setUsedHouseArea(22.0);
-        building.setUsedHouseCount(1);
-        building.setCommunity(community);
+        Building building = new Building(13, "海韵13", community);
         return building;
     }
 
     public Room newRoom(Floor floor, Owner owner) {
-        Room room = new Room();
-        room.setFloor(floor);
-        room.setBuilding(floor.getBuilding());
-        room.setCommunity(floor.getBuilding().getCommunity());
-        room.setFullName("310");
+        Room room = new Room("301", 100.0, floor);
         room.setOwner(owner);
-        room.setHouseArea(22.0);
-        room.setHouseCount(1);
-        room.setUsedHouseArea(22.0);
-        room.setUsedHouseCount(1);
         return room;
     }
 
     public Floor newFloor(Building building) {
-        Floor floor = new Floor();
-        floor.setNo(3);
-        floor.setHouseArea(22.0);
-        floor.setHouseCount(1);
-        floor.setUsedHouseArea(22.0);
-        floor.setUsedHouseCount(1);
-        floor.setBuilding(building);
+        Floor floor = new Floor(3, building);
         return floor;
     }
 

@@ -1,8 +1,10 @@
 package cn.edu.xmu.comm.sys;
 
-import cn.edu.xmu.comm.sys.entity.User;
-import cn.edu.xmu.comm.sys.security.PasswordUtil;
-import cn.edu.xmu.comm.sys.service.UserService;
+import cn.edu.xmu.comm.commons.security.SecurityUtil;
+import cn.edu.xmu.comm.entity.Owner;
+import cn.edu.xmu.comm.entity.User;
+import cn.edu.xmu.comm.service.SystemService;
+import junit.framework.TestCase;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.Test;
@@ -20,26 +22,32 @@ import org.springframework.transaction.annotation.Transactional;
 @ContextConfiguration(locations = {"classpath:spring-context.xml"})
 @TransactionConfiguration
 @Transactional
-public class UserServiceTest {
+public class UserServiceTest extends TestCase {
 
     @Autowired
     private SessionFactory sessionFactory;
 
     @Autowired
-    private UserService userService;
+    private SystemService systemService;
+
 
     @Test
     public void testAddUser() {
         User user = new User();
         user.setUsername("admin");
-        user.setPassword("12345678");
-        PasswordUtil passwordHelper = new PasswordUtil();
-        passwordHelper.encryptPassword(user);
+        user.setPassword("123");
+        SecurityUtil.encryptUser(user);
         Session session = sessionFactory.openSession();
         session.saveOrUpdate(user);
         session.flush();
         session.close();
 
+    }
+
+    @Test
+    public void testClass() {
+        User user = new Owner();
+        assertEquals("Owner", user.getClass().getSimpleName());
     }
 
 }
