@@ -1,9 +1,7 @@
 package cn.edu.xmu.comm.service;
 
-import cn.edu.xmu.comm.entity.Building;
-import cn.edu.xmu.comm.entity.Community;
-import cn.edu.xmu.comm.entity.Floor;
-import cn.edu.xmu.comm.entity.Room;
+import cn.edu.xmu.comm.commons.exception.DifferentCommunityException;
+import cn.edu.xmu.comm.entity.*;
 import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;
@@ -14,7 +12,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
 
-
+/**
+ * 测试PropertyService
+ *
+ * @author Mengmeng Yang
+ * @version 2014-12-24
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring-context.xml"})
 public class PropertyServiceTest extends TestCase {
@@ -93,6 +96,27 @@ public class PropertyServiceTest extends TestCase {
         for (Room room : floor.getRoomList()) {
             System.out.println(room.getFullName());
         }
+    }
+
+    @Test
+    public void testAddOwner() {
+        Community community = propertyService.getCommunityByName("五缘公寓");
+        Building building = propertyService.getBuildingByNo(1, community);
+        Floor floor = propertyService.getFloorByNo(1, building);
+        Room room1 = propertyService.getRoomByNo("101", floor);
+        Room room2 = propertyService.getRoomByNo("102", floor);
+        Owner owner = propertyService.addOwner("wyh", "123", "王耀华", community);
+        try {
+            owner.addRoom(room1);
+        } catch (DifferentCommunityException e) {
+            e.printStackTrace();
+        }
+        try {
+            propertyService.addOwner("lyj", "123", "陆垚杰", room2);
+        } catch (DifferentCommunityException e) {
+            e.printStackTrace();
+        }
+
     }
 
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,24 +41,27 @@ public class PropertyService extends BaseService {
      * 添加小区
      *
      * @param name 小区
+     * @return 添加的小区
      */
     @Transactional(readOnly = false)
-    public void addCommunity(String name) {
+    public Community addCommunity(String name) {
         Community community = new Community(name);
         communityDAO.persist(community);
+        return community;
     }
-
 
     /**
      * 添加楼宇
      *
      * @param no        楼宇号
      * @param community 所属小区
+     * @return 添加的楼宇
      */
     @Transactional(readOnly = false)
-    public void addBuilding(Integer no, Community community) {
+    public Building addBuilding(Integer no, Community community) {
         Building building = new Building(no, community);
         buildingDAO.persist(building);
+        return building;
     }
 
     /**
@@ -66,11 +70,13 @@ public class PropertyService extends BaseService {
      * @param no        楼宇号
      * @param name      楼宇名称
      * @param community 所属小区
+     * @return 添加的楼宇
      */
     @Transactional(readOnly = false)
-    public void addBuilding(Integer no, String name, Community community) {
+    public Building addBuilding(Integer no, String name, Community community) {
         Building building = new Building(no, name, community);
         buildingDAO.persist(building);
+        return building;
     }
 
     /**
@@ -79,12 +85,16 @@ public class PropertyService extends BaseService {
      * @param startNo   起始编号
      * @param endNo     结束编号
      * @param community 所属小区
+     * @return 添加的小区列表
      */
     @Transactional(readOnly = false)
-    public void addBuildingBatch(Integer startNo, Integer endNo, Community community) {
+    public List<Building> addBuildingBatch(Integer startNo, Integer endNo, Community community) {
+        List<Building> buildings = new ArrayList<Building>();
         for (Integer currentNo = startNo; currentNo <= endNo; currentNo++) {
-            addBuilding(currentNo, community);
+            Building building = addBuilding(currentNo, community);
+            buildings.add(building);
         }
+        return buildings;
     }
 
     /**
@@ -92,11 +102,13 @@ public class PropertyService extends BaseService {
      *
      * @param no       楼层
      * @param building 所属楼宇
+     * @return 添加的楼层
      */
     @Transactional(readOnly = false)
-    public void addFloor(Integer no, Building building) {
+    public Floor addFloor(Integer no, Building building) {
         Floor floor = new Floor(no, building);
         floorDAO.persist(floor);
+        return floor;
     }
 
     /**
@@ -105,12 +117,16 @@ public class PropertyService extends BaseService {
      * @param startNo  起始编号
      * @param endNo    结束编号
      * @param building 所属楼宇
+     * @return 添加的楼层列表
      */
     @Transactional(readOnly = false)
-    public void addFloorBatch(Integer startNo, Integer endNo, Building building) {
+    public List<Floor> addFloorBatch(Integer startNo, Integer endNo, Building building) {
+        List<Floor> floors = new ArrayList<Floor>();
         for (Integer currentNo = startNo; currentNo <= endNo; currentNo++) {
-            addFloor(currentNo, building);
+            Floor floor = addFloor(currentNo, building);
+            floors.add(floor);
         }
+        return floors;
     }
 
     /**
@@ -119,14 +135,16 @@ public class PropertyService extends BaseService {
      * @param no    房间号
      * @param area  房间面积
      * @param floor 所属楼层
+     * @return 添加的房间
      */
     @Transactional(readOnly = false)
-    public void addRoom(String no, Double area, Floor floor) {
+    public Room addRoom(String no, Double area, Floor floor) {
         Room room = new Room(no, area, floor);
         roomDAO.persist(room);
         floorDAO.merge(room.getFloor());
         buildingDAO.merge(room.getBuilding());
         communityDAO.merge(room.getCommunity());
+        return room;
     }
 
     /**
@@ -136,26 +154,33 @@ public class PropertyService extends BaseService {
      * @param endNo   结束编号
      * @param area    面积
      * @param floor   所属楼层
+     * @return 添加的房间列表
      */
     @Transactional(readOnly = false)
-    public void addRoomBatch(Integer startNo, Integer endNo, Double area, Floor floor) {
+    public List<Room> addRoomBatch(Integer startNo, Integer endNo, Double area, Floor floor) {
+        List<Room> rooms = new ArrayList<Room>();
         for (Integer currentNo = startNo; currentNo <= endNo; currentNo++) {
-            addRoom(String.valueOf(currentNo), area, floor);
+            Room room = addRoom(String.valueOf(currentNo), area, floor);
+            rooms.add(room);
         }
+        return rooms;
     }
 
     /**
      * 添加业主,并指定小区
      *
-     * @param username 用户名
-     * @param password 密码
-     * @param name     姓名
+     * @param username  用户名
+     * @param password  密码
+     * @param name      姓名
+     * @param community 所属小区
+     * @return 添加的业主
      */
     @Transactional(readOnly = false)
-    public void addOwner(String username, String password, String name, Community community) {
+    public Owner addOwner(String username, String password, String name, Community community) {
         Owner owner = new Owner(username, password, name, community);
         SecurityUtil.encryptUser(owner);
         ownerDAO.persist(owner);
+        return owner;
     }
 
     /**
@@ -165,14 +190,30 @@ public class PropertyService extends BaseService {
      * @param password 密码
      * @param name     姓名
      * @param room     房间
+     * @return 添加的业主
      */
     @Transactional(readOnly = false)
-    public void addOwner(String username, String password, String name, Room room)
+    public Owner addOwner(String username, String password, String name, Room room)
             throws DifferentCommunityException {
         Owner owner = new Owner(username, password, name, room);
         SecurityUtil.encryptUser(owner);
         ownerDAO.persist(owner);
         roomDAO.merge(room);
+        return owner;
+    }
+
+    /**
+     * 将业主添加到房间
+     *
+     * @param owner 业主
+     * @param room  房间
+     * @throws DifferentCommunityException
+     */
+    @Transactional(readOnly = false)
+    public void addOwnerToRoom(Owner owner, Room room) throws DifferentCommunityException {
+        owner.addRoom(room);
+        roomDAO.merge(room);
+        ownerDAO.merge(owner);
     }
 
     /**

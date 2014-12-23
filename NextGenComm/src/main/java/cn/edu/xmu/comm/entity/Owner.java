@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,20 +31,20 @@ public class Owner extends User {
      * 拥有的房间列表
      */
     @OneToMany(targetEntity = Room.class, mappedBy = "owner")
-    private List<Room> roomList;
+    private List<Room> roomList = new ArrayList<Room>();
 
     /**
      * 拥有的车辆列表
      */
     @OneToMany(targetEntity = Car.class, mappedBy = "owner")
-    private List<Car> carList;
+    private List<Car> carList = new ArrayList<Car>();
 
     /**
      * 未支付的账单项列表
      * （注意：公维金是单独交的，但是一起算，交到不同的账户。）
      */
     @OneToMany(targetEntity = BillItem.class, mappedBy = "owner")
-    private List<BillItem> unpaidBills;
+    private List<BillItem> unpaidBills = new ArrayList<BillItem>();
     //endregion
 
     Owner() {

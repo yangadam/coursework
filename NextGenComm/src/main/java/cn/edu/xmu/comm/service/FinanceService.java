@@ -2,6 +2,7 @@ package cn.edu.xmu.comm.service;
 
 import cn.edu.xmu.comm.dao.DeviceDAO;
 import cn.edu.xmu.comm.dao.OwnerDAO;
+import cn.edu.xmu.comm.entity.Community;
 import cn.edu.xmu.comm.entity.Owner;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,8 +31,8 @@ public class FinanceService {
      * 生成所有业主账单
      */
     @Transactional(readOnly = false)
-    public void generateBill() {
-        List<Owner> allOwner = ownerDAO.getAll();
+    public void generateBill(Community community) {
+        List<Owner> allOwner = ownerDAO.getAll(community);
         for (Owner owner : allOwner) {
             owner.generateBill();
         }

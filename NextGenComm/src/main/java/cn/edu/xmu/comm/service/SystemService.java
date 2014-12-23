@@ -70,6 +70,7 @@ public class SystemService {
      * @param user 用户
      * @return 临时密码
      */
+    @Transactional(readOnly = false)
     public String makeRememberMeToken(User user) {
         String tokenStr = SecurityUtil.generateSalt(36);
         Token token = new Token(tokenStr, user.getId());
@@ -80,6 +81,7 @@ public class SystemService {
     /**
      * 清除临时密码
      */
+    @Transactional(readOnly = false)
     private int clearRememberMeToken(Integer uid) {
         return tokenDAO.deleteByUid(uid);
     }

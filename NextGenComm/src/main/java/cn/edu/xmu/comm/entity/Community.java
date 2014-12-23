@@ -47,7 +47,7 @@ public class Community extends Property {
      */
     @OneToMany(mappedBy = "community", targetEntity = ParkPlace.class,
             cascade = CascadeType.ALL)
-    private List<ParkPlace> parkingLot;
+    private List<ParkPlace> parkingLot = new ArrayList<ParkPlace>();
 
     /**
      * 管理的公维金

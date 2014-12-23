@@ -6,6 +6,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,7 +46,7 @@ public class Building extends Property {
      */
     @OneToMany(targetEntity = Floor.class, mappedBy = "building",
             cascade = CascadeType.ALL)
-    private List<Floor> floorList;
+    private List<Floor> floorList = new ArrayList<Floor>();
     //endregion
 
     //region Constructors
