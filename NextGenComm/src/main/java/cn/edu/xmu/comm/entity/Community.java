@@ -8,7 +8,9 @@ import org.hibernate.annotations.DynamicUpdate;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 小区实体
@@ -57,6 +59,13 @@ public class Community extends Property {
     private PublicFund publicFund;
 
     /**
+     * 计算水电费的梯度
+     */
+    @OneToMany(targetEntity = Gradient.class)
+    @JoinColumn(name = "community_id")
+    private Set<Gradient> gradients = new HashSet<Gradient>();
+
+    /**
      * 物业管理费的计算方式，可能的方式，固定，按面积。。。
      */
     private String manageFeeType;
@@ -75,7 +84,7 @@ public class Community extends Property {
      * 垃圾处理费金额
      */
     private BigDecimal garbageFee;
-    //endregionss
+    //endregion
 
     Community() {
     }
@@ -83,6 +92,7 @@ public class Community extends Property {
     public Community(String name) {
         super();
         this.name = name;
+        this.unityCode = "";
     }
 
     /**

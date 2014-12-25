@@ -32,42 +32,54 @@ public class Room extends Property {
 
     //region Instance Variables
     /**
+     * 费用类型字符串：公摊、物业管理费、垃圾管理费
+     */
+    public static final String SHARE = "公摊";
+    public static final String MANAGE = "物业管理费";
+    public static final String GARBAGE = "垃圾管理费";
+    public static final String PUBFUND = "公维金";
+    //endregion
+    /**
      * 房间号
      */
     private String no;
-
     /**
      * 房间全称
      */
     private String fullName;
 
+    //region Public Methods
     /**
      * 所属楼层
      */
     @ManyToOne(targetEntity = Floor.class, cascade = {CascadeType.MERGE})
     @JoinColumn(name = "floor_id", nullable = false)
     private Floor floor;
-
     /**
      * 拥有者
      */
     @ManyToOne(targetEntity = Owner.class, cascade = {CascadeType.MERGE})
     @JoinColumn(name = "owner_id", nullable = true)
     private Owner owner;
-    //endregion
 
     Room() {
     }
 
+    /**
+     * 构造函数
+     *
+     * @param no        房间号
+     * @param houseArea 房间面积
+     * @param floor     所属楼层
+     */
     public Room(String no, Double houseArea, Floor floor) {
         super();
         this.no = no;
         this.fullName = floor.getBuilding().getName() + this.no;
+        this.unityCode = floor.unityCode.concat("R").concat(no);
         floor.addRoom(this);
         registerRoom(houseArea);
     }
-
-    //region Public Methods
 
     /**
      * 计算户水费，户电费，户物业管理费，户公摊，户垃圾费，户公维金
@@ -120,6 +132,7 @@ public class Room extends Property {
         billItem.setOwner(owner);
         billItems.add(billItem);
     }
+    //endregion
 
     /**
      * 计算户物业管理费
@@ -187,7 +200,6 @@ public class Room extends Property {
         devices.addAll(floor.getDeviceList());
         return devices;
     }
-    //endregion
 
     //region Getters and Setters
     public String getNo() {
@@ -217,6 +229,7 @@ public class Room extends Property {
     public Building getBuilding() {
         return floor.getBuilding();
     }
+    //endregion
 
     public Community getCommunity() {
         return getBuilding().getCommunity();
@@ -225,6 +238,8 @@ public class Room extends Property {
     public Property[] getProperties() {
         return new Property[]{this, getFloor(), floor.getBuilding(), getCommunity()};
     }
+
+    //region Constants
 
     public Owner getOwner() {
         return owner;
@@ -236,7 +251,6 @@ public class Room extends Property {
         }
         this.owner = owner;
     }
-    //endregion
 
     private void registerRoom(Double area) {
         Property[] properties = getProperties();
@@ -251,15 +265,6 @@ public class Room extends Property {
             property.checkIn(houseArea);
         }
     }
-
-    //region Constants
-    /**
-     * 费用类型字符串：公摊、物业管理费、垃圾管理费
-     */
-    public static final String SHARE = "公摊";
-    public static final String MANAGE = "物业管理费";
-    public static final String GARBAGE = "垃圾管理费";
-    public static final String PUBFUND = "公维金";
     //endregion
 
 }

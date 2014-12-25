@@ -1,10 +1,5 @@
 package cn.edu.xmu.comm.action;
 
-import cn.edu.xmu.comm.commons.exception.DifferentCommunityException;
-import cn.edu.xmu.comm.entity.Building;
-import cn.edu.xmu.comm.entity.Community;
-import cn.edu.xmu.comm.entity.Floor;
-import cn.edu.xmu.comm.entity.Room;
 import cn.edu.xmu.comm.service.FinanceService;
 import cn.edu.xmu.comm.service.PropertyService;
 import cn.edu.xmu.comm.service.SystemService;
@@ -33,15 +28,6 @@ public class TestAction extends ActionSupport {
 
     @Override
     public String execute() {
-        Community community = propertyService.getCommunityByName("五缘公寓");
-        Building building = propertyService.getBuildingByNo(1, community);
-        Floor floor = propertyService.getFloorByNo(1, building);
-        Room room = propertyService.getRoomByNo("102", floor);
-        try {
-            propertyService.addOwner("lyj", "123", "陆垚杰", room);
-        } catch (DifferentCommunityException e) {
-            e.printStackTrace();
-        }
         return SUCCESS;
     }
 

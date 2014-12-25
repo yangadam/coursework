@@ -5,7 +5,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Created by Yummy on 2014/12/14.
+ * 权限实体
+ *
+ * @author Mengmeng Yang
+ * @version 2014-12-14
  */
 @Entity
 public class Permission {
@@ -34,9 +37,9 @@ public class Permission {
     private Boolean available = Boolean.FALSE;
 
     /**
-     * @return
+     * 角色集合
      */
-    @ManyToMany(mappedBy = "permissions", fetch = FetchType.LAZY, targetEntity = Role.class)
+    @ManyToMany(mappedBy = "permissions", targetEntity = Role.class)
     private Set<Role> roles = new HashSet<Role>();
     //endregion
 

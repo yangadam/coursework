@@ -3,8 +3,8 @@ package cn.edu.xmu.comm.entity;
 import cn.edu.xmu.comm.commons.persistence.DataEntity;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 房产类
@@ -26,10 +26,15 @@ public abstract class Property extends DataEntity {
     protected Integer id;
 
     /**
+     * 统一编码
+     */
+    protected String unityCode;
+
+    /**
      * 设备列表
      */
     @OneToMany(targetEntity = Device.class, mappedBy = "property")
-    protected List<Device> deviceList = new ArrayList<Device>();
+    protected Set<Device> deviceList = new HashSet<Device>();
 
     /**
      * 房间总数
@@ -62,6 +67,16 @@ public abstract class Property extends DataEntity {
         usedHouseArea = 0.0;
     }
 
+    /**
+     * 添加设备
+     *
+     * @param device 要添加的设备
+     */
+    public void addDevice(Device device) {
+        device.setProperty(this);
+        deviceList.add(device);
+    }
+
     //region Getters and Setters
     public Integer getId() {
         return id;
@@ -71,11 +86,19 @@ public abstract class Property extends DataEntity {
         this.id = id;
     }
 
-    public List<Device> getDeviceList() {
+    public String getUnityCode() {
+        return unityCode;
+    }
+
+    public void setUnityCode(String unityCode) {
+        this.unityCode = unityCode;
+    }
+
+    public Set<Device> getDeviceList() {
         return deviceList;
     }
 
-    public void setDeviceList(List<Device> deviceList) {
+    public void setDeviceList(Set<Device> deviceList) {
         this.deviceList = deviceList;
     }
 

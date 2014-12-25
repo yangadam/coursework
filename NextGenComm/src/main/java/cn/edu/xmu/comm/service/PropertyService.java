@@ -1,6 +1,7 @@
 package cn.edu.xmu.comm.service;
 
 import cn.edu.xmu.comm.commons.exception.DifferentCommunityException;
+import cn.edu.xmu.comm.commons.persistence.Page;
 import cn.edu.xmu.comm.commons.security.SecurityUtil;
 import cn.edu.xmu.comm.commons.service.BaseService;
 import cn.edu.xmu.comm.dao.*;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +38,9 @@ public class PropertyService extends BaseService {
 
     @Resource
     private OwnerDAO ownerDAO;
+
+    @Resource
+    private DeviceDAO deviceDAO;
 
     /**
      * 添加小区
@@ -141,9 +146,7 @@ public class PropertyService extends BaseService {
     public Room addRoom(String no, Double area, Floor floor) {
         Room room = new Room(no, area, floor);
         roomDAO.persist(room);
-        floorDAO.merge(room.getFloor());
-        buildingDAO.merge(room.getBuilding());
-        communityDAO.merge(room.getCommunity());
+        floorDAO.merge(floor);
         return room;
     }
 
@@ -203,6 +206,84 @@ public class PropertyService extends BaseService {
     }
 
     /**
+     * 添加公摊设备
+     *
+     * @param no        设备号
+     * @param property  设备所处位置
+     * @param value     设备当前值
+     * @param type      设备类型
+     * @param shareType 设备公摊类型（非公摊表任意）
+     * @return 添加的设备
+     */
+    @Transactional(readOnly = false)
+    public Device addDevice(String no, Property property, BigDecimal value, String type, String shareType) {
+        Device device = new Device(no, property, value, type, shareType);
+        deviceDAO.persist(device);
+        return device;
+    }
+
+    /**
+     * 小区及下级各处各添加一个水表一个电表
+     *
+     * @param community 小区
+     * @param shareType 公摊类型
+     */
+    @Transactional(readOnly = false)
+    public void initialDefaultDevice(Community community, String shareType) {
+        BigDecimal zero = BigDecimal.ZERO;
+        addDevice(community.getUnityCode().concat("#1"), community, zero, "水表", shareType);
+        addDevice(community.getUnityCode().concat("#2"), community, zero, "电表", shareType);
+        for (Building building : community.getBuildingList()) {
+            initialDefaultDevice(building, shareType);
+        }
+    }
+
+    /**
+     * 楼宇及下级各处各添加一个水表一个电表
+     *
+     * @param building  楼宇
+     * @param shareType 公摊类型
+     */
+    @Transactional(readOnly = false)
+    public void initialDefaultDevice(Building building, String shareType) {
+        BigDecimal zero = BigDecimal.ZERO;
+        addDevice(building.getUnityCode().concat("#1"), building, zero, "水表", shareType);
+        addDevice(building.getUnityCode().concat("#2"), building, zero, "电表", shareType);
+        for (Floor floor : building.getFloorList()) {
+            initialDefaultDevice(floor, shareType);
+        }
+    }
+
+    /**
+     * 楼层及下级各处各添加一个水表一个电表
+     *
+     * @param floor     楼层
+     * @param shareType 公摊类型
+     */
+    @Transactional(readOnly = false)
+    public void initialDefaultDevice(Floor floor, String shareType) {
+        BigDecimal zero = BigDecimal.ZERO;
+        addDevice(floor.getUnityCode().concat("#1"), floor, zero, "水表", shareType);
+        addDevice(floor.getUnityCode().concat("#2"), floor, zero, "电表", shareType);
+        for (Room room : floor.getRoomList()) {
+            initialDefaultDevice(room, shareType);
+        }
+    }
+
+    /**
+     * 房间添加水表和电表
+     *
+     * @param room      设备所处位置
+     * @param shareType 公摊类型
+     */
+    @Transactional(readOnly = false)
+    public void initialDefaultDevice(Room room, String shareType) {
+        BigDecimal zero = BigDecimal.ZERO;
+        addDevice(room.getUnityCode().concat("#1"), room, zero, "水表", null);
+        addDevice(room.getUnityCode().concat("#2"), room, zero, "电表", null);
+    }
+
+    /**
      * 将业主添加到房间
      *
      * @param owner 业主
@@ -222,6 +303,7 @@ public class PropertyService extends BaseService {
      * @param name 小区名字
      * @return 小区
      */
+
     public Community getCommunityByName(String name) {
         return communityDAO.getByName(name);
     }
@@ -231,8 +313,18 @@ public class PropertyService extends BaseService {
      *
      * @return 小区列表
      */
-    public List<Community> listCommunities() {
+    public List<Community> getAllCommunities() {
         return communityDAO.getAll();
+    }
+
+    /**
+     * 获取所有小区（分页）
+     *
+     * @param page 分页对象
+     * @return 分页对象
+     */
+    public Page<Community> getAllCommunities(Page<Community> page) {
+        return communityDAO.getAll(page);
     }
 
     /**

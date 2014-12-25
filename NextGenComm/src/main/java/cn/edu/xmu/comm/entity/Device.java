@@ -1,78 +1,121 @@
 package cn.edu.xmu.comm.entity;
 
 import cn.edu.xmu.comm.commons.persistence.DataEntity;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 /**
+ * 设备类
  * Created by Roger on 2014/12/7 0007.
+ *
+ * @author Mengmeng Yang
+ * @version 12/24/2014 0024
  */
 @Entity
+@DynamicInsert
+@DynamicUpdate
+@Table(
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"no"})
+        }
+)
 public class Device extends DataEntity {
 
     //region Instance Variables
+    /**
+     * 设备类型
+     */
+    public static final String WATER = "水费";
+    public static final String ELECTRICITY = "电费";
     /**
      * 主键
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     /**
      * 设备号
      */
     private String no;
-
     /**
      * 拥有该设备的房产
      */
-    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Property.class)
+    @ManyToOne(targetEntity = Property.class)
     @JoinColumn(name = "property_id", nullable = false)
     private Property property;
-
     /**
      * 读数的列表
      */
-    @OneToMany(fetch = FetchType.EAGER, targetEntity = DeviceVaule.class,
-            cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = DeviceValue.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "device_id", nullable = false)
-    private List<DeviceVaule> values;
-
+    private List<DeviceValue> values = new ArrayList<DeviceValue>();
     /**
      * 类型
      * <li>{@link #WATER}</li>
      * <li>{@link #ELECTRICITY}</li>
      */
     private String type;
-
+    //endregion
     /**
-     * 梯度定义
+     * 梯度
      */
-    @ElementCollection
-    @CollectionTable(
-            name = "gradient",
-            joinColumns = @JoinColumn(name = "device_id")
-    )
-    @Column(name = "gradient_value")
-    private Map<BigDecimal, BigDecimal> gradient = new TreeMap<BigDecimal, BigDecimal>();
-
+    @ManyToOne(targetEntity = Gradient.class)
+    @JoinColumn(name = "gradient_id")
+    private Gradient gradient = null;
     /**
      * 公摊类型
      */
     private String shareType;
-    //endregion
+
+    Device() {
+    }
 
     //region Public Methods;
 
     /**
+     * 构造函数（私有表）
+     *
+     * @param no       设备号
+     * @param property 设备所属位置
+     * @param value    初始值
+     * @param type     设备类型
+     */
+    public Device(String no, Property property, BigDecimal value, String type) {
+        this.no = no;
+        this.type = type;
+        values.add(new DeviceValue(value));
+        property.addDevice(this);
+    }
+
+    /**
+     * 构造函数（公摊表）
+     *
+     * @param no        设备号
+     * @param property  设备所属位置
+     * @param value     初始值
+     * @param type      设备类型
+     * @param shareType 公摊类型
+     */
+    public Device(String no, Property property, BigDecimal value, String type, String shareType) {
+        this.no = no;
+        this.type = type;
+        this.shareType = shareType;
+        values.add(new DeviceValue(value));
+        property.addDevice(this);
+    }
+    //endregion
+
+    /**
      * 获取本月用量
      *
-     * @return
+     * @return 用量
      */
     public BigDecimal getUsage() {
         BigDecimal lastValue = values.get(values.size() - 2).getValue();
@@ -83,14 +126,14 @@ public class Device extends DataEntity {
     /**
      * 计算本月费用
      *
-     * @return
+     * @return 费用
      */
     public BigDecimal calculate() {
         BigDecimal totalAmount = BigDecimal.ZERO;
         BigDecimal amount;
         BigDecimal lastValue = BigDecimal.ZERO;
         BigDecimal curValue;
-        Iterator it = gradient.entrySet().iterator();
+        Iterator it = getGradientMap().entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry entry = (Map.Entry) it.next();
             if (getUsage().compareTo((BigDecimal) entry.getKey()) == 1) {
@@ -106,7 +149,6 @@ public class Device extends DataEntity {
         }
         return totalAmount;
     }
-    //endregion
 
     //region Getters and Setters
     public Integer getId() {
@@ -133,11 +175,11 @@ public class Device extends DataEntity {
         this.property = property;
     }
 
-    public List<DeviceVaule> getValues() {
+    public List<DeviceValue> getValues() {
         return values;
     }
 
-    public void setValues(List<DeviceVaule> values) {
+    public void setValues(List<DeviceValue> values) {
         this.values = values;
     }
 
@@ -149,13 +191,20 @@ public class Device extends DataEntity {
         this.type = type;
     }
 
-    public Map<BigDecimal, BigDecimal> getGradient() {
+    public Gradient getGradient() {
         return gradient;
     }
 
-    public void setGradient(Map<BigDecimal, BigDecimal> gradient) {
+    public void setGradient(Gradient gradient) {
         this.gradient = gradient;
     }
+
+    public Map<BigDecimal, BigDecimal> getGradientMap() {
+        return gradient.getGradient();
+    }
+    //endregion
+
+    //region Constants
 
     public String getShareType() {
         return shareType;
@@ -164,14 +213,6 @@ public class Device extends DataEntity {
     public void setShareType(String shareType) {
         this.shareType = shareType;
     }
-    //endregion
-
-    //region Constants
-    /**
-     * 设备类型
-     */
-    public static final String WATER = "水费";
-    public static final String ELECTRICITY = "电费";
     //endregion
 
 }

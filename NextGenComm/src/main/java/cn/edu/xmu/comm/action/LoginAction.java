@@ -12,7 +12,10 @@ import javax.annotation.Resource;
 import java.util.Map;
 
 /**
- * Created by Yummy on 2014/12/14.
+ * 车辆实体
+ *
+ * @author Mengmeng Yang
+ * @version 2014-12-14
  */
 @Controller
 public class LoginAction extends ActionSupport {

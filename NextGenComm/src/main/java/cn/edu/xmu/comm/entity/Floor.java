@@ -46,8 +46,15 @@ public class Floor extends Property {
     Floor() {
     }
 
+    /**
+     * 构造函数
+     *
+     * @param no       楼层号
+     * @param building 所属楼宇
+     */
     public Floor(Integer no, Building building) {
         this.no = no;
+        this.unityCode = building.unityCode.concat("F").concat(String.valueOf(no));
         building.addFloor(this);
     }
 
