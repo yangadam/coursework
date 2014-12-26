@@ -22,7 +22,7 @@ public class CommunityDAO extends BaseDAO<Community, Integer> {
      * @return 小区
      */
     public Community getByName(String name) {
-        return getByQL("from Community where name = :p1", new Parameter(name));
+        return getByQL("select c from Community c where c.name = :p1", new Parameter(name));
     }
 
 }

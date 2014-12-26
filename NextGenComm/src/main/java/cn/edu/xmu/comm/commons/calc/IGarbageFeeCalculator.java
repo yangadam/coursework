@@ -12,8 +12,8 @@ public interface IGarbageFeeCalculator {
     /**
      * 计算垃圾费
      *
-     * @param room
-     * @return
+     * @param room 房间
+     * @return 费用
      */
     BigDecimal calculate(Room room);
 

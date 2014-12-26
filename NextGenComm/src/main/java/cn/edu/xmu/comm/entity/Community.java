@@ -59,10 +59,10 @@ public class Community extends Property {
     private PublicFund publicFund;
 
     /**
-     * 计算水电费的梯度
+     * 计算费用的梯度
      */
-    @OneToMany(targetEntity = Gradient.class)
-    @JoinColumn(name = "community_id")
+    @OneToMany(targetEntity = Gradient.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "community_id", nullable = false)
     private Set<Gradient> gradients = new HashSet<Gradient>();
 
     /**
@@ -93,6 +93,11 @@ public class Community extends Property {
         super();
         this.name = name;
         this.unityCode = "";
+    }
+
+    @Override
+    public Community getCommunity() {
+        return this;
     }
 
     /**
@@ -163,6 +168,14 @@ public class Community extends Property {
 
     public void setPublicFund(PublicFund publicFund) {
         this.publicFund = publicFund;
+    }
+
+    public Set<Gradient> getGradients() {
+        return gradients;
+    }
+
+    public void setGradients(Set<Gradient> gradients) {
+        this.gradients = gradients;
     }
 
     public String getManageFeeType() {

@@ -28,12 +28,15 @@ import java.util.Map;
 )
 public class Device extends DataEntity {
 
-    //region Instance Variables
+    //region Constants
     /**
      * 设备类型
      */
     public static final String WATER = "水费";
     public static final String ELECTRICITY = "电费";
+    //endregion
+
+    //region Instance Variables
     /**
      * 主键
      */
@@ -44,6 +47,12 @@ public class Device extends DataEntity {
      * 设备号
      */
     private String no;
+    /**
+     * 所属小区
+     */
+    @ManyToOne(targetEntity = Community.class)
+    @JoinColumn(name = "community_id", nullable = false)
+    private Community community;
     /**
      * 拥有该设备的房产
      */
@@ -58,11 +67,10 @@ public class Device extends DataEntity {
     private List<DeviceValue> values = new ArrayList<DeviceValue>();
     /**
      * 类型
-     * <li>{@link #WATER}</li>
-     * <li>{@link #ELECTRICITY}</li>
+     *
+     * @see cn.edu.xmu.comm.entity.Device.DeviceType
      */
-    private String type;
-    //endregion
+    private DeviceType type;
     /**
      * 梯度
      */
@@ -73,44 +81,40 @@ public class Device extends DataEntity {
      * 公摊类型
      */
     private String shareType;
+    //endregion
 
     Device() {
     }
 
-    //region Public Methods;
-
     /**
      * 构造函数（私有表）
-     *
-     * @param no       设备号
+     *  @param no       设备号
      * @param property 设备所属位置
      * @param value    初始值
      * @param type     设备类型
      */
-    public Device(String no, Property property, BigDecimal value, String type) {
-        this.no = no;
-        this.type = type;
-        values.add(new DeviceValue(value));
-        property.addDevice(this);
+    public Device(String no, Property property, BigDecimal value, DeviceType type) {
+        this(no, property, value, type, null);
     }
 
     /**
      * 构造函数（公摊表）
-     *
-     * @param no        设备号
+     *  @param no        设备号
      * @param property  设备所属位置
      * @param value     初始值
      * @param type      设备类型
      * @param shareType 公摊类型
      */
-    public Device(String no, Property property, BigDecimal value, String type, String shareType) {
+    public Device(String no, Property property, BigDecimal value, DeviceType type, String shareType) {
         this.no = no;
         this.type = type;
         this.shareType = shareType;
-        values.add(new DeviceValue(value));
+        this.values.add(new DeviceValue(value));
+        this.community = property.getCommunity();
         property.addDevice(this);
     }
-    //endregion
+
+    //region Public Methods;
 
     /**
      * 获取本月用量
@@ -149,6 +153,7 @@ public class Device extends DataEntity {
         }
         return totalAmount;
     }
+    //endregion
 
     //region Getters and Setters
     public Integer getId() {
@@ -167,6 +172,14 @@ public class Device extends DataEntity {
         this.no = no;
     }
 
+    public Community getCommunity() {
+        return community;
+    }
+
+    public void setCommunity(Community community) {
+        this.community = community;
+    }
+
     public Property getProperty() {
         return property;
     }
@@ -183,11 +196,11 @@ public class Device extends DataEntity {
         this.values = values;
     }
 
-    public String getType() {
+    public DeviceType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(DeviceType type) {
         this.type = type;
     }
 
@@ -199,12 +212,9 @@ public class Device extends DataEntity {
         this.gradient = gradient;
     }
 
-    public Map<BigDecimal, BigDecimal> getGradientMap() {
+    public Map<Double, BigDecimal> getGradientMap() {
         return gradient.getGradient();
     }
-    //endregion
-
-    //region Constants
 
     public String getShareType() {
         return shareType;
@@ -214,5 +224,23 @@ public class Device extends DataEntity {
         this.shareType = shareType;
     }
     //endregion
+
+    /**
+     * 设备类型
+     */
+    public enum DeviceType {
+        WATER("水表"), ELECTRICITY("电表");
+
+        private String typeName;
+
+        private DeviceType(String typeName) {
+            this.typeName = typeName;
+        }
+
+        @Override
+        public String toString() {
+            return typeName;
+        }
+    }
 
 }

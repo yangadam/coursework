@@ -3,6 +3,8 @@ package cn.edu.xmu.comm.commons.calc.impl;
 import cn.edu.xmu.comm.commons.calc.IGarbageFeeCalculator;
 import cn.edu.xmu.comm.entity.Community;
 import cn.edu.xmu.comm.entity.Room;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
@@ -13,6 +15,8 @@ import java.math.BigDecimal;
  * @author Mengmeng Yang
  * @version 2014-12-8
  */
+@Component
+@Lazy
 public class FixGarbageFeeCalculator implements IGarbageFeeCalculator {
 
     /**

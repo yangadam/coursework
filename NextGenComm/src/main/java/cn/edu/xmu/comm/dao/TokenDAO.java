@@ -22,7 +22,7 @@ public class TokenDAO extends BaseDAO<Token, String> {
      * @return ？
      */
     public int deleteByUid(Integer uid) {
-        Query query = createQuery("delete Token where uid = :p1", new Parameter(uid));
+        Query query = createQuery("delete Token t where t.uid = :p1", new Parameter(uid));
         return query.executeUpdate();
     }
 

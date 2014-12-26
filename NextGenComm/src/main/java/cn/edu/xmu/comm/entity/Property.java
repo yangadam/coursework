@@ -68,6 +68,13 @@ public abstract class Property extends DataEntity {
     }
 
     /**
+     * 获得所属小区
+     *
+     * @return 小区
+     */
+    public abstract Community getCommunity();
+
+    /**
      * 添加设备
      *
      * @param device 要添加的设备

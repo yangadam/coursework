@@ -26,11 +26,13 @@ public class BaseDAO<T, I extends Serializable> {
     private SessionFactory sessionFactory;
 
     private Class<T> clazz;
+    private String clazzName;
 
     @SuppressWarnings("unchecked")
-    public BaseDAO() {
+    protected BaseDAO() {
         ParameterizedType type = (ParameterizedType) this.getClass().getGenericSuperclass();
         this.clazz = (Class<T>) type.getActualTypeArguments()[0];
+        this.clazzName = this.clazz.getSimpleName();
     }
 
     /**
@@ -121,7 +123,7 @@ public class BaseDAO<T, I extends Serializable> {
      */
     public Long count(String qlString, Parameter parameter) {
         int beginPos = qlString.toLowerCase().indexOf("from");
-        String countString = "select".concat(qlString.substring(beginPos));
+        String countString = "select count(*) ".concat(qlString.substring(beginPos));
         return (Long) createQuery(countString, parameter).uniqueResult();
     }
 
@@ -170,7 +172,8 @@ public class BaseDAO<T, I extends Serializable> {
     /**
      * 获取所有实体对象（分页）
      *
-     * @return 分页信息
+     * @param page 分页对象
+     * @return 分页对象
      */
     public Page<T> getAll(Page<T> page) {
         String ql = "from " + clazz.getSimpleName();
@@ -184,7 +187,7 @@ public class BaseDAO<T, I extends Serializable> {
      */
     @SuppressWarnings("unchecked")
     public Iterator<T> getAllIterator() {
-        Query query = createQuery("from " + clazz.getSimpleName(), new Parameter());
+        Query query = createQuery("select x from " + clazzName + " x", new Parameter());
         return query.iterate();
     }
 
@@ -214,6 +217,15 @@ public class BaseDAO<T, I extends Serializable> {
         return query.list();
     }
 
+    /**
+     * 通过QL语句查找
+     *
+     * @param qlString  查询语句
+     * @param parameter 查询参数
+     * @param page      分页对象
+     * @return 分页对象
+     */
+    @SuppressWarnings("unchecked")
     public Page<T> searchByQL(String qlString, Parameter parameter, Page<T> page) {
         if (page.getCount() == -1) {
             page.setCount(count(qlString, new Parameter()));

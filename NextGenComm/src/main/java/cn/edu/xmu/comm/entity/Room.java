@@ -1,6 +1,6 @@
 package cn.edu.xmu.comm.entity;
 
-import cn.edu.xmu.comm.commons.calc.CalcutorFactory;
+import cn.edu.xmu.comm.commons.calc.CalculatorFactory;
 import cn.edu.xmu.comm.commons.calc.IGarbageFeeCalculator;
 import cn.edu.xmu.comm.commons.calc.IManageFeeCalculator;
 import cn.edu.xmu.comm.commons.calc.IShareCalculator;
@@ -30,7 +30,7 @@ import java.util.List;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Room extends Property {
 
-    //region Instance Variables
+    //region Constants
     /**
      * 费用类型字符串：公摊、物业管理费、垃圾管理费
      */
@@ -39,6 +39,8 @@ public class Room extends Property {
     public static final String GARBAGE = "垃圾管理费";
     public static final String PUBFUND = "公维金";
     //endregion
+
+    //region Instance Variables
     /**
      * 房间号
      */
@@ -48,7 +50,6 @@ public class Room extends Property {
      */
     private String fullName;
 
-    //region Public Methods
     /**
      * 所属楼层
      */
@@ -61,6 +62,7 @@ public class Room extends Property {
     @ManyToOne(targetEntity = Owner.class, cascade = {CascadeType.MERGE})
     @JoinColumn(name = "owner_id", nullable = true)
     private Owner owner;
+    //endregion
 
     Room() {
     }
@@ -80,6 +82,8 @@ public class Room extends Property {
         floor.addRoom(this);
         registerRoom(houseArea);
     }
+
+    //region Public Methods
 
     /**
      * 计算户水费，户电费，户物业管理费，户公摊，户垃圾费，户公维金
@@ -102,7 +106,7 @@ public class Room extends Property {
     public void generateEnergy(List<BillItem> billItems) {
         for (Device device : getDeviceList()) {
             BillItem billItem = new BillItem();
-            billItem.setName(device.getType());
+            billItem.setName(device.getType().toString());
             billItem.setDescription(fullName);
             billItem.setUsage(device.getUsage());
             billItem.setAmount(device.calculate());
@@ -120,7 +124,7 @@ public class Room extends Property {
         BigDecimal totalAmount = BigDecimal.ZERO;
         for (Device device : getSharedDevice()) {
             String type = device.getShareType();
-            IShareCalculator calculator = CalcutorFactory.getShareCalc(type);
+            IShareCalculator calculator = CalculatorFactory.getCalculator(type);
             BigDecimal amount = device.calculate();
             BigDecimal shareAmount = calculator.calculateShare(this, device, amount);
             totalAmount = totalAmount.add(shareAmount);
@@ -132,7 +136,6 @@ public class Room extends Property {
         billItem.setOwner(owner);
         billItems.add(billItem);
     }
-    //endregion
 
     /**
      * 计算户物业管理费
@@ -142,7 +145,7 @@ public class Room extends Property {
     public void generateManageFee(List<BillItem> billItems) {
         Community community = getCommunity();
         String type = community.getManageFeeType();
-        IManageFeeCalculator calculator = CalcutorFactory.getManageFeeCalc(type);
+        IManageFeeCalculator calculator = CalculatorFactory.getCalculator(type);
         BigDecimal amount = calculator.calculate(this);
         BillItem billItem = new BillItem();
         billItem.setName(MANAGE);
@@ -160,7 +163,7 @@ public class Room extends Property {
     public void generateGarbageFee(List<BillItem> billItems) {
         Community community = getCommunity();
         String type = community.getGarbageFeeType();
-        IGarbageFeeCalculator calculator = CalcutorFactory.getGarbageFeeCalc(type);
+        IGarbageFeeCalculator calculator = CalculatorFactory.getCalculator(type);
         BigDecimal amount = calculator.calculate(this);
         BillItem billItem = new BillItem();
         billItem.setName(GARBAGE);
@@ -200,6 +203,7 @@ public class Room extends Property {
         devices.addAll(floor.getDeviceList());
         return devices;
     }
+    //endregion
 
     //region Getters and Setters
     public String getNo() {
@@ -229,7 +233,6 @@ public class Room extends Property {
     public Building getBuilding() {
         return floor.getBuilding();
     }
-    //endregion
 
     public Community getCommunity() {
         return getBuilding().getCommunity();
@@ -239,14 +242,12 @@ public class Room extends Property {
         return new Property[]{this, getFloor(), floor.getBuilding(), getCommunity()};
     }
 
-    //region Constants
-
     public Owner getOwner() {
         return owner;
     }
 
     public void setOwner(Owner owner) {
-        if (owner == null) {
+        if (this.owner == null) {
             checkInRoom();
         }
         this.owner = owner;

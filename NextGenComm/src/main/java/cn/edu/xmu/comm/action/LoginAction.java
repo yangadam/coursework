@@ -12,7 +12,7 @@ import javax.annotation.Resource;
 import java.util.Map;
 
 /**
- * 车辆实体
+ * 登录Action
  *
  * @author Mengmeng Yang
  * @version 2014-12-14
@@ -30,7 +30,7 @@ public class LoginAction extends ActionSupport {
     @Override
     public String execute() {
 
-        User user = null;
+        User user;
         try {
             user = systemService.login(username, password);
         } catch (UserNotFoundException e) {
@@ -41,7 +41,7 @@ public class LoginAction extends ActionSupport {
             return LOGIN;
         }
 
-        Map session = ActionContext.getContext().getSession();
+        Map<String, Object> session = ActionContext.getContext().getSession();
         session.put("USER", user);
 
         return user.getType();

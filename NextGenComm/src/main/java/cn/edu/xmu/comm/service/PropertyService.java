@@ -24,6 +24,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class PropertyService extends BaseService {
 
+    //region DAO
     @Resource
     private CommunityDAO communityDAO;
 
@@ -41,6 +42,9 @@ public class PropertyService extends BaseService {
 
     @Resource
     private DeviceDAO deviceDAO;
+    //endregion
+
+    //region Add Operations
 
     /**
      * 添加小区
@@ -194,6 +198,8 @@ public class PropertyService extends BaseService {
      * @param name     姓名
      * @param room     房间
      * @return 添加的业主
+     * @throws DifferentCommunityException 小区不同异常
+     * @see DifferentCommunityException
      */
     @Transactional(readOnly = false)
     public Owner addOwner(String username, String password, String name, Room room)
@@ -206,17 +212,48 @@ public class PropertyService extends BaseService {
     }
 
     /**
+     * 将业主添加到房间
+     *
+     * @param owner 业主
+     * @param room  房间
+     * @throws DifferentCommunityException 小区不同异常
+     * @see DifferentCommunityException
+     */
+    @Transactional(readOnly = false)
+    public void addOwnerToRoom(Owner owner, Room room) throws DifferentCommunityException {
+        owner.addRoom(room);
+        roomDAO.merge(room);
+        ownerDAO.merge(owner);
+    }
+
+    /**
+     * 添加私有设备
+     *
+     * @param no       设备号
+     * @param property 设备所处位置
+     * @param value    设备当前值
+     * @param type     设备类型
+     * @return 添加的设备
+     */
+    @Transactional(readOnly = false)
+    public Device addDevice(String no, Property property, BigDecimal value, Device.DeviceType type) {
+        Device device = new Device(no, property, value, type);
+        deviceDAO.persist(device);
+        return device;
+    }
+
+    /**
      * 添加公摊设备
      *
      * @param no        设备号
      * @param property  设备所处位置
      * @param value     设备当前值
      * @param type      设备类型
-     * @param shareType 设备公摊类型（非公摊表任意）
+     * @param shareType 设备公摊类型
      * @return 添加的设备
      */
     @Transactional(readOnly = false)
-    public Device addDevice(String no, Property property, BigDecimal value, String type, String shareType) {
+    public Device addDevice(String no, Property property, BigDecimal value, Device.DeviceType type, String shareType) {
         Device device = new Device(no, property, value, type, shareType);
         deviceDAO.persist(device);
         return device;
@@ -231,8 +268,10 @@ public class PropertyService extends BaseService {
     @Transactional(readOnly = false)
     public void initialDefaultDevice(Community community, String shareType) {
         BigDecimal zero = BigDecimal.ZERO;
-        addDevice(community.getUnityCode().concat("#1"), community, zero, "水表", shareType);
-        addDevice(community.getUnityCode().concat("#2"), community, zero, "电表", shareType);
+        if (!community.getDeviceList().isEmpty()) {
+            addDevice(community.getUnityCode().concat("#1"), community, zero, Device.DeviceType.WATER, shareType);
+            addDevice(community.getUnityCode().concat("#2"), community, zero, Device.DeviceType.ELECTRICITY, shareType);
+        }
         for (Building building : community.getBuildingList()) {
             initialDefaultDevice(building, shareType);
         }
@@ -247,8 +286,10 @@ public class PropertyService extends BaseService {
     @Transactional(readOnly = false)
     public void initialDefaultDevice(Building building, String shareType) {
         BigDecimal zero = BigDecimal.ZERO;
-        addDevice(building.getUnityCode().concat("#1"), building, zero, "水表", shareType);
-        addDevice(building.getUnityCode().concat("#2"), building, zero, "电表", shareType);
+        if (!building.getDeviceList().isEmpty()) {
+            addDevice(building.getUnityCode().concat("#1"), building, zero, Device.DeviceType.WATER, shareType);
+            addDevice(building.getUnityCode().concat("#2"), building, zero, Device.DeviceType.ELECTRICITY, shareType);
+        }
         for (Floor floor : building.getFloorList()) {
             initialDefaultDevice(floor, shareType);
         }
@@ -263,39 +304,94 @@ public class PropertyService extends BaseService {
     @Transactional(readOnly = false)
     public void initialDefaultDevice(Floor floor, String shareType) {
         BigDecimal zero = BigDecimal.ZERO;
-        addDevice(floor.getUnityCode().concat("#1"), floor, zero, "水表", shareType);
-        addDevice(floor.getUnityCode().concat("#2"), floor, zero, "电表", shareType);
+        if (!floor.getDeviceList().isEmpty()) {
+            addDevice(floor.getUnityCode().concat("#1"), floor, zero, Device.DeviceType.WATER, shareType);
+            addDevice(floor.getUnityCode().concat("#2"), floor, zero, Device.DeviceType.ELECTRICITY, shareType);
+        }
         for (Room room : floor.getRoomList()) {
-            initialDefaultDevice(room, shareType);
+            initialDefaultDevice(room);
         }
     }
 
     /**
      * 房间添加水表和电表
      *
-     * @param room      设备所处位置
-     * @param shareType 公摊类型
+     * @param room 设备所处位置
      */
     @Transactional(readOnly = false)
-    public void initialDefaultDevice(Room room, String shareType) {
+    public void initialDefaultDevice(Room room) {
         BigDecimal zero = BigDecimal.ZERO;
-        addDevice(room.getUnityCode().concat("#1"), room, zero, "水表", null);
-        addDevice(room.getUnityCode().concat("#2"), room, zero, "电表", null);
+        if (!room.getDeviceList().isEmpty()) {
+            addDevice(room.getUnityCode().concat("#1"), room, zero, Device.DeviceType.WATER);
+            addDevice(room.getUnityCode().concat("#2"), room, zero, Device.DeviceType.ELECTRICITY);
+        }
+    }
+    //endregion
+
+    //region Update Operations
+
+    /**
+     * 更新小区
+     *
+     * @param community 小区
+     */
+    @Transactional(readOnly = false)
+    public void updateCommunity(Community community) {
+        communityDAO.merge(community);
     }
 
     /**
-     * 将业主添加到房间
+     * 更新楼宇
      *
-     * @param owner 业主
-     * @param room  房间
-     * @throws DifferentCommunityException
+     * @param building 楼宇
      */
     @Transactional(readOnly = false)
-    public void addOwnerToRoom(Owner owner, Room room) throws DifferentCommunityException {
-        owner.addRoom(room);
+    public void updateBuilding(Building building) {
+        buildingDAO.merge(building);
+    }
+
+    /**
+     * 更新楼层
+     *
+     * @param floor 楼层
+     */
+    @Transactional(readOnly = false)
+    public void updateFloor(Floor floor) {
+        floorDAO.merge(floor);
+    }
+
+    /**
+     * 更新房间
+     *
+     * @param room 房间
+     */
+    @Transactional(readOnly = false)
+    public void updateRoom(Room room) {
         roomDAO.merge(room);
+    }
+
+    /**
+     * 更新业主
+     *
+     * @param owner 业主
+     */
+    @Transactional(readOnly = false)
+    public void updateOwner(Owner owner) {
         ownerDAO.merge(owner);
     }
+
+    /**
+     * 更新设备
+     *
+     * @param device 设备
+     */
+    @Transactional(readOnly = false)
+    public void updateDevice(Device device) {
+        deviceDAO.merge(device);
+    }
+    //endregion
+
+    //region Get Operations
 
     /**
      * 通过名字获得小区
@@ -350,7 +446,7 @@ public class PropertyService extends BaseService {
     }
 
     /**
-     * 通过楼层号获取某楼层的房间
+     * 通过房间号获取某楼层的房间
      *
      * @param no    房间号
      * @param floor 楼层
@@ -359,5 +455,16 @@ public class PropertyService extends BaseService {
     public Room getRoomByNo(String no, Floor floor) {
         return roomDAO.getByNo(no, floor);
     }
+
+    /**
+     * 获取小区所有房间
+     *
+     * @param community 小区
+     * @return 房间列表
+     */
+    public List<Room> getAllRooms(Community community) {
+        return roomDAO.getAll(community);
+    }
+    //endregion
 
 }
