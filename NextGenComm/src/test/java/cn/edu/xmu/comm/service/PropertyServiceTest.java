@@ -39,6 +39,20 @@ public class PropertyServiceTest extends TestCase {
     @Test
     public void testAddCommunity() throws Exception {
         propertyService.addCommunity("五缘公寓");
+        propertyService.addCommunity("公寓1");
+        propertyService.addCommunity("公寓2");
+        propertyService.addCommunity("公寓3");
+        propertyService.addCommunity("公寓4");
+        propertyService.addCommunity("公寓5");
+        propertyService.addCommunity("公寓6");
+        propertyService.addCommunity("公寓7");
+        propertyService.addCommunity("公寓8");
+        propertyService.addCommunity("公寓9");
+        propertyService.addCommunity("公寓10");
+        propertyService.addCommunity("公寓11");
+        propertyService.addCommunity("公寓12");
+        propertyService.addCommunity("公寓13");
+
     }
 
     @Test

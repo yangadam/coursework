@@ -1,34 +1,29 @@
+<%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
-<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
-<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
-<!--[if !IE]><!-->
 <html lang="en" class="no-js"> <!--<![endif]-->
 <!-- BEGIN HEAD -->
 <head>
     <meta charset="utf-8"/>
-    <title>物业管理系统首页</title>
+    <title>社区管理</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <meta content="" name="description"/>
     <meta content="PumpKing" name="author"/>
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
-    <link href="../../../pumpking/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-    <link href="../../../pumpking/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>
-    <link href="../../../pumpking/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
-    <link href="../../../pumpking/css/style-metro.css" rel="stylesheet" type="text/css"/>
-    <link href="../../../pumpking/css/style.css" rel="stylesheet" type="text/css"/>
-    <link href="../../../pumpking/css/style-responsive.css" rel="stylesheet" type="text/css"/>
-    <link href="../../../pumpking/css/default.css" rel="stylesheet" type="text/css" id="style_color"/>
-    <link href="../../../pumpking/css/uniform.default.css" rel="stylesheet" type="text/css"/>
+    <link href="../../pumpking/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="../../pumpking/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>
+    <link href="../../pumpking/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <link href="../../pumpking/css/style-metro.css" rel="stylesheet" type="text/css"/>
+    <link href="../../pumpking/css/style.css" rel="stylesheet" type="text/css"/>
+    <link href="../../pumpking/css/style-responsive.css" rel="stylesheet" type="text/css"/>
+    <link href="../../pumpking/css/default.css" rel="stylesheet" type="text/css" id="style_color"/>
+    <link href="../../pumpking/css/uniform.default.css" rel="stylesheet" type="text/css"/>
     <!-- END GLOBAL MANDATORY STYLES -->
     <!-- BEGIN PAGE LEVEL STYLES -->
-    <link href="../../../pumpking/css/jquery.gritter.css" rel="stylesheet" type="text/css"/>
-    <link href="../../../pumpking/css/daterangepicker.css" rel="stylesheet" type="text/css"/>
-    <link href="../../../pumpking/css/fullcalendar.css" rel="stylesheet" type="text/css"/>
-    <link href="../../../pumpking/css/jqvmap.css" rel="stylesheet" type="text/css" pumpking="screen"/>
-    <link href="../../../pumpking/css/jquery.easy-pie-chart.css" rel="stylesheet" type="text/css" pumpking="screen"/>
+    <link rel="stylesheet" type="text/css" href="../../pumpking/css/select2_metro.css"/>
+    <link rel="stylesheet" href="../../pumpking/css/DT_bootstrap.css"/>
     <!-- END PAGE LEVEL STYLES -->
-    <link rel="shortcut icon" href="../../../pumpking/image/favicon.ico"/>
+    <link rel="shortcut icon" href="../../pumpking/image/favicon.ico"/>
 </head>
 <!-- END HEAD -->
 <!-- BEGIN BODY -->
@@ -40,15 +35,14 @@
         <div class="container-fluid">
             <!-- BEGIN LOGO -->
             <a class="brand" href="/index.jsp">
-                <img src="../../../pumpking/image/logo2.png" alt="logo"/>
+                <img src="../../pumpking/image/logo2.png" alt="logo"/>
             </a>
             <!-- END LOGO -->
             <!-- BEGIN RESPONSIVE MENU TOGGLER -->
             <a href="javascript:" class="btn-navbar collapsed" data-toggle="collapse" data-target=".nav-collapse">
-                <img src="../../../pumpking/image/menu-toggler.png" alt=""/>
+                <img src="../../pumpking/image/menu-toggler.png" alt=""/>
             </a>
             <!-- END RESPONSIVE MENU TOGGLER -->
-
             <!-- BEGIN TOP NAVIGATION MENU -->
             <ul class="nav pull-right">
                 <!-- BEGIN NOTIFICATION DROPDOWN -->
@@ -110,7 +104,6 @@
                     </ul>
                 </li>
                 <!-- END NOTIFICATION DROPDOWN -->
-
                 <!-- BEGIN INBOX DROPDOWN -->
                 <li class="dropdown" id="header_inbox_bar">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -166,7 +159,6 @@
                     </ul>
                 </li>
                 <!-- END INBOX DROPDOWN -->
-
                 <!-- BEGIN TODO DROPDOWN -->
                 <li class="dropdown" id="header_task_bar">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -249,7 +241,6 @@
                     </ul>
                 </li>
                 <!-- END TODO DROPDOWN -->
-
                 <!-- BEGIN USER LOGIN DROPDOWN -->
                 <li class="dropdown user">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -275,7 +266,6 @@
     <!-- END TOP NAVIGATION BAR -->
 </div>
 <!-- END HEADER -->
-
 <!-- BEGIN CONTAINER -->
 <div class="page-container">
     <!-- BEGIN SIDEBAR -->
@@ -298,19 +288,17 @@
                 </form>
                 <!-- END RESPONSIVE QUICK SEARCH FORM -->
             </li>
-
-
-            <li class="start active ">
+            <li class="start ">
                 <a href="../admin/home.do">
                     <i class="icon-home"></i>
                     <span class="title">业主服务</span>
-                    <span class="selected"></span>
                 </a>
             </li>
-            <li class="">
-                <a href="../admin/test.do">
+            <li class="active">
+                <a href="../admin/commList.do">
                     <i class="icon-home"></i>
-                    <span class="title">添加社区</span>
+                    <span class="title">社区管理</span>
+                    <span class="selected"></span>
                 </a>
             </li>
             <li class="">
@@ -355,7 +343,6 @@
                     <span class="title">水电报修</span>
                 </a>
             </li>
-
             <li class="">
                 <a href="/social_message.jsp">
                     <i class="icon-leaf"></i>
@@ -380,7 +367,6 @@
                     </li>
                 </ul>
             </li>
-
             <li class="">
                 <a href="/complaint.jsp">
                     <i class="icon-phone"></i>
@@ -400,7 +386,6 @@
                     </li>
                 </ul>
             </li>
-
             <li class="">
                 <a href="javascript:">
                     <i class="icon-user"></i>
@@ -424,7 +409,6 @@
         <!-- END SIDEBAR MENU -->
     </div>
     <!-- END SIDEBAR -->
-
     <!-- BEGIN PAGE -->
     <div class="page-content">
         <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
@@ -443,63 +427,22 @@
             <!-- BEGIN PAGE HEADER-->
             <div class="row-fluid">
                 <div class="span12">
-                    <!-- BEGIN STYLE CUSTOMIZER -->
-                    <div class="color-panel hidden-phone">
-                        <div class="color-mode-icons icon-color"></div>
-                        <div class="color-mode-icons icon-color-close"></div>
-                        <div class="color-mode">
-                            <p>THEME COLOR</p>
-                            <ul class="inline">
-                                <li class="color-black current color-default" data-style="default"></li>
-                                <li class="color-blue" data-style="blue"></li>
-                                <li class="color-brown" data-style="brown"></li>
-                                <li class="color-purple" data-style="purple"></li>
-                                <li class="color-grey" data-style="grey"></li>
-                                <li class="color-white color-light" data-style="light"></li>
-                            </ul>
-                            <label>
-                                <span>Layout</span>
-                                <select class="layout-option m-wrap small">
-                                    <option value="fluid" selected>Fluid</option>
-                                    <option value="boxed">Boxed</option>
-                                </select>
-                            </label>
-                            <label>
-                                <span>Header</span>
-                                <select class="header-option m-wrap small">
-                                    <option value="fixed" selected>Fixed</option>
-                                    <option value="default">Default</option>
-                                </select>
-                            </label>
-                            <label>
-                                <span>Sidebar</span>
-                                <select class="sidebar-option m-wrap small">
-                                    <option value="fixed">Fixed</option>
-                                    <option value="default" selected>Default</option>
-                                </select>
-                            </label>
-                            <label>
-                                <span>Footer</span>
-                                <select class="footer-option m-wrap small">
-                                    <option value="fixed">Fixed</option>
-                                    <option value="default" selected>Default</option>
-                                </select>
-                            </label>
-                        </div>
-                    </div>
-                    <!-- END BEGIN STYLE CUSTOMIZER -->
                     <!-- BEGIN PAGE TITLE & BREADCRUMB-->
                     <h3 class="page-title">
-                        欢迎使用本系统
+                        社区管理
                     </h3>
                     <ul class="breadcrumb">
                         <li>
                             <i class="icon-home"></i>
-                            <a href="/index.jsp">主页</a>
+                            <a href="../admin/home.do">主页</a>
                             <i class="icon-angle-right"></i>
                         </li>
                         <li>
-                            <a href="/index.jsp">欢迎面板</a>
+                            <a href="../admin/commList.do">社区管理</a>
+                            <i class="icon-angle-right"></i>
+                        </li>
+                        <li>
+                            <a href="../admin/commAdd.do">添加社区</a>
                         </li>
                     </ul>
                     <!-- END PAGE TITLE & BREADCRUMB-->
@@ -509,7 +452,96 @@
             <!-- BEGIN PAGE CONTENT-->
             <div class="row-fluid">
                 <div class="span12">
-                    content
+
+
+                    <div class="portlet box blue">
+                        <div class="portlet-title">
+                            <div class="caption"><i class="icon-reorder"></i>添加新社区</div>
+                            <div class="tools">
+                                <a href="javascript:" class="collapse"></a>
+                                <a href="javascript:" class="reload"></a>
+                                <a href="javascript:" class="remove"></a>
+                            </div>
+                        </div>
+                        <div class="portlet-body form">
+                            <!-- BEGIN FORM-->
+                            <s:form action="doCommAdd" class="form-horizontal">
+                                <div class="row-fluid">
+                                    <div class="span6 ">
+                                        <div class="control-group">
+                                            <label class="control-label">社区名称</label>
+
+                                            <div class="controls">
+                                                <s:textfield name="commName" cssClass="m-wrap span12"
+                                                             placeholder="请填写社区名"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="span3 ">
+                                        <div class="control-group">
+                                            <label class="control-label">社区编号</label>
+
+                                            <div class="controls">
+                                                <s:textfield cssClass="m-wrap span12" placeholder="请填写社区编号"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--/row-->
+                                    <div class="row-fluid">
+                                        <div class="span9 ">
+                                            <div class="control-group">
+                                                <label class="control-label">社区地址</label>
+
+                                                <div class="controls">
+                                                    <s:textfield cssClass="m-wrap span12" placeholder="请填写社区地址"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--/row-->
+                                    <div class="row-fluid">
+                                        <div class="span6 ">
+                                            <div class="control-group">
+                                                <label class="control-label">物业公司</label>
+
+                                                <div class="controls">
+                                                    <s:textfield class="m-wrap span12" placeholder="请填写物业公司"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row-fluid">
+                                        <div class="span6 ">
+                                            <div class="control-group">
+                                                <label class="control-label">开张时间</label>
+
+                                                <div class="controls">
+                                                    <div class="input-append date date-picker" data-data="25-12-2014"
+                                                         data-date-format="dd-mm-yyyy" data-date-viewmode="years">
+                                                        <input class="m-wrap m-ctrl-medium date-picker" readonly
+                                                               size="16"
+                                                               type="text" value=""/><span class="add-on"><i
+                                                            class="icon-calendar"></i></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <!--/row-->
+                                    <div class="form-actions">
+                                        <s:submit cssClass="btn green" value="确认"/>
+                                        <s:submit cssClass="btn" value="取消"/>
+                                            <%--此处添加取消方法，添加弹窗后 用户确认后 可以是初始化表单 或者 返回社区列表页面--%>
+                                    </div>
+                                </div>
+                            </s:form>
+                        </div>
+                    </div>
+
+
                 </div>
             </div>
             <!-- END PAGE CONTENT-->
@@ -533,24 +565,31 @@
 <!-- END FOOTER -->
 <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
 <!-- BEGIN CORE PLUGINS -->
-<script src="../../../pumpking/js/jquery-1.10.1.min.js" type="text/javascript"></script>
-<script src="../../../pumpking/js/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+<script src="../../pumpking/js/jquery-2.1.3.js" type="text/javascript"></script>
+<script src="../../pumpking/js/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
 <!-- IMPORTANT! Load jquery-ui-1.10.1.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
-<script src="../../../pumpking/js/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
-<script src="../../../pumpking/js/bootstrap.min.js" type="text/javascript"></script>
-<!--[if lt IE 9]>
-<script src="../../../pumpking/js/excanvas.min.js"></script>
-<script src="../../../pumpking/js/respond.min.js"></script>
-<![endif]-->
-<script src="../../../pumpking/js/jquery.slimscroll.min.js" type="text/javascript"></script>
-<script src="../../../pumpking/js/jquery.blockui.min.js" type="text/javascript"></script>
-<script src="../../../pumpking/js/jquery.cookie.min.js" type="text/javascript"></script>
-<script src="../../../pumpking/js/jquery.uniform.min.js" type="text/javascript"></script>
+<script src="../../pumpking/js/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
+<script src="../../pumpking/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="../../pumpking/js/jquery.slimscroll.min.js" type="text/javascript"></script>
+<script src="../../pumpking/js/jquery.blockui.min.js" type="text/javascript"></script>
+<script src="../../pumpking/js/jquery.cookie.min.js" type="text/javascript"></script>
+<script src="../../pumpking/js/jquery.uniform.min.js" type="text/javascript"></script>
 <!-- END CORE PLUGINS -->
-<script src="../../../pumpking/js/app.js"></script>
+<!-- BEGIN PAGE LEVEL PLUGINS -->
+<script type="text/javascript" src="../../pumpking/js/select2.min.js"></script>
+<script type="text/javascript" src="../../pumpking/js/jquery.dataTables.js"></script>
+<script type="text/javascript" src="../../pumpking/js/DT_bootstrap.js"></script>
+
+
+<script type="text/javascript" src="../../pumpking/js/bootstrap-datepicker.js"></script>
+<script src="../../pumpking/js/form-components.js"></script>
+<!-- END PAGE LEVEL PLUGINS -->
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
+<script src="../../pumpking/js/app.js"></script>
 <script>
     jQuery(document).ready(function () {
         App.init();
+        FormComponents.init();
     });
 </script>
 <!-- END JAVASCRIPTS -->

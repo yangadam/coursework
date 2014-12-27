@@ -1,34 +1,29 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
-<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
-<!--[if !IE]><!-->
+<!DOCTYPE html>
 <html lang="en" class="no-js"> <!--<![endif]-->
 <!-- BEGIN HEAD -->
 <head>
     <meta charset="utf-8"/>
-    <title>水电报修</title>
+    <title>社区管理</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <meta content="" name="description"/>
     <meta content="PumpKing" name="author"/>
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
-    <link href="media/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-    <link href="media/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>
-    <link href="media/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
-    <link href="media/css/style-metro.css" rel="stylesheet" type="text/css"/>
-    <link href="media/css/style.css" rel="stylesheet" type="text/css"/>
-    <link href="media/css/style-responsive.css" rel="stylesheet" type="text/css"/>
-    <link href="media/css/default.css" rel="stylesheet" type="text/css" id="style_color"/>
-    <link href="media/css/uniform.default.css" rel="stylesheet" type="text/css"/>
+    <link href="../../pumpking/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="../../pumpking/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>
+    <link href="../../pumpking/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <link href="../../pumpking/css/style-metro.css" rel="stylesheet" type="text/css"/>
+    <link href="../../pumpking/css/style.css" rel="stylesheet" type="text/css"/>
+    <link href="../../pumpking/css/style-responsive.css" rel="stylesheet" type="text/css"/>
+    <link href="../../pumpking/css/default.css" rel="stylesheet" type="text/css" id="style_color"/>
+    <link href="../../pumpking/css/uniform.default.css" rel="stylesheet" type="text/css"/>
+    <link href="../../pumpking/css/bootstrap-modal.css" rel="stylesheet" type="text/css"/>
     <!-- END GLOBAL MANDATORY STYLES -->
     <!-- BEGIN PAGE LEVEL STYLES -->
-    <link href="media/css/jquery.gritter.css" rel="stylesheet" type="text/css"/>
-    <link href="media/css/daterangepicker.css" rel="stylesheet" type="text/css"/>
-    <link href="media/css/fullcalendar.css" rel="stylesheet" type="text/css"/>
-    <link href="media/css/jqvmap.css" rel="stylesheet" type="text/css" media="screen"/>
-    <link href="media/css/jquery.easy-pie-chart.css" rel="stylesheet" type="text/css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="../../pumpking/css/select2_metro.css"/>
+    <link rel="stylesheet" href="../../pumpking/css/DT_bootstrap.css"/>
     <!-- END PAGE LEVEL STYLES -->
-    <link rel="shortcut icon" href="media/image/favicon.ico"/>
+    <link rel="shortcut icon" href="../../pumpking/image/favicon.ico"/>
 </head>
 <!-- END HEAD -->
 <!-- BEGIN BODY -->
@@ -39,16 +34,15 @@
     <div class="navbar-inner">
         <div class="container-fluid">
             <!-- BEGIN LOGO -->
-            <a class="brand" href="index.jsp">
-                <img src="media/image/logo2.png" alt="logo"/>
+            <a class="brand" href="/index.jsp">
+                <img src="../../pumpking/image/logo2.png" alt="logo"/>
             </a>
             <!-- END LOGO -->
             <!-- BEGIN RESPONSIVE MENU TOGGLER -->
             <a href="javascript:" class="btn-navbar collapsed" data-toggle="collapse" data-target=".nav-collapse">
-                <img src="media/image/menu-toggler.png" alt=""/>
+                <img src="../../pumpking/image/menu-toggler.png" alt=""/>
             </a>
             <!-- END RESPONSIVE MENU TOGGLER -->
-
             <!-- BEGIN TOP NAVIGATION MENU -->
             <ul class="nav pull-right">
                 <!-- BEGIN NOTIFICATION DROPDOWN -->
@@ -110,7 +104,6 @@
                     </ul>
                 </li>
                 <!-- END NOTIFICATION DROPDOWN -->
-
                 <!-- BEGIN INBOX DROPDOWN -->
                 <li class="dropdown" id="header_inbox_bar">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -123,7 +116,7 @@
                         </li>
                         <li>
                             <a href="inbox.html?a=view">
-                                <span class="photo"><img src="media/image/avatar2.jpg" alt=""/></span>
+                                <span class="photo"><img src="../../../pumpking/image/avatar2.jpg" alt=""/></span>
 								<span class="subject">
 								<span class="from">Lisa Wong</span>
 								<span class="time">Just Now</span>
@@ -136,7 +129,7 @@
                         </li>
                         <li>
                             <a href="inbox.html?a=view">
-                                <span class="photo"><img src="./media/image/avatar3.jpg" alt=""/></span>
+                                <span class="photo"><img src="../../../pumpking/image/avatar3.jpg" alt=""/></span>
 								<span class="subject">
 								<span class="from">Richard Doe</span>
 								<span class="time">16 mins</span>
@@ -149,7 +142,7 @@
                         </li>
                         <li>
                             <a href="inbox.html?a=view">
-                                <span class="photo"><img src="./media/image/avatar1.jpg" alt=""/></span>
+                                <span class="photo"><img src="../../../pumpking/image/avatar1.jpg" alt=""/></span>
 								<span class="subject">
 								<span class="from">Bob Nilson</span>
 								<span class="time">2 hrs</span>
@@ -166,7 +159,6 @@
                     </ul>
                 </li>
                 <!-- END INBOX DROPDOWN -->
-
                 <!-- BEGIN TODO DROPDOWN -->
                 <li class="dropdown" id="header_task_bar">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -249,11 +241,10 @@
                     </ul>
                 </li>
                 <!-- END TODO DROPDOWN -->
-
                 <!-- BEGIN USER LOGIN DROPDOWN -->
                 <li class="dropdown user">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <img alt="" src="media/image/avatar1_small.jpg"/>
+                        <img alt="" src="../../../pumpking/image/avatar1_small.jpg"/>
                         <span class="username">杨 猛猛</span>
                         <i class="icon-angle-down"></i>
                     </a>
@@ -275,149 +266,149 @@
     <!-- END TOP NAVIGATION BAR -->
 </div>
 <!-- END HEADER -->
-
 <!-- BEGIN CONTAINER -->
 <div class="page-container">
-    <%--<!-- BEGIN SIDEBAR -->--%>
-    <%--<div class="page-sidebar nav-collapse collapse">--%>
-    <%--<!-- BEGIN SIDEBAR MENU -->--%>
-    <%--<ul class="page-sidebar-menu">--%>
-    <%--<li>--%>
-    <%--<!-- BEGIN SIDEBAR TOGGLER BUTTON -->--%>
-    <%--<div class="sidebar-toggler hidden-phone"></div>--%>
-    <%--<!-- BEGIN SIDEBAR TOGGLER BUTTON -->--%>
-    <%--</li>--%>
-    <%--<li>--%>
-    <%--<!-- BEGIN RESPONSIVE QUICK SEARCH FORM -->--%>
-    <%--<form class="sidebar-search">--%>
-    <%--<div class="input-box">--%>
-    <%--<a href="javascript:;" class="remove"></a>--%>
-    <%--<input type="text" placeholder="搜索..."/>--%>
-    <%--<input type="button" class="submit" value=" "/>--%>
-    <%--</div>--%>
-    <%--</form>--%>
-    <%--<!-- END RESPONSIVE QUICK SEARCH FORM -->--%>
-    <%--</li>--%>
-    <%--<li class="start ">--%>
-    <%--<a href="index.jsp">--%>
-    <%--<i class="icon-home"></i>--%>
-    <%--<span class="title">业主服务</span>--%>
-    <%--</a>--%>
-    <%--</li>--%>
-    <%--<li class="">--%>
-    <%--<a href="javascript:;">--%>
-    <%--<i class="icon-shopping-cart"></i>--%>
-    <%--<span class="title">在线缴费</span>--%>
-    <%--<span class="arrow "></span>--%>
-    <%--</a>--%>
-    <%--<ul class="sub-menu">--%>
-    <%--<li class="">--%>
-    <%--<a href="payment_wait.jsp">--%>
-    <%--<i class="icon-bookmark"></i>--%>
-    <%--待缴清单</a>--%>
-    <%--</li>--%>
-    <%--<li>--%>
-    <%--<a href="payment_record.jsp">--%>
-    <%--<i class="icon-list-ul"></i>--%>
-    <%--缴费记录</a>--%>
-    <%--</li>--%>
-    <%--<li>--%>
-    <%--<a href="payment_notice.jsp">--%>
-    <%--<i class="icon-question-sign"></i>--%>
-    <%--缴费须知</a>--%>
-    <%--</li>--%>
-    <%--</ul>--%>
-    <%--</li>--%>
-    <%--<li class="">--%>
-    <%--<a href="report_loss.jsp">--%>
-    <%--<i class="icon-key"></i>--%>
-    <%--<span class="title">门禁卡挂失</span>--%>
-    <%--</a>--%>
-    <%--</li>--%>
-    <%--<li class="">--%>
-    <%--<a href="car_rent.jsp">--%>
-    <%--<i class="icon-table"></i>--%>
-
-    <%--<span class="title">车位租用</span>--%>
-    <%--</a>--%>
-    <%--</li>--%>
-    <%--<li class="active">--%>
-    <%--<a href="javascript:;">--%>
-    <%--<i class="icon-briefcase"></i>--%>
-    <%--<span class="selected"></span>--%>
-    <%--<span class="title">水电报修</span>--%>
-    <%--</a>--%>
-    <%--</li>--%>
-
-    <%--<li class="">--%>
-    <%--<a href="social_message.jsp">--%>
-    <%--<i class="icon-leaf"></i>--%>
-    <%--<span class="title">社区公告</span>--%>
-    <%--<span class="arrow"></span>--%>
-    <%--</a>--%>
-    <%--<ul class="sub-menu">--%>
-    <%--<li>--%>
-    <%--<a href="social_message.jsp">--%>
-    <%--<i class="icon-bell"></i>--%>
-    <%--社区通知</a>--%>
-    <%--</li>--%>
-    <%--<li>--%>
-    <%--<a href="social_news.jsp">--%>
-    <%--<i class="icon-globe"></i>--%>
-    <%--社区要闻</a>--%>
-    <%--</li>--%>
-    <%--<li>--%>
-    <%--<a href="social_activity.jsp">--%>
-    <%--<i class="icon-coffee"></i>--%>
-    <%--社区活动</a>--%>
-    <%--</li>--%>
-    <%--</ul>--%>
-    <%--</li>--%>
-
-    <%--<li class="">--%>
-    <%--<a href="javascript:;">--%>
-    <%--<i class="icon-phone"></i>--%>
-    <%--<span class="title">投诉与建议</span>--%>
-    <%--<span class="arrow "></span>--%>
-    <%--</a>--%>
-    <%--<ul class="sub-menu">--%>
-    <%--<li>--%>
-    <%--<a href="complaint.jsp">--%>
-    <%--<i class="icon-group"></i>--%>
-    <%--员工概览</a>--%>
-    <%--</li>--%>
-    <%--<li>--%>
-    <%--<a href="suggestion.jsp">--%>
-    <%--<i class="icon-comments"></i>--%>
-    <%--业主建言</a>--%>
-    <%--</li>--%>
-    <%--</ul>--%>
-    <%--</li>--%>
-
-    <%--<li class="">--%>
-    <%--<a href="javascript:;">--%>
-    <%--<i class="icon-user"></i>--%>
-    <%--<span class="title">个人主页</span>--%>
-    <%--<span class="arrow "></span>--%>
-    <%--</a>--%>
-    <%--<ul class="sub-menu">--%>
-    <%--<li>--%>
-    <%--<a href="owner_file.jsp">--%>
-    <%--<i class="icon-file"></i>--%>
-    <%--我的资料</a>--%>
-    <%--</li>--%>
-    <%--<li>--%>
-    <%--<a href="owner_inbox.jsp">--%>
-    <%--<i class="icon-envelope"></i>--%>
-    <%--我的信箱</a>--%>
-    <%--</li>--%>
-    <%--</ul>--%>
-    <%--</li>--%>
-    <%--</ul>--%>
-    <%--<!-- END SIDEBAR MENU -->--%>
-    <%--</div>--%>
-    <%--<!-- END SIDEBAR -->--%>
-    <jsp:include page="WEB-INF/jsp/common/sidebar.jsp"/>
+    <!-- BEGIN SIDEBAR -->
+    <div class="page-sidebar nav-collapse collapse">
+        <!-- BEGIN SIDEBAR MENU -->
+        <ul class="page-sidebar-menu">
+            <li>
+                <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+                <div class="sidebar-toggler hidden-phone"></div>
+                <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+            </li>
+            <li>
+                <!-- BEGIN RESPONSIVE QUICK SEARCH FORM -->
+                <form class="sidebar-search">
+                    <div class="input-box">
+                        <a href="javascript:" class="remove"></a>
+                        <input type="text" placeholder="搜索..."/>
+                        <input type="button" class="submit" value=" "/>
+                    </div>
+                </form>
+                <!-- END RESPONSIVE QUICK SEARCH FORM -->
+            </li>
+            <li class="start ">
+                <a href="../admin/home.do">
+                    <i class="icon-home"></i>
+                    <span class="title">业主服务</span>
+                </a>
+            </li>
+            <li class="active">
+                <a href="../admin/commList.do">
+                    <i class="icon-home"></i>
+                    <span class="title">社区管理</span>
+                    <span class="selected"></span>
+                </a>
+            </li>
+            <li class="">
+                <a href="javascript:">
+                    <i class="icon-shopping-cart"></i>
+                    <span class="title">在线缴费</span>
+                    <span class="arrow "></span>
+                </a>
+                <ul class="sub-menu">
+                    <li>
+                        <a href="/payment_wait.jsp">
+                            <i class="icon-bookmark"></i>
+                            待缴清单</a>
+                    </li>
+                    <li>
+                        <a href="/payment_record.jsp">
+                            <i class="icon-list-ul"></i>
+                            缴费记录</a>
+                    </li>
+                    <li>
+                        <a href="/payment_notice.jsp">
+                            <i class="icon-question-sign"></i>
+                            缴费须知</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="">
+                <a href="/report_loss.jsp">
+                    <i class="icon-key"></i>
+                    <span class="title">门禁卡挂失</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="/car_rent.jsp">
+                    <i class="icon-umbrella"></i>
+                    <span class="title">车位租用</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="/report_repair.jsp">
+                    <i class="icon-briefcase"></i>
+                    <span class="title">水电报修</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="/social_message.jsp">
+                    <i class="icon-leaf"></i>
+                    <span class="title">社区公告</span>
+                    <span class="arrow"></span>
+                </a>
+                <ul class="sub-menu">
+                    <li>
+                        <a href="/social_message.jsp">
+                            <i class="icon-bell-alt"></i>
+                            社区通知</a>
+                    </li>
+                    <li>
+                        <a href="/social_news.jsp">
+                            <i class="icon-globe"></i>
+                            社区要闻</a>
+                    </li>
+                    <li>
+                        <a href="/social_activity.jsp">
+                            <i class="icon-coffee"></i>
+                            社区活动</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="">
+                <a href="/complaint.jsp">
+                    <i class="icon-phone"></i>
+                    <span class="title">投诉与建议</span>
+                    <span class="arrow "></span>
+                </a>
+                <ul class="sub-menu">
+                    <li>
+                        <a href="/complaint.jsp">
+                            <i class="icon-group"></i>
+                            员工概览</a>
+                    </li>
+                    <li>
+                        <a href="/suggestion.jsp">
+                            <i class="icon-comments"></i>
+                            业主建言</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="">
+                <a href="javascript:">
+                    <i class="icon-user"></i>
+                    <span class="title">个人主页</span>
+                    <span class="arrow "></span>
+                </a>
+                <ul class="sub-menu">
+                    <li>
+                        <a href="/owner_file.jsp">
+                            <i class="icon-file"></i>
+                            我的资料</a>
+                    </li>
+                    <li>
+                        <a href="/owner_inbox.jsp">
+                            <i class="icon-envelope"></i>
+                            我的信箱</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <!-- END SIDEBAR MENU -->
+    </div>
+    <!-- END SIDEBAR -->
     <!-- BEGIN PAGE -->
     <div class="page-content">
         <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
@@ -436,63 +427,22 @@
             <!-- BEGIN PAGE HEADER-->
             <div class="row-fluid">
                 <div class="span12">
-                    <!-- BEGIN STYLE CUSTOMIZER -->
-                    <div class="color-panel hidden-phone">
-                        <div class="color-mode-icons icon-color"></div>
-                        <div class="color-mode-icons icon-color-close"></div>
-                        <div class="color-mode">
-                            <p>THEME COLOR</p>
-                            <ul class="inline">
-                                <li class="color-black current color-default" data-style="default"></li>
-                                <li class="color-blue" data-style="blue"></li>
-                                <li class="color-brown" data-style="brown"></li>
-                                <li class="color-purple" data-style="purple"></li>
-                                <li class="color-grey" data-style="grey"></li>
-                                <li class="color-white color-light" data-style="light"></li>
-                            </ul>
-                            <label>
-                                <span>Layout</span>
-                                <select class="layout-option m-wrap small">
-                                    <option value="fluid" selected>Fluid</option>
-                                    <option value="boxed">Boxed</option>
-                                </select>
-                            </label>
-                            <label>
-                                <span>Header</span>
-                                <select class="header-option m-wrap small">
-                                    <option value="fixed" selected>Fixed</option>
-                                    <option value="default">Default</option>
-                                </select>
-                            </label>
-                            <label>
-                                <span>Sidebar</span>
-                                <select class="sidebar-option m-wrap small">
-                                    <option value="fixed">Fixed</option>
-                                    <option value="default" selected>Default</option>
-                                </select>
-                            </label>
-                            <label>
-                                <span>Footer</span>
-                                <select class="footer-option m-wrap small">
-                                    <option value="fixed">Fixed</option>
-                                    <option value="default" selected>Default</option>
-                                </select>
-                            </label>
-                        </div>
-                    </div>
-                    <!-- END BEGIN STYLE CUSTOMIZER -->
                     <!-- BEGIN PAGE TITLE & BREADCRUMB-->
                     <h3 class="page-title">
-                        水电报修
+                        社区管理
                     </h3>
                     <ul class="breadcrumb">
                         <li>
                             <i class="icon-home"></i>
-                            <a href="index.jsp">主页</a>
+                            <a href="../admin/home.do">主页</a>
                             <i class="icon-angle-right"></i>
                         </li>
                         <li>
-                            <a href="car_rent.jsp">水电报修</a>
+                            <a href="../admin/commList.do">社区管理</a>
+                            <i class="icon-angle-right"></i>
+                        </li>
+                        <li>
+                            <a href="../admin/commList.do">社区列表</a>
                         </li>
                     </ul>
                     <!-- END PAGE TITLE & BREADCRUMB-->
@@ -502,7 +452,61 @@
             <!-- BEGIN PAGE CONTENT-->
             <div class="row-fluid">
                 <div class="span12">
-                    content
+                    <div class="portlet box blue">
+                        <div class="portlet-title">
+                            <div class="caption"><i class="icon-edit"></i>社区列表</div>
+                            <div class="tools">
+                                <a href="javascript:" class="collapse"></a>
+                                <a href="#portlet-config" data-toggle="modal" class="config"></a>
+                                <a href="javascript:" class="reload"></a>
+                                <a href="javascript:" class="remove"></a>
+                            </div>
+                        </div>
+                        <div class="portlet-body">
+                            <div class="clearfix">
+                                <div class="btn-group">
+                                    <a href="../admin/commAdd.do" id="sample_editable_1_new" class="btn green">
+                                        添加社区 <i class="icon-plus"></i>
+                                    </a>
+                                </div>
+                                <div class="btn-group pull-right">
+                                    <button class="btn dropdown-toggle" data-toggle="dropdown">工具 <i
+                                            class="icon-angle-down"></i>
+                                    </button>
+                                    <ul class="dropdown-menu pull-right">
+                                        <li><a href="#">打印</a></li>
+                                        <li><a href="#">保存为PDF</a></li>
+                                        <li><a href="#">导出Excel表格</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <table class="table table-striped table-hover table-bordered" id="sample_editable_1">
+                                <thead>
+                                <tr>
+                                    <th>小区编号</th>
+                                    <th>小区名称</th>
+                                    <th>编辑</th>
+                                    <th>删除</th>
+                                    <th>详细信息</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+
+                            <div id="static" class="modal hide fade" tabindex="-1" data-backdrop="static"
+                                 data-keyboard="false">
+                                <div class="modal-body">
+                                    <p>确定要删除此项吗？</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" data-dismiss="modal" class="btn">取消</button>
+                                    <button type="button" data-dismiss="modal" class="btn green">确认</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
             </div>
             <!-- END PAGE CONTENT-->
@@ -526,24 +530,33 @@
 <!-- END FOOTER -->
 <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
 <!-- BEGIN CORE PLUGINS -->
-<script src="media/js/jquery-1.10.1.min.js" type="text/javascript"></script>
-<script src="media/js/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+<script src="../../pumpking/js/jquery-2.1.3.js" type="text/javascript"></script>
+<script src="../../pumpking/js/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
 <!-- IMPORTANT! Load jquery-ui-1.10.1.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
-<script src="media/js/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
-<script src="media/js/bootstrap.min.js" type="text/javascript"></script>
-<!--[if lt IE 9]>
-<script src="media/js/excanvas.min.js"></script>
-<script src="media/js/respond.min.js"></script>
-<![endif]-->
-<script src="media/js/jquery.slimscroll.min.js" type="text/javascript"></script>
-<script src="media/js/jquery.blockui.min.js" type="text/javascript"></script>
-<script src="media/js/jquery.cookie.min.js" type="text/javascript"></script>
-<script src="media/js/jquery.uniform.min.js" type="text/javascript"></script>
+<script src="../../pumpking/js/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
+<script src="../../pumpking/js/bootstrap.min.js" type="text/javascript"></script>
+
+<script src="../../pumpking/js/jquery.slimscroll.min.js" type="text/javascript"></script>
+<script src="../../pumpking/js/jquery.blockui.min.js" type="text/javascript"></script>
+<script src="../../pumpking/js/jquery.cookie.min.js" type="text/javascript"></script>
+<script src="../../pumpking/js/jquery.uniform.min.js" type="text/javascript"></script>
 <!-- END CORE PLUGINS -->
-<script src="media/js/app.js"></script>
+<!-- BEGIN PAGE LEVEL PLUGINS -->
+<script type="text/javascript" src="../../pumpking/js/select2.min.js"></script>
+<script type="text/javascript" src="../../pumpking/js/jquery.dataTables.js"></script>
+<script type="text/javascript" src="../../pumpking/js/DT_bootstrap.js"></script>
+<script type="text/javascript" src="../../pumpking/js/ui-modals.js"></script>
+<script type="text/javascript" src="../../pumpking/js/bootstrap-modal.js"></script>
+<script type="text/javascript" src="../../pumpking/js/bootstrap-modalmanager.js"></script>
+<!-- END PAGE LEVEL PLUGINS -->
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
+<script src="../../pumpking/js/app.js"></script>
+<script src="../../pumpking/js/commList.js"></script>
 <script>
     jQuery(document).ready(function () {
         App.init();
+        TableEditable.init();
+        UIModals.init();
     });
 </script>
 <!-- END JAVASCRIPTS -->
