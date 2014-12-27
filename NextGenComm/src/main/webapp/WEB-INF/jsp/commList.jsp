@@ -17,6 +17,7 @@
     <link href="../../pumpking/css/style-responsive.css" rel="stylesheet" type="text/css"/>
     <link href="../../pumpking/css/default.css" rel="stylesheet" type="text/css" id="style_color"/>
     <link href="../../pumpking/css/uniform.default.css" rel="stylesheet" type="text/css"/>
+    <link href="../../pumpking/css/bootstrap-modal.css" rel="stylesheet" type="text/css"/>
     <!-- END GLOBAL MANDATORY STYLES -->
     <!-- BEGIN PAGE LEVEL STYLES -->
     <link rel="stylesheet" type="text/css" href="../../pumpking/css/select2_metro.css"/>
@@ -294,9 +295,9 @@
                 </a>
             </li>
             <li class="active">
-                <a href="../admin/test.do">
+                <a href="../admin/commList.do">
                     <i class="icon-home"></i>
-                    <span class="title">添加社区</span>
+                    <span class="title">社区管理</span>
                     <span class="selected"></span>
                 </a>
             </li>
@@ -426,51 +427,6 @@
             <!-- BEGIN PAGE HEADER-->
             <div class="row-fluid">
                 <div class="span12">
-                    <!-- BEGIN STYLE CUSTOMIZER -->
-                    <div class="color-panel hidden-phone">
-                        <div class="color-mode-icons icon-color"></div>
-                        <div class="color-mode-icons icon-color-close"></div>
-                        <div class="color-mode">
-                            <p>THEME COLOR</p>
-                            <ul class="inline">
-                                <li class="color-black current color-default" data-style="default"></li>
-                                <li class="color-blue" data-style="blue"></li>
-                                <li class="color-brown" data-style="brown"></li>
-                                <li class="color-purple" data-style="purple"></li>
-                                <li class="color-grey" data-style="grey"></li>
-                                <li class="color-white color-light" data-style="light"></li>
-                            </ul>
-                            <label>
-                                <span>Layout</span>
-                                <select class="layout-option m-wrap small">
-                                    <option value="fluid" selected>Fluid</option>
-                                    <option value="boxed">Boxed</option>
-                                </select>
-                            </label>
-                            <label>
-                                <span>Header</span>
-                                <select class="header-option m-wrap small">
-                                    <option value="fixed" selected>Fixed</option>
-                                    <option value="default">Default</option>
-                                </select>
-                            </label>
-                            <label>
-                                <span>Sidebar</span>
-                                <select class="sidebar-option m-wrap small">
-                                    <option value="fixed">Fixed</option>
-                                    <option value="default" selected>Default</option>
-                                </select>
-                            </label>
-                            <label>
-                                <span>Footer</span>
-                                <select class="footer-option m-wrap small">
-                                    <option value="fixed">Fixed</option>
-                                    <option value="default" selected>Default</option>
-                                </select>
-                            </label>
-                        </div>
-                    </div>
-                    <!-- END BEGIN STYLE CUSTOMIZER -->
                     <!-- BEGIN PAGE TITLE & BREADCRUMB-->
                     <h3 class="page-title">
                         社区管理
@@ -482,7 +438,11 @@
                             <i class="icon-angle-right"></i>
                         </li>
                         <li>
-                            <a href="../admin/test.do">添加社区</a>
+                            <a href="../admin/commList.do">社区管理</a>
+                            <i class="icon-angle-right"></i>
+                        </li>
+                        <li>
+                            <a href="../admin/commList.do">社区列表</a>
                         </li>
                     </ul>
                     <!-- END PAGE TITLE & BREADCRUMB-->
@@ -505,9 +465,9 @@
                         <div class="portlet-body">
                             <div class="clearfix">
                                 <div class="btn-group">
-                                    <button id="sample_editable_1_new" class="btn green">
-                                        添加 <i class="icon-plus"></i>
-                                    </button>
+                                    <a href="../admin/commAdd.do" id="sample_editable_1_new" class="btn green">
+                                        添加社区 <i class="icon-plus"></i>
+                                    </a>
                                 </div>
                                 <div class="btn-group pull-right">
                                     <button class="btn dropdown-toggle" data-toggle="dropdown">工具 <i
@@ -523,13 +483,28 @@
                             <table class="table table-striped table-hover table-bordered" id="sample_editable_1">
                                 <thead>
                                 <tr>
-                                    <th>CommName</th>
-                                    <th>CommID</th>
-                                    <th>Edit</th>
-                                    <th>Delete</th>
+                                    <th>小区编号</th>
+                                    <th>小区名称</th>
+                                    <th>编辑</th>
+                                    <th>删除</th>
+                                    <th>详细信息</th>
                                 </tr>
                                 </thead>
+                                <tbody>
+                                </tbody>
                             </table>
+
+                            <div id="static" class="modal hide fade" tabindex="-1" data-backdrop="static"
+                                 data-keyboard="false">
+                                <div class="modal-body">
+                                    <p>确定要删除此项吗？</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" data-dismiss="modal" class="btn">取消</button>
+                                    <button type="button" data-dismiss="modal" class="btn green">确认</button>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -570,6 +545,9 @@
 <script type="text/javascript" src="../../pumpking/js/select2.min.js"></script>
 <script type="text/javascript" src="../../pumpking/js/jquery.dataTables.js"></script>
 <script type="text/javascript" src="../../pumpking/js/DT_bootstrap.js"></script>
+<script type="text/javascript" src="../../pumpking/js/ui-modals.js"></script>
+<script type="text/javascript" src="../../pumpking/js/bootstrap-modal.js"></script>
+<script type="text/javascript" src="../../pumpking/js/bootstrap-modalmanager.js"></script>
 <!-- END PAGE LEVEL PLUGINS -->
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <script src="../../pumpking/js/app.js"></script>
@@ -578,6 +556,7 @@
     jQuery(document).ready(function () {
         App.init();
         TableEditable.init();
+        UIModals.init();
     });
 </script>
 <!-- END JAVASCRIPTS -->

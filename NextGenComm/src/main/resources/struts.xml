@@ -52,16 +52,33 @@
             <result>/WEB-INF/jsp/admin/home.jsp</result>
         </action>
 
-        <action name="test">
-            <result>/WEB-INF/jsp/dataTables.jsp</result>
+        <action name="commList">
+            <result>/WEB-INF/jsp/commList.jsp</result>
         </action>
+
+        <action name="commAdd">
+            <result>/WEB-INF/jsp/commAdd.jsp</result>
+        </action>
+
+        <action name="doCommAdd" class="commListAction" method="add">
+            <result name="input">doCommAdd.do</result>
+            <result type="redirect">commList.do</result>
+        </action>
+
+        <action name="commEdit">
+            <result>/WEB-INF/jsp/commEdit.jsp</result>
+        </action>
+
+        <action name="buildingList">
+            <result>/WEB-INF/jsp/buildingList.jsp</result>
+        </action>
+
 
     </package>
 
-    <package name="json" extends="json-default">
-        <action name="jsonAction" class="jsonAction">
+    <package name="json" namespace="/json" extends="json-default">
+        <action name="commListData" class="commListAction">
             <result type="json">
-                <param name="root">result</param>
             </result>
         </action>
 

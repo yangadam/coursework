@@ -166,7 +166,7 @@ public class BaseDAO<T, I extends Serializable> {
      */
     @SuppressWarnings("unchecked")
     public List<T> getAll() {
-        return (List<T>) currentSession().createCriteria(clazz).list();
+        return searchByQL("from " + clazz.getSimpleName(), new Parameter());
     }
 
     /**
