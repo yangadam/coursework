@@ -3,6 +3,7 @@ package cn.edu.xmu.comm.service;
 import cn.edu.xmu.comm.commons.exception.DifferentCommunityException;
 import cn.edu.xmu.comm.entity.*;
 import junit.framework.TestCase;
+import org.apache.commons.lang3.Validate;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -117,6 +118,15 @@ public class PropertyServiceTest extends TestCase {
             e.printStackTrace();
         }
 
+    }
+
+    @Test
+    public void testValidate() {
+        foo();
+    }
+
+    public void foo() {
+        Validate.isTrue(1 == 2, "1!=2");
     }
 
 }

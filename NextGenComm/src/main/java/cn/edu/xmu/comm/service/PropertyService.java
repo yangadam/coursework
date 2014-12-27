@@ -268,7 +268,7 @@ public class PropertyService extends BaseService {
     @Transactional(readOnly = false)
     public void initialDefaultDevice(Community community, String shareType) {
         BigDecimal zero = BigDecimal.ZERO;
-        if (!community.getDeviceList().isEmpty()) {
+        if (community.getDeviceList().isEmpty()) {
             addDevice(community.getUnityCode().concat("#1"), community, zero, Device.DeviceType.WATER, shareType);
             addDevice(community.getUnityCode().concat("#2"), community, zero, Device.DeviceType.ELECTRICITY, shareType);
         }
@@ -286,7 +286,7 @@ public class PropertyService extends BaseService {
     @Transactional(readOnly = false)
     public void initialDefaultDevice(Building building, String shareType) {
         BigDecimal zero = BigDecimal.ZERO;
-        if (!building.getDeviceList().isEmpty()) {
+        if (building.getDeviceList().isEmpty()) {
             addDevice(building.getUnityCode().concat("#1"), building, zero, Device.DeviceType.WATER, shareType);
             addDevice(building.getUnityCode().concat("#2"), building, zero, Device.DeviceType.ELECTRICITY, shareType);
         }
@@ -304,7 +304,7 @@ public class PropertyService extends BaseService {
     @Transactional(readOnly = false)
     public void initialDefaultDevice(Floor floor, String shareType) {
         BigDecimal zero = BigDecimal.ZERO;
-        if (!floor.getDeviceList().isEmpty()) {
+        if (floor.getDeviceList().isEmpty()) {
             addDevice(floor.getUnityCode().concat("#1"), floor, zero, Device.DeviceType.WATER, shareType);
             addDevice(floor.getUnityCode().concat("#2"), floor, zero, Device.DeviceType.ELECTRICITY, shareType);
         }
@@ -321,7 +321,7 @@ public class PropertyService extends BaseService {
     @Transactional(readOnly = false)
     public void initialDefaultDevice(Room room) {
         BigDecimal zero = BigDecimal.ZERO;
-        if (!room.getDeviceList().isEmpty()) {
+        if (room.getDeviceList().isEmpty()) {
             addDevice(room.getUnityCode().concat("#1"), room, zero, Device.DeviceType.WATER);
             addDevice(room.getUnityCode().concat("#2"), room, zero, Device.DeviceType.ELECTRICITY);
         }
@@ -388,6 +388,27 @@ public class PropertyService extends BaseService {
     @Transactional(readOnly = false)
     public void updateDevice(Device device) {
         deviceDAO.merge(device);
+    }
+    //endregion
+
+    //region Delete Operations
+
+    /**
+     * 删除小区
+     *
+     * @param community 小区
+     */
+    public void delCommunity(Community community) {
+        communityDAO.delete(community);
+    }
+
+    /**
+     * 删除楼宇
+     *
+     * @param building 楼宇
+     */
+    public void delBuilding(Building building) {
+        buildingDAO.delete(building);
     }
     //endregion
 

@@ -5,8 +5,10 @@ import cn.edu.xmu.comm.dao.DeviceDAO;
 import cn.edu.xmu.comm.dao.GradientDAO;
 import cn.edu.xmu.comm.dao.OwnerDAO;
 import cn.edu.xmu.comm.entity.Community;
+import cn.edu.xmu.comm.entity.Device;
 import cn.edu.xmu.comm.entity.Gradient;
 import cn.edu.xmu.comm.entity.Owner;
+import org.apache.commons.lang3.Validate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -63,9 +65,7 @@ public class FinanceService {
      */
     @Transactional(readOnly = false)
     public Gradient addGradient(Community community, Double[] readings, BigDecimal[] prices) {
-        if (readings.length + 1 == prices.length) {
-            return null;
-        }
+        Validate.isTrue(readings.length + 1 == prices.length, "梯度数值数目有错误。");
         Gradient gradient = new Gradient(readings, prices);
         community.getGradients().add(gradient);
         gradientDAO.persist(gradient);
@@ -73,6 +73,40 @@ public class FinanceService {
         return gradient;
     }
 
+    /**
+     * 将梯度应用到设备
+     *
+     * @param gradient 梯度
+     * @param device   设备
+     */
+    @Transactional(readOnly = false)
+    public void applyGradient(Gradient gradient, Device device) {
+        Validate.isTrue(gradient.getType().equals(device.getType()), "梯度与设备不匹配");
+        device.setGradient(gradient);
+        deviceDAO.merge(device);
+    }
+
+    /**
+     * 将梯度应用到所有类型相同的私有表
+     *
+     * @param gradient  梯度
+     * @param community 小区
+     */
+    @Transactional(readOnly = false)
+    public void applyPrivateGradient(Gradient gradient, Community community) {
+        deviceDAO.applyPrivateGradient(gradient, community);
+    }
+
+    /**
+     * 将梯度应用到所有类型相同的公摊表
+     *
+     * @param gradient  梯度
+     * @param community 小区
+     */
+    @Transactional(readOnly = false)
+    public void applyShareGradient(Gradient gradient, Community community) {
+        deviceDAO.applyShareGradient(gradient, community);
+    }
 
     /**
      * 生成所有业主账单
