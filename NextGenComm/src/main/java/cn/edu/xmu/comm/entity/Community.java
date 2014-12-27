@@ -8,7 +8,9 @@ import org.hibernate.annotations.DynamicUpdate;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 小区实体
@@ -47,7 +49,7 @@ public class Community extends Property {
      */
     @OneToMany(mappedBy = "community", targetEntity = ParkPlace.class,
             cascade = CascadeType.ALL)
-    private List<ParkPlace> parkingLot;
+    private List<ParkPlace> parkingLot = new ArrayList<ParkPlace>();
 
     /**
      * 管理的公维金
@@ -55,6 +57,13 @@ public class Community extends Property {
     @OneToOne(targetEntity = PublicFund.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "public_fund_id")
     private PublicFund publicFund;
+
+    /**
+     * 计算费用的梯度
+     */
+    @OneToMany(targetEntity = Gradient.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "community_id", nullable = false)
+    private Set<Gradient> gradients = new HashSet<Gradient>();
 
     /**
      * 物业管理费的计算方式，可能的方式，固定，按面积。。。
@@ -75,7 +84,7 @@ public class Community extends Property {
      * 垃圾处理费金额
      */
     private BigDecimal garbageFee;
-    //endregionss
+    //endregion
 
     Community() {
     }
@@ -83,6 +92,12 @@ public class Community extends Property {
     public Community(String name) {
         super();
         this.name = name;
+        this.unityCode = "";
+    }
+
+    @Override
+    public Community getCommunity() {
+        return this;
     }
 
     /**
@@ -153,6 +168,14 @@ public class Community extends Property {
 
     public void setPublicFund(PublicFund publicFund) {
         this.publicFund = publicFund;
+    }
+
+    public Set<Gradient> getGradients() {
+        return gradients;
+    }
+
+    public void setGradients(Set<Gradient> gradients) {
+        this.gradients = gradients;
     }
 
     public String getManageFeeType() {

@@ -21,7 +21,7 @@ public class UserDAO extends BaseDAO<User, Integer> {
      * @return 用户
      */
     public User getByUsername(String username) {
-        return getByQL("from User where username = :p1", new Parameter(username));
+        return getByQL("select u from User where u.username = :p1", new Parameter(username));
     }
 
 }

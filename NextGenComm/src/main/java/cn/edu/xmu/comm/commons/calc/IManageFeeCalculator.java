@@ -12,8 +12,8 @@ public interface IManageFeeCalculator {
     /**
      * 计算物业管理费
      *
-     * @param room
-     * @return
+     * @param room 房间
+     * @return 费用
      */
     BigDecimal calculate(Room room);
 

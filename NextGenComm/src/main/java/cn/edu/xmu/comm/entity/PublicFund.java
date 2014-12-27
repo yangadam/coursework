@@ -9,7 +9,11 @@ import javax.persistence.Id;
 import java.math.BigDecimal;
 
 /**
- * Created by Roger on 2014/12/7 0007.
+ * 公维金
+ * Created by Roger on 2014/12/8 0005.
+ *
+ * @author Mengmeng Yang
+ * @version 2014-12-8
  */
 @Entity
 public class PublicFund extends DataEntity {
@@ -49,7 +53,7 @@ public class PublicFund extends DataEntity {
     /**
      * 是否需要交公维金
      *
-     * @return
+     * @return 判断结果
      */
     public Boolean isNeeded() {
         return balance.compareTo(threshold) == -1;

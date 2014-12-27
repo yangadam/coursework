@@ -35,8 +35,8 @@
             <result name="admin" type="redirectAction">/admin/home</result>
         </action>
 
-        <action name="comm" class="communityAction">
-            <result>login.do</result>
+        <action name="test" class="testAction">
+            <result>/WEB-INF/jsp/test/test.jsp</result>
         </action>
 
     </package>

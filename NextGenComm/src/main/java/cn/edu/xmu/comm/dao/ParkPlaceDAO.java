@@ -5,7 +5,11 @@ import cn.edu.xmu.comm.entity.ParkPlace;
 import org.springframework.stereotype.Repository;
 
 /**
+ * 停车位DAO
  * Created by Roger on 2014/12/9 0009.
+ *
+ * @author Mengmeng Yang
+ * @version 2014-12-9
  */
 @Repository
 public class ParkPlaceDAO extends BaseDAO<ParkPlace, Integer> {

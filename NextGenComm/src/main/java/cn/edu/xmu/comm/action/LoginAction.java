@@ -12,7 +12,10 @@ import javax.annotation.Resource;
 import java.util.Map;
 
 /**
- * Created by Yummy on 2014/12/14.
+ * 登录Action
+ *
+ * @author Mengmeng Yang
+ * @version 2014-12-14
  */
 @Controller
 public class LoginAction extends ActionSupport {
@@ -27,7 +30,7 @@ public class LoginAction extends ActionSupport {
     @Override
     public String execute() {
 
-        User user = null;
+        User user;
         try {
             user = systemService.login(username, password);
         } catch (UserNotFoundException e) {
@@ -38,7 +41,7 @@ public class LoginAction extends ActionSupport {
             return LOGIN;
         }
 
-        Map session = ActionContext.getContext().getSession();
+        Map<String, Object> session = ActionContext.getContext().getSession();
         session.put("USER", user);
 
         return user.getType();

@@ -15,9 +15,10 @@ import java.util.Set;
 /**
  * DAO支持类的实现
  *
- * @param <T>
+ * @param <T> 实体类型参数
+ * @param <I> 实体主键类型参数
+ * @author Mengmeng Yang
  * @version 2014-12-16
- * @Author Mengmeng Yang
  */
 public class BaseDAO<T, I extends Serializable> {
 
@@ -25,10 +26,13 @@ public class BaseDAO<T, I extends Serializable> {
     private SessionFactory sessionFactory;
 
     private Class<T> clazz;
+    private String clazzName;
 
-    public BaseDAO() {
+    @SuppressWarnings("unchecked")
+    protected BaseDAO() {
         ParameterizedType type = (ParameterizedType) this.getClass().getGenericSuperclass();
-        this.clazz = (Class) type.getActualTypeArguments()[0];
+        this.clazz = (Class<T>) type.getActualTypeArguments()[0];
+        this.clazzName = this.clazz.getSimpleName();
     }
 
     /**
@@ -111,6 +115,19 @@ public class BaseDAO<T, I extends Serializable> {
     }
 
     /**
+     * 查询记录的数量
+     *
+     * @param qlString  查询语句
+     * @param parameter 参数
+     * @return 记录数量
+     */
+    public Long count(String qlString, Parameter parameter) {
+        int beginPos = qlString.toLowerCase().indexOf("from");
+        String countString = "select count(*) ".concat(qlString.substring(beginPos));
+        return (Long) createQuery(countString, parameter).uniqueResult();
+    }
+
+    /**
      * 通过id加载实体对象
      *
      * @param id 实体对象id
@@ -153,13 +170,24 @@ public class BaseDAO<T, I extends Serializable> {
     }
 
     /**
+     * 获取所有实体对象（分页）
+     *
+     * @param page 分页对象
+     * @return 分页对象
+     */
+    public Page<T> getAll(Page<T> page) {
+        String ql = "from " + clazz.getSimpleName();
+        return searchByQL(ql, new Parameter(), page);
+    }
+
+    /**
      * 获取所有实体对象的迭代器
      *
      * @return 迭代器
      */
     @SuppressWarnings("unchecked")
     public Iterator<T> getAllIterator() {
-        Query query = createQuery("from " + clazz.getSimpleName(), new Parameter());
+        Query query = createQuery("select x from " + clazzName + " x", new Parameter());
         return query.iterate();
     }
 
@@ -190,6 +218,30 @@ public class BaseDAO<T, I extends Serializable> {
     }
 
     /**
+     * 通过QL语句查找
+     *
+     * @param qlString  查询语句
+     * @param parameter 查询参数
+     * @param page      分页对象
+     * @return 分页对象
+     */
+    @SuppressWarnings("unchecked")
+    public Page<T> searchByQL(String qlString, Parameter parameter, Page<T> page) {
+        if (page.getCount() == -1) {
+            page.setCount(count(qlString, new Parameter()));
+        }
+        if (page.isEnable()) {
+            Query query = createQuery(qlString, new Parameter());
+            query.setFirstResult(page.start());
+            query.setMaxResults(page.getPageSize());
+            page.setList(query.list());
+        } else {
+            page.setList(getAll());
+        }
+        return page;
+    }
+
+    /**
      * 通过QL语句查找，返回迭代器
      *
      * @param qlString  查询语句
@@ -207,6 +259,10 @@ public class BaseDAO<T, I extends Serializable> {
 
     /**
      * 创建 QL 查询对象
+     *
+     * @param qlString  查询语句
+     * @param parameter 查询参数
+     * @return 查询对象
      */
     protected Query createQuery(String qlString, Parameter parameter) {
         Query query = currentSession().createQuery(qlString);

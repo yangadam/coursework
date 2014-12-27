@@ -5,6 +5,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,14 +40,21 @@ public class Floor extends Property {
      */
     @OneToMany(targetEntity = Room.class, mappedBy = "floor",
             cascade = CascadeType.ALL)
-    private List<Room> roomList;
+    private List<Room> roomList = new ArrayList<Room>();
     //endregion
 
     Floor() {
     }
 
+    /**
+     * 构造函数
+     *
+     * @param no       楼层号
+     * @param building 所属楼宇
+     */
     public Floor(Integer no, Building building) {
         this.no = no;
+        this.unityCode = building.unityCode.concat("F").concat(String.valueOf(no));
         building.addFloor(this);
     }
 

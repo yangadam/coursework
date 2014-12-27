@@ -1,6 +1,6 @@
 package cn.edu.xmu.comm.entity;
 
-import cn.edu.xmu.comm.commons.calc.CalcutorFactory;
+import cn.edu.xmu.comm.commons.calc.CalculatorFactory;
 import cn.edu.xmu.comm.commons.calc.IGarbageFeeCalculator;
 import cn.edu.xmu.comm.commons.calc.IManageFeeCalculator;
 import cn.edu.xmu.comm.commons.calc.IShareCalculator;
@@ -30,12 +30,21 @@ import java.util.List;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Room extends Property {
 
+    //region Constants
+    /**
+     * 费用类型字符串：公摊、物业管理费、垃圾管理费
+     */
+    public static final String SHARE = "公摊";
+    public static final String MANAGE = "物业管理费";
+    public static final String GARBAGE = "垃圾管理费";
+    public static final String PUBFUND = "公维金";
+    //endregion
+
     //region Instance Variables
     /**
      * 房间号
      */
     private String no;
-
     /**
      * 房间全称
      */
@@ -47,7 +56,6 @@ public class Room extends Property {
     @ManyToOne(targetEntity = Floor.class, cascade = {CascadeType.MERGE})
     @JoinColumn(name = "floor_id", nullable = false)
     private Floor floor;
-
     /**
      * 拥有者
      */
@@ -59,10 +67,18 @@ public class Room extends Property {
     Room() {
     }
 
+    /**
+     * 构造函数
+     *
+     * @param no        房间号
+     * @param houseArea 房间面积
+     * @param floor     所属楼层
+     */
     public Room(String no, Double houseArea, Floor floor) {
         super();
         this.no = no;
         this.fullName = floor.getBuilding().getName() + this.no;
+        this.unityCode = floor.unityCode.concat("R").concat(no);
         floor.addRoom(this);
         registerRoom(houseArea);
     }
@@ -90,7 +106,7 @@ public class Room extends Property {
     public void generateEnergy(List<BillItem> billItems) {
         for (Device device : getDeviceList()) {
             BillItem billItem = new BillItem();
-            billItem.setName(device.getType());
+            billItem.setName(device.getType().toString());
             billItem.setDescription(fullName);
             billItem.setUsage(device.getUsage());
             billItem.setAmount(device.calculate());
@@ -108,7 +124,7 @@ public class Room extends Property {
         BigDecimal totalAmount = BigDecimal.ZERO;
         for (Device device : getSharedDevice()) {
             String type = device.getShareType();
-            IShareCalculator calculator = CalcutorFactory.getShareCalc(type);
+            IShareCalculator calculator = CalculatorFactory.getCalculator(type);
             BigDecimal amount = device.calculate();
             BigDecimal shareAmount = calculator.calculateShare(this, device, amount);
             totalAmount = totalAmount.add(shareAmount);
@@ -129,7 +145,7 @@ public class Room extends Property {
     public void generateManageFee(List<BillItem> billItems) {
         Community community = getCommunity();
         String type = community.getManageFeeType();
-        IManageFeeCalculator calculator = CalcutorFactory.getManageFeeCalc(type);
+        IManageFeeCalculator calculator = CalculatorFactory.getCalculator(type);
         BigDecimal amount = calculator.calculate(this);
         BillItem billItem = new BillItem();
         billItem.setName(MANAGE);
@@ -147,7 +163,7 @@ public class Room extends Property {
     public void generateGarbageFee(List<BillItem> billItems) {
         Community community = getCommunity();
         String type = community.getGarbageFeeType();
-        IGarbageFeeCalculator calculator = CalcutorFactory.getGarbageFeeCalc(type);
+        IGarbageFeeCalculator calculator = CalculatorFactory.getCalculator(type);
         BigDecimal amount = calculator.calculate(this);
         BillItem billItem = new BillItem();
         billItem.setName(GARBAGE);
@@ -231,12 +247,11 @@ public class Room extends Property {
     }
 
     public void setOwner(Owner owner) {
-        if (owner == null) {
+        if (this.owner == null) {
             checkInRoom();
         }
         this.owner = owner;
     }
-    //endregion
 
     private void registerRoom(Double area) {
         Property[] properties = getProperties();
@@ -251,15 +266,6 @@ public class Room extends Property {
             property.checkIn(houseArea);
         }
     }
-
-    //region Constants
-    /**
-     * 费用类型字符串：公摊、物业管理费、垃圾管理费
-     */
-    public static final String SHARE = "公摊";
-    public static final String MANAGE = "物业管理费";
-    public static final String GARBAGE = "垃圾管理费";
-    public static final String PUBFUND = "公维金";
     //endregion
 
 }

@@ -13,10 +13,10 @@ public interface IShareCalculator {
     /**
      * 计算公摊费用
      *
-     * @param room
-     * @param device
-     * @param amount
-     * @return
+     * @param room 房间
+     * @param device 设备
+     * @param amount 总费用
+     * @return 分摊费用
      */
     public BigDecimal calculateShare(Room room, Device device, BigDecimal amount);
 

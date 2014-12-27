@@ -2,11 +2,11 @@ package cn.edu.xmu.comm.entity;
 
 import cn.edu.xmu.comm.commons.exception.DifferentCommunityException;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 业主实体
@@ -29,21 +29,22 @@ public class Owner extends User {
     /**
      * 拥有的房间列表
      */
-    @OneToMany(targetEntity = Room.class, mappedBy = "owner")
-    private List<Room> roomList;
+    @OneToMany(targetEntity = Room.class, mappedBy = "owner",
+            cascade = {CascadeType.MERGE})
+    private Set<Room> roomList = new HashSet<Room>();
 
     /**
      * 拥有的车辆列表
      */
     @OneToMany(targetEntity = Car.class, mappedBy = "owner")
-    private List<Car> carList;
+    private Set<Car> carList = new HashSet<Car>();
 
     /**
      * 未支付的账单项列表
      * （注意：公维金是单独交的，但是一起算，交到不同的账户。）
      */
     @OneToMany(targetEntity = BillItem.class, mappedBy = "owner")
-    private List<BillItem> unpaidBills;
+    private List<BillItem> unpaidBills = new ArrayList<BillItem>();
     //endregion
 
     Owner() {
@@ -66,6 +67,8 @@ public class Owner extends User {
      * 添加房间
      *
      * @param room 要添加的房间
+     * @throws DifferentCommunityException 小区不同
+     * @see DifferentCommunityException
      */
     public void addRoom(Room room) throws DifferentCommunityException {
         if (community != null && !community.equals(room.getCommunity())) {
@@ -80,6 +83,8 @@ public class Owner extends User {
      * 批量添加房间
      *
      * @param rooms 房间列表
+     * @throws DifferentCommunityException 小区不同
+     * @see DifferentCommunityException
      */
     public void addRoomBatch(List<Room> rooms) throws DifferentCommunityException {
         for (Room room : rooms) {
@@ -117,19 +122,19 @@ public class Owner extends User {
         this.community = community;
     }
 
-    public List<Room> getRoomList() {
+    public Set<Room> getRoomList() {
         return roomList;
     }
 
-    public void setRoomList(List<Room> roomList) {
+    public void setRoomList(Set<Room> roomList) {
         this.roomList = roomList;
     }
 
-    public List<Car> getCarList() {
+    public Set<Car> getCarList() {
         return carList;
     }
 
-    public void setCarList(List<Car> carList) {
+    public void setCarList(Set<Car> carList) {
         this.carList = carList;
     }
 

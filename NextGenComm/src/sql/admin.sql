@@ -12,7 +12,6 @@ CREATE TABLE IF NOT EXISTS user (
   `updateDate` DATE             DEFAULT NULL,
   `locked`     BIT(1)           DEFAULT NULL,
   `name`       VARCHAR(255)     DEFAULT NULL,
-  `type`       VARCHAR(255)     DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UK_jreodf78a7pl5qidfh43axdfb` (`username`)
 )
@@ -22,6 +21,6 @@ CREATE TABLE IF NOT EXISTS user (
 #插入admin
 INSERT
 INTO
-  user (username, password, salt, type)
+  user (username, password, salt, locked)
 VALUES ('admin', '3b6e389b430bd8255156136905a1259c',
-        '661205464b49a25295c592526f12191e', 'admin');
+        '661205464b49a25295c592526f12191e', FALSE);
