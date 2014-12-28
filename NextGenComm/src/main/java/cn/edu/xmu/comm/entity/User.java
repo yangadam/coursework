@@ -79,7 +79,17 @@ public class User extends DataEntity {
      */
     @Transient
     private String classType;
+
+    User() {
+    }
+
+    public User(String username, String password, String name) {
+        this.username = username;
+        this.password = password;
+        this.name = name;
+    }
     //endregion
+
 
     /**
      * 判断用户的类型

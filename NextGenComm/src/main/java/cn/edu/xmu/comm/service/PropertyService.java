@@ -1,14 +1,13 @@
 package cn.edu.xmu.comm.service;
 
+import cn.edu.xmu.comm.commons.security.SecurityUtil;
 import cn.edu.xmu.comm.commons.service.BaseService;
-import cn.edu.xmu.comm.dao.BuildingDAO;
-import cn.edu.xmu.comm.dao.CommunityDAO;
-import cn.edu.xmu.comm.dao.FloorDAO;
-import cn.edu.xmu.comm.dao.RoomDAO;
+import cn.edu.xmu.comm.dao.*;
 import cn.edu.xmu.comm.entity.Building;
 import cn.edu.xmu.comm.entity.Community;
 import cn.edu.xmu.comm.entity.Floor;
 import cn.edu.xmu.comm.entity.Room;
+import cn.edu.xmu.comm.entity.Owner;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,15 +36,19 @@ public class PropertyService extends BaseService {
     @Resource
     private RoomDAO roomDAO;
 
+    @Resource
+    private OwnerDAO ownerDAO;
+
     /**
      * 添加小区
      *
      * @param name 小区
      */
     @Transactional(readOnly = false)
-    public void addCommunity(String name) {
+    public Community addCommunity(String name) {
         Community community = new Community(name);
         communityDAO.persist(community);
+        return community;
     }
 
 
@@ -56,9 +59,10 @@ public class PropertyService extends BaseService {
      * @param community 所属小区
      */
     @Transactional(readOnly = false)
-    public void addBuilding(Integer no, Community community) {
+    public Building addBuilding(Integer no, Community community) {
         Building building = new Building(no, community);
         buildingDAO.persist(building);
+        return building;
     }
 
     /**
@@ -69,9 +73,10 @@ public class PropertyService extends BaseService {
      * @param community 所属小区
      */
     @Transactional(readOnly = false)
-    public void addBuilding(Integer no, String name, Community community) {
+    public Building addBuilding(Integer no, String name, Community community) {
         Building building = new Building(no, name, community);
         buildingDAO.persist(building);
+        return building;
     }
 
     /**
@@ -95,9 +100,10 @@ public class PropertyService extends BaseService {
      * @param building 所属楼宇
      */
     @Transactional(readOnly = false)
-    public void addFloor(Integer no, Building building) {
+    public Floor addFloor(Integer no, Building building) {
         Floor floor = new Floor(no, building);
         floorDAO.persist(floor);
+        return floor;
     }
 
     /**
@@ -122,12 +128,13 @@ public class PropertyService extends BaseService {
      * @param floor 所属楼层
      */
     @Transactional(readOnly = false)
-    public void addRoom(String no, Double area, Floor floor) {
+    public Room addRoom(String no, Double area, Floor floor) {
         Room room = new Room(no, area, floor);
         roomDAO.persist(room);
         floorDAO.merge(room.getFloor());
         buildingDAO.merge(room.getBuilding());
         communityDAO.merge(room.getCommunity());
+        return room;
     }
 
     /**
@@ -197,4 +204,47 @@ public class PropertyService extends BaseService {
         return roomDAO.getByNo(no, floor);
     }
 
+    /**
+     * 依据id获得某业主
+     * @param name 业主姓名
+     * @return 单个业主
+     */
+    public Owner getOwnerByName(String name) {
+        return ownerDAO.getById(name);
+    }
+
+    /**
+     * 添加业主,并指定小区
+     *
+     * @param username  用户名
+     * @param password  密码
+     * @param name      姓名
+     * @param community 所属小区
+     * @return 添加的业主
+     */
+    @Transactional(readOnly = false)
+    public Owner addOwner(String username, String password, String name, Community community) {
+        Owner owner = new Owner(username, password, name, community);
+        SecurityUtil.encryptUser(owner);
+        ownerDAO.persist(owner);
+        return owner;
+    }
+
+    /**
+     * 添加业主，并指定房间
+     *
+     * @param username 用户名
+     * @param password 密码
+     * @param name     姓名
+     * @param room     房间
+     * @return 添加的业主
+     */
+    @Transactional(readOnly = false)
+    public Owner addOwner(String username, String password, String name, Room room) {
+        Owner owner = new Owner(username, password, name, room);
+        SecurityUtil.encryptUser(owner);
+        ownerDAO.persist(owner);
+        roomDAO.merge(room);
+        return owner;
+    }
 }
