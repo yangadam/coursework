@@ -58,6 +58,16 @@ public class Floor extends Property {
         building.addFloor(this);
     }
 
+    @Override
+    public Property[] getParents() {
+        return new Property[]{getBuilding(), getCommunity()};
+    }
+
+    @Override
+    public Property[] getThisAndParents() {
+        return new Property[]{this, getBuilding(), getCommunity()};
+    }
+
     /**
      * 添加房间
      *
@@ -66,18 +76,6 @@ public class Floor extends Property {
     public void addRoom(Room room) {
         room.setFloor(this);
         roomList.add(room);
-    }
-
-    /**
-     * 批量添加房间
-     *
-     * @param rooms 房间列表
-     */
-    public void addRooms(List<Room> rooms) {
-        for (Room room : rooms) {
-            room.setFloor(this);
-        }
-        roomList.addAll(rooms);
     }
 
     /**
@@ -112,6 +110,7 @@ public class Floor extends Property {
         this.building = building;
     }
 
+    @Override
     public Community getCommunity() {
         return building.getCommunity();
     }

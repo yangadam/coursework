@@ -19,92 +19,77 @@
     <!-- Struts处理的扩展名 -->
     <constant name="struts.action.extension" value="do"/>
 
-    <package name="default" extends="struts-default">
+    <package name="default" extends="json-default">
 
         <global-results>
-            <result name="login">/WEB-INF/jsp/login.jsp</result>
-            <result name="error">/WEB-INF/jsp/error/error.jsp</result>
+            <result name="login" type="redirect">login.do</result>
+            <result name="admin" type="redirect">admin.do</result>
         </global-results>
+
+        <action name="rememberMeLogin" class="remLoginAction">
+            <result>login.do</result>
+        </action>
 
         <action name="login">
             <result>/WEB-INF/jsp/login.jsp</result>
         </action>
 
-        <action name="dologin" class="loginAction">
-            <result name="input" type="redirectAction">login</result>
-            <result name="admin" type="redirectAction">/admin/home</result>
+        <action name="doLogin" class="loginAction">
+            <result name="input">login.do</result>
         </action>
 
-        <action name="test" class="testAction">
-            <result>/WEB-INF/jsp/test/test.jsp</result>
+        <action name="logout" class="logoutAction">
+            <result>login.do</result>
+        </action>
+
+        <action name="admin">
+            <result>/WEB-INF/jsp/admin/home.jsp</result>
         </action>
 
     </package>
 
     <package name="admin" namespace="/admin" extends="json-default">
 
-        <global-results>
-            <result name="login">/WEB-INF/jsp/login.jsp</result>
-            <result name="error">/WEB-INF/jsp/error/error.jsp</result>
-        </global-results>
-
-        <action name="home">
-            <result>/WEB-INF/jsp/admin/home.jsp</result>
+        <action name="community">
+            <result>/WEB-INF/jsp/admin/comm.jsp</result>
         </action>
 
-        <action name="commList">
-            <result>/WEB-INF/jsp/commList.jsp</result>
-        </action>
-
-        <action name="commAdd">
-            <result>/WEB-INF/jsp/commAdd.jsp</result>
-        </action>
-
-        <action name="doCommAdd" class="commListAction" method="add">
-            <result name="input">doCommAdd.do</result>
-            <result type="redirect">commList.do</result>
-        </action>
-
-        <action name="commEdit">
-            <result>/WEB-INF/jsp/commEdit.jsp</result>
-        </action>
-
-        <action name="buildingList">
-            <result>/WEB-INF/jsp/buildingList.jsp</result>
-        </action>
-
-
-    </package>
-
-    <package name="json" namespace="/json" extends="json-default">
-        <action name="commListData" class="commListAction">
+        <action name="listComm" class="communityAction" method="list">
             <result type="json">
+                <param name="root">data</param>
+                <param name="excludeNullProperties">true</param>
             </result>
         </action>
 
-        <action name="commlist" class="communityList">
-            <result>/WEB-INF/jsp/admin/commList.jsp</result>
+        <action name="addComm" class="communityAction" method="add">
+            <result type="redirect">community.do</result>
         </action>
 
-        <action name="commform" class="communityForm">
-            <result>/WEB-INF/jsp/admin/commForm.jsp</result>
-            <result name="input">/WEB-INF/jsp/admin/commList.jsp</result>
+        <action name="delComm" class="communityAction" method="delete">
+            <result type="redirect">community.do</result>
         </action>
 
-        <!--<action name="addComm" class="communityAction" method="add">-->
-        <!--<result type="chain">listComm</result>-->
-        <!--</action>-->
+        <action name="building" class="buildingAction">
+            <result>/WEB-INF/jsp/admin/build.jsp</result>
+        </action>
 
         <action name="listBuild" class="buildingAction" method="list">
-            <result>/WEB-INF/jsp/admin/build.jsp</result>
-            <result name="input">/WEB-INF/jsp/admin/build.jsp</result>
+            <result type="json">
+                <param name="root">data</param>
+                <param name="excludeNullProperties">true</param>
+            </result>
         </action>
 
         <action name="addBuild" class="buildingAction" method="add">
-            <!--<interceptor-ref name="token"/>
-            <result name="invalid.token">/WEB-INF/jsp/admin/build.jsp</result>-->
-            <result name="input">/WEB-INF/jsp/admin/build.jsp</result>
-            <result type="chain">listBuild</result>
+            <result type="redirect">building.do</result>
+        </action>
+
+        <action name="addBuildBatch" class="buildingAction" method="addBatch">
+            <result type="redirect">building.do</result>
+        </action>
+
+        <action name="delBuild" class="buildingAction" method="delete">
+            <result type="redirect">building.do</result>
         </action>
 
     </package>

@@ -75,12 +75,27 @@ public class Room extends Property {
      * @param floor     所属楼层
      */
     public Room(String no, Double houseArea, Floor floor) {
-        super();
+        super(houseArea);
         this.no = no;
         this.fullName = floor.getBuilding().getName() + this.no;
         this.unityCode = floor.unityCode.concat("R").concat(no);
         floor.addRoom(this);
-        registerRoom(houseArea);
+        registerRoom();
+    }
+
+    @Override
+    public Property[] getParents() {
+        return new Property[]{getFloor(), getBuilding(), getCommunity()};
+    }
+
+    @Override
+    public Property[] getThisAndParents() {
+        return new Property[]{this, getFloor(), getBuilding(), getCommunity()};
+    }
+
+    @Override
+    public void preDelete() {
+        floor.preDelete();
     }
 
     //region Public Methods
@@ -234,12 +249,9 @@ public class Room extends Property {
         return floor.getBuilding();
     }
 
+    @Override
     public Community getCommunity() {
         return getBuilding().getCommunity();
-    }
-
-    public Property[] getProperties() {
-        return new Property[]{this, getFloor(), floor.getBuilding(), getCommunity()};
     }
 
     public Owner getOwner() {
@@ -252,20 +264,20 @@ public class Room extends Property {
         }
         this.owner = owner;
     }
+    //endregion
 
-    private void registerRoom(Double area) {
-        Property[] properties = getProperties();
-        for (Property property : properties) {
-            property.register(area);
+    private void registerRoom() {
+        for (Property property : getParents()) {
+            property.register(this);
         }
     }
 
     private void checkInRoom() {
-        Property[] properties = getProperties();
-        for (Property property : properties) {
-            property.checkIn(houseArea);
+        usedHouseCount++;
+        usedHouseArea = houseArea;
+        for (Property property : getParents()) {
+            property.checkIn(this);
         }
     }
-    //endregion
 
 }

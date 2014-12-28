@@ -7,10 +7,7 @@ import org.hibernate.SessionFactory;
 import javax.annotation.Resource;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * DAO支持类的实现
@@ -52,7 +49,7 @@ public class BaseDAO<T, I extends Serializable> {
     }
 
     /**
-     * 清楚缓存数据
+     * 清除缓存数据
      */
     public void clear() {
         currentSession().clear();
@@ -70,12 +67,44 @@ public class BaseDAO<T, I extends Serializable> {
     }
 
     /**
+     * 持久化实体对象列表，立即生成SQL语句
+     *
+     * @param entities 实体对象列表
+     */
+    public List<I> save(List<T> entities) {
+        List<I> ids = new ArrayList<I>();
+        for (int i = 0; i < entities.size(); i++) {
+            ids.add(save(entities.get(i)));
+            if (i % 20 == 0) {
+                currentSession().flush();
+                currentSession().clear();
+            }
+        }
+        return ids;
+    }
+
+    /**
      * 持久化实体对象，会话结束时生成SQL语句
      *
      * @param entity 实体对象
      */
     public void persist(T entity) {
         currentSession().persist(entity);
+    }
+
+    /**
+     * 持久化实体对象列表，立即生成SQL语句
+     *
+     * @param entities 实体对象列表
+     */
+    public void persist(List<T> entities) {
+        for (int i = 0; i < entities.size(); i++) {
+            persist(entities.get(i));
+            if (i % 20 == 0) {
+                currentSession().flush();
+                currentSession().clear();
+            }
+        }
     }
 
     /**
@@ -112,6 +141,16 @@ public class BaseDAO<T, I extends Serializable> {
      */
     public void delete(T entity) {
         currentSession().delete(entity);
+    }
+
+    /**
+     * 通过id删除实体对象
+     *
+     * @param id id
+     */
+    public void delete(I id) {
+        String ql = "delete from " + clazzName + " t where t.id = :p1";
+        createQuery(ql, new Parameter(id)).executeUpdate();
     }
 
     /**

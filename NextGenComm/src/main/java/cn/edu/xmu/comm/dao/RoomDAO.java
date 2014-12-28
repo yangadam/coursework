@@ -27,7 +27,8 @@ public class RoomDAO extends BaseDAO<Room, Integer> {
      * @return 房间
      */
     public Room getByNo(String no, Floor floor) {
-        return getByQL("select r from Room r where r.floor = :p1 and r.no = :p2", new Parameter(floor, no));
+        String ql = "select r from Room r where r.floor = :p1 and r.no = :p2";
+        return getByQL(ql, new Parameter(floor, no));
     }
 
     /**
@@ -37,7 +38,8 @@ public class RoomDAO extends BaseDAO<Room, Integer> {
      * @return 房间列表
      */
     public List<Room> getAll(Community community) {
-        return searchByQL("select r from Room r where r.floor.building.community = :p1", new Parameter(community));
+        String ql = "select r from Room r where r.floor.building.community = :p1";
+        return searchByQL(ql, new Parameter(community));
     }
 
 }

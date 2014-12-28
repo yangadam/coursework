@@ -1,7 +1,7 @@
 package cn.edu.xmu.comm.entity;
 
 import cn.edu.xmu.comm.commons.persistence.DataEntity;
-import cn.edu.xmu.comm.commons.security.SecurityUtil;
+import cn.edu.xmu.comm.commons.utils.SecurityUtils;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -117,7 +117,7 @@ public class User extends DataEntity {
      * @return 验证结果
      */
     public Boolean checkPassword(String password) {
-        String encryptPwd = SecurityUtil.encrypt(password, getCredentialsSalt());
+        String encryptPwd = SecurityUtils.encrypt(password, getCredentialsSalt());
         return encryptPwd.equals(this.password);
     }
 

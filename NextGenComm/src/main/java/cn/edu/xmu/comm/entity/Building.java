@@ -78,6 +78,17 @@ public class Building extends Property {
     }
     //endregion
 
+
+    @Override
+    public Property[] getParents() {
+        return new Property[]{getCommunity()};
+    }
+
+    @Override
+    public Property[] getThisAndParents() {
+        return new Property[]{this, getCommunity()};
+    }
+
     /**
      * 添加楼层
      *
@@ -86,18 +97,6 @@ public class Building extends Property {
     public void addFloor(Floor floor) {
         floor.setBuilding(this);
         floorList.add(floor);
-    }
-
-    /**
-     * 批量添加楼层
-     *
-     * @param floors 楼层列表
-     */
-    public void addFloors(List<Floor> floors) {
-        for (Floor floor : floors) {
-            floor.setBuilding(this);
-        }
-        floorList.addAll(floors);
     }
 
     /**
@@ -132,6 +131,7 @@ public class Building extends Property {
         this.name = name;
     }
 
+    @Override
     public Community getCommunity() {
         return community;
     }

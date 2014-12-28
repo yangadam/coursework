@@ -2,8 +2,8 @@
         "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
         "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
-<web-app xmlns="http://java.sun.com/xml/ns/javaee"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://java.sun.com/xml/ns/javaee"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
          http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          id="WebApp_ID" version="3.0">
@@ -70,17 +70,5 @@
     </welcome-file-list>
 
     <!-- 错误页面 -->
-    <error-page>
-        <exception-type>java.lang.Throwable</exception-type>
-        <location>/WEB-INF/jsp/error/exceptionPage.jsp</location>
-    </error-page>
-    <error-page>
-        <error-code>403</error-code>
-        <location>/WEB-INF/jsp/error/error403.jsp</location>
-    </error-page>
-    <error-page>
-        <error-code>404</error-code>
-        <location>/WEB-INF/jsp/error/error404.jsp</location>
-    </error-page>
 
 </web-app>

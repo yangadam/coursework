@@ -57,39 +57,39 @@ public class PropertyServiceTest extends TestCase {
 
     @Test
     public void testAddBuilding() throws Exception {
-        Community community = propertyService.getCommunityByName("五缘公寓");
-        propertyService.addBuilding(1, community);
+        Community community = propertyService.getCommunity("五缘公寓");
+//        propertyService.addBuilding(1, community);
     }
 
     @Test
     public void testAddBuilding1() throws Exception {
-        Community community = propertyService.getCommunityByName("五缘公寓");
+        Community community = propertyService.getCommunity("五缘公寓");
         propertyService.addBuilding(2, "二号楼", community);
     }
 
     @Test
     public void testAddBuildingBatch() throws Exception {
-        Community community = propertyService.getCommunityByName("五缘公寓");
-        propertyService.addBuildingBatch(3, 14, community);
+        Community community = propertyService.getCommunity("五缘公寓");
+        propertyService.addBuilding(3, 14, community);
     }
 
     @Test
     public void testAddFloor() throws Exception {
-        Community community = propertyService.getCommunityByName("五缘公寓");
+        Community community = propertyService.getCommunity("五缘公寓");
         Building building = propertyService.getBuildingByNo(1, community);
         propertyService.addFloor(1, building);
     }
 
     @Test
     public void testAddFloorBatch() throws Exception {
-        Community community = propertyService.getCommunityByName("五缘公寓");
+        Community community = propertyService.getCommunity("五缘公寓");
         Building building = propertyService.getBuildingByNo(1, community);
         propertyService.addFloorBatch(2, 10, building);
     }
 
     @Test
     public void testAddRoom() throws Exception {
-        Community community = propertyService.getCommunityByName("五缘公寓");
+        Community community = propertyService.getCommunity("五缘公寓");
         Building building = propertyService.getBuildingByNo(1, community);
         Floor floor = propertyService.getFloorByNo(1, building);
         propertyService.addRoom("101", 100.0, floor);
@@ -97,7 +97,7 @@ public class PropertyServiceTest extends TestCase {
 
     @Test
     public void testAddRoomBatch() throws Exception {
-        Community community = propertyService.getCommunityByName("五缘公寓");
+        Community community = propertyService.getCommunity("五缘公寓");
         Building building = propertyService.getBuildingByNo(1, community);
         Floor floor = propertyService.getFloorByNo(1, building);
         propertyService.addRoomBatch(102, 110, 100.0, floor);
@@ -105,7 +105,7 @@ public class PropertyServiceTest extends TestCase {
 
     @Test
     public void testLazyLoad() {
-        Community community = propertyService.getCommunityByName("五缘公寓");
+        Community community = propertyService.getCommunity("五缘公寓");
         Building building = propertyService.getBuildingByNo(1, community);
         Floor floor = propertyService.getFloorByNo(1, building);
         for (Room room : floor.getRoomList()) {
@@ -115,7 +115,7 @@ public class PropertyServiceTest extends TestCase {
 
     @Test
     public void testAddOwner() {
-        Community community = propertyService.getCommunityByName("五缘公寓");
+        Community community = propertyService.getCommunity("五缘公寓");
         Building building = propertyService.getBuildingByNo(1, community);
         Floor floor = propertyService.getFloorByNo(1, building);
         Room room1 = propertyService.getRoomByNo("101", floor);

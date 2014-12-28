@@ -2,14 +2,15 @@ package cn.edu.xmu.comm.action;
 
 import cn.edu.xmu.comm.commons.exception.PasswordIncorrectException;
 import cn.edu.xmu.comm.commons.exception.UserNotFoundException;
+import cn.edu.xmu.comm.commons.utils.CookieUtils;
 import cn.edu.xmu.comm.entity.User;
 import cn.edu.xmu.comm.service.SystemService;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+import org.apache.struts2.ServletActionContext;
 import org.springframework.stereotype.Controller;
 
 import javax.annotation.Resource;
-import java.util.Map;
 
 /**
  * 登录Action
@@ -23,16 +24,13 @@ public class LoginAction extends ActionSupport {
     @Resource
     private SystemService systemService;
 
-    private String username;
-
-    private String password;
-
-    private String rememberMe;
+    private User user;
+    private String username;//用户名
+    private String password;//密码
+    private Boolean rememberMe;//是否记住我
 
     @Override
     public String execute() {
-
-        User user;
         try {
             user = systemService.login(username, password);
         } catch (UserNotFoundException e) {
@@ -42,12 +40,16 @@ public class LoginAction extends ActionSupport {
             addActionError("密码错误");
             return LOGIN;
         }
+        ActionContext.getContext().getSession().put("USER", user);
+        checkRememberMe();
+        return user.getType();
+    }
 
-        Map<String, Object> session = ActionContext.getContext().getSession();
-        session.put("USER", user);
-
-        String type = user.getType();
-        return type;
+    private void checkRememberMe() {
+        if (rememberMe) {
+            String token = systemService.makeRememberMeToken(user);
+            CookieUtils.setCookie(ServletActionContext.getResponse(), "COMM", token);
+        }
     }
 
     public String getUsername() {
@@ -66,11 +68,11 @@ public class LoginAction extends ActionSupport {
         this.password = password;
     }
 
-    public String getRememberMe() {
+    public Boolean getRememberMe() {
         return rememberMe;
     }
 
-    public void setRememberMe(String rememberMe) {
+    public void setRememberMe(Boolean rememberMe) {
         this.rememberMe = rememberMe;
     }
 

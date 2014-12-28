@@ -2,7 +2,7 @@ package cn.edu.xmu.comm.service;
 
 import cn.edu.xmu.comm.commons.exception.PasswordIncorrectException;
 import cn.edu.xmu.comm.commons.exception.UserNotFoundException;
-import cn.edu.xmu.comm.commons.security.SecurityUtil;
+import cn.edu.xmu.comm.commons.utils.SecurityUtils;
 import cn.edu.xmu.comm.dao.TokenDAO;
 import cn.edu.xmu.comm.dao.UserDAO;
 import cn.edu.xmu.comm.entity.Token;
@@ -37,7 +37,7 @@ public class SystemService {
      */
     public User rememberMeLogin(String tokenStr) {
         Token token = tokenDAO.get(tokenStr);
-        return userDAO.get(token.getId());
+        return token == null ? null : userDAO.get(token.getId());
     }
 
     /**
@@ -51,14 +51,15 @@ public class SystemService {
      * @see UserNotFoundException
      * @see PasswordIncorrectException
      */
+    @Transactional(readOnly = false)
     public User login(String username, String password)
             throws UserNotFoundException, PasswordIncorrectException {
         User user = userDAO.getByUsername(username);
         if (user == null) {
             throw new UserNotFoundException("用户名不正确！");
         }
+        clearRememberMeToken(user.getId());
         if (Boolean.FALSE.equals(user.checkPassword(password))) {
-            clearRememberMeToken(user.getId());
             throw new PasswordIncorrectException("密码不正确");
         }
         return user;
@@ -72,10 +73,20 @@ public class SystemService {
      */
     @Transactional(readOnly = false)
     public String makeRememberMeToken(User user) {
-        String tokenStr = SecurityUtil.generateSalt(36);
+        String tokenStr = SecurityUtils.generateSalt(36);
         Token token = new Token(tokenStr, user.getId());
         tokenDAO.persist(token);
         return token.getToken();
+    }
+
+    /**
+     * 用户登出
+     *
+     * @param user 用户
+     */
+    @Transactional(readOnly = false)
+    public void logout(User user) {
+        clearRememberMeToken(user.getId());
     }
 
     /**
@@ -85,5 +96,6 @@ public class SystemService {
     private int clearRememberMeToken(Integer uid) {
         return tokenDAO.deleteByUid(uid);
     }
+
 
 }

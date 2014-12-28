@@ -24,7 +24,8 @@ public class BuildingDAO extends BaseDAO<Building, Integer> {
      * @return 楼宇
      */
     public Building getByNo(Integer no, Community community) {
-        return getByQL("select b from Building b where b.community = :p1 and b.no = :p2", new Parameter(community, no));
+        String ql = "select b from Building b where b.community = :p1 and b.no = :p2";
+        return getByQL(ql, new Parameter(community, no));
     }
 
 }

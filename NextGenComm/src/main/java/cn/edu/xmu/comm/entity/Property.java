@@ -35,7 +35,8 @@ public abstract class Property extends DataEntity {
     /**
      * 设备列表
      */
-    @OneToMany(targetEntity = Device.class, mappedBy = "property")
+    @OneToMany(targetEntity = Device.class, mappedBy = "property",
+            cascade = CascadeType.ALL)
     protected Set<Device> deviceList = new HashSet<Device>();
 
     /**
@@ -69,12 +70,75 @@ public abstract class Property extends DataEntity {
         usedHouseArea = 0.0;
     }
 
+    protected Property(Double area) {
+        houseCount = 1;
+        usedHouseCount = 0;
+        houseArea = area;
+        usedHouseArea = 0.0;
+    }
+
     /**
      * 获得所属小区
      *
      * @return 小区
      */
     public abstract Community getCommunity();
+
+    /**
+     * 获取房产数组（不包括本身）
+     *
+     * @return 房产数组
+     */
+    public abstract Property[] getParents();
+
+    /**
+     * 获取房产数组（包括本身）
+     *
+     * @return 房产数组
+     */
+    public abstract Property[] getThisAndParents();
+
+    /**
+     * 注册
+     *
+     * @param property 房产
+     */
+    protected void register(Property property) {
+        houseCount += property.getHouseCount();
+        houseArea += property.getHouseArea();
+    }
+
+    /**
+     * 入住
+     *
+     * @param property 房产
+     */
+    protected void checkIn(Property property) {
+        usedHouseCount += property.getHouseCount();
+        usedHouseArea += property.getUsedHouseArea();
+    }
+
+    /**
+     * 消除
+     *
+     * @param property 房产
+     */
+    private void unregister(Property property) {
+        houseCount -= property.getHouseCount();
+        houseArea -= property.getHouseArea();
+        usedHouseCount -= property.getUsedHouseCount();
+        usedHouseArea -= property.getUsedHouseArea();
+    }
+
+    /**
+     * 删除之前
+     */
+    @PreRemove
+    public void preDelete() {
+        for (Property property : getParents()) {
+            property.unregister(this);
+        }
+    }
 
     /**
      * 添加设备
@@ -143,15 +207,5 @@ public abstract class Property extends DataEntity {
         this.usedHouseArea = usedHouseArea;
     }
     //endregion
-
-    protected void register(Double area) {
-        houseCount++;
-        houseArea += area;
-    }
-
-    protected void checkIn(Double area) {
-        usedHouseCount++;
-        usedHouseArea += area;
-    }
 
 }

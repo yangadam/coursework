@@ -6,32 +6,33 @@ import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Created by Yiu-Wah WONG on 2014/12/18.
+ * AOP权限拦截
+ *
+ * @author Mengmeng Yang
+ * @version 12/18/2014 0027
  */
 @Aspect
 @Component
 public class Logging {
 
+    private static Logger logger = LoggerFactory.getLogger(Logging.class);
+
     @Around("execution(* cn.edu.xmu.comm.service.*.*(..))")
     public Object processTx(ProceedingJoinPoint jp) throws java.lang.Throwable {
-        Logger logger = LoggerFactory.getLogger(jp.getSignature().getDeclaringType());
         String methodName = jp.getSignature().getName();
-        Transactional annotion = jp.getTarget().getClass().getAnnotation(Transactional.class);
-        System.out.print("Transactional:readOnly" + annotion.readOnly());
         Object[] args = jp.getArgs();
         Object rvt = jp.proceed(args);
         StringBuilder sb = new StringBuilder(methodName).append("(");
         for (Object arg : args) {
-            sb.append(arg.getClass().getName()).append(",");
+            sb.append(arg.getClass().getSimpleName()).append(",");
         }
         if (rvt == null) {
             logger.info(sb.append(")").toString());
             return null;
         }
-        logger.info(sb.append("):").append(rvt.getClass().getName()).toString());
+        logger.info(sb.append("):").append(rvt.getClass().getSimpleName()).toString());
         return rvt;
     }
 

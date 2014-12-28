@@ -3,7 +3,6 @@ package cn.edu.xmu.comm.dao;
 import cn.edu.xmu.comm.commons.persistence.BaseDAO;
 import cn.edu.xmu.comm.commons.persistence.Parameter;
 import cn.edu.xmu.comm.entity.Token;
-import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -22,8 +21,8 @@ public class TokenDAO extends BaseDAO<Token, String> {
      * @return ？
      */
     public int deleteByUid(Integer uid) {
-        Query query = createQuery("delete Token t where t.uid = :p1", new Parameter(uid));
-        return query.executeUpdate();
+        String ql = "delete Token t where t.uid = :p1";
+        return createQuery(ql, new Parameter(uid)).executeUpdate();
     }
 
 }

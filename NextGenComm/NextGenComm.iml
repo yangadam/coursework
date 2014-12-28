@@ -18,9 +18,9 @@
         <configuration>
           <fileset id="s2fileset" name="My Fileset " removed="false">
             <file>file://$MODULE_DIR$/src/main/resources/struts.xml</file>
-            <file>jar://$MAVEN_REPOSITORY$/org/apache/struts/struts2-spring-plugin/2.3.20/struts2-spring-plugin-2.3.20.jar!/struts-plugin.xml</file>
-            <file>jar://$MAVEN_REPOSITORY$/org/apache/struts/struts2-core/2.3.20/struts2-core-2.3.20.jar!/struts-default.xml</file>
-            <file>jar://$MAVEN_REPOSITORY$/org/apache/struts/struts2-json-plugin/2.3.20/struts2-json-plugin-2.3.20.jar!/struts-plugin.xml</file>
+            <file>jar://$M2_REPO$/org/apache/struts/struts2-spring-plugin/2.3.20/struts2-spring-plugin-2.3.20.jar!/struts-plugin.xml</file>
+            <file>jar://$M2_REPO$/org/apache/struts/struts2-core/2.3.20/struts2-core-2.3.20.jar!/struts-default.xml</file>
+            <file>jar://$M2_REPO$/org/apache/struts/struts2-json-plugin/2.3.20/struts2-json-plugin-2.3.20.jar!/struts-plugin.xml</file>
           </fileset>
           <propertiesKeys disabled="false" />
         </configuration>
@@ -46,7 +46,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="javax.json.processing-1.0" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: javax.servlet.jsp:jsp-api:2.2" level="project" />
+    <orderEntry type="library" name="Maven: com.alibaba:fastjson:1.2.3" level="project" />
     <orderEntry type="library" name="Maven: mysql:mysql-connector-java:5.1.34" level="project" />
     <orderEntry type="library" name="Maven: org.apache.struts:struts2-core:2.3.20" level="project" />
     <orderEntry type="library" name="Maven: org.apache.struts.xwork:xwork-core:2.3.20" level="project" />

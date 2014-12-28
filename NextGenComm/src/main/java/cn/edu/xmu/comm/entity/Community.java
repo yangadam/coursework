@@ -96,6 +96,16 @@ public class Community extends Property {
     }
 
     @Override
+    public Property[] getParents() {
+        return new Property[0];
+    }
+
+    @Override
+    public Property[] getThisAndParents() {
+        return new Property[]{this};
+    }
+
+    @Override
     public Community getCommunity() {
         return this;
     }
@@ -108,18 +118,6 @@ public class Community extends Property {
     public void addBuilding(Building building) {
         building.setCommunity(this);
         buildingList.add(building);
-    }
-
-    /**
-     * 批量添加楼宇
-     *
-     * @param buildings 楼宇列表
-     */
-    public void addBuildings(List<Building> buildings) {
-        for (Building building : buildings) {
-            building.setCommunity(this);
-        }
-        this.buildingList.addAll(buildings);
     }
 
     /**
