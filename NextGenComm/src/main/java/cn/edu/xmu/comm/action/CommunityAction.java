@@ -52,7 +52,7 @@ public class CommunityAction extends ActionSupport {
     }
 
     public String delete() {
-        propertyService.delCommunity(commId);
+//        propertyService.delCommunity(commId);
         return SUCCESS;
     }
 

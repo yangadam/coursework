@@ -45,11 +45,10 @@ public class Community extends Property {
     private List<Building> buildingList = new ArrayList<Building>();
 
     /**
-     * 包含的停车位
+     * 包含的停车场
      */
-    @OneToMany(mappedBy = "community", targetEntity = ParkPlace.class,
-            cascade = CascadeType.ALL)
-    private List<ParkPlace> parkingLot = new ArrayList<ParkPlace>();
+    @OneToMany(mappedBy = "community", targetEntity = ParkingLot.class, cascade = CascadeType.ALL)
+    private List<ParkingLot> parkingLotList = new ArrayList<ParkingLot>();
 
     /**
      * 管理的公维金
@@ -110,6 +109,8 @@ public class Community extends Property {
         return this;
     }
 
+
+    //region Public Methods
     /**
      * 添加楼宇
      *
@@ -135,6 +136,22 @@ public class Community extends Property {
         return null;
     }
 
+    /**
+     * 通过停车场类型获取停车场
+     *
+     * @param type 停车场类型
+     * @return parkingLot
+     */
+    public ParkingLot getParkingLot(int type) {
+        for (ParkingLot parkingLot : parkingLotList) {
+            if (parkingLot.getType() == type) {
+                return parkingLot;
+            }
+        }
+        return null;
+    }
+    //endregion
+
     //region Getters and Setters
     public String getName() {
         return name;
@@ -152,12 +169,12 @@ public class Community extends Property {
         this.buildingList = buildingList;
     }
 
-    public List<ParkPlace> getParkingLot() {
-        return parkingLot;
+    public List<ParkingLot> getParkingLotList() {
+        return parkingLotList;
     }
 
-    public void setParkingLot(List<ParkPlace> parkingLot) {
-        this.parkingLot = parkingLot;
+    public void setParkingLotList(List<ParkingLot> parkingLotList) {
+        this.parkingLotList = parkingLotList;
     }
 
     public PublicFund getPublicFund() {

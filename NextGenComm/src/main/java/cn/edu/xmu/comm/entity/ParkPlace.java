@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 
 /**
  * Created by Roger on 2014/12/7 0007.
+ *
  */
 @Entity
 public class ParkPlace {
@@ -18,11 +19,11 @@ public class ParkPlace {
     private Integer id;
 
     /**
-     * 所属社区
+     * 所属停车场
      */
-    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Community.class)
-    @JoinColumn(name = "community_id", nullable = false)
-    private Community community;
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = ParkingLot.class)
+    @JoinColumn(name = "parkinglot_id", nullable = false)
+    private ParkingLot parkingLot;
 
     /**
      * 停车位在小区位置
@@ -44,12 +45,12 @@ public class ParkPlace {
         this.id = id;
     }
 
-    public Community getCommunity() {
-        return community;
+    public ParkingLot getParkingLot() {
+        return parkingLot;
     }
 
-    public void setCommunity(Community community) {
-        this.community = community;
+    public void setParkingLot(ParkingLot parkingLot) {
+        this.parkingLot = parkingLot;
     }
 
     public String getPosition() {
