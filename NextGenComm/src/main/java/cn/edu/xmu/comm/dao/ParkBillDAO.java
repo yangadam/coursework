@@ -4,7 +4,6 @@ import cn.edu.xmu.comm.commons.persistence.BaseDAO;
 import cn.edu.xmu.comm.commons.persistence.Parameter;
 import cn.edu.xmu.comm.entity.Community;
 import cn.edu.xmu.comm.entity.ParkBill;
-import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -28,7 +27,7 @@ public class ParkBillDAO extends BaseDAO<ParkBill, Integer> {
      * 依据社区和车辆号查找未完成的停车账单
      *
      * @param community 社区
-     * @param license 车牌
+     * @param license   车牌
      * @return 指定的停车单
      */
     public ParkBill getUnfinishedParkBill(Community community, String license) {
@@ -40,7 +39,7 @@ public class ParkBillDAO extends BaseDAO<ParkBill, Integer> {
      * 判断一辆车是否在指定小区是否有未完成的停车单
      *
      * @param community 社区
-     * @param license 车牌
+     * @param license   车牌
      * @return true 有 false 无
      */
     public boolean carHasUnfinishBill(Community community, String license) {

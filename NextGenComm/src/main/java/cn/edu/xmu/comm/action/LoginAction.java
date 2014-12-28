@@ -2,17 +2,21 @@ package cn.edu.xmu.comm.action;
 
 import cn.edu.xmu.comm.commons.exception.PasswordIncorrectException;
 import cn.edu.xmu.comm.commons.exception.UserNotFoundException;
+import cn.edu.xmu.comm.commons.utils.CookieUtils;
 import cn.edu.xmu.comm.entity.User;
 import cn.edu.xmu.comm.service.SystemService;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+import org.apache.struts2.ServletActionContext;
 import org.springframework.stereotype.Controller;
 
 import javax.annotation.Resource;
-import java.util.Map;
 
 /**
- * Created by Yummy on 2014/12/14.
+ * 登录Action
+ *
+ * @author Mengmeng Yang
+ * @version 2014-12-14
  */
 @Controller
 public class LoginAction extends ActionSupport {
@@ -20,14 +24,13 @@ public class LoginAction extends ActionSupport {
     @Resource
     private SystemService systemService;
 
-    private String username;
-
-    private String password;
+    private User user;
+    private String username;//用户名
+    private String password;//密码
+    private Boolean rememberMe;//是否记住我
 
     @Override
     public String execute() {
-
-        User user = null;
         try {
             user = systemService.login(username, password);
         } catch (UserNotFoundException e) {
@@ -37,11 +40,16 @@ public class LoginAction extends ActionSupport {
             addActionError("密码错误");
             return LOGIN;
         }
-
-        Map session = ActionContext.getContext().getSession();
-        session.put("USER", user);
-
+        ActionContext.getContext().getSession().put("USER", user);
+        checkRememberMe();
         return user.getType();
+    }
+
+    private void checkRememberMe() {
+        if (rememberMe) {
+            String token = systemService.makeRememberMeToken(user);
+            CookieUtils.setCookie(ServletActionContext.getResponse(), "COMM", token);
+        }
     }
 
     public String getUsername() {
@@ -58,6 +66,14 @@ public class LoginAction extends ActionSupport {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Boolean getRememberMe() {
+        return rememberMe;
+    }
+
+    public void setRememberMe(Boolean rememberMe) {
+        this.rememberMe = rememberMe;
     }
 
 }

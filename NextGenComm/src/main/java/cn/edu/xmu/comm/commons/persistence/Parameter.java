@@ -3,7 +3,10 @@ package cn.edu.xmu.comm.commons.persistence;
 import java.util.HashMap;
 
 /**
- * Created by Roger on 2014/12/8 0008.
+ * 查询参数
+ *
+ * @author Mengmeng Yang
+ * @version 2014-12-8
  */
 public class Parameter extends HashMap<String, Object> {
 

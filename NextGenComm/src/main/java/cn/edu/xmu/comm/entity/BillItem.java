@@ -13,9 +13,12 @@ public class BillItem extends DataEntity {
 
     //region Instance variables
     /**
-     * 账单项状态，0：未支付、1：已支付
+     * 账单项状态，未支付
      */
     public static final int UNPAID = 0;
+    /**
+     * 账单项状态，已支付
+     */
     public static final int PAID = 1;
     /**
      * 主键

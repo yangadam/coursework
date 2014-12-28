@@ -9,7 +9,11 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * Created by Roger on 2014/12/8 0008.
+ * 业主DAO
+ * Created by Roger on 2014/12/8 0009.
+ *
+ * @author Mengmeng Yang
+ * @version 2014-12-8
  */
 @Repository
 public class OwnerDAO extends BaseDAO<Owner, Integer> {
@@ -21,7 +25,8 @@ public class OwnerDAO extends BaseDAO<Owner, Integer> {
      * @return 业主列表
      */
     public List<Owner> getAll(Community community) {
-        return searchByQL("from Owner where community = :p1", new Parameter(community));
+        String ql = "select o from Owner o where o.community = :p1";
+        return searchByQL(ql, new Parameter(community));
     }
 
     /**
@@ -38,7 +43,7 @@ public class OwnerDAO extends BaseDAO<Owner, Integer> {
      * 依据姓名获得某业主
      *
      * @param community 社区
-     * @param name 业主姓名
+     * @param name      业主姓名
      * @return 业主列表
      */
     public List<Owner> getByName(Community community, String name) {

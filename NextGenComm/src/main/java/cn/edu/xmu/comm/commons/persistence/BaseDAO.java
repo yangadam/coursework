@@ -7,17 +7,15 @@ import org.hibernate.SessionFactory;
 import javax.annotation.Resource;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * DAO支持类的实现
  *
- * @param <T>
+ * @param <T> 实体类型参数
+ * @param <I> 实体主键类型参数
+ * @author Mengmeng Yang
  * @version 2014-12-16
- * @Author Mengmeng Yang
  */
 public class BaseDAO<T, I extends Serializable> {
 
@@ -25,10 +23,13 @@ public class BaseDAO<T, I extends Serializable> {
     private SessionFactory sessionFactory;
 
     private Class<T> clazz;
+    private String clazzName;
 
-    public BaseDAO() {
+    @SuppressWarnings("unchecked")
+    protected BaseDAO() {
         ParameterizedType type = (ParameterizedType) this.getClass().getGenericSuperclass();
-        this.clazz = (Class) type.getActualTypeArguments()[0];
+        this.clazz = (Class<T>) type.getActualTypeArguments()[0];
+        this.clazzName = this.clazz.getSimpleName();
     }
 
     /**
@@ -48,7 +49,7 @@ public class BaseDAO<T, I extends Serializable> {
     }
 
     /**
-     * 清楚缓存数据
+     * 清除缓存数据
      */
     public void clear() {
         currentSession().clear();
@@ -57,12 +58,29 @@ public class BaseDAO<T, I extends Serializable> {
     /**
      * 持久化实体对象，立即生成SQL语句
      *
-     * @param entiry 实体对象
+     * @param entity 实体对象
      * @return 实体对象id
      */
     @SuppressWarnings("unchecked")
-    public I save(T entiry) {
-        return (I) currentSession().save(entiry);
+    public I save(T entity) {
+        return (I) currentSession().save(entity);
+    }
+
+    /**
+     * 持久化实体对象列表，立即生成SQL语句
+     *
+     * @param entities 实体对象列表
+     */
+    public List<I> save(List<T> entities) {
+        List<I> ids = new ArrayList<I>();
+        for (int i = 0; i < entities.size(); i++) {
+            ids.add(save(entities.get(i)));
+            if (i % 20 == 0) {
+                currentSession().flush();
+                currentSession().clear();
+            }
+        }
+        return ids;
     }
 
     /**
@@ -72,6 +90,21 @@ public class BaseDAO<T, I extends Serializable> {
      */
     public void persist(T entity) {
         currentSession().persist(entity);
+    }
+
+    /**
+     * 持久化实体对象列表，立即生成SQL语句
+     *
+     * @param entities 实体对象列表
+     */
+    public void persist(List<T> entities) {
+        for (int i = 0; i < entities.size(); i++) {
+            persist(entities.get(i));
+            if (i % 20 == 0) {
+                currentSession().flush();
+                currentSession().clear();
+            }
+        }
     }
 
     /**
@@ -108,6 +141,29 @@ public class BaseDAO<T, I extends Serializable> {
      */
     public void delete(T entity) {
         currentSession().delete(entity);
+    }
+
+    /**
+     * 通过id删除实体对象
+     *
+     * @param id id
+     */
+    public void delete(I id) {
+        String ql = "delete from " + clazzName + " t where t.id = :p1";
+        createQuery(ql, new Parameter(id)).executeUpdate();
+    }
+
+    /**
+     * 查询记录的数量
+     *
+     * @param qlString  查询语句
+     * @param parameter 参数
+     * @return 记录数量
+     */
+    public Long count(String qlString, Parameter parameter) {
+        int beginPos = qlString.toLowerCase().indexOf("from");
+        String countString = "select count(*) ".concat(qlString.substring(beginPos));
+        return (Long) createQuery(countString, parameter).uniqueResult();
     }
 
     /**
@@ -149,7 +205,18 @@ public class BaseDAO<T, I extends Serializable> {
      */
     @SuppressWarnings("unchecked")
     public List<T> getAll() {
-        return (List<T>) currentSession().createCriteria(clazz).list();
+        return searchByQL("from " + clazz.getSimpleName(), new Parameter());
+    }
+
+    /**
+     * 获取所有实体对象（分页）
+     *
+     * @param page 分页对象
+     * @return 分页对象
+     */
+    public Page<T> getAll(Page<T> page) {
+        String ql = "from " + clazz.getSimpleName();
+        return searchByQL(ql, new Parameter(), page);
     }
 
     /**
@@ -159,7 +226,7 @@ public class BaseDAO<T, I extends Serializable> {
      */
     @SuppressWarnings("unchecked")
     public Iterator<T> getAllIterator() {
-        Query query = createQuery("from " + clazz.getSimpleName(), new Parameter());
+        Query query = createQuery("select x from " + clazzName + " x", new Parameter());
         return query.iterate();
     }
 
@@ -190,6 +257,30 @@ public class BaseDAO<T, I extends Serializable> {
     }
 
     /**
+     * 通过QL语句查找
+     *
+     * @param qlString  查询语句
+     * @param parameter 查询参数
+     * @param page      分页对象
+     * @return 分页对象
+     */
+    @SuppressWarnings("unchecked")
+    public Page<T> searchByQL(String qlString, Parameter parameter, Page<T> page) {
+        if (page.getCount() == -1) {
+            page.setCount(count(qlString, new Parameter()));
+        }
+        if (page.isEnable()) {
+            Query query = createQuery(qlString, new Parameter());
+            query.setFirstResult(page.start());
+            query.setMaxResults(page.getPageSize());
+            page.setList(query.list());
+        } else {
+            page.setList(getAll());
+        }
+        return page;
+    }
+
+    /**
      * 通过QL语句查找，返回迭代器
      *
      * @param qlString  查询语句
@@ -207,6 +298,10 @@ public class BaseDAO<T, I extends Serializable> {
 
     /**
      * 创建 QL 查询对象
+     *
+     * @param qlString  查询语句
+     * @param parameter 查询参数
+     * @return 查询对象
      */
     protected Query createQuery(String qlString, Parameter parameter) {
         Query query = currentSession().createQuery(qlString);

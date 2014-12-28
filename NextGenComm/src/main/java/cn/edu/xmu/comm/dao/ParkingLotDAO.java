@@ -3,7 +3,6 @@ package cn.edu.xmu.comm.dao;
 import cn.edu.xmu.comm.commons.persistence.BaseDAO;
 import cn.edu.xmu.comm.commons.persistence.Parameter;
 import cn.edu.xmu.comm.entity.Community;
-import cn.edu.xmu.comm.entity.ParkPlace;
 import cn.edu.xmu.comm.entity.ParkingLot;
 import org.springframework.stereotype.Repository;
 

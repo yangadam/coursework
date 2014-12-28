@@ -1,19 +1,40 @@
 package cn.edu.xmu.comm.entity;
 
 import cn.edu.xmu.comm.commons.persistence.DataEntity;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 /**
+ * 设备类
  * Created by Roger on 2014/12/7 0007.
+ *
+ * @author Mengmeng Yang
+ * @version 12/24/2014 0024
  */
 @Entity
+@DynamicInsert
+@DynamicUpdate
+@Table(
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"no"})
+        }
+)
 public class Device extends DataEntity {
+
+    //region Constants
+    /**
+     * 设备类型
+     */
+    public static final String WATER = "水费";
+    public static final String ELECTRICITY = "电费";
+    //endregion
 
     //region Instance Variables
     /**
@@ -22,57 +43,83 @@ public class Device extends DataEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     /**
      * 设备号
      */
     private String no;
-
+    /**
+     * 所属小区
+     */
+    @ManyToOne(targetEntity = Community.class)
+    @JoinColumn(name = "community_id", nullable = false)
+    private Community community;
     /**
      * 拥有该设备的房产
      */
-    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Property.class)
+    @ManyToOne(targetEntity = Property.class)
     @JoinColumn(name = "property_id", nullable = false)
     private Property property;
-
     /**
      * 读数的列表
      */
-    @OneToMany(fetch = FetchType.EAGER, targetEntity = DeviceVaule.class,
-            cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = DeviceValue.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "device_id", nullable = false)
-    private List<DeviceVaule> values;
-
+    private List<DeviceValue> values = new ArrayList<DeviceValue>();
     /**
      * 类型
-     * <li>{@link #WATER}</li>
-     * <li>{@link #ELECTRICITY}</li>
+     *
+     * @see cn.edu.xmu.comm.entity.Device.DeviceType
      */
-    private String type;
-
+    private DeviceType type;
     /**
-     * 梯度定义
+     * 梯度
      */
-    @ElementCollection
-    @CollectionTable(
-            name = "gradient",
-            joinColumns = @JoinColumn(name = "device_id")
-    )
-    @Column(name = "gradient_value")
-    private Map<BigDecimal, BigDecimal> gradient = new TreeMap<BigDecimal, BigDecimal>();
-
+    @ManyToOne(targetEntity = Gradient.class)
+    @JoinColumn(name = "gradient_id")
+    private Gradient gradient = null;
     /**
      * 公摊类型
      */
     private String shareType;
     //endregion
 
+    Device() {
+    }
+
+    /**
+     * 构造函数（私有表）
+     *  @param no       设备号
+     * @param property 设备所属位置
+     * @param value    初始值
+     * @param type     设备类型
+     */
+    public Device(String no, Property property, BigDecimal value, DeviceType type) {
+        this(no, property, value, type, null);
+    }
+
+    /**
+     * 构造函数（公摊表）
+     *  @param no        设备号
+     * @param property  设备所属位置
+     * @param value     初始值
+     * @param type      设备类型
+     * @param shareType 公摊类型
+     */
+    public Device(String no, Property property, BigDecimal value, DeviceType type, String shareType) {
+        this.no = no;
+        this.type = type;
+        this.shareType = shareType;
+        this.values.add(new DeviceValue(value));
+        this.community = property.getCommunity();
+        property.addDevice(this);
+    }
+
     //region Public Methods;
 
     /**
      * 获取本月用量
      *
-     * @return
+     * @return 用量
      */
     public BigDecimal getUsage() {
         BigDecimal lastValue = values.get(values.size() - 2).getValue();
@@ -83,14 +130,14 @@ public class Device extends DataEntity {
     /**
      * 计算本月费用
      *
-     * @return
+     * @return 费用
      */
     public BigDecimal calculate() {
         BigDecimal totalAmount = BigDecimal.ZERO;
         BigDecimal amount;
         BigDecimal lastValue = BigDecimal.ZERO;
         BigDecimal curValue;
-        Iterator it = gradient.entrySet().iterator();
+        Iterator it = getGradientMap().entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry entry = (Map.Entry) it.next();
             if (getUsage().compareTo((BigDecimal) entry.getKey()) == 1) {
@@ -125,6 +172,14 @@ public class Device extends DataEntity {
         this.no = no;
     }
 
+    public Community getCommunity() {
+        return community;
+    }
+
+    public void setCommunity(Community community) {
+        this.community = community;
+    }
+
     public Property getProperty() {
         return property;
     }
@@ -133,28 +188,32 @@ public class Device extends DataEntity {
         this.property = property;
     }
 
-    public List<DeviceVaule> getValues() {
+    public List<DeviceValue> getValues() {
         return values;
     }
 
-    public void setValues(List<DeviceVaule> values) {
+    public void setValues(List<DeviceValue> values) {
         this.values = values;
     }
 
-    public String getType() {
+    public DeviceType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(DeviceType type) {
         this.type = type;
     }
 
-    public Map<BigDecimal, BigDecimal> getGradient() {
+    public Gradient getGradient() {
         return gradient;
     }
 
-    public void setGradient(Map<BigDecimal, BigDecimal> gradient) {
+    public void setGradient(Gradient gradient) {
         this.gradient = gradient;
+    }
+
+    public Map<Double, BigDecimal> getGradientMap() {
+        return gradient.getGradient();
     }
 
     public String getShareType() {
@@ -166,12 +225,22 @@ public class Device extends DataEntity {
     }
     //endregion
 
-    //region Constants
     /**
      * 设备类型
      */
-    public static final String WATER = "水费";
-    public static final String ELECTRICITY = "电费";
-    //endregion
+    public enum DeviceType {
+        WATER("水表"), ELECTRICITY("电表");
+
+        private String typeName;
+
+        private DeviceType(String typeName) {
+            this.typeName = typeName;
+        }
+
+        @Override
+        public String toString() {
+            return typeName;
+        }
+    }
 
 }

@@ -1,12 +1,8 @@
 package cn.edu.xmu.comm.entity;
 
-import javax.persistence.*;
-
-import cn.edu.xmu.comm.commons.persistence.IntegerComparator;
 import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.Sort;
-import org.hibernate.annotations.SortType;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -18,40 +14,42 @@ import java.util.*;
 public class ParkingLot {
     //region Instance Variables
 
+    /**
+     * 停车场类型，0：临时车位停车场、1：租用车位停车场
+     */
+    public static final int TEMP = 0;
+    public static final int RENT = 1;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     /**
      * 停车场名称
      */
     private String name;
-
     /**
      * 包含的停车位
      */
     @OneToMany(mappedBy = "parkingLot", targetEntity = ParkPlace.class, cascade = CascadeType.ALL)
     private List<ParkPlace> parkPlaces;
-
     /**
      * 所属小区
      */
     @ManyToOne(targetEntity = Community.class, cascade = {CascadeType.MERGE})
     @JoinColumn(name = "community_id", nullable = false)
     private Community community;
-
     /**
      * 停车场类型，0：临时车位停车场、1：租用车位停车场
      * <li>{@link #TEMP}</li>
      * <li>{@link #RENT}</li>
      */
     private int type;
+    //endregion
 
+    //region Public Methods
     /**
      * 停车场收费标准
      */
     private String feeType;
-
     /**
      * 梯度定义
      */
@@ -65,7 +63,7 @@ public class ParkingLot {
     private SortedMap<Integer, BigDecimal> gradient = new TreeMap<Integer, BigDecimal>();
     //endregion
 
-    //region Public Methods
+    //region Getters and Setters
 
     /**
      * 获取停车场的可用车位的大小
@@ -89,23 +87,17 @@ public class ParkingLot {
         Iterator it = gradient.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry entry = (Map.Entry) it.next();
-            if (parkingTime == (Integer) entry.getKey()) {
+            if (parkingTime == entry.getKey()) {
                 parkingFee = (BigDecimal) entry.getValue();
                 break;
-            }
-            else if (parkingTime < (Integer) entry.getKey()) {
+            } else if (parkingTime < (Integer) entry.getKey()) {
                 break;
-            }
-            else {
+            } else {
                 parkingFee = (BigDecimal) entry.getValue();
             }
         }
         return parkingFee;
     }
-    //endregion
-
-    //region Getters and Setters
-
 
     public Integer getId() {
         return id;
@@ -155,6 +147,8 @@ public class ParkingLot {
         this.feeType = feeType;
     }
 
+    //endregion
+
     public SortedMap<Integer, BigDecimal> getGradient() {
         return gradient;
     }
@@ -162,12 +156,4 @@ public class ParkingLot {
     public void setGradient(SortedMap<Integer, BigDecimal> gradient) {
         this.gradient = gradient;
     }
-
-    //endregion
-
-    /**
-     * 停车场类型，0：临时车位停车场、1：租用车位停车场
-     */
-    public static final int TEMP = 0;
-    public static final int RENT = 1;
 }

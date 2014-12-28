@@ -7,14 +7,19 @@ import cn.edu.xmu.comm.entity.ParkingLot;
 import org.springframework.stereotype.Repository;
 
 /**
+ * 停车位DAO
  * Created by Roger on 2014/12/9 0009.
+ *
+ * @author Mengmeng Yang
+ * @version 2014-12-9
  */
 @Repository
 public class ParkPlaceDAO extends BaseDAO<ParkPlace, Integer> {
     /**
      * 停车场中是否含有停车位
+     *
      * @param parkingLot 停车场
-     * @param parkPlace 停车位
+     * @param parkPlace  停车位
      * @return 是否含有停车位
      */
     public boolean hasParkPlace(ParkingLot parkingLot, ParkPlace parkPlace) {

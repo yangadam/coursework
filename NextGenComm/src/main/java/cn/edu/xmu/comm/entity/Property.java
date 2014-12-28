@@ -1,10 +1,11 @@
 package cn.edu.xmu.comm.entity;
 
 import cn.edu.xmu.comm.commons.persistence.DataEntity;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 房产类
@@ -14,6 +15,7 @@ import java.util.List;
  * @version 2014-12-22
  */
 @Entity
+@DynamicInsert
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Property extends DataEntity {
 
@@ -26,10 +28,16 @@ public abstract class Property extends DataEntity {
     protected Integer id;
 
     /**
+     * 统一编码
+     */
+    protected String unityCode;
+
+    /**
      * 设备列表
      */
-    @OneToMany(targetEntity = Device.class, mappedBy = "property")
-    protected List<Device> deviceList = new ArrayList<Device>();
+    @OneToMany(targetEntity = Device.class, mappedBy = "property",
+            cascade = CascadeType.ALL)
+    protected Set<Device> deviceList = new HashSet<Device>();
 
     /**
      * 房间总数
@@ -62,6 +70,86 @@ public abstract class Property extends DataEntity {
         usedHouseArea = 0.0;
     }
 
+    protected Property(Double area) {
+        houseCount = 1;
+        usedHouseCount = 0;
+        houseArea = area;
+        usedHouseArea = 0.0;
+    }
+
+    /**
+     * 获得所属小区
+     *
+     * @return 小区
+     */
+    public abstract Community getCommunity();
+
+    /**
+     * 获取房产数组（不包括本身）
+     *
+     * @return 房产数组
+     */
+    public abstract Property[] getParents();
+
+    /**
+     * 获取房产数组（包括本身）
+     *
+     * @return 房产数组
+     */
+    public abstract Property[] getThisAndParents();
+
+    /**
+     * 注册
+     *
+     * @param property 房产
+     */
+    protected void register(Property property) {
+        houseCount += property.getHouseCount();
+        houseArea += property.getHouseArea();
+    }
+
+    /**
+     * 入住
+     *
+     * @param property 房产
+     */
+    protected void checkIn(Property property) {
+        usedHouseCount += property.getHouseCount();
+        usedHouseArea += property.getUsedHouseArea();
+    }
+
+    /**
+     * 消除
+     *
+     * @param property 房产
+     */
+    private void unregister(Property property) {
+        houseCount -= property.getHouseCount();
+        houseArea -= property.getHouseArea();
+        usedHouseCount -= property.getUsedHouseCount();
+        usedHouseArea -= property.getUsedHouseArea();
+    }
+
+    /**
+     * 删除之前
+     */
+    @PreRemove
+    public void preDelete() {
+        for (Property property : getParents()) {
+            property.unregister(this);
+        }
+    }
+
+    /**
+     * 添加设备
+     *
+     * @param device 要添加的设备
+     */
+    public void addDevice(Device device) {
+        device.setProperty(this);
+        deviceList.add(device);
+    }
+
     //region Getters and Setters
     public Integer getId() {
         return id;
@@ -71,11 +159,19 @@ public abstract class Property extends DataEntity {
         this.id = id;
     }
 
-    public List<Device> getDeviceList() {
+    public String getUnityCode() {
+        return unityCode;
+    }
+
+    public void setUnityCode(String unityCode) {
+        this.unityCode = unityCode;
+    }
+
+    public Set<Device> getDeviceList() {
         return deviceList;
     }
 
-    public void setDeviceList(List<Device> deviceList) {
+    public void setDeviceList(Set<Device> deviceList) {
         this.deviceList = deviceList;
     }
 
@@ -111,15 +207,5 @@ public abstract class Property extends DataEntity {
         this.usedHouseArea = usedHouseArea;
     }
     //endregion
-
-    protected void register(Double area) {
-        houseCount++;
-        houseArea += area;
-    }
-
-    protected void checkIn(Double area) {
-        usedHouseCount++;
-        usedHouseArea += area;
-    }
 
 }

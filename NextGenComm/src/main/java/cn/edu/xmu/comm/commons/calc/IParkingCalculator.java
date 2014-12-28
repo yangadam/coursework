@@ -6,12 +6,12 @@ import java.math.BigDecimal;
 
 /**
  * Created by Roger on 2014/12/25 0025.
- *
  */
 public interface IParkingCalculator {
 
     /**
      * 计算停车费用
+     *
      * @param parkBill 停车账单
      * @return 停车费用
      */

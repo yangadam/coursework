@@ -7,7 +7,7 @@ import java.util.Comparator;
  */
 public class IntegerComparator implements Comparator<Integer> {
 
-    public int compare(Integer intA, Integer intB){
+    public int compare(Integer intA, Integer intB) {
         // Compare intB to intA, rather than intA to intB.
         return intB.compareTo(intA);
     }

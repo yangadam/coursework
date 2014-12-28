@@ -2,7 +2,6 @@ package cn.edu.xmu.comm.entity;
 
 import cn.edu.xmu.comm.commons.calc.IParkingCalculator;
 import cn.edu.xmu.comm.commons.calc.impl.GradientParkingCalculator;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.math.BigDecimal;

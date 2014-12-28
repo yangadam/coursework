@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -151,8 +150,9 @@ public class CarService {
 
     /**
      * 判断一辆车是否在指定小区是否有未完成的停车单
+     *
      * @param community 社区
-     * @param license 车牌
+     * @param license   车牌
      * @return true 有 false 无
      */
     public boolean carHasUnfinishBill(Community community, String license) {
@@ -220,6 +220,7 @@ public class CarService {
     //endregion
 
     //region Judge is Rent Car
+
     /**
      * 根据Id获得车辆
      *
@@ -248,6 +249,7 @@ public class CarService {
 
     /**
      * 判断一辆车是否在已登陆用户所在小区与租用车位
+     *
      * @param license 车牌
      * @return 该车是否拥有租用车位
      */
@@ -259,8 +261,9 @@ public class CarService {
 
     /**
      * 依据社区和姓名查找业主
+     *
      * @param community 社区
-     * @param name 姓名
+     * @param name      姓名
      * @return 业主
      */
     public List<Owner> getOwnerByName(Community community, String name) {

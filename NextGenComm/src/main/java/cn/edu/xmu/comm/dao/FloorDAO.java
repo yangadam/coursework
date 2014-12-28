@@ -24,7 +24,8 @@ public class FloorDAO extends BaseDAO<Floor, Integer> {
      * @return 楼层
      */
     public Floor getByNo(Integer no, Building building) {
-        return getByQL("from Floor where building = :p1 and no = :p2", new Parameter(building, no));
+        String ql = "select f from Floor f where f.building = :p1 and f.no = :p2";
+        return getByQL(ql, new Parameter(building, no));
     }
 
 }

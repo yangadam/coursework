@@ -2,9 +2,12 @@ package cn.edu.xmu.comm.dao;
 
 import cn.edu.xmu.comm.commons.persistence.BaseDAO;
 import cn.edu.xmu.comm.commons.persistence.Parameter;
+import cn.edu.xmu.comm.entity.Community;
 import cn.edu.xmu.comm.entity.Floor;
 import cn.edu.xmu.comm.entity.Room;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * 房间DAO
@@ -17,14 +20,26 @@ import org.springframework.stereotype.Repository;
 public class RoomDAO extends BaseDAO<Room, Integer> {
 
     /**
-     * 通过楼层号获取某小区楼宇
+     * 通过房间号号获取某楼层的房间
      *
      * @param no    房间号
      * @param floor 楼层
      * @return 房间
      */
     public Room getByNo(String no, Floor floor) {
-        return getByQL("from Room where floor = :p1 and no = :p2", new Parameter(floor, no));
+        String ql = "select r from Room r where r.floor = :p1 and r.no = :p2";
+        return getByQL(ql, new Parameter(floor, no));
+    }
+
+    /**
+     * 获取某个小区所有房间
+     *
+     * @param community 小区
+     * @return 房间列表
+     */
+    public List<Room> getAll(Community community) {
+        String ql = "select r from Room r where r.floor.building.community = :p1";
+        return searchByQL(ql, new Parameter(community));
     }
 
 }

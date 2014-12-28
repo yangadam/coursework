@@ -6,7 +6,11 @@ import javax.persistence.*;
 import java.util.List;
 
 /**
- * Created by Roger on 2014/12/8 0008.
+ * 支付实体
+ * Created by Roger on 2014/12/8 0005.
+ *
+ * @author Mengmeng Yang
+ * @version 2014-12-8
  */
 @Entity
 public class Payment extends DataEntity {
@@ -22,22 +26,21 @@ public class Payment extends DataEntity {
     /**
      * 付款人
      */
-    @ManyToOne(targetEntity = Owner.class, fetch = FetchType.EAGER)
+    @ManyToOne(targetEntity = Owner.class)
     @JoinColumn(name = "owner_id", nullable = false)
     private Owner paidBy;
 
     /**
      * 收款人
      */
-    @ManyToOne(targetEntity = User.class, fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id", nullable = false)
+    @ManyToOne(targetEntity = User.class)
+    @JoinColumn(name = "user_id")
     private User recieveBy;
 
     /**
      * 账单列表
      */
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER,
-            mappedBy = "payment", targetEntity = BillItem.class)
+    @OneToMany(mappedBy = "payment", targetEntity = BillItem.class)
     private List<BillItem> billItemList;
 
     /**

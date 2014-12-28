@@ -1,12 +1,12 @@
 package cn.edu.xmu.comm.entity;
 
+import cn.edu.xmu.comm.commons.exception.DifferentCommunityException;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 业主实体
@@ -29,14 +29,15 @@ public class Owner extends User {
     /**
      * 拥有的房间列表
      */
-    @OneToMany(targetEntity = Room.class, mappedBy = "owner")
-    private List<Room> roomList = new ArrayList<Room>();
+    @OneToMany(targetEntity = Room.class, mappedBy = "owner",
+            cascade = {CascadeType.MERGE})
+    private Set<Room> roomList = new HashSet<Room>();
 
     /**
      * 拥有的车辆列表
      */
     @OneToMany(targetEntity = Car.class, mappedBy = "owner")
-    private List<Car> carList = new ArrayList<Car>();
+    private Set<Car> carList = new HashSet<Car>();
 
     /**
      * 未支付的账单项列表
@@ -54,7 +55,8 @@ public class Owner extends User {
         this.community = community;
     }
 
-    public Owner(String username, String password, String name, Room room) {
+    public Owner(String username, String password, String name, Room room)
+            throws DifferentCommunityException {
         super(username, password, name);
         addRoom(room);
     }
@@ -65,10 +67,12 @@ public class Owner extends User {
      * 添加房间
      *
      * @param room 要添加的房间
+     * @throws DifferentCommunityException 小区不同
+     * @see DifferentCommunityException
      */
-    public void addRoom(Room room) {
+    public void addRoom(Room room) throws DifferentCommunityException {
         if (community != null && !community.equals(room.getCommunity())) {
-
+            throw new DifferentCommunityException("添加了不同的小区");
         }
         community = room.getCommunity();
         room.setOwner(this);
@@ -79,11 +83,13 @@ public class Owner extends User {
      * 批量添加房间
      *
      * @param rooms 房间列表
+     * @throws DifferentCommunityException 小区不同
+     * @see DifferentCommunityException
      */
-    public void addRoomBatch(List<Room> rooms)  {
+    public void addRoomBatch(List<Room> rooms) throws DifferentCommunityException {
         for (Room room : rooms) {
             if (community != null && !community.equals(room.getCommunity())) {
-
+                throw new DifferentCommunityException("添加了不同的小区");
             }
             community = room.getCommunity();
             room.setOwner(this);
@@ -116,19 +122,19 @@ public class Owner extends User {
         this.community = community;
     }
 
-    public List<Room> getRoomList() {
+    public Set<Room> getRoomList() {
         return roomList;
     }
 
-    public void setRoomList(List<Room> roomList) {
+    public void setRoomList(Set<Room> roomList) {
         this.roomList = roomList;
     }
 
-    public List<Car> getCarList() {
+    public Set<Car> getCarList() {
         return carList;
     }
 
-    public void setCarList(List<Car> carList) {
+    public void setCarList(Set<Car> carList) {
         this.carList = carList;
     }
 
