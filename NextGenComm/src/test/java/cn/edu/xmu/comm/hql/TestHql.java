@@ -1,3 +1,4 @@
+/*
 package cn.edu.xmu.comm.hql;
 
 import cn.edu.xmu.comm.entity.*;
@@ -17,9 +18,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+*/
 /**
  * Created by Yummy on 11/29/2014 0029.
- */
+ *//*
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring-context.xml"})
 @TransactionConfiguration
@@ -34,7 +37,7 @@ public class TestHql {
 
     @Test
     public void CalculateTest() {
-        financeService.generateBill();
+        //financeService.generateBill();
     }
 
     public PublicFund newPublicFund() {
@@ -171,3 +174,4 @@ public class TestHql {
     }
 
 }
+*/

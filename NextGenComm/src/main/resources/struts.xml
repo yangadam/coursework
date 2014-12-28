@@ -33,10 +33,17 @@
         <action name="dologin" class="loginAction">
             <result name="input" type="redirectAction">login</result>
             <result name="admin" type="redirectAction">/admin/home</result>
+            <result name="Owner" type="redirect">carEntry.do</result>
         </action>
 
-        <action name="comm" class="communityAction">
-            <result>login.do</result>
+        <action name="test" class="testAction">
+            <!--<result>/WEB-INF/jsp/test/test.jsp</result>-->
+            <result type="redirect">login.do</result>
+        </action>
+
+        <action name="carEntry" class="carEntryAction">
+            <result name="temp">/WEB-INF/jsp/test/test_temp.jsp</result>
+            <result name="rent">/WEB-INF/jsp/test/test_rent.jsp</result>
         </action>
 
     </package>

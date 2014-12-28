@@ -88,7 +88,7 @@ public class PropertyServiceTest extends TestCase {
     @Test
     public void testLazyLoad() {
         Community community = propertyService.getCommunityByName("五缘公寓");
-        Building building = propertyService.getBuildingByNo(1, community);
+        Building building = community.getBuilding(1);
         Floor floor = propertyService.getFloorByNo(1, building);
         for (Room room : floor.getRoomList()) {
             System.out.println(room.getFullName());

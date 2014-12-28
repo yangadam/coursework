@@ -33,21 +33,13 @@ public class UserServiceTest extends TestCase {
 
     @Test
     public void testAddUser() {
-        User user = new User();
-        user.setUsername("admin");
-        user.setPassword("123");
+        User user = new User("admin", "123", "管理员");
         SecurityUtil.encryptUser(user);
         Session session = sessionFactory.openSession();
         session.saveOrUpdate(user);
         session.flush();
         session.close();
 
-    }
-
-    @Test
-    public void testClass() {
-        User user = new Owner();
-        assertEquals("Owner", user.getClass().getSimpleName());
     }
 
 }
