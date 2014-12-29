@@ -50,46 +50,77 @@
 
     <package name="admin" namespace="/admin" extends="json-default">
 
-        <action name="community">
-            <result>/WEB-INF/jsp/admin/comm.jsp</result>
+        <action name="commList">
+            <result>/WEB-INF/jsp/commList.jsp</result>
         </action>
 
-        <action name="listComm" class="communityAction" method="list">
+        <action name="commAdd">
+            <result>/WEB-INF/jsp/commAdd.jsp</result>
+        </action>
+
+        <action name="doCommAdd" class="commListAction" method="add">
+            <result name="input" type="redirect">commAdd.do</result>
+            <result type="redirect">commList.do</result>
+        </action>
+
+        <action name="commEdit" class="commListAction" method="edit">
+            <result>/WEB-INF/jsp/commEdit.jsp</result>
+        </action>
+
+        <!--Building Action-->
+        <action name="buildingList" class="buildingListAction" method="execute">
+            <result>/WEB-INF/jsp/buildingList.jsp</result>
+        </action>
+
+        <action name="buildingAdd">
+            <result>/WEB-INF/jsp/buildingAdd.jsp</result>
+        </action>
+
+        <action name="doBuildingAdd" class="buildingListAction" method="add">
+            <result name="input" type="redirect">buildingAdd.do</result>
+            <result type="redirect">buildingList.do</result>
+        </action>
+
+        <action name="buildingEdit" class="buildingListAction" method="edit">
+            <result>/WEB-INF/jsp/buildingEdit.jsp</result>
+        </action>
+
+    </package>
+
+
+    <package name="guard" namespace="/guard" extends="json-default">
+
+        <global-results>
+            <result name="login">/WEB-INF/jsp/login.jsp</result>
+        </global-results>
+
+        <action name="tempParkingList">
+            <result>/WEB-INF/jsp/tempParkingList.jsp</result>
+        </action>
+    </package>
+
+    <package name="json" namespace="/json" extends="json-default">
+
+        <action name="commListData" class="commListAction">
+            <result name="input">/WEB-INF/jsp/commList.jsp</result>
             <result type="json">
-                <param name="root">data</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="excludeProperties">count,comm</param>
+            </result>
+        </action>
+
+        <action name="buildingListData" class="buildingListAction">
+            <result name="input">/WEB-INF/jsp/buildingList.jsp</result>
+            <result type="json">
+                <param name="excludeProperties">buildingName, buildingNo</param>
                 <param name="excludeNullProperties">true</param>
             </result>
         </action>
 
-        <action name="addComm" class="communityAction" method="add">
-            <result type="redirect">community.do</result>
-        </action>
-
-        <action name="delComm" class="communityAction" method="delete">
-            <result type="redirect">community.do</result>
-        </action>
-
-        <action name="building" class="buildingAction">
-            <result>/WEB-INF/jsp/admin/build.jsp</result>
-        </action>
-
-        <action name="listBuild" class="buildingAction" method="list">
+        <action name="tempParkingListData" class="tempParkingListAction">
             <result type="json">
-                <param name="root">data</param>
-                <param name="excludeNullProperties">true</param>
+
             </result>
-        </action>
-
-        <action name="addBuild" class="buildingAction" method="add">
-            <result type="redirect">building.do</result>
-        </action>
-
-        <action name="addBuildBatch" class="buildingAction" method="addBatch">
-            <result type="redirect">building.do</result>
-        </action>
-
-        <action name="delBuild" class="buildingAction" method="delete">
-            <result type="redirect">building.do</result>
         </action>
 
     </package>

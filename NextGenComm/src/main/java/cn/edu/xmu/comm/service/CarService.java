@@ -61,14 +61,15 @@ public class CarService {
 
     /**
      * 添加车辆
-     * @param license 车牌
-     * @param owner 业主
-     * @param status 状态: 租用车位 购买车位
+     *
+     * @param license   车牌
+     * @param owner     业主
+     * @param status    状态: 租用车位 购买车位
      * @param parkPlace 停车位
      * @return 新添加的汽车
      */
     @Transactional(readOnly = false)
-    public Car addCar(String license, Owner owner,Car.CarStatus status, ParkPlace parkPlace) {
+    public Car addCar(String license, Owner owner, Car.CarStatus status, ParkPlace parkPlace) {
         Car car = new Car(license, owner, status, parkPlace);
         carDAO.persist(car);
         return car;
@@ -130,6 +131,7 @@ public class CarService {
 
     /**
      * 获取当前session中的租用停车场
+     *
      * @return 当前session中的租用停车场
      */
     public ParkingLot getRentParkingLotInSession() {
@@ -138,6 +140,7 @@ public class CarService {
     //endregion
 
     //region Judge Has Free Temp ParkPlace
+
     /**
      * 获取社区临时停车场的大小
      *
@@ -283,6 +286,7 @@ public class CarService {
     //endregion
 
     //region Get Owner List
+
     /**
      * 依据社区和姓名查找业主
      *
@@ -296,10 +300,12 @@ public class CarService {
     //endregion
 
     //region Get ParkPlace In RentParkingLot
+
     /**
      * 依据停车位状态获取在租用停车场中各个状态的停车位列表
+     *
      * @param parkingLot 停车场
-     * @param status 状态 ：FREE:没有车位、LOCK:锁定的车位、RENT:租用的车位
+     * @param status     状态 ：FREE:没有车位、LOCK:锁定的车位、RENT:租用的车位
      * @return 停车位列表
      */
     public List<ParkPlace> getParkPlaceRent(ParkingLot parkingLot, ParkPlace.ParkPlaceStatus status) {
@@ -308,6 +314,7 @@ public class CarService {
 
     /**
      * 获取可租用的停车位
+     *
      * @return 可租用的停车位列表
      */
     public List<ParkPlace> getFreeParkPlaceRent() {
@@ -316,6 +323,7 @@ public class CarService {
 
     /**
      * 获取已租用的停车位
+     *
      * @return 获取已租用的停车位
      */
     public List<ParkPlace> getRentParkPlaceRent() {
@@ -324,6 +332,7 @@ public class CarService {
 
     /**
      * 获取已锁定的停车位 已打印合同
+     *
      * @return 获取已锁定的停车位
      */
     public List<ParkPlace> getParkPlaceRent() {
@@ -333,6 +342,7 @@ public class CarService {
 
     /**
      * 添加车辆锁住停车位
+     *
      * @param license   车牌
      * @param owner     业主
      * @param parkPlace 停车位
@@ -395,6 +405,7 @@ public class CarService {
 
     /**
      * 在租用停车场中依据车位位置查找车位
+     *
      * @param position 车位位置
      * @return 找到的车位
      */
@@ -404,6 +415,7 @@ public class CarService {
 
     /**
      * 获取该社区中所有未完成的停车单
+     *
      * @return 该社区中所有未完成的停车单
      */
     public List<ParkBill> getAllUnfinishParkBill() {
@@ -412,6 +424,7 @@ public class CarService {
 
     /**
      * 获取该社区中所有未完成的停车单
+     *
      * @param community 社区
      * @return 该社区中所有未完成的停车单
      */
@@ -421,6 +434,7 @@ public class CarService {
 
     /**
      * 获取该社区中所有已完成的停车单
+     *
      * @return 获取该社区中所有已完成的停车单
      */
     public List<ParkBill> getAllFinishParkBill() {
@@ -429,6 +443,7 @@ public class CarService {
 
     /**
      * 获取该社区中所有已完成的停车单
+     *
      * @param community 社区
      * @return 获取该社区中所有已完成的停车单
      */
