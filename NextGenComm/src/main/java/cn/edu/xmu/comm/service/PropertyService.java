@@ -492,6 +492,10 @@ public class PropertyService extends BaseService {
     public List<Room> getAllRooms(Community community) {
         return roomDAO.getAll(community);
     }
+
+    public Owner getOwner(String name) {
+        return ownerDAO.get(name);
+    }
     //endregion
 
 }

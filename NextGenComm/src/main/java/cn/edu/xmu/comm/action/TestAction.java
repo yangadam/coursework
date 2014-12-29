@@ -1,8 +1,10 @@
 package cn.edu.xmu.comm.action;
 
+import cn.edu.xmu.comm.commons.exception.DifferentCommunityException;
 import cn.edu.xmu.comm.entity.*;
 import cn.edu.xmu.comm.service.CarService;
 import cn.edu.xmu.comm.service.PropertyService;
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import org.springframework.stereotype.Controller;
 
@@ -27,58 +29,66 @@ public class TestAction extends ActionSupport {
 
     @Override
     public String execute() {
+        Owner owner = propertyService.getOwner("陆垚杰");
+        ActionContext.getContext().getSession().put("USER", owner);
         //addData();
-        testIsRentCar();
         // testFinishParkBill();
         //testHasFreeTempParkPlace();
-        //addData();
+        //testIsRentCar();
         //testFinishParkBill();
+        testAddCarLockParkPlace();
+        //testRemoCarFreeParkPlace();
+        testconfirmCarRentParkPlace();
         return SUCCESS;
     }
 
     public void testIsRentCar() {
-        Community community = propertyService.getCommunityByName("五缘公寓");
+        Community community = propertyService.getCommunity("五缘公寓");
         String license = "浙AJ9225";
-        carService.isRentCar(community, license);
+        carService.isRentCar(license);
     }
 
     public void testFinishParkBill() {
-        Community community = propertyService.getCommunityByName("五缘公寓");
+        Community community = propertyService.getCommunity("五缘公寓");
         String license = "浙AH2828";
         carService.finishParkBill(community, license);
     }
 
     public void testHasFreeTempParkPlace() {
-        Community community = propertyService.getCommunityByName("五缘公寓");
+        Community community = propertyService.getCommunity("五缘公寓");
         System.out.print(carService.hasFreeTempParkPlace(community));
     }
 
     private void addData() {
         Community community = propertyService.addCommunity("五缘公寓");
-        Building building = propertyService.addBuilding(1, community);
+        Building building = propertyService.addBuilding(1, "一号楼", community);
         Floor floor = propertyService.addFloor(1, building);
         Room room = propertyService.addRoom("101", 100.0, floor);
-        Owner owner = propertyService.addOwner("lyj", "123", "陆垚杰", room);
+        try {
+            Owner owner = propertyService.addOwner("lyj", "123", "陆垚杰", room);
+        } catch (DifferentCommunityException e) {
+            e.printStackTrace();
+        }
         addParkingLot();
     }
 
     public void addParkingLot() {
-        Community community = propertyService.getCommunityByName("五缘公寓");
-        Owner owner = propertyService.getOwnerByName("陆垚杰");
+        Community community = propertyService.getCommunity("五缘公寓");
+        Owner owner = propertyService.getOwner("陆垚杰");
 
         ParkingLot parkingLotTemp = new ParkingLot();
         ParkingLot parkingLotRent = new ParkingLot();
         ParkPlace temp = newGroundParkPlace();
         ParkPlace rent = newUnderParkPlace();
         ParkBill parkBill = newParkBill(owner, community);
-        Car car = newCar(owner, rent);
+        //Car car = newCar(owner, rent);
 
         temp.setParkingLot(parkingLotTemp);
         rent.setParkingLot(parkingLotRent);
         parkingLotTemp.setCommunity(community);
         parkingLotRent.setCommunity(community);
-        parkingLotTemp.setType(ParkingLot.TEMP);
-        parkingLotRent.setType(ParkingLot.RENT);
+        parkingLotTemp.setType(ParkingLot.ParkingLotStatus.TEMP);
+        parkingLotRent.setType(ParkingLot.ParkingLotStatus.RENT);
         parkingLotTemp.setFeeType("GradientParkingCalculator");
         parkingLotTemp.getGradient().put(30, BigDecimal.valueOf(5));
         parkingLotTemp.getGradient().put(90, BigDecimal.valueOf(10));
@@ -91,7 +101,7 @@ public class TestAction extends ActionSupport {
         carService.addParkingLot(parkingLotRent);
         carService.addParkPlace(temp);
         carService.addParkPlace(rent);
-        carService.addCar(car);
+        //carService.addCar(car);
     }
 
     public ParkBill newParkBill(Owner owner, Community community) {
@@ -113,12 +123,18 @@ public class TestAction extends ActionSupport {
         return parkPlace;
     }
 
-    private Car newCar(Owner owner, ParkPlace parkPlace) {
-        Car car = new Car();
-        car.setLicense("浙AJ9225");
-        car.setOwner(owner);
-        car.setParkPlace(parkPlace);
-        car.setStatus(Car.RENT);
+    private Car testAddCarLockParkPlace() {
+        Owner owner = propertyService.getOwner("陆垚杰");
+        ParkPlace parkPlace = carService.getRentParkPlaceByPosition("地下");
+        Car car = carService.addCarLockParkPlace("浙AJ9225", owner, parkPlace);
         return car;
+    }
+
+    private void testRemoCarFreeParkPlace() {
+        carService.removeCarFreeParkPlace("浙AJ9225");
+    }
+
+    private void testconfirmCarRentParkPlace() {
+        carService.confirmCarRentParkPlace("浙AJ9225");
     }
 }

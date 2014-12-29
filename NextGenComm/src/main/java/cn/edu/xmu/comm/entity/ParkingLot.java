@@ -13,12 +13,6 @@ import java.util.*;
 @DynamicInsert
 public class ParkingLot {
     //region Instance Variables
-
-    /**
-     * 停车场类型，0：临时车位停车场、1：租用车位停车场
-     */
-    public static final int TEMP = 0;
-    public static final int RENT = 1;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -37,12 +31,11 @@ public class ParkingLot {
     @ManyToOne(targetEntity = Community.class, cascade = {CascadeType.MERGE})
     @JoinColumn(name = "community_id", nullable = false)
     private Community community;
+
     /**
-     * 停车场类型，0：临时车位停车场、1：租用车位停车场
-     * <li>{@link #TEMP}</li>
-     * <li>{@link #RENT}</li>
+     * 停车场类型，TEMP：临时车位停车场、RENT：租用车位停车场
      */
-    private int type;
+    private ParkingLotStatus type;
     //endregion
 
     //region Public Methods
@@ -131,11 +124,11 @@ public class ParkingLot {
         this.community = community;
     }
 
-    public int getType() {
+    public ParkingLotStatus getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(ParkingLotStatus type) {
         this.type = type;
     }
 
@@ -155,5 +148,23 @@ public class ParkingLot {
 
     public void setGradient(SortedMap<Integer, BigDecimal> gradient) {
         this.gradient = gradient;
+    }
+
+    /**
+     * 停车场类型，TEMP：临时车位停车场、RENT：租用车位停车场
+     */
+    public enum ParkingLotStatus {
+        TEMP("临时停车场"), RENT("租用停车场");
+
+        private String typeName;
+
+        private ParkingLotStatus(String typeName) {
+            this.typeName = typeName;
+        }
+
+        @Override
+        public String toString() {
+            return typeName;
+        }
     }
 }

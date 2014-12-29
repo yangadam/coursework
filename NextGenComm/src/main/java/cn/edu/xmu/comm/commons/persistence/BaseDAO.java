@@ -328,18 +328,6 @@ public class BaseDAO<T, I extends Serializable> {
         }
     }
 
-    /**
-     * 查询记录的数量
-     *
-     * @param qlString  查询语句
-     * @param parameter 参数
-     * @return 记录数量
-     */
-    public Long count(String qlString, Parameter parameter) {
-        int beginPos = qlString.toLowerCase().indexOf("from");
-        String countString = "select count(*) ".concat(qlString.substring(beginPos));
-        return (Long) createQuery(countString, parameter).uniqueResult();
-    }
     //endregion
 
 }

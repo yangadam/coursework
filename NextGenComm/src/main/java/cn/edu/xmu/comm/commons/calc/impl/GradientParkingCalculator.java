@@ -19,7 +19,7 @@ public class GradientParkingCalculator implements IParkingCalculator {
          */
         Integer startTime = (int) (parkBill.getStartTime().getTime() / 1000 / 60);
         Integer endTime = (int) (parkBill.getEndTime().getTime() / 1000 / 60);
-        ParkingLot parkingLot = parkBill.getCommunity().getParkingLot(ParkingLot.TEMP);
+        ParkingLot parkingLot = parkBill.getCommunity().getParkingLot(ParkingLot.ParkingLotStatus.TEMP);
         BigDecimal fee = parkingLot.calculateTempParkingFee(endTime - startTime);
         parkBill.setFee(fee);
         return fee;

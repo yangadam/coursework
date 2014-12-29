@@ -19,7 +19,7 @@ public class ParkingLotDAO extends BaseDAO<ParkingLot, Integer> {
      * @return ParkingLot tempParkingLot
      */
     public ParkingLot getTempParkingLot(Community community) {
-        return getByQL("from ParkingLot where community = :p1 and type = :p2", new Parameter(community, ParkingLot.TEMP));
+        return getParkingLot(community, ParkingLot.ParkingLotStatus.TEMP);
     }
 
     /**
@@ -29,7 +29,18 @@ public class ParkingLotDAO extends BaseDAO<ParkingLot, Integer> {
      * @return ParkingLot rentParkingLot
      */
     public ParkingLot getRentParkingLot(Community community) {
-        return getByQL("from ParkingLot where community = :p1 and type = :p2", new Parameter(community, ParkingLot.RENT));
+        return getParkingLot(community, ParkingLot.ParkingLotStatus.RENT);
+    }
+
+    /**
+     * 依据社区查询临时租用车位
+     *
+     * @param community         社区
+     * @param parkingLotStatus  停车场状态
+     * @return ParkingLot ParkingLot
+     */
+    public ParkingLot getParkingLot(Community community, ParkingLot.ParkingLotStatus parkingLotStatus) {
+        return getByQL("from ParkingLot where community = :p1 and type = :p2", new Parameter(community, parkingLotStatus));
     }
 
 }

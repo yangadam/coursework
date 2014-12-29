@@ -30,12 +30,12 @@ public class OwnerDAO extends BaseDAO<Owner, Integer> {
     }
 
     /**
-     * 依据id获得某业主
+     * 依据姓名获得某业主
      *
      * @param name 业主姓名
      * @return 单个业主
      */
-    public Owner getById(String name) {
+    public Owner get(String name) {
         return getByQL("from Owner where name = :p1", new Parameter(name));
     }
 

@@ -121,18 +121,6 @@ public class Community extends Property {
         buildingList.add(building);
     }
 
-
-    //region Public Methods
-    /**
-     * 添加楼宇
-     *
-     * @param building 要添加的楼宇
-     */
-    public void addBuilding(Building building) {
-        building.setCommunity(this);
-        buildingList.add(building);
-    }
-
     /**
      * 批量添加楼宇
      *
@@ -166,7 +154,7 @@ public class Community extends Property {
      * @param type 停车场类型
      * @return parkingLot
      */
-    public ParkingLot getParkingLot(int type) {
+    public ParkingLot getParkingLot(ParkingLot.ParkingLotStatus type) {
         for (ParkingLot parkingLot : parkingLotList) {
             if (parkingLot.getType() == type) {
                 return parkingLot;

@@ -1,82 +1,73 @@
 package cn.edu.xmu.comm.action;
 
-import com.opensymphony.xwork2.ActionSupport;
-import org.apache.struts2.ServletActionContext;
-
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.IOException;
+import javax.servlet.ServletContext;
+
+import com.opensymphony.xwork2.ActionSupport;
+import cn.edu.xmu.comm.commons.utils.FilesUtil;
+import org.apache.struts2.util.ServletContextAware;
 
 /**
- * Created by Roger on 2014/12/28 0028.
- * 文件上传Action
+ * 上传文件
+ *
+ * @author Yaojie Lu
+ * @version 12/28/2014
  */
-public class UploadAction extends ActionSupport {
-
-    //封装文件标题请求参数的属性
-    private String title;
-    //封装上传文件域的属性
-    private File upload;
-    //封装上传文件类型的属性
-    private String uploadContentType;
-    //封装上传文件名的属性
-    private String uploadFileName;
-    //直接在struts.xml文件中配置的属性
-    private String savePath;
+public class UploadAction extends ActionSupport implements ServletContextAware{
 
     @Override
-    public String execute() throws Exception {
-        //以服务器的文件保存地址和原文件名建立上传文件输出流
-        FileOutputStream fos = new FileOutputStream(getSavePath()
-                + "\\" + getUploadFileName());
-        FileInputStream fis = new FileInputStream(getUpload());
-        byte[] buffer = new byte[1024];
-        int len = 0;
-        while ((len = fis.read(buffer)) > 0) {
-            fos.write(buffer, 0, len);
+    public String execute(){
+        System.out.println("File Name is:"+getFileFileName());
+        System.out.println("File ContentType is:"+getFileContentType());
+        System.out.println("Files Directory is:"+filesPath);
+        try {
+            FilesUtil.saveFile(getFile(), getFileFileName(), context.getRealPath("") + File.separator + filesPath);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return INPUT;
         }
-        fos.close();
         return SUCCESS;
+
     }
 
-    public String getTitle() {
-        return title;
+    private File file;
+    private String fileContentType;
+    private String fileFileName;
+    private String filesPath;
+    private ServletContext context;
+
+    public File getFile() {
+        return file;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setFile(File file) {
+        this.file = file;
     }
 
-    public File getUpload() {
-        return upload;
+    public String getFileContentType() {
+        return fileContentType;
     }
 
-    public void setUpload(File upload) {
-        this.upload = upload;
+    public void setFileContentType(String fileContentType) {
+        this.fileContentType = fileContentType;
     }
 
-    public String getUploadContentType() {
-        return uploadContentType;
+    public String getFileFileName() {
+        return fileFileName;
     }
 
-    public void setUploadContentType(String uploadContentType) {
-        this.uploadContentType = uploadContentType;
+    public void setFileFileName(String fileFileName) {
+        this.fileFileName = fileFileName;
     }
 
-    public String getUploadFileName() {
-        return uploadFileName;
+    public void setFilesPath(String filesPath) {
+        this.filesPath = filesPath;
     }
 
-    public void setUploadFileName(String uploadFileName) {
-        this.uploadFileName = uploadFileName;
+    @Override
+    public void setServletContext(ServletContext ctx) {
+        this.context=ctx;
     }
 
-    public String getSavePath() {
-        return ServletActionContext.getServletContext()
-                .getRealPath(savePath);
-    }
-
-    public void setSavePath(String savePath) {
-        this.savePath = savePath;
-    }
 }
