@@ -122,6 +122,18 @@ public class Community extends Property {
     }
 
     /**
+     * 批量添加楼宇
+     *
+     * @param buildings 楼宇列表
+     */
+    public void addBuildings(List<Building> buildings) {
+        for (Building building : buildings) {
+            building.setCommunity(this);
+        }
+        this.buildingList.addAll(buildings);
+    }
+
+    /**
      * 通过楼宇号获取楼宇
      *
      * @param no 楼宇号
@@ -142,7 +154,7 @@ public class Community extends Property {
      * @param type 停车场类型
      * @return parkingLot
      */
-    public ParkingLot getParkingLot(int type) {
+    public ParkingLot getParkingLot(ParkingLot.ParkingLotStatus type) {
         for (ParkingLot parkingLot : parkingLotList) {
             if (parkingLot.getType() == type) {
                 return parkingLot;

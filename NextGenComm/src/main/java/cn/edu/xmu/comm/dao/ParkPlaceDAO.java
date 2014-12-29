@@ -6,6 +6,8 @@ import cn.edu.xmu.comm.entity.ParkPlace;
 import cn.edu.xmu.comm.entity.ParkingLot;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * 停车位DAO
  * Created by Roger on 2014/12/9 0009.
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class ParkPlaceDAO extends BaseDAO<ParkPlace, Integer> {
+
     /**
      * 停车场中是否含有停车位
      *
@@ -24,5 +27,14 @@ public class ParkPlaceDAO extends BaseDAO<ParkPlace, Integer> {
      */
     public boolean hasParkPlace(ParkingLot parkingLot, ParkPlace parkPlace) {
         return count("from ParkPlace where parkingLot = :p1 and id = :p2", new Parameter(parkingLot, parkPlace.getId())) != 0;
+    }
+
+    public List<ParkPlace> getRentParkPlace(ParkingLot parkingLot, ParkPlace.ParkPlaceStatus parkPlaceStatus) {
+        return searchByQL("from ParkPlace where parkingLot = :p1 and status = :p2", new Parameter(parkingLot, parkPlaceStatus));
+    }
+
+
+    public ParkPlace get(ParkingLot parkingLot, String position) {
+        return getByQL("from ParkPlace where parkingLot = :p1 and position = :p2", new Parameter(parkingLot, position));
     }
 }

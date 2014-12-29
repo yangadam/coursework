@@ -20,13 +20,7 @@ public class Car extends DataEntity {
      * 生成的账单项的名称
      */
     public static final String NAME = "车位管理费";
-    /**
-     * 车辆状态，0：没有车位、1：租用的车位、2：购买的车位
-     */
-    public static final int NO = 0;
-    public static final int RENT = 1;
-    public static final int BUY = 2;
-    //endregion
+
     /**
      * 车牌号
      */
@@ -41,24 +35,43 @@ public class Car extends DataEntity {
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Owner.class)
     @JoinColumn(name = "owner_id", nullable = false)
     private Owner owner;
-    //endregion
+
     /**
-     * 车辆状态，0：没有车位、1：租用的车位、2：购买的车位
-     * <li>{@link #NO}</li>
-     * <li>{@link #RENT}</li>
-     * <li>{@link #BUY}</li>
+     * 车辆状态
+     *
+     * CarStatus.NO   没有车位
+     * CarStatus.RENT 租用的车位
+     * CarStatus.BUY  购买的车位
      */
-    private int status;
+    private CarStatus status;
+
     /**
      * 拥有的车位
      */
     @OneToOne(fetch = FetchType.EAGER, targetEntity = ParkPlace.class)
-    @JoinColumn(name = "park_place_id", nullable = false)
+    @JoinColumn(name = "park_place_id", nullable = true)
     private ParkPlace parkPlace;
+    //endregion
 
     //region Constructors
     public Car() {
-        this.status = NO;
+        this.status = CarStatus.NO;
+    }
+
+
+    /**
+     * 汽车构造函数
+     *
+     * @param license 车牌
+     * @param owner 业主
+     * @param status 状态: 租用车位 购买车位
+     * @param parkPlace 停车位
+     */
+    public Car(String license, Owner owner, CarStatus status, ParkPlace parkPlace) {
+        this.license = license;
+        this.owner = owner;
+        this.status = status;
+        this.parkPlace = parkPlace;
     }
 
     /**
@@ -95,11 +108,11 @@ public class Car extends DataEntity {
 
     //region Constants
 
-    public int getStatus() {
+    public CarStatus getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(CarStatus status) {
         this.status = status;
     }
 
@@ -111,5 +124,23 @@ public class Car extends DataEntity {
         this.parkPlace = parkPlace;
     }
     //endregion
+
+    /**
+     * 车位状态
+     */
+    public enum CarStatus {
+        NO("没有车位"), RENT("租用的车位"), BUY("购买的车位");
+
+        private String typeName;
+
+        private CarStatus(String typeName) {
+            this.typeName = typeName;
+        }
+
+        @Override
+        public String toString() {
+            return typeName;
+        }
+    }
 
 }

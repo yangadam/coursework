@@ -6,6 +6,8 @@ import cn.edu.xmu.comm.entity.Community;
 import cn.edu.xmu.comm.entity.ParkBill;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * Created by Roger on 2014/12/23 0023.
  */
@@ -45,5 +47,13 @@ public class ParkBillDAO extends BaseDAO<ParkBill, Integer> {
     public boolean carHasUnfinishBill(Community community, String license) {
         String hql = "from ParkBill where community = :p1 and license = :p2 and endTime is null";
         return count(hql, new Parameter(community, license)) > 0;
+    }
+
+    public List<ParkBill> getAllUnfinishParkBill(Community community) {
+        return searchByQL("from ParkBill where community = :p1 and endTime is null", new Parameter(community));
+    }
+
+    public List<ParkBill> getAllFinishParkBill(Community community) {
+        return searchByQL("from ParkBill where community = :p1 and endTime is not null", new Parameter(community));
     }
 }

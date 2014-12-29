@@ -34,6 +34,37 @@ public class ParkPlace {
      * 每月管理费
      */
     private BigDecimal monthlyFee;
+
+    /**
+     * 车位状态，
+     * FREE:可用车位
+     * LOCK:已锁定车位
+     * RENT:已租用车位
+     */
+    private ParkPlaceStatus parkPlaceStatus;
+    //endregion
+
+    //region Update ParkPlace Status
+    /**
+     * 锁定车位
+     */
+    public void lockParkPlace() {
+        setParkPlaceStatus(ParkPlaceStatus.LOCK);
+    }
+
+    /**
+     * 释放车位
+     */
+    public void freeParkPlace() {
+        setParkPlaceStatus(ParkPlaceStatus.FREE);
+    }
+
+    /**
+     * 租用车位
+     */
+    public void rentParkPlace() {
+        setParkPlaceStatus(ParkPlaceStatus.RENT);
+    }
     //endregion
 
     //region Getters and Setters
@@ -68,6 +99,31 @@ public class ParkPlace {
     public void setMonthlyFee(BigDecimal monthlyFee) {
         this.monthlyFee = monthlyFee;
     }
-    //endregion
 
+    public ParkPlaceStatus getParkPlaceStatus() {
+        return parkPlaceStatus;
+    }
+
+    public void setParkPlaceStatus(ParkPlaceStatus parkPlaceStatus) {
+        this.parkPlaceStatus = parkPlaceStatus;
+    }
+//endregion
+
+    /**
+     * 车位状态
+     */
+    public enum ParkPlaceStatus {
+        FREE("可用车位"), LOCK("已锁定车位"), RENT("已租用车位");
+
+        private String typeName;
+
+        private ParkPlaceStatus(String typeName) {
+            this.typeName = typeName;
+        }
+
+        @Override
+        public String toString() {
+            return typeName;
+        }
+    }
 }
