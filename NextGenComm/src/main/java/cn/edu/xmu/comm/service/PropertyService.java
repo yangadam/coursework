@@ -418,7 +418,11 @@ public class PropertyService extends BaseService {
      * @return 小区
      */
     public Community getCommunity(Integer id) {
-        return communityDAO.get(id);
+        return communityDAO.load(id);
+    }
+
+    public Building getBuilding(Integer id) {
+        return buildingDAO.load(id);
     }
 
     /**
@@ -448,6 +452,10 @@ public class PropertyService extends BaseService {
      */
     public Page<Community> getAllCommunities(Page<Community> page) {
         return communityDAO.getAll(page);
+    }
+
+    public List<Building> getAllBuildings(Community community) {
+        return buildingDAO.getAll(community);
     }
 
     /**
