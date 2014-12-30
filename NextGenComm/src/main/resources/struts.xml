@@ -24,6 +24,7 @@
         <global-results>
             <result name="login" type="redirect">login.do</result>
             <result name="admin" type="redirect">admin.do</result>
+            <result name="owner" type="redirect">admin.do</result>
         </global-results>
 
         <action name="rememberMeLogin" class="remLoginAction">
@@ -97,6 +98,10 @@
         <action name="tempParkingList">
             <result>/WEB-INF/jsp/tempParkingList.jsp</result>
         </action>
+
+        <action name="tempParkingRegiste">
+            <result>/WEB-INF/jsp/tempParkingRegiste.jsp</result>
+        </action>
     </package>
 
     <package name="json" namespace="/json" extends="json-default">
@@ -117,9 +122,17 @@
             </result>
         </action>
 
-        <action name="tempParkingListData" class="tempParkingListAction">
+        <action name="tempParkingUnchargedListData" class="tempParkingUnchargedListAction">
             <result type="json">
+                <param name="excludeNullProperties">true</param>
+                <param name="excludeProperties">community</param>
+            </result>
+        </action>
 
+        <action name="tempParkingChargedListData" class="tempParkingChargedListAction">
+            <result type="json">
+                <param name="excludeNullProperties">true</param>
+                <param name="excludeProperties">community</param>
             </result>
         </action>
 

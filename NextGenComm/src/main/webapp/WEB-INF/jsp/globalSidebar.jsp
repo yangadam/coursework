@@ -36,7 +36,20 @@
             <a href="../guard/tempParkingList.do">
                 <i class="icon-home"></i>
                 <span class="title">停车场管理</span>
+                <span class="arrow "></span>
             </a>
+            <ul class="sub-menu">
+                <li>
+                    <a href="../guard/tempParkingList.do">
+                        <i class="icon-bookmark"></i>
+                        停车列表</a>
+                </li>
+                <li>
+                    <a href="../guard/tempParkingRegiste.do">
+                        <i class="icon-list-ul"></i>
+                        车辆登记</a>
+                </li>
+            </ul>
         </li>
         <li class="">
             <a href="javascript:">
