@@ -173,6 +173,7 @@ public class Community extends Property {
         this.name = name;
     }
 
+
     public List<Building> getBuildingList() {
         return buildingList;
     }
