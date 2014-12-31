@@ -20,38 +20,93 @@
     <constant name="struts.action.extension" value="do"/>
 
     <package name="default" extends="struts-default">
-
         <global-results>
-            <result name="login">/WEB-INF/jsp/login.jsp</result>
-            <result name="error">/WEB-INF/jsp/error/error.jsp</result>
+            <result name="login" type="redirect">/login.do</result>
+            <result name="unauthorized" type="redirect">/login.do</result>
+            <result name="admin" type="redirect">admin.do</result>
+            <result name="director" type="redirect">director.do</result>
         </global-results>
+    </package>
+
+    <package name="root" namespace="/" extends="default">
+
+        <action name="rememberMeLogin" class="remLoginAction"/>
 
         <action name="login">
             <result>/WEB-INF/jsp/login.jsp</result>
         </action>
 
-        <action name="dologin" class="loginAction">
-            <result name="input" type="redirectAction">login</result>
-            <result name="admin" type="redirectAction">/admin/home</result>
+        <action name="doLogin" class="loginAction">
+            <result name="input">login.do?result=1</result>
         </action>
 
-        <action name="test" class="testAction">
-            <result>/WEB-INF/jsp/test/test.jsp</result>
+        <action name="logout" class="logoutAction">
+            <result>login.do</result>
+        </action>
+
+        <action name="admin">
+            <result>/WEB-INF/jsp/admin/home.jsp</result>
+        </action>
+
+        <action name="director">
+            <result>/WEB-INF/jsp/director/home.jsp</result>
         </action>
 
     </package>
 
-    <package name="admin" namespace="/admin" extends="json-default">
+    <package name="admin" namespace="/admin" extends="default">
 
-        <global-results>
-            <result name="login">/WEB-INF/jsp/login.jsp</result>
-            <result name="error">/WEB-INF/jsp/error/error.jsp</result>
-        </global-results>
-
-        <action name="home">
-            <result>/WEB-INF/jsp/admin/home.jsp</result>
+        <action name="community">
+            <result>/WEB-INF/jsp/admin/comm.jsp</result>
         </action>
 
+        <action name="addComm" class="commAddAction">
+            <result type="redirect">community.do</result>
+            <result name="input">community.do</result>
+        </action>
+
+        <action name="director">
+            <result>/WEB-INF/jsp/admin/director.jsp</result>
+        </action>
+
+        <action name="addMng" class="directorAddAction">
+            <result type="redirect">director.do</result>
+            <result name="input">director.do</result>
+        </action>
+
+    </package>
+
+    <package name="director" namespace="/director" extends="default">
+
+        <action name="building">
+            <result>/WEB-INF/jsp/director/build.jsp</result>
+        </action>
+
+        <action name="addBuild" class="buildAddAction">
+            <result type="redirect">building.do</result>
+            <result name="input">building.do</result>
+        </action>
+
+        <action name="room">
+            <result>/WEB-INF/jsp/director/room.jsp</result>
+        </action>
+
+    </package>
+
+    <!-- JSON package -->
+    <package name="data" extends="json-default">
+
+        <global-results>
+            <result type="json">
+                <param name="root">data</param>
+                <param name="excludeNullProperties">true</param>
+            </result>
+        </global-results>
+
+        <action name="listComm" class="commListAction"/>
+        <action name="listMng" class="directorAddAction"/>
+        <action name="commNames" class="commNameAction"/>
+        <action name="listBuild" class="buildListAction" method="list"/>
     </package>
 
 </struts>

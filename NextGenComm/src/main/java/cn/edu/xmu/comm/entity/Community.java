@@ -38,6 +38,13 @@ public class Community extends Property {
     private String name;
 
     /**
+     * 物业主任
+     */
+    @OneToOne(targetEntity = Director.class)
+    @JoinColumn(name = "deirector_id")
+    private Director director;
+
+    /**
      * 包含的楼宇列表
      */
     @OneToMany(mappedBy = "community", targetEntity = Building.class,
@@ -45,11 +52,10 @@ public class Community extends Property {
     private List<Building> buildingList = new ArrayList<Building>();
 
     /**
-     * 包含的停车位
+     * 包含的停车场
      */
-    @OneToMany(mappedBy = "community", targetEntity = ParkPlace.class,
-            cascade = CascadeType.ALL)
-    private List<ParkPlace> parkingLot = new ArrayList<ParkPlace>();
+    @OneToMany(mappedBy = "community", targetEntity = ParkingLot.class, cascade = CascadeType.ALL)
+    private List<ParkingLot> parkingLotList = new ArrayList<ParkingLot>();
 
     /**
      * 管理的公维金
@@ -87,6 +93,7 @@ public class Community extends Property {
     //endregion
 
     Community() {
+        super();
     }
 
     public Community(String name) {
@@ -96,9 +103,22 @@ public class Community extends Property {
     }
 
     @Override
+    public Property[] getParents() {
+        return new Property[0];
+    }
+
+    @Override
+    public Property[] getThisAndParents() {
+        return new Property[]{this};
+    }
+
+    @Override
     public Community getCommunity() {
         return this;
     }
+
+
+    //region Public Methods
 
     /**
      * 添加楼宇
@@ -107,7 +127,14 @@ public class Community extends Property {
      */
     public void addBuilding(Building building) {
         building.setCommunity(this);
+        building.setUnityCode(unityCode + "B" + building.getNo());
         buildingList.add(building);
+        childCount++;
+    }
+
+    public void assignDirector(Director director) {
+        this.director = director;
+        director.setCommunity(this);
     }
 
     /**
@@ -137,6 +164,22 @@ public class Community extends Property {
         return null;
     }
 
+    /**
+     * 通过停车场类型获取停车场
+     *
+     * @param type 停车场类型
+     * @return parkingLot
+     */
+    public ParkingLot getParkingLot(ParkingLot.ParkingLotStatus type) {
+        for (ParkingLot parkingLot : parkingLotList) {
+            if (parkingLot.getType() == type) {
+                return parkingLot;
+            }
+        }
+        return null;
+    }
+    //endregion
+
     //region Getters and Setters
     public String getName() {
         return name;
@@ -144,6 +187,14 @@ public class Community extends Property {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Director getDirector() {
+        return director;
+    }
+
+    public void setDirector(Director director) {
+        this.director = director;
     }
 
     public List<Building> getBuildingList() {
@@ -154,12 +205,12 @@ public class Community extends Property {
         this.buildingList = buildingList;
     }
 
-    public List<ParkPlace> getParkingLot() {
-        return parkingLot;
+    public List<ParkingLot> getParkingLotList() {
+        return parkingLotList;
     }
 
-    public void setParkingLot(List<ParkPlace> parkingLot) {
-        this.parkingLot = parkingLot;
+    public void setParkingLotList(List<ParkingLot> parkingLotList) {
+        this.parkingLotList = parkingLotList;
     }
 
     public PublicFund getPublicFund() {

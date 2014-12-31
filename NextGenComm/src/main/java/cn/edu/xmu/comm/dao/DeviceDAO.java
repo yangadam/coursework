@@ -5,7 +5,6 @@ import cn.edu.xmu.comm.commons.persistence.Parameter;
 import cn.edu.xmu.comm.entity.Community;
 import cn.edu.xmu.comm.entity.Device;
 import cn.edu.xmu.comm.entity.Gradient;
-import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -27,8 +26,8 @@ public class DeviceDAO extends BaseDAO<Device, Integer> {
     public void applyPrivateGradient(Gradient gradient, Community community) {
         String ql = "update Device d set d.gradient = :p1 where " +
                 "d.community = :p2 and d.shareType = null and d.type = :p3";
-        Query query = createQuery(ql, new Parameter(gradient, community, gradient.getType()));
-        query.executeUpdate();
+        Parameter param = new Parameter(gradient, community, gradient.getType());
+        createQuery(ql, param).executeUpdate();
     }
 
     /**
@@ -40,7 +39,7 @@ public class DeviceDAO extends BaseDAO<Device, Integer> {
     public void applyShareGradient(Gradient gradient, Community community) {
         String ql = "update Device d set d.gradient = :p1 where " +
                 "d.community = :p2 and d.shareType != null and d.type = :p3";
-        Query query = createQuery(ql, new Parameter(gradient, community, gradient.getType()));
-        query.executeUpdate();
+        Parameter param = new Parameter(gradient, community, gradient.getType());
+        createQuery(ql, param).executeUpdate();
     }
 }

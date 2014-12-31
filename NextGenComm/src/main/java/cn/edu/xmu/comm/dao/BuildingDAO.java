@@ -6,6 +6,8 @@ import cn.edu.xmu.comm.entity.Building;
 import cn.edu.xmu.comm.entity.Community;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * 楼宇DAO
  * Created by Roger on 2014/12/9 0009.
@@ -24,7 +26,16 @@ public class BuildingDAO extends BaseDAO<Building, Integer> {
      * @return 楼宇
      */
     public Building getByNo(Integer no, Community community) {
-        return getByQL("select b from Building b where b.community = :p1 and b.no = :p2", new Parameter(community, no));
+        String ql = "select b from Building b where b.community = :p1 and b.no = :p2";
+        return getByQL(ql, new Parameter(community, no));
     }
 
+    /**
+     * @param community
+     * @return
+     */
+    public List<Building> getAll(Community community) {
+        String ql = "select b from Building b where b.community = :p1";
+        return searchByQL(ql, new Parameter(community));
+    }
 }

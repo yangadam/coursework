@@ -41,7 +41,7 @@ public class SpringContextHolder implements ApplicationContextAware, DisposableB
      *
      * @param applicationContext spring的Context
      * @throws BeansException Bean异常
-     * @see BeansException
+     * @see org.springframework.beans.BeansException
      */
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
@@ -98,7 +98,7 @@ public class SpringContextHolder implements ApplicationContextAware, DisposableB
      * 实现DisposableBean接口, 在Context关闭时清理静态变量
      *
      * @throws Exception 异常
-     * @see Exception
+     * @see java.lang.Exception
      */
     @Override
     public void destroy() throws Exception {

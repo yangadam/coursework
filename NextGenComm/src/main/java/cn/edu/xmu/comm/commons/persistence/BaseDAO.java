@@ -7,10 +7,7 @@ import org.hibernate.SessionFactory;
 import javax.annotation.Resource;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * DAO支持类的实现
@@ -52,7 +49,7 @@ public class BaseDAO<T, I extends Serializable> {
     }
 
     /**
-     * 清楚缓存数据
+     * 清除缓存数据
      */
     public void clear() {
         currentSession().clear();
@@ -70,12 +67,44 @@ public class BaseDAO<T, I extends Serializable> {
     }
 
     /**
+     * 持久化实体对象列表，立即生成SQL语句
+     *
+     * @param entities 实体对象列表
+     */
+    public List<I> save(List<T> entities) {
+        List<I> ids = new ArrayList<I>();
+        for (int i = 0; i < entities.size(); i++) {
+            ids.add(save(entities.get(i)));
+            if (i % 20 == 0) {
+                currentSession().flush();
+                currentSession().clear();
+            }
+        }
+        return ids;
+    }
+
+    /**
      * 持久化实体对象，会话结束时生成SQL语句
      *
      * @param entity 实体对象
      */
     public void persist(T entity) {
         currentSession().persist(entity);
+    }
+
+    /**
+     * 持久化实体对象列表，立即生成SQL语句
+     *
+     * @param entities 实体对象列表
+     */
+    public void persist(List<T> entities) {
+        for (int i = 0; i < entities.size(); i++) {
+            persist(entities.get(i));
+            if (i % 20 == 0) {
+                currentSession().flush();
+                currentSession().clear();
+            }
+        }
     }
 
     /**
@@ -115,6 +144,16 @@ public class BaseDAO<T, I extends Serializable> {
     }
 
     /**
+     * 通过id删除实体对象
+     *
+     * @param id id
+     */
+    public void delete(I id) {
+        String ql = "delete from " + clazzName + " t where t.id = :p1";
+        createQuery(ql, new Parameter(id)).executeUpdate();
+    }
+
+    /**
      * 查询记录的数量
      *
      * @param qlString  查询语句
@@ -125,6 +164,15 @@ public class BaseDAO<T, I extends Serializable> {
         int beginPos = qlString.toLowerCase().indexOf("from");
         String countString = "select count(*) ".concat(qlString.substring(beginPos));
         return (Long) createQuery(countString, parameter).uniqueResult();
+    }
+
+    /**
+     * 从数据库刷新实体对象
+     *
+     * @param entity 实体对象
+     */
+    public void refresh(T entity) {
+        currentSession().refresh(entity);
     }
 
     /**
@@ -166,7 +214,7 @@ public class BaseDAO<T, I extends Serializable> {
      */
     @SuppressWarnings("unchecked")
     public List<T> getAll() {
-        return (List<T>) currentSession().createCriteria(clazz).list();
+        return searchByQL("from " + clazz.getSimpleName(), new Parameter());
     }
 
     /**
@@ -213,6 +261,19 @@ public class BaseDAO<T, I extends Serializable> {
      */
     @SuppressWarnings("unchecked")
     public List<T> searchByQL(String qlString, Parameter parameter) {
+        Query query = createQuery(qlString, parameter);
+        return query.list();
+    }
+
+    /**
+     * 通过QL语句查找属性
+     *
+     * @param qlString  查询语句
+     * @param parameter 查询参数
+     * @return 属性列表
+     */
+    @SuppressWarnings("unchecked")
+    public List getAttrsByQL(String qlString, Parameter parameter) {
         Query query = createQuery(qlString, parameter);
         return query.list();
     }

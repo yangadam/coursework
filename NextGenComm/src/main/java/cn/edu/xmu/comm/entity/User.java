@@ -1,7 +1,7 @@
 package cn.edu.xmu.comm.entity;
 
 import cn.edu.xmu.comm.commons.persistence.DataEntity;
-import cn.edu.xmu.comm.commons.security.SecurityUtil;
+import cn.edu.xmu.comm.commons.utils.SecurityUtils;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -105,8 +105,8 @@ public class User extends DataEntity {
      * @return 判断结果
      */
     public Boolean isAdmin() {
-        classType = getClass().getSimpleName();
-        String adminType = User.class.getSimpleName();
+        classType = getClass().getSimpleName().toLowerCase();
+        String adminType = User.class.getSimpleName().toLowerCase();
         return classType.equals(adminType);
     }
 
@@ -117,10 +117,13 @@ public class User extends DataEntity {
      * @return 验证结果
      */
     public Boolean checkPassword(String password) {
-        String encryptPwd = SecurityUtil.encrypt(password, getCredentialsSalt());
+        String encryptPwd = SecurityUtils.encrypt(password, getCredentialsSalt());
         return encryptPwd.equals(this.password);
     }
 
+    public Community getCommunity() {
+        return null;
+    }
 
     //region Getters and Setters
     public Integer getId() {

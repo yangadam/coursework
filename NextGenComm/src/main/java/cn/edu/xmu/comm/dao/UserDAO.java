@@ -5,6 +5,8 @@ import cn.edu.xmu.comm.commons.persistence.Parameter;
 import cn.edu.xmu.comm.entity.User;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * 用户DAO
  *
@@ -21,8 +23,19 @@ public class UserDAO extends BaseDAO<User, Integer> {
      * @return 用户
      */
     public User getByUsername(String username) {
-        return getByQL("select u from User where u.username = :p1", new Parameter(username));
+        String ql = "select u from User u where u.username = :p1";
+        return getByQL(ql, new Parameter(username));
     }
 
+    /**
+     * 获取所有用户
+     *
+     * @param execludeAdmin 是否除去管理员
+     * @return 用户列表
+     */
+    public List<User> getAll(boolean execludeAdmin) {
+        String ql = "select u from User u where u.username != 'admin'";
+        return searchByQL(ql, null);
+    }
 }
 

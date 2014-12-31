@@ -49,13 +49,20 @@ public class Floor extends Property {
     /**
      * 构造函数
      *
-     * @param no       楼层号
-     * @param building 所属楼宇
+     * @param no 楼层号
      */
-    public Floor(Integer no, Building building) {
+    Floor(Integer no) {
         this.no = no;
-        this.unityCode = building.unityCode.concat("F").concat(String.valueOf(no));
-        building.addFloor(this);
+    }
+
+    @Override
+    public Property[] getParents() {
+        return new Property[]{getBuilding(), getCommunity()};
+    }
+
+    @Override
+    public Property[] getThisAndParents() {
+        return new Property[]{this, getBuilding(), getCommunity()};
     }
 
     /**
@@ -65,17 +72,19 @@ public class Floor extends Property {
      */
     public void addRoom(Room room) {
         room.setFloor(this);
+        room.setUnityCode(unityCode + "R" + room.getNo());
         roomList.add(room);
     }
 
     /**
      * 批量添加房间
      *
-     * @param rooms 房间列表
+     * @param rooms 要添加的房间
      */
     public void addRooms(List<Room> rooms) {
         for (Room room : rooms) {
             room.setFloor(this);
+            room.setUnityCode(unityCode + "R" + room.getNo());
         }
         roomList.addAll(rooms);
     }
@@ -112,6 +121,7 @@ public class Floor extends Property {
         this.building = building;
     }
 
+    @Override
     public Community getCommunity() {
         return building.getCommunity();
     }

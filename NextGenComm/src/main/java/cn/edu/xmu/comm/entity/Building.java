@@ -30,11 +30,6 @@ public class Building extends Property {
     private Integer no;
 
     /**
-     * 楼宇名称
-     */
-    private String name;
-
-    /**
      * 所属小区
      */
     @ManyToOne(targetEntity = Community.class, cascade = {CascadeType.MERGE})
@@ -56,48 +51,48 @@ public class Building extends Property {
     /**
      * 构造函数
      *
-     * @param no        楼宇号
-     * @param community 所属小区
+     * @param no 楼宇号
      */
-    public Building(Integer no, Community community) {
-        this(no, String.valueOf(no).concat("号楼"), community);
+    public Building(Integer no, Integer floorCount) {
+        this.no = no;
+        this.childCount = floorCount;
+        initFloors(floorCount);
+    }
+    //endregion
+
+
+    @Override
+    public Property[] getParents() {
+        return new Property[]{getCommunity()};
+    }
+
+    @Override
+    public Property[] getThisAndParents() {
+        return new Property[]{this, getCommunity()};
     }
 
     /**
-     * 构造函数
+     * 初始化楼层
      *
-     * @param no        楼宇号
-     * @param name      楼宇名
-     * @param community 所属小区
+     * @param floorCount 楼层数
      */
-    public Building(Integer no, String name, Community community) {
-        this.no = no;
-        this.name = name;
-        this.unityCode = community.unityCode.concat("B").concat(String.valueOf(no));
-        community.addBuilding(this);
+    private void initFloors(Integer floorCount) {
+        for (int i = 1; i <= floorCount; i++) {
+            Floor floor = new Floor(i);
+            addFloor(floor);
+        }
     }
-    //endregion
 
     /**
      * 添加楼层
      *
      * @param floor 要添加的楼层
      */
-    public void addFloor(Floor floor) {
+    private void addFloor(Floor floor) {
         floor.setBuilding(this);
+        floor.setUnityCode(unityCode + "F" + floor.getNo());
         floorList.add(floor);
-    }
-
-    /**
-     * 批量添加楼层
-     *
-     * @param floors 楼层列表
-     */
-    public void addFloors(List<Floor> floors) {
-        for (Floor floor : floors) {
-            floor.setBuilding(this);
-        }
-        floorList.addAll(floors);
+        childCount++;
     }
 
     /**
@@ -124,14 +119,7 @@ public class Building extends Property {
         this.no = no;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
+    @Override
     public Community getCommunity() {
         return community;
     }

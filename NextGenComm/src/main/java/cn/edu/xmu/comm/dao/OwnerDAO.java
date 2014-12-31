@@ -25,7 +25,28 @@ public class OwnerDAO extends BaseDAO<Owner, Integer> {
      * @return 业主列表
      */
     public List<Owner> getAll(Community community) {
-        return searchByQL("select o from Owner o where o.community = :p1", new Parameter(community));
+        String ql = "select o from Owner o where o.community = :p1";
+        return searchByQL(ql, new Parameter(community));
     }
 
+    /**
+     * 依据姓名获得某业主
+     *
+     * @param name 业主姓名
+     * @return 单个业主
+     */
+    public Owner get(String name) {
+        return getByQL("from Owner where name = :p1", new Parameter(name));
+    }
+
+    /**
+     * 依据姓名获得某业主
+     *
+     * @param community 社区
+     * @param name      业主姓名
+     * @return 业主列表
+     */
+    public List<Owner> getByName(Community community, String name) {
+        return searchByQL("from Owner where name = :p1 and community = :p2", new Parameter(name, community));
+    }
 }
