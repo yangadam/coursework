@@ -22,35 +22,33 @@
     <package name="default" extends="struts-default">
         <global-results>
             <result name="login" type="redirect">/login.do</result>
-            <result name="admin" type="redirect">/admin.do</result>
-            <result name="director" type="redirect">/director.do</result>
-            <result name="unauthorized" type="redirect">/WEB-INF/jsp/login.jsp</result>
+            <result name="unauthorized" type="redirect">/login.do</result>
+            <result name="admin" type="redirect">admin.do</result>
+            <result name="director" type="redirect">director.do</result>
         </global-results>
     </package>
 
     <package name="root" namespace="/" extends="default">
 
-        <action name="rememberMeLogin" class="remLoginAction">
-            <result>login.do</result>
-        </action>
+        <action name="rememberMeLogin" class="remLoginAction"/>
 
         <action name="login">
             <result>/WEB-INF/jsp/login.jsp</result>
         </action>
 
         <action name="doLogin" class="loginAction">
-            <result name="input">login.do</result>
+            <result name="input">login.do?result=1</result>
         </action>
 
         <action name="logout" class="logoutAction">
             <result>login.do</result>
         </action>
 
-        <action name="admin" class="actionSupport">
+        <action name="admin">
             <result>/WEB-INF/jsp/admin/home.jsp</result>
         </action>
 
-        <action name="director" class="actionSupport">
+        <action name="director">
             <result>/WEB-INF/jsp/director/home.jsp</result>
         </action>
 
@@ -58,20 +56,20 @@
 
     <package name="admin" namespace="/admin" extends="default">
 
-        <action name="community" class="actionSupport">
+        <action name="community">
             <result>/WEB-INF/jsp/admin/comm.jsp</result>
         </action>
 
-        <action name="addComm" class="commListAction" method="add">
+        <action name="addComm" class="commAddAction">
             <result type="redirect">community.do</result>
             <result name="input">community.do</result>
         </action>
 
-        <action name="director" class="actionSupport">
+        <action name="director">
             <result>/WEB-INF/jsp/admin/director.jsp</result>
         </action>
 
-        <action name="addMng" class="directorListAction" method="add">
+        <action name="addMng" class="directorAddAction">
             <result type="redirect">director.do</result>
             <result name="input">director.do</result>
         </action>
@@ -80,16 +78,16 @@
 
     <package name="director" namespace="/director" extends="default">
 
-        <action name="building" class="actionSupport">
+        <action name="building">
             <result>/WEB-INF/jsp/director/build.jsp</result>
         </action>
 
-        <action name="addBuild" class="buildListAction" method="add">
+        <action name="addBuild" class="buildAddAction">
             <result type="redirect">building.do</result>
             <result name="input">building.do</result>
         </action>
 
-        <action name="room" class="actionSupport">
+        <action name="room">
             <result>/WEB-INF/jsp/director/room.jsp</result>
         </action>
 
@@ -105,11 +103,10 @@
             </result>
         </global-results>
 
-        <action name="listComm" class="commListAction" method="list"/>
-        <action name="listMng" class="directorListAction" method="list"/>
-        <action name="commNames" class="directorListAction" method="commNameList"/>
+        <action name="listComm" class="commListAction"/>
+        <action name="listMng" class="directorAddAction"/>
+        <action name="commNames" class="commNameAction"/>
         <action name="listBuild" class="buildListAction" method="list"/>
-
     </package>
 
 </struts>

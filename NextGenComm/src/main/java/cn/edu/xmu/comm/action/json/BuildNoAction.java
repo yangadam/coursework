@@ -1,4 +1,4 @@
-package cn.edu.xmu.comm.action;
+package cn.edu.xmu.comm.action.json;
 
 /**
  * description
@@ -6,7 +6,7 @@ package cn.edu.xmu.comm.action;
  * @author Mengmeng Yang
  * @version 12/31/2014 0031
  */
-public class RoomListAction {
+public class BuildNoAction {
 
 
 }

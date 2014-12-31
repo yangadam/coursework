@@ -1,10 +1,11 @@
-package cn.edu.xmu.comm.action;
+package cn.edu.xmu.comm.action.json;
 
 import cn.edu.xmu.comm.entity.Building;
 import cn.edu.xmu.comm.entity.Community;
 import cn.edu.xmu.comm.service.PropertyService;
 import com.alibaba.fastjson.JSONArray;
 import com.opensymphony.xwork2.ActionContext;
+import com.opensymphony.xwork2.ActionSupport;
 import org.springframework.stereotype.Controller;
 
 import javax.annotation.Resource;
@@ -25,10 +26,9 @@ public class BuildListAction extends ActionSupport {
     private PropertyService propertyService;
 
     private Map<String, Object> data;
-    private Integer buildNo;
-    private Integer floorCount;
 
-    public String list() {
+    @Override
+    public String execute() {
         Community community = (Community) ActionContext.getContext().getSession().get("COMMUNITY");
         List<Building> buildings = propertyService.getAllBuildings(community);
         data = new HashMap<String, Object>();
@@ -47,12 +47,6 @@ public class BuildListAction extends ActionSupport {
         return SUCCESS;
     }
 
-    public String add() {
-        Community community = (Community) ActionContext.getContext().getSession().get("COMMUNITY");
-        propertyService.addBuilding(buildNo, floorCount, community);
-        return SUCCESS;
-    }
-
     public Map<String, Object> getData() {
         return data;
     }
@@ -61,19 +55,4 @@ public class BuildListAction extends ActionSupport {
         this.data = data;
     }
 
-    public Integer getBuildNo() {
-        return buildNo;
-    }
-
-    public void setBuildNo(Integer buildNo) {
-        this.buildNo = buildNo;
-    }
-
-    public Integer getFloorCount() {
-        return floorCount;
-    }
-
-    public void setFloorCount(Integer floorCount) {
-        this.floorCount = floorCount;
-    }
 }

@@ -27,7 +27,7 @@ public class Authorization {
     @Pointcut("execution(* cn.edu.xmu.comm.action.*.*(..)) " +
             "&& !execution(* cn.edu.xmu.comm.action.*.get*(..)) " +
             "&& !execution(* cn.edu.xmu.comm.action.*.set*(..)) " +
-            "&& !execution(* cn.edu.xmu.comm.action.*LoginAction.*(..)) ")
+            "&& !execution(* cn.edu.xmu.comm.action.LoginAction.*(..)) ")
     private void anyActionExceptLogin() {
     }
 

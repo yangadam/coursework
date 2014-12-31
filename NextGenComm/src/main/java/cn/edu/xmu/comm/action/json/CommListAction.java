@@ -1,4 +1,4 @@
-package cn.edu.xmu.comm.action;
+package cn.edu.xmu.comm.action.json;
 
 import cn.edu.xmu.comm.entity.Community;
 import cn.edu.xmu.comm.service.PropertyService;
@@ -12,10 +12,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 小区管理Action
+ * description
  *
  * @author Mengmeng Yang
- * @version 12/28/2014 0028
+ * @version 12/31/2014 0031
  */
 @Controller
 public class CommListAction extends ActionSupport {
@@ -24,10 +24,9 @@ public class CommListAction extends ActionSupport {
     private PropertyService propertyService;
 
     private Map<String, Object> data;
-    private String commName;
 
-    @SuppressWarnings("unchecked")
-    public String list() throws Exception {
+    @Override
+    public String execute() throws Exception {
         List<Community> communities = propertyService.getAllCommunities();
         data = new HashMap<String, Object>();
         data.put("iTotalRecords", 1);
@@ -47,16 +46,6 @@ public class CommListAction extends ActionSupport {
         return SUCCESS;
     }
 
-    public String add() {
-        propertyService.addCommunity(commName);
-        return SUCCESS;
-    }
-
-    public String delete() {
-        //propertyService.delCommunity(commId);
-        return SUCCESS;
-    }
-
     public Map<String, Object> getData() {
         return data;
     }
@@ -64,13 +53,4 @@ public class CommListAction extends ActionSupport {
     public void setData(Map<String, Object> data) {
         this.data = data;
     }
-
-    public String getCommName() {
-        return commName;
-    }
-
-    public void setCommName(String commName) {
-        this.commName = commName;
-    }
-
 }

@@ -5,7 +5,7 @@
             <a class="brand" href="/manager.do">
                 <img src="../../../global/image/logo.png" alt="logo"/>
             </a>
-            <a class="brand" href="/manager.do"><s:property value="#session['USER'].community.name"/></a>
+            <a class="brand" href="/manager.do"><s:property value="#session['community'].name"/></a>
             <a href="javascript:" class="btn-navbar collapsed" data-toggle="collapse" data-target=".nav-collapse">
                 <img src="../../../global/image/menu-toggler.png" alt=""/>
             </a>
