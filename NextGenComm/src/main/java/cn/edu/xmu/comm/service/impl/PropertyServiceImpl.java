@@ -516,6 +516,11 @@ public class PropertyServiceImpl implements PropertyService {
     public Owner getOwner(String name) {
         return ownerDAO.get(name);
     }
+
+    @Override
+    public List<Integer> getBuildingNos(Community community) {
+        return buildingDAO.getNos(community);
+    }
     //endregion
 
 }

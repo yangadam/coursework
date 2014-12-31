@@ -38,4 +38,10 @@ public class BuildingDAO extends BaseDAO<Building, Integer> {
         String ql = "select b from Building b where b.community = :p1";
         return searchByQL(ql, new Parameter(community));
     }
+
+    @SuppressWarnings("unchecked")
+    public List<Integer> getNos(Community community) {
+        String ql = "select b.no from Building b where b.community = :p1";
+        return getAttrsByQL(ql, new Parameter(community));
+    }
 }

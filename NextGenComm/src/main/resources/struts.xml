@@ -104,9 +104,10 @@
         </global-results>
 
         <action name="listComm" class="commListAction"/>
+        <action name="listBuild" class="buildListAction"/>
         <action name="listMng" class="directorAddAction"/>
         <action name="commNames" class="commNameAction"/>
-        <action name="listBuild" class="buildListAction" method="list"/>
+        <action name="buildNo" class="buildNoAction"/>
     </package>
 
 </struts>
