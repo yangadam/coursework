@@ -6,6 +6,9 @@ import cn.edu.xmu.comm.entity.Building;
 import cn.edu.xmu.comm.entity.Floor;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 楼层DAO
  * Created by Roger on 2014/12/9 0009.
@@ -28,4 +31,25 @@ public class FloorDAO extends BaseDAO<Floor, Integer> {
         return getByQL(ql, new Parameter(building, no));
     }
 
+    /**
+     * @param buildId
+     * @return
+     */
+
+    @SuppressWarnings("unchecked")
+    public List<Integer[]> getIdsAndNos(Integer buildId) {
+
+        String ql = "select f.id, f.no from Floor f where f.building.id = :p1";
+        List list = getAttrsByQL(ql, new Parameter(buildId));
+        List<Integer[]> ret = new ArrayList<Integer[]>();
+        for (Object aList : list) {
+            Object[] objects = (Object[]) aList;
+            Integer[] ints = new Integer[objects.length];
+            for (int i = 0; i < objects.length; i++) {
+                ints[i] = Integer.valueOf(objects[i].toString());
+            }
+            ret.add(ints);
+        }
+        return ret;
+    }
 }

@@ -2,6 +2,7 @@ package cn.edu.xmu.comm.service;
 
 import cn.edu.xmu.comm.entity.Community;
 import cn.edu.xmu.comm.entity.Director;
+import cn.edu.xmu.comm.entity.Staff;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -32,5 +33,10 @@ public interface StaffService {
      * @return 物业主任列表
      */
     List<Director> getAllDirectors();
+
+    @Transactional(readOnly = false)
+    Staff addStaff(String username, String password, String name, Community community, String type);
+
+    List<Staff> getAll(Community community);
 
 }

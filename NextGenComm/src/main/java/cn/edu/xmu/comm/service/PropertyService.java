@@ -308,4 +308,23 @@ public interface PropertyService {
     List<Room> getAllRooms(Community community);
 
     Owner getOwner(String name);
+
+    /**
+     * 获取某小区楼宇号列表
+     *
+     * @param community 小区
+     * @return 楼宇号列表
+     */
+    List<Integer[]> getBuildingNos(Community community);
+
+    /**
+     * @param buildId
+     * @return
+     */
+    List<Integer[]> getFloorNos(Integer buildId);
+
+    List<Room> getAllRooms(Integer floorId);
+
+    Floor getFloor(Integer floorId);
+
 }

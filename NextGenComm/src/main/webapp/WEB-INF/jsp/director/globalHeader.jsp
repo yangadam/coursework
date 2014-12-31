@@ -5,7 +5,7 @@
             <a class="brand" href="/manager.do">
                 <img src="../../../global/image/logo.png" alt="logo"/>
             </a>
-            <a class="brand" href="/manager.do"><s:property value="#session['USER'].community.name"/></a>
+            <a class="brand" href="/manager.do"><s:property value="#session['community'].name"/></a>
             <a href="javascript:" class="btn-navbar collapsed" data-toggle="collapse" data-target=".nav-collapse">
                 <img src="../../../global/image/menu-toggler.png" alt=""/>
             </a>
@@ -202,7 +202,7 @@
                 <li class="dropdown user">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <img alt="" src="../../../global/image/avatar1_small.jpg"/>
-                        <span class="username"><s:property value="#session['USER'].name"/></span>
+                        <span class="username"><s:property value="#session['user'].name"/></span>
                         <i class="icon-angle-down"></i>
                     </a>
                     <ul class="dropdown-menu">

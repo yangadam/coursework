@@ -1,10 +1,12 @@
-package cn.edu.xmu.comm.action;
+package cn.edu.xmu.comm.action.json;
 
+import cn.edu.xmu.comm.commons.utils.Constants;
 import cn.edu.xmu.comm.entity.Building;
 import cn.edu.xmu.comm.entity.Community;
 import cn.edu.xmu.comm.service.PropertyService;
 import com.alibaba.fastjson.JSONArray;
 import com.opensymphony.xwork2.ActionContext;
+import com.opensymphony.xwork2.ActionSupport;
 import org.springframework.stereotype.Controller;
 
 import javax.annotation.Resource;
@@ -25,15 +27,13 @@ public class BuildListAction extends ActionSupport {
     private PropertyService propertyService;
 
     private Map<String, Object> data;
-    private Integer buildNo;
-    private Integer floorCount;
 
-    public String list() {
-        Community community = (Community) ActionContext.getContext().getSession().get("COMMUNITY");
+
+    @Override
+    public String execute() {
+        Community community = (Community) ActionContext.getContext()
+                .getSession().get(Constants.COMMUNITY);
         List<Building> buildings = propertyService.getAllBuildings(community);
-        data = new HashMap<String, Object>();
-        data.put("iTotalRecords", 1);
-        data.put("iTotalDisplayRecords", 1);
         JSONArray aaData = new JSONArray();
         for (Building building : buildings) {
             JSONArray row = new JSONArray();
@@ -43,13 +43,10 @@ public class BuildListAction extends ActionSupport {
             row.add(building.getId());
             aaData.add(row);
         }
+        data = new HashMap<String, Object>();
+        data.put("iTotalRecords", buildings.size());
+        data.put("iTotalDisplayRecords", buildings.size());
         data.put("aaData", aaData);
-        return SUCCESS;
-    }
-
-    public String add() {
-        Community community = (Community) ActionContext.getContext().getSession().get("COMMUNITY");
-        propertyService.addBuilding(buildNo, floorCount, community);
         return SUCCESS;
     }
 
@@ -61,19 +58,4 @@ public class BuildListAction extends ActionSupport {
         this.data = data;
     }
 
-    public Integer getBuildNo() {
-        return buildNo;
-    }
-
-    public void setBuildNo(Integer buildNo) {
-        this.buildNo = buildNo;
-    }
-
-    public Integer getFloorCount() {
-        return floorCount;
-    }
-
-    public void setFloorCount(Integer floorCount) {
-        this.floorCount = floorCount;
-    }
 }

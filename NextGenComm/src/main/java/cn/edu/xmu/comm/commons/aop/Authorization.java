@@ -2,6 +2,7 @@ package cn.edu.xmu.comm.commons.aop;
 
 import cn.edu.xmu.comm.commons.exception.NoPermissionException;
 import cn.edu.xmu.comm.commons.exception.NoUserInSessionException;
+import cn.edu.xmu.comm.commons.utils.Constants;
 import cn.edu.xmu.comm.entity.User;
 import com.opensymphony.xwork2.ActionContext;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -27,7 +28,7 @@ public class Authorization {
     @Pointcut("execution(* cn.edu.xmu.comm.action.*.*(..)) " +
             "&& !execution(* cn.edu.xmu.comm.action.*.get*(..)) " +
             "&& !execution(* cn.edu.xmu.comm.action.*.set*(..)) " +
-            "&& !execution(* cn.edu.xmu.comm.action.*LoginAction.*(..)) ")
+            "&& !execution(* cn.edu.xmu.comm.action.LoginAction.*(..)) ")
     private void anyActionExceptLogin() {
     }
 
@@ -39,7 +40,7 @@ public class Authorization {
 
     @Around("anyActionExceptLogin()")
     public Object processAction(ProceedingJoinPoint jp) throws java.lang.Throwable {
-        User user = (User) ActionContext.getContext().getSession().get("USER");
+        User user = (User) ActionContext.getContext().getSession().get(Constants.USER);
         if (user == null) {
             logger.info(jp.getSignature().getName() + ":用户没有登录");
             return "login";
@@ -60,7 +61,7 @@ public class Authorization {
 
     @Around("anyServiceExceptLogin()")
     public Object processService(ProceedingJoinPoint jp) throws java.lang.Throwable {
-        User user = (User) ActionContext.getContext().getSession().get("USER");
+        User user = (User) ActionContext.getContext().getSession().get(Constants.USER);
         if (user == null) {
             logger.info(jp.getSignature().getName() + ":用户没有登录");
             throw new NoUserInSessionException();

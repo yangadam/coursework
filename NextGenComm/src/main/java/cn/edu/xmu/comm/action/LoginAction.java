@@ -2,6 +2,7 @@ package cn.edu.xmu.comm.action;
 
 import cn.edu.xmu.comm.commons.exception.PasswordIncorrectException;
 import cn.edu.xmu.comm.commons.exception.UserNotFoundException;
+import cn.edu.xmu.comm.commons.utils.Constants;
 import cn.edu.xmu.comm.commons.utils.CookieUtils;
 import cn.edu.xmu.comm.entity.User;
 import cn.edu.xmu.comm.service.SystemService;
@@ -47,14 +48,14 @@ public class LoginAction extends ActionSupport {
     private void checkRememberMe() {
         if (rememberMe) {
             String token = systemService.makeRememberMeToken(user);
-            CookieUtils.setCookie(ServletActionContext.getResponse(), "COMM", token);
+            CookieUtils.setCookie(ServletActionContext.getResponse(), Constants.APP_NAME, token);
         }
     }
 
     private void putUserInSession() {
         Map<String, Object> session = ActionContext.getContext().getSession();
-        session.put("USER", user);
-        session.put("COMMUNITY", user.getCommunity());
+        session.put(Constants.USER, user);
+        session.put(Constants.COMMUNITY, user.getCommunity());
     }
 
     public String getUsername() {

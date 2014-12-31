@@ -37,5 +37,6 @@ public class UserDAO extends BaseDAO<User, Integer> {
         String ql = "select u from User u where u.username != 'admin'";
         return searchByQL(ql, null);
     }
+
 }
 

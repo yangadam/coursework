@@ -2,7 +2,6 @@ package cn.edu.xmu.comm.service.impl;
 
 import cn.edu.xmu.comm.commons.exception.DifferentCommunityException;
 import cn.edu.xmu.comm.commons.persistence.Page;
-import cn.edu.xmu.comm.commons.service.BaseService;
 import cn.edu.xmu.comm.commons.utils.SecurityUtils;
 import cn.edu.xmu.comm.dao.*;
 import cn.edu.xmu.comm.entity.*;
@@ -23,7 +22,7 @@ import java.util.List;
  */
 @Service
 @Transactional(readOnly = true)
-public class PropertyServiceImpl extends BaseService implements PropertyService {
+public class PropertyServiceImpl implements PropertyService {
 
     //region DAO
     @Resource
@@ -516,6 +515,27 @@ public class PropertyServiceImpl extends BaseService implements PropertyService 
     @Override
     public Owner getOwner(String name) {
         return ownerDAO.get(name);
+    }
+
+    @Override
+    public List<Integer[]> getBuildingNos(Community community) {
+        return buildingDAO.getIdsAndNos(community);
+    }
+
+    @Override
+    public List<Integer[]> getFloorNos(Integer buildId) {
+        return floorDAO.getIdsAndNos(buildId);
+    }
+
+    @Override
+    public List<Room> getAllRooms(Integer floorId) {
+        Floor floor = floorDAO.get(floorId);
+        return floor.getRoomList();
+    }
+
+    @Override
+    public Floor getFloor(Integer floorId) {
+        return floorDAO.get(floorId);
     }
     //endregion
 
