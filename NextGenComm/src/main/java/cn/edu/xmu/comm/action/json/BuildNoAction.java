@@ -30,13 +30,16 @@ public class BuildNoAction extends ActionSupport {
     @Override
     public String execute() {
         Community community = (Community) ActionContext.getContext().getSession().get(Constants.COMMUNITY);
-        List<Integer> noList = propertyService.getBuildingNos(community);
+        List<Integer[]> list = propertyService.getBuildingNos(community);
         data = new HashMap<String, Object>();
-        JSONArray jsonArray = new JSONArray();
-        for (Integer no : noList) {
-            jsonArray.add(no);
+        JSONArray ids = new JSONArray();
+        JSONArray nos = new JSONArray();
+        for (Integer[] idAndNo : list) {
+            ids.add(idAndNo[0]);
+            nos.add(idAndNo[1]);
         }
-        data.put("no", jsonArray);
+        data.put("id", ids);
+        data.put("no", nos);
         return SUCCESS;
     }
 
@@ -47,4 +50,5 @@ public class BuildNoAction extends ActionSupport {
     public void setData(Map<String, Object> data) {
         this.data = data;
     }
+
 }

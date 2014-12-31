@@ -518,8 +518,8 @@ public class PropertyServiceImpl implements PropertyService {
     }
 
     @Override
-    public List<Integer> getBuildingNos(Community community) {
-        return buildingDAO.getNos(community);
+    public List<Integer[]> getBuildingNos(Community community) {
+        return buildingDAO.getIdsAndNos(community);
     }
     //endregion
 

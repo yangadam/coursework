@@ -6,6 +6,7 @@ import cn.edu.xmu.comm.entity.Building;
 import cn.edu.xmu.comm.entity.Community;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,8 +41,18 @@ public class BuildingDAO extends BaseDAO<Building, Integer> {
     }
 
     @SuppressWarnings("unchecked")
-    public List<Integer> getNos(Community community) {
-        String ql = "select b.no from Building b where b.community = :p1";
-        return getAttrsByQL(ql, new Parameter(community));
+    public List<Integer[]> getIdsAndNos(Community community) {
+        String ql = "select b.id, b.no from Building b where b.community = :p1";
+        List list = getAttrsByQL(ql, new Parameter(community));
+        List<Integer[]> ret = new ArrayList<Integer[]>();
+        for (Object aList : list) {
+            Object[] objects = (Object[]) aList;
+            Integer[] ints = new Integer[objects.length];
+            for (int i = 0; i < objects.length; i++) {
+                ints[i] = Integer.valueOf(objects[i].toString());
+            }
+            ret.add(ints);
+        }
+        return ret;
     }
 }

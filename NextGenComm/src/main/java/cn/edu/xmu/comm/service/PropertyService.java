@@ -315,6 +315,6 @@ public interface PropertyService {
      * @param community 小区
      * @return 楼宇号列表
      */
-    List<Integer> getBuildingNos(Community community);
+    List<Integer[]> getBuildingNos(Community community);
 
 }
