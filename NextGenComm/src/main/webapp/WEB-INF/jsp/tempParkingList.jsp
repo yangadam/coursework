@@ -10,7 +10,7 @@
     <meta content="" name="description"/>
     <meta content="PumpKing" name="author"/>
 
-    <%@include file="globalCSS.jsp" %>
+    <%@include file="admin/globalCSS.jsp" %>
     <!-- BEGIN PAGE LEVEL STYLES -->
     <link rel="stylesheet" type="text/css" href="../../pumpking/css/select2_metro.css"/>
     <link rel="stylesheet" href="../../pumpking/css/DT_bootstrap.css"/>
@@ -21,12 +21,12 @@
 <!-- BEGIN BODY -->
 <body class="page-header-fixed">
 <!-- BEGIN HEADER -->
-<%@include file="globalHeader.jsp" %>
+<%@include file="admin/globalHeader.jsp" %>
 <!-- END HEADER -->
 <!-- BEGIN CONTAINER -->
 <div class="page-container">
 
-    <%@include file="globalSidebar.jsp" %>
+    <%@include file="admin/globalSidebar.jsp" %>
 
     <!-- BEGIN PAGE -->
     <div class="page-content">
@@ -118,11 +118,11 @@
     </div>
     <!-- END CONTAINER -->
     <!-- BEGIN FOOTER -->
-    <%@include file="globalFooter.jsp" %>
+    <%@include file="admin/globalFooter.jsp" %>
     <!-- END FOOTER -->
 
 
-    <%@include file="globalJS.jsp" %>
+    <%@include file="admin/globalJS.jsp" %>
     <!-- BEGIN PAGE LEVEL PLUGINS -->
     <script type="text/javascript" src="../../pumpking/js/select2.min.js"></script>
     <script type="text/javascript" src="../../pumpking/js/jquery.dataTables.js"></script>

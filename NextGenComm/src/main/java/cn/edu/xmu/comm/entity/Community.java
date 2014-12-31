@@ -38,6 +38,13 @@ public class Community extends Property {
     private String name;
 
     /**
+     * 物业主任
+     */
+    @OneToOne(targetEntity = Director.class)
+    @JoinColumn(name = "deirector_id")
+    private Director director;
+
+    /**
      * 包含的楼宇列表
      */
     @OneToMany(mappedBy = "community", targetEntity = Building.class,
@@ -86,6 +93,7 @@ public class Community extends Property {
     //endregion
 
     Community() {
+        super();
     }
 
     public Community(String name) {
@@ -111,6 +119,7 @@ public class Community extends Property {
 
 
     //region Public Methods
+
     /**
      * 添加楼宇
      *
@@ -118,7 +127,14 @@ public class Community extends Property {
      */
     public void addBuilding(Building building) {
         building.setCommunity(this);
+        building.setUnityCode(unityCode + "B" + building.getNo());
         buildingList.add(building);
+        childCount++;
+    }
+
+    public void assignDirector(Director director) {
+        this.director = director;
+        director.setCommunity(this);
     }
 
     /**
@@ -173,6 +189,13 @@ public class Community extends Property {
         this.name = name;
     }
 
+    public Director getDirector() {
+        return director;
+    }
+
+    public void setDirector(Director director) {
+        this.director = director;
+    }
 
     public List<Building> getBuildingList() {
         return buildingList;

@@ -11,7 +11,7 @@ import javax.annotation.Resource;
 public class TempParkingListAction extends ActionSupport {
 
     @Resource
-    CarService carService;
+    private CarService carService;
 
     private Community community;
 

@@ -105,8 +105,8 @@ public class User extends DataEntity {
      * @return 判断结果
      */
     public Boolean isAdmin() {
-        classType = getClass().getSimpleName();
-        String adminType = User.class.getSimpleName();
+        classType = getClass().getSimpleName().toLowerCase();
+        String adminType = User.class.getSimpleName().toLowerCase();
         return classType.equals(adminType);
     }
 
@@ -121,6 +121,9 @@ public class User extends DataEntity {
         return encryptPwd.equals(this.password);
     }
 
+    public Community getCommunity() {
+        return null;
+    }
 
     //region Getters and Setters
     public Integer getId() {

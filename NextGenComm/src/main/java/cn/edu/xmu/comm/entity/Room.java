@@ -45,6 +45,7 @@ public class Room extends Property {
      * 房间号
      */
     private String no;
+
     /**
      * 房间全称
      */
@@ -56,6 +57,7 @@ public class Room extends Property {
     @ManyToOne(targetEntity = Floor.class, cascade = {CascadeType.MERGE})
     @JoinColumn(name = "floor_id", nullable = false)
     private Floor floor;
+
     /**
      * 拥有者
      */
@@ -72,14 +74,11 @@ public class Room extends Property {
      *
      * @param no        房间号
      * @param houseArea 房间面积
-     * @param floor     所属楼层
      */
-    public Room(String no, Double houseArea, Floor floor) {
+    public Room(String no, Double houseArea) {
         super(houseArea);
         this.no = no;
-        this.fullName = floor.getBuilding().getName() + this.no;
-        this.unityCode = floor.unityCode.concat("R").concat(no);
-        floor.addRoom(this);
+        this.fullName = floor.getBuilding().getNo() + "号楼" + this.no;
         registerRoom();
     }
 

@@ -8,36 +8,28 @@
 <!-- BEGIN HEAD -->
 <head>
     <meta charset="utf-8"/>
-    <title>物业管理系统</title>
+    <title>登录 | 物业管理系统</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <meta content="" name="description"/>
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
-    <link href="../../pumpking/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-    <link href="../../pumpking/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>
-    <link href="../../pumpking/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
-    <link href="../../pumpking/css/style-metro.css" rel="stylesheet" type="text/css"/>
-    <link href="../../pumpking/css/style.css" rel="stylesheet" type="text/css"/>
-    <link href="../../pumpking/css/style-responsive.css" rel="stylesheet" type="text/css"/>
-    <link href="../../pumpking/css/default.css" rel="stylesheet" type="text/css" id="style_color"/>
-    <link href="../../pumpking/css/uniform.default.css" rel="stylesheet" type="text/css"/>
-    <!-- END GLOBAL MANDATORY STYLES -->
-    <!-- BEGIN PAGE LEVEL STYLES -->
-    <link href="../../pumpking/css/login.css" rel="stylesheet" type="text/css"/>
-    <!-- END PAGE LEVEL STYLES -->
-    <link rel="shortcut icon" href="../../pumpking/image/favicon.ico"/>
+    <link href="../../global/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="../../global/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>
+    <link href="../../global/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <link href="../../global/css/style-metro.css" rel="stylesheet" type="text/css"/>
+    <link href="../../global/css/style.css" rel="stylesheet" type="text/css"/>
+    <link href="../../global/css/style-responsive.css" rel="stylesheet" type="text/css"/>
+    <link href="../../global/css/default.css" rel="stylesheet" type="text/css" id="style_color"/>
+    <link href="../../global/css/uniform.default.css" rel="stylesheet" type="text/css"/>
+
+    <link href="../../custom/css/login.css" rel="stylesheet" type="text/css"/>
+    <link rel="shortcut icon" href="../../global/image/favicon.ico"/>
 </head>
-<!-- END HEAD -->
-<!-- BEGIN BODY -->
 <body class="login">
-<!-- BEGIN LOGO -->
 <div class="logo">
     <img src="" alt=""/>
 </div>
-<!-- END LOGO -->
-<!-- BEGIN LOGIN -->
 <div class="content">
-    <!-- BEGIN LOGIN FORM -->
-    <s:form class="form-vertical login-form" action="doLogin" method="post">
+    <s:form class="form-vertical login-form" action="doLogin" method="POST">
         <h3 class="form-title">登录</h3>
 
         <div class="control-group">
@@ -47,7 +39,8 @@
             <div class="controls">
                 <div class="input-icon left">
                     <i class="icon-user"></i>
-                    <s:textfield cssClass="m-wrap placeholder-no-fix" type="text" placeholder="请输入用户名" name="username"/>
+                    <s:textfield id="username" cssClass="m-wrap placeholder-no-fix" type="text"
+                                 placeholder="请输入用户名" name="username"/>
                 </div>
             </div>
         </div>
@@ -57,31 +50,25 @@
             <div class="controls">
                 <div class="input-icon left">
                     <i class="icon-lock"></i>
-                    <s:textfield cssClass="m-wrap placeholder-no-fix" type="password" placeholder="请输入密码"
-                                 name="password"/>
+                    <s:password id="password" cssClass="m-wrap placeholder-no-fix"
+                                placeholder="请输入密码" name="password"/>
                 </div>
             </div>
         </div>
         <div class="form-actions">
             <label class="checkbox">
-                <s:checkbox name="rememberMe" value="rememberMe"/>记住我
+                <s:checkbox id="rememberMe" name="rememberMe"/>记住我
             </label>
-            <s:submit cssClass="btn green pull-right" value="登录"/>
-            <s:actionerror/>
-            <!--  <i class="m-icon-swapright m-icon-white"></i> -->
-
+            <s:submit id="doLogin" cssClass="btn green pull-right" value="登录"/>
         </div>
-
         <div class="forget-password">
             <p>
                 <a href="javascript:" class="" id="forget-password">忘记密码？</a>
             </p>
         </div>
     </s:form>
-    <!-- END LOGIN FORM -->
-    <!-- BEGIN FORGOT PASSWORD FORM -->
     <form class="form-vertical forget-form" action="login.do">
-        <h3 class="">忘记密码？</h3>
+        <h3 class="">忘记密码？</h3>
 
         <p id="forget-text">我们将向您的信箱发送一个链接，您可通过该链接重置您的密码。</p>
 
@@ -95,51 +82,38 @@
         </div>
         <div class="form-actions">
             <button type="button" id="back-btn" class="btn">
-                <!-- <i class="m-icon-swapleft"></i> --> 返回
+                返回
             </button>
             <button type="submit" class="btn green pull-right">
-                提交 <!-- <i class="m-icon-swapright m-icon-white"></i> -->
+                提交
             </button>
         </div>
     </form>
-    <!-- END FORGOT PASSWORD FORM -->
 </div>
-<!-- END LOGIN -->
-<!-- BEGIN COPYRIGHT -->
 <div class="copyright">
     2014 &copy; Pumpking. XMU NextGenComm.
 </div>
-<!-- END COPYRIGHT -->
-<!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
-<!-- BEGIN CORE PLUGINS -->
-<script src="../../pumpking/js/jquery-2.1.3.js" type="text/javascript"></script>
-<script src="../../pumpking/js/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
-<!-- IMPORTANT! Load jquery-ui-1.10.1.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
-<script src="../../pumpking/js/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
-<script src="../../pumpking/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="../../global/js/jquery-2.1.3.js" type="text/javascript"></script>
+<script src="../../global/js/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+<script src="../../global/js/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
+<script src="../../global/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="../../global/js/jquery.slimscroll.min.js" type="text/javascript"></script>
+<script src="../../global/js/jquery.blockui.min.js" type="text/javascript"></script>
+<script src="../../global/js/jquery.cookie.min.js" type="text/javascript"></script>
+<script src="../../global/js/jquery.uniform.min.js" type="text/javascript"></script>
+<script src="../../global/js/jquery.validate.min.js" type="text/javascript"></script>
 <!--[if lt IE 9]>
-<script src="../../pumpking/js/excanvas.min.js"></script>
-<script src="../../pumpking/js/respond.min.js"></script>
+<script src="../../global/js/excanvas.min.js"></script>
+<script src="../../global/js/respond.min.js"></script>
 <![endif]-->
-<script src="../../pumpking/js/jquery.slimscroll.min.js" type="text/javascript"></script>
-<script src="../../pumpking/js/jquery.blockui.min.js" type="text/javascript"></script>
-<script src="../../pumpking/js/jquery.cookie.min.js" type="text/javascript"></script>
-<script src="../../pumpking/js/jquery.uniform.min.js" type="text/javascript"></script>
-<!-- END CORE PLUGINS -->
-<!-- BEGIN PAGE LEVEL PLUGINS -->
-<script src="../../pumpking/js/jquery.validate.min.js" type="text/javascript"></script>
-<!-- END PAGE LEVEL PLUGINS -->
-<!-- BEGIN PAGE LEVEL SCRIPTS -->
-<script src="../../pumpking/js/app.js" type="text/javascript"></script>
-<script src="../../pumpking/js/login.js" type="text/javascript"></script>
-<!-- END PAGE LEVEL SCRIPTS -->
+
+<script src="../../custom/js/app.js" type="text/javascript"></script>
+<script src="../../custom/js/login.js" type="text/javascript"></script>
 <script>
     jQuery(document).ready(function () {
         App.init();
         Login.init();
     });
 </script>
-<!-- END JAVASCRIPTS -->
 </body>
-<!-- END BODY -->
 </html>
