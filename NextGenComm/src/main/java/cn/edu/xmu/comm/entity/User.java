@@ -121,6 +121,9 @@ public class User extends DataEntity {
         return encryptPwd.equals(this.password);
     }
 
+    public Community getCommunity() {
+        return null;
+    }
 
     //region Getters and Setters
     public Integer getId() {

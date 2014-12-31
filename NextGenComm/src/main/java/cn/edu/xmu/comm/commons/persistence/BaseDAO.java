@@ -167,6 +167,15 @@ public class BaseDAO<T, I extends Serializable> {
     }
 
     /**
+     * 从数据库刷新实体对象
+     *
+     * @param entity 实体对象
+     */
+    public void refresh(T entity) {
+        currentSession().refresh(entity);
+    }
+
+    /**
      * 通过id加载实体对象
      *
      * @param id 实体对象id
@@ -257,6 +266,19 @@ public class BaseDAO<T, I extends Serializable> {
     }
 
     /**
+     * 通过QL语句查找属性
+     *
+     * @param qlString  查询语句
+     * @param parameter 查询参数
+     * @return 属性列表
+     */
+    @SuppressWarnings("unchecked")
+    public List getAttrsByQL(String qlString, Parameter parameter) {
+        Query query = createQuery(qlString, parameter);
+        return query.list();
+    }
+
+    /**
      * 通过QL语句查找
      *
      * @param qlString  查询语句
@@ -327,7 +349,6 @@ public class BaseDAO<T, I extends Serializable> {
             }
         }
     }
-
     //endregion
 
 }

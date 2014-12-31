@@ -9,7 +9,7 @@
     <meta content="" name="description"/>
     <meta content="PumpKing" name="author"/>
 
-    <%@include file="../jsp/globalCSS.jsp" %>
+    <%@include file="admin/globalCSS.jsp" %>
     <!-- BEGIN PAGE LEVEL STYLES -->
     <link rel="stylesheet" type="text/css" href="../../pumpking/css/select2_metro.css"/>
     <link rel="stylesheet" href="../../pumpking/css/DT_bootstrap.css"/>
@@ -20,12 +20,12 @@
 <!-- BEGIN BODY -->
 <body class="page-header-fixed">
 
-<%@include file="globalHeader.jsp" %>
+<%@include file="admin/globalHeader.jsp" %>
 
 <!-- BEGIN CONTAINER -->
 <div class="page-container">
 
-    <%@include file="globalSidebar.jsp" %>
+    <%@include file="admin/globalSidebar.jsp" %>
     <!-- BEGIN PAGE -->
     <div class="page-content">
         <!-- BEGIN PAGE CONTAINER-->
@@ -122,10 +122,10 @@
     <!-- END PAGE -->
 </div>
 <!-- END CONTAINER -->
-<%@include file="globalFooter.jsp" %>
+<%@include file="admin/globalFooter.jsp" %>
 
 <!-- GLOBAL JS-->
-<%@include file="globalJS.jsp" %>
+<%@include file="admin/globalJS.jsp" %>
 
 <!-- BEGIN PAGE LEVEL PLUGINS -->
 <script type="text/javascript" src="../../pumpking/js/jquery.dataTables.js"></script>
@@ -137,7 +137,7 @@
 
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <script src="../../pumpking/js/app.js"></script>
-<script src="../../pumpking/js/json/commList.js"></script>
+<script src="../../../pumpking/js/json/commList.js"></script>
 <script>
     jQuery(document).ready(function () {
         App.init();

@@ -11,6 +11,7 @@ import org.apache.struts2.ServletActionContext;
 import org.springframework.stereotype.Controller;
 
 import javax.annotation.Resource;
+import java.util.Map;
 
 /**
  * 登录Action
@@ -24,7 +25,7 @@ public class LoginAction extends ActionSupport {
     @Resource
     private SystemService systemService;
 
-    private User user;
+    private User user;//用户
     private String username;//用户名
     private String password;//密码
     private Boolean rememberMe;//是否记住我
@@ -34,13 +35,11 @@ public class LoginAction extends ActionSupport {
         try {
             user = systemService.login(username, password);
         } catch (UserNotFoundException e) {
-            addActionError("用户不存在");
             return LOGIN;
         } catch (PasswordIncorrectException e) {
-            addActionError("密码错误");
             return LOGIN;
         }
-        ActionContext.getContext().getSession().put("USER", user);
+        putUserInSession();
         checkRememberMe();
         return user.getType();
     }
@@ -50,6 +49,12 @@ public class LoginAction extends ActionSupport {
             String token = systemService.makeRememberMeToken(user);
             CookieUtils.setCookie(ServletActionContext.getResponse(), "COMM", token);
         }
+    }
+
+    private void putUserInSession() {
+        Map<String, Object> session = ActionContext.getContext().getSession();
+        session.put("USER", user);
+        session.put("COMMUNITY", user.getCommunity());
     }
 
     public String getUsername() {

@@ -35,6 +35,7 @@ public class RemLoginAction extends ActionSupport {
             return LOGIN;
         }
         ActionContext.getContext().getSession().put("USER", user);
+        ActionContext.getContext().getSession().put("COMMUNITY", user.getCommunity());
         return user.getType();
     }
 

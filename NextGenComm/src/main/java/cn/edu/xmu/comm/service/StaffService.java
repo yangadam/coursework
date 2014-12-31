@@ -1,15 +1,36 @@
 package cn.edu.xmu.comm.service;
 
-import org.springframework.stereotype.Service;
+import cn.edu.xmu.comm.entity.Community;
+import cn.edu.xmu.comm.entity.Director;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * description
  *
  * @author Mengmeng Yang
- * @version 12/28/2014 0028
+ * @version 12/31/2014 0031
  */
-@Service
-public class StaffService {
+public interface StaffService {
 
+    /**
+     * 添加物业主任
+     *
+     * @param username  用户名
+     * @param password  密码
+     * @param name      姓名
+     * @param community 小区
+     * @return 物业主任
+     */
+    @Transactional(readOnly = false)
+    public Director addDirector(String username, String password, String name, Community community);
+
+    /**
+     * 获得所有物业主任
+     *
+     * @return 物业主任列表
+     */
+    List<Director> getAllDirectors();
 
 }

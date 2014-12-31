@@ -64,7 +64,7 @@ public class PropertyServiceTest extends TestCase {
     @Test
     public void testAddBuilding1() throws Exception {
         Community community = propertyService.getCommunity("五缘公寓");
-        propertyService.addBuilding(2, "二号楼", community);
+//        propertyService.addBuilding(2, "二号楼", community);
     }
 
     @Test
@@ -77,14 +77,14 @@ public class PropertyServiceTest extends TestCase {
     public void testAddFloor() throws Exception {
         Community community = propertyService.getCommunity("五缘公寓");
         Building building = propertyService.getBuildingByNo(1, community);
-        propertyService.addFloor(1, building);
+//        propertyService.addFloor(1, building);
     }
 
     @Test
     public void testAddFloorBatch() throws Exception {
         Community community = propertyService.getCommunity("五缘公寓");
         Building building = propertyService.getBuildingByNo(1, community);
-        propertyService.addFloorBatch(2, 10, building);
+//        propertyService.addFloorBatch(2, 10, building);
     }
 
     @Test
