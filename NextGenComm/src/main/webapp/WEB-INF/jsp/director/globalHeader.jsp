@@ -202,7 +202,7 @@
                 <li class="dropdown user">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <img alt="" src="../../../global/image/avatar1_small.jpg"/>
-                        <span class="username"><s:property value="#session['USER'].name"/></span>
+                        <span class="username"><s:property value="#session['user'].name"/></span>
                         <i class="icon-angle-down"></i>
                     </a>
                     <ul class="dropdown-menu">

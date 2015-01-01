@@ -37,7 +37,7 @@
         </action>
 
         <action name="doLogin" class="loginAction">
-            <result name="input">login.do?result=1</result>
+            <result name="input">login.do</result>
         </action>
 
         <action name="logout" class="logoutAction">
@@ -91,10 +91,26 @@
             <result>/WEB-INF/jsp/director/room.jsp</result>
         </action>
 
+        <action name="addRoom" class="roomAddAction">
+            <result type="redirect">room.do</result>
+            <result name="input">room.do</result>
+        </action>
+
+        <action name="staff">
+            <result>/WEB-INF/jsp/director/staff.jsp</result>
+        </action>
+
+        <action name="addStaff" class="staffAddAction">
+            <result type="redirect">staff.do</result>
+            <result name="input">staff.do</result>
+        </action>
+
     </package>
 
     <!-- JSON package -->
     <package name="data" extends="json-default">
+
+        <default-interceptor-ref name="basicStack"/>
 
         <global-results>
             <result type="json">
@@ -108,6 +124,9 @@
         <action name="listMng" class="directorAddAction"/>
         <action name="commNames" class="commNameAction"/>
         <action name="buildNo" class="buildNoAction"/>
+        <action name="floorNo" class="floorNoAction"/>
+        <action name="listRoom" class="roomListAction"/>
+
     </package>
 
 </struts>

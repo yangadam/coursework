@@ -78,8 +78,6 @@ public class Room extends Property {
     public Room(String no, Double houseArea) {
         super(houseArea);
         this.no = no;
-        this.fullName = floor.getBuilding().getNo() + "号楼" + this.no;
-        registerRoom();
     }
 
     @Override
@@ -265,7 +263,7 @@ public class Room extends Property {
     }
     //endregion
 
-    private void registerRoom() {
+    void registerRoom() {
         for (Property property : getParents()) {
             property.register(this);
         }

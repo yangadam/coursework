@@ -7,7 +7,7 @@
 <html>
 <head>
     <meta charset="utf-8"/>
-    <title>楼宇管理 | 物业管理系统</title>
+    <title>员工管理 | 物业管理系统</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <meta content="" name="description"/>
     <meta content="PumpKing" name="author"/>
@@ -27,7 +27,7 @@
             <div class="row-fluid">
                 <div class="span12">
                     <h3 class="page-title">
-                        房间管理
+                        员工管理
                     </h3>
                     <ul class="breadcrumb">
                         <li>
@@ -36,28 +36,16 @@
                             <i class="icon-angle-right"></i>
                         </li>
                         <li>
-                            <span>物业管理</span>
-                            <i class="icon-angle-right"></i>
-                        </li>
-                        <li>
-                            <a href="/director/room.do">房间管理</a>
+                            <a href="/director/staff.do">员工管理</a>
                         </li>
                     </ul>
                 </div>
-            </div>
-            <div class="controls input-append">
-                <s:select id="build" name="buildNo" class="span3 m-wrap"
-                          data-placeholder="请选择楼宇" tabindex="1" list="{'请选择',''}"/>
-                <label class="">栋</label>
-                <s:select id="floor" name="floorNo" class="span3 m-wrap"
-                          data-placeholder="请选择楼层" tabindex="1" list="{'请选择',''}"/>
-                <label class="">层</label>
             </div>
             <div class="row-fluid">
                 <div class="span12">
                     <div class="portlet box blue">
                         <div class="portlet-title">
-                            <div class="caption"><i class="icon-edit"></i>房间列表</div>
+                            <div class="caption"><i class="icon-edit"></i>员工列表</div>
                             <div class="tools">
                                 <a href="javascript:" class="reload"></a>
                                 <a href="javascript:" class="collapse"></a>
@@ -68,7 +56,7 @@
                                 <div class="control-group">
                                     <div class="btn-group">
                                         <button id="sample_editable_1_new" class="btn green">
-                                            添加房间 <i class="icon-plus"></i>
+                                            添加员工 <i class="icon-plus"></i>
                                         </button>
                                     </div>
                                     <div class="btn-group pull-right">
@@ -85,9 +73,10 @@
                                 <table class="table table-hover table-bordered" id="sample_editable_1">
                                     <thead>
                                     <tr>
-                                        <th>房间号</th>
-                                        <th>面积</th>
-                                        <th>户主</th>
+                                        <th>序号</th>
+                                        <th>用户名</th>
+                                        <th>姓名</th>
+                                        <th>职位</th>
                                         <th>编辑</th>
                                         <th>删除</th>
                                     </tr>
@@ -109,32 +98,52 @@
                         </div>
                     </div>
                 </div>
-                <div id="add-room" class="portlet box blue hide">
+                <div id="add-staff" class="portlet box blue hide">
                     <div class="portlet-title">
-                        <div class="caption"><i class="icon-reorder"></i>添加房间</div>
+                        <div class="caption"><i class="icon-reorder"></i>添加员工</div>
                         <div class="tools">
                             <a href="javascript:" class="collapse"></a>
                         </div>
                     </div>
                     <div class="portlet-body form">
-                        <s:form action="addRoom" class="form-horizontal">
+                        <s:form action="addStaff" class="form-horizontal">
                             <div class="control-group">
-                                <label class="control-label">房间号</label>
+                                <label class="control-label">用户名</label>
 
                                 <div class="controls">
-                                    <s:textfield name="roomNo" value="" class="span6 m-wrap"/>
+                                    <s:textfield name="username" value="" class="span6 m-wrap"/>
                                     <span class="help-inline"></span>
                                 </div>
                             </div>
                             <div class="control-group">
-                                <label class="control-label">面积</label>
+                                <label class="control-label">密码</label>
 
                                 <div class="controls">
-                                    <s:textfield name="houseArea" value="" class="span6 m-wrap"/>
+                                    <s:password name="password" value="" class="span6 m-wrap"/>
                                     <span class="help-inline"></span>
                                 </div>
                             </div>
-                            <s:textfield cssStyle="display: none" name="floorId" id="floorId"/>
+                            <div class="control-group">
+                                <label class="control-label">姓名</label>
+
+                                <div class="controls">
+                                    <s:textfield name="name" value="" class="span6 m-wrap"/>
+                                    <span class="help-inline"></span>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">职位</label>
+
+                                <div class="controls">
+                                    <label>
+                                        <s:bean name="cn.edu.xmu.comm.commons.utils.StaffTypeUtils" id="stu"/>
+                                        <s:select id="select" name="position" class="span6 m-wrap"
+                                                  data-placeholder="请选择"
+                                                  tabindex="1" list="%{#stu.staffType}">
+                                        </s:select>
+                                    </label>
+                                </div>
+                            </div>
                             <div class="form-actions">
                                 <s:submit class="btn blue" value="保存"/>
                                 <button type="button" class="btn">重置</button>
@@ -152,12 +161,11 @@
     <script type="text/javascript" src="../../../global/js/ui-modals.js"></script>
     <script type="text/javascript" src="../../../global/js/bootstrap-modal.js"></script>
     <script type="text/javascript" src="../../../global/js/bootstrap-modalmanager.js"></script>
-    <script src="../../../custom/js/room.js" type="text/javascript"></script>
+    <script src="../../../custom/js/staff.js" type="text/javascript"></script>
     <script>
         jQuery(document).ready(function () {
             App.init();
-            $(".page-sidebar-menu .title:contains('物业管理')").closest("li").addClass("active");
-            $(".page-sidebar-menu .sub-menu a:contains('房间管理')").closest("li").addClass("active");
+            $(".page-sidebar-menu .title:contains('员工管理')").closest("li").addClass("active");
             TableEditable.init();
             UIModals.init();
         });

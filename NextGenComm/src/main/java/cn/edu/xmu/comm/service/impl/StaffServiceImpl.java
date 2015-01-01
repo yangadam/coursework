@@ -3,8 +3,10 @@ package cn.edu.xmu.comm.service.impl;
 import cn.edu.xmu.comm.commons.utils.SecurityUtils;
 import cn.edu.xmu.comm.dao.CommunityDAO;
 import cn.edu.xmu.comm.dao.DirectorDAO;
+import cn.edu.xmu.comm.dao.StaffDAO;
 import cn.edu.xmu.comm.entity.Community;
 import cn.edu.xmu.comm.entity.Director;
+import cn.edu.xmu.comm.entity.Staff;
 import cn.edu.xmu.comm.service.StaffService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +26,9 @@ public class StaffServiceImpl implements StaffService {
 
     @Resource
     private DirectorDAO directorDAO;
+
+    @Resource
+    private StaffDAO staffDAO;
 
     @Resource
     private CommunityDAO communityDAO;
@@ -56,6 +61,22 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public List<Director> getAllDirectors() {
         return directorDAO.getAll();
+    }
+
+    @Override
+    @Transactional(readOnly = false)
+    public Staff addStaff(String username, String password, String name, Community community, String type) {
+        Staff staff = new Staff(username, password, name, community, type);
+        SecurityUtils.encryptUser(staff);
+        staffDAO.persist(staff);
+        communityDAO.merge(community);
+        return staff;
+    }
+
+    @Override
+    public List<Staff> getAll(Community community) {
+
+        return null;
     }
 
 }

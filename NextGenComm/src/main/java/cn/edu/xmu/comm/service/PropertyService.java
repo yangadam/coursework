@@ -317,4 +317,14 @@ public interface PropertyService {
      */
     List<Integer[]> getBuildingNos(Community community);
 
+    /**
+     * @param buildId
+     * @return
+     */
+    List<Integer[]> getFloorNos(Integer buildId);
+
+    List<Room> getAllRooms(Integer floorId);
+
+    Floor getFloor(Integer floorId);
+
 }

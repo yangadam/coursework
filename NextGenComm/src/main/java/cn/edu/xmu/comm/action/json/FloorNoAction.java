@@ -1,6 +1,5 @@
 package cn.edu.xmu.comm.action.json;
 
-import cn.edu.xmu.comm.entity.Community;
 import cn.edu.xmu.comm.service.PropertyService;
 import com.alibaba.fastjson.JSONArray;
 import com.opensymphony.xwork2.ActionSupport;
@@ -18,31 +17,28 @@ import java.util.Map;
  * @version 12/31/2014 0031
  */
 @Controller
-public class CommListAction extends ActionSupport {
+public class FloorNoAction extends ActionSupport {
 
     @Resource
     private PropertyService propertyService;
 
     private Map<String, Object> data;
 
+    private Integer id;
+
     @Override
-    public String execute() throws Exception {
-        List<Community> communities = propertyService.getAllCommunities();
-        JSONArray aaData = new JSONArray();
-        int i = 1;
-        for (Community community : communities) {
-            JSONArray row = new JSONArray();
-            row.add(i++);
-            row.add(community.getName());
-            row.add(community.getChildCount());
-            row.add(community.getId());
-            row.add(community.getId());
-            aaData.add(row);
-        }
+    public String execute() {
+        List<Integer[]> list = propertyService.getFloorNos(id);
         data = new HashMap<String, Object>();
-        data.put("iTotalRecords", communities.size());
-        data.put("iTotalDisplayRecords", communities.size());
-        data.put("aaData", aaData);
+        JSONArray ids = new JSONArray();
+        JSONArray nos = new JSONArray();
+        for (Integer[] idAndNo : list) {
+            ids.add(idAndNo[0]);
+            nos.add(idAndNo[1]);
+        }
+        data.put("id", ids);
+        data.put("no", nos);
+
         return SUCCESS;
     }
 
@@ -52,5 +48,13 @@ public class CommListAction extends ActionSupport {
 
     public void setData(Map<String, Object> data) {
         this.data = data;
+    }
+
+    public Integer getBuildId() {
+        return id;
+    }
+
+    public void setBuildId(Integer buildId) {
+        this.id = buildId;
     }
 }

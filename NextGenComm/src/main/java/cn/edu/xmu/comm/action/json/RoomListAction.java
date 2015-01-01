@@ -1,11 +1,8 @@
 package cn.edu.xmu.comm.action.json;
 
-import cn.edu.xmu.comm.commons.utils.Constants;
-import cn.edu.xmu.comm.entity.Building;
-import cn.edu.xmu.comm.entity.Community;
+import cn.edu.xmu.comm.entity.Room;
 import cn.edu.xmu.comm.service.PropertyService;
 import com.alibaba.fastjson.JSONArray;
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import org.springframework.stereotype.Controller;
 
@@ -15,37 +12,41 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * description
+ * Created by Yiu-Wah WONG on 2015/1/1.
  *
- * @author Mengmeng Yang
- * @version 12/31/2014 0031
+ * @author yaohua
  */
 @Controller
-public class BuildListAction extends ActionSupport {
+public class RoomListAction extends ActionSupport {
 
     @Resource
     private PropertyService propertyService;
 
     private Map<String, Object> data;
 
+    private Integer floorId;
 
     @Override
     public String execute() {
-        Community community = (Community) ActionContext.getContext()
-                .getSession().get(Constants.COMMUNITY);
-        List<Building> buildings = propertyService.getAllBuildings(community);
+        List<Room> roomList = propertyService.getAllRooms(floorId);
         JSONArray aaData = new JSONArray();
-        for (Building building : buildings) {
+        for (Room room : roomList) {
             JSONArray row = new JSONArray();
-            row.add(building.getNo());
-            row.add(building.getChildCount());
-            row.add(building.getId());
-            row.add(building.getId());
+            row.add(room.getNo());
+            row.add(room.getHouseArea());
+            if (room.getOwner() != null) {
+                row.add(room.getOwner().getName());
+            } else {
+                row.add("");
+            }
+            row.add(room.getId());
+            row.add(room.getId());
+
             aaData.add(row);
         }
         data = new HashMap<String, Object>();
-        data.put("iTotalRecords", buildings.size());
-        data.put("iTotalDisplayRecords", buildings.size());
+        data.put("iTotalRecords", roomList.size());
+        data.put("iTotalDisplayRecords", roomList.size());
         data.put("aaData", aaData);
         return SUCCESS;
     }
@@ -58,4 +59,11 @@ public class BuildListAction extends ActionSupport {
         this.data = data;
     }
 
+    public Integer getFloorId() {
+        return floorId;
+    }
+
+    public void setFloorId(Integer floorId) {
+        this.floorId = floorId;
+    }
 }

@@ -10,7 +10,7 @@
     <meta content="" name="description"/>
     <meta content="PumpKing" name="author"/>
 
-    <%@include file="admin/globalCSS.jsp" %>
+    <%@include file="globalCSS.jsp" %>
     <!-- BEGIN PAGE LEVEL STYLES -->
     <link rel="stylesheet" type="text/css" href="../../pumpking/css/select2_metro.css"/>
     <link rel="stylesheet" href="../../pumpking/css/DT_bootstrap.css"/>
@@ -21,12 +21,12 @@
 <!-- BEGIN BODY -->
 <body class="page-header-fixed">
 <!-- BEGIN HEADER -->
-<%@include file="admin/globalHeader.jsp" %>
+<%@include file="globalHeader.jsp" %>
 <!-- END HEADER -->
 <!-- BEGIN CONTAINER -->
 <div class="page-container">
 
-    <%@include file="admin/globalSidebar.jsp" %>
+    <%@include file="globalSidebar.jsp" %>
 
     <!-- BEGIN PAGE -->
     <div class="page-content">
@@ -68,61 +68,87 @@
                 </div>
             </div>
             <!-- END PAGE HEADER-->
-            <!-- BEGIN PAGE CONTENT-->
-            <div class="row-fluid">
+
+            <div class="row-fluid ">
                 <div class="span12">
 
-                    <div class="input-append" style="margin-bottom: 20px">
-                        <s:textfield cssClass="m-wrap" placeholder="请输入车牌号"/>
-                        <button type="button" class="btn green">
-                            <span>车辆登记</span>
-                        </button>
+                    <div class="input-append">
+                        <input type="text" class="m-wrap" placeholder="请输入车牌号">
+                        <%--<button type="button" class="btn green btn-subscribe" ><span>车辆登记</span></button>--%>
+                        <a href="../guard/tempParkingRegiste.do" class="btn green">
+                            车辆登记</i>
+                        </a>
                     </div>
 
-                    <div class="portlet box blue">
+                    <!-- BEGIN TAB PORTLET-->
+                    <div class="portlet box blue tabbable">
                         <div class="portlet-title">
-                            <div class="caption"><i class="icon-edit"></i>临时停车列表</div>
-                            <div class="tools">
-                                <a href="javascript:" class="collapse"></a>
-                                <a href="javascript:" class="remove"></a>
-                            </div>
+                            <div class="caption"><i class="icon-reorder"></i>临时停车</div>
                         </div>
                         <div class="portlet-body">
-                            <div class="clearfix">
-                                <table class="table table-striped table-hover table-bordered" id="sample_editable_1">
-                                    <thead>
-                                    <tr>
-                                        <th>车牌号</th>
-                                        <th>车主姓名</th>
-                                        <th>车主身份证</th>
-                                        <th>车主行驶证</th>
-                                        <th>挂名业主</th>
-                                        <th>登出</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-
-
-                                </table>
-
+                            <div class="tabbable portlet-tabs">
+                                <ul class="nav nav-tabs">
+                                    <li><a href="#portlet_tab2" data-toggle="tab">已缴单</a></li>
+                                    <li class="active"><a href="#portlet_tab1" data-toggle="tab">未缴单</a></li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="portlet_tab1">
+                                        <div class="portlet-body">
+                                            <div class="clearfix">
+                                                <table class="table table-striped table-hover table-bordered"
+                                                       id="sample_editable_1">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>车牌号</th>
+                                                        <th>挂名业主</th>
+                                                        <th>进入时间</th>
+                                                        <th>离开</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="portlet_tab2">
+                                        <div class="portlet-body">
+                                            <div class="clearfix">
+                                                <table class="table table-striped table-hover table-bordered"
+                                                       id="sample_editable_2">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>车牌号</th>
+                                                        <th>挂名业主</th>
+                                                        <th>进入时间</th>
+                                                        <th>离开时间</th>
+                                                        <th>缴费</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <!-- END TAB PORTLET-->
                 </div>
-                <!-- END PAGE CONTENT-->
             </div>
-            <!-- END PAGE CONTAINER-->
         </div>
         <!-- END PAGE -->
     </div>
     <!-- END CONTAINER -->
-    <!-- BEGIN FOOTER -->
-    <%@include file="admin/globalFooter.jsp" %>
+
+
+        <!-- BEGIN FOOTER -->
+    <%@include file="globalFooter.jsp" %>
     <!-- END FOOTER -->
 
-
-    <%@include file="admin/globalJS.jsp" %>
+    <%@include file="globalJS.jsp" %>
     <!-- BEGIN PAGE LEVEL PLUGINS -->
     <script type="text/javascript" src="../../pumpking/js/select2.min.js"></script>
     <script type="text/javascript" src="../../pumpking/js/jquery.dataTables.js"></script>
@@ -135,9 +161,14 @@
     <script>
         jQuery(document).ready(function () {
             App.init();
-            TableEditable.init();
             $(".page-sidebar-menu .title:contains('停车场管理')").closest(
                     "li").addClass("active");
+            $(".page-sidebar-menu .title:contains('停车场管理')").closest(
+                    "li").find(".arrow").addClass("open");
+            $(".page-sidebar-menu .sub-menu a:contains('停车列表')").closest(
+                    "li").addClass("active");
+            TableEditable.init();
+
         });
     </script>
     <!-- END JAVASCRIPTS -->

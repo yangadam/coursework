@@ -521,6 +521,22 @@ public class PropertyServiceImpl implements PropertyService {
     public List<Integer[]> getBuildingNos(Community community) {
         return buildingDAO.getIdsAndNos(community);
     }
+
+    @Override
+    public List<Integer[]> getFloorNos(Integer buildId) {
+        return floorDAO.getIdsAndNos(buildId);
+    }
+
+    @Override
+    public List<Room> getAllRooms(Integer floorId) {
+        Floor floor = floorDAO.get(floorId);
+        return floor.getRoomList();
+    }
+
+    @Override
+    public Floor getFloor(Integer floorId) {
+        return floorDAO.get(floorId);
+    }
     //endregion
 
 }
