@@ -33,6 +33,11 @@ public abstract class Property extends DataEntity {
     protected String unityCode;
 
     /**
+     * 数量
+     */
+    protected Integer childCount;
+
+    /**
      * 设备列表
      */
     @OneToMany(targetEntity = Device.class, mappedBy = "property",
@@ -68,6 +73,7 @@ public abstract class Property extends DataEntity {
         usedHouseCount = 0;
         houseArea = 0.0;
         usedHouseArea = 0.0;
+        childCount = 0;
     }
 
     protected Property(Double area) {
@@ -75,6 +81,7 @@ public abstract class Property extends DataEntity {
         usedHouseCount = 0;
         houseArea = area;
         usedHouseArea = 0.0;
+        childCount = 0;
     }
 
     /**
@@ -147,6 +154,9 @@ public abstract class Property extends DataEntity {
      */
     public void addDevice(Device device) {
         device.setProperty(this);
+        if (device.getNo() == null) {
+            device.setNo(unityCode + "#" + deviceList.size());
+        }
         deviceList.add(device);
     }
 
@@ -165,6 +175,14 @@ public abstract class Property extends DataEntity {
 
     public void setUnityCode(String unityCode) {
         this.unityCode = unityCode;
+    }
+
+    public Integer getChildCount() {
+        return childCount;
+    }
+
+    public void setChildCount(Integer childCount) {
+        this.childCount = childCount;
     }
 
     public Set<Device> getDeviceList() {

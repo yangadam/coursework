@@ -1,6 +1,8 @@
 package cn.edu.xmu.comm.entity;
 
 import cn.edu.xmu.comm.commons.exception.DifferentCommunityException;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -16,6 +18,8 @@ import java.util.Set;
  * @version 2014-12-23
  */
 @Entity
+@DynamicInsert
+@DynamicUpdate
 public class Owner extends User {
 
     //region Instance Variables
@@ -114,6 +118,7 @@ public class Owner extends User {
     //endregion
 
     //region Getters and Setters
+    @Override
     public Community getCommunity() {
         return community;
     }

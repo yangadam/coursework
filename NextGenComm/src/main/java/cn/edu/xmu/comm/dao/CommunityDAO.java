@@ -5,6 +5,8 @@ import cn.edu.xmu.comm.commons.persistence.Parameter;
 import cn.edu.xmu.comm.entity.Community;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * 小区DAO
  * Created by Roger on 2014/12/9 0009.
@@ -26,4 +28,14 @@ public class CommunityDAO extends BaseDAO<Community, Integer> {
         return getByQL(ql, new Parameter(name));
     }
 
+    /**
+     * 获取所有小区的名字
+     *
+     * @return 小区名字的列表
+     */
+    @SuppressWarnings("unchecked")
+    public List<String> getNames() {
+        String ql = "select c.name from Community c where c.director is null";
+        return (List<String>) getAttrsByQL(ql, null);
+    }
 }

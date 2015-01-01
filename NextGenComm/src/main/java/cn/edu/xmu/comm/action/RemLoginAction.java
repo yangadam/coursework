@@ -1,5 +1,6 @@
 package cn.edu.xmu.comm.action;
 
+import cn.edu.xmu.comm.commons.utils.Constants;
 import cn.edu.xmu.comm.commons.utils.CookieUtils;
 import cn.edu.xmu.comm.entity.User;
 import cn.edu.xmu.comm.service.SystemService;
@@ -9,6 +10,8 @@ import org.apache.struts2.ServletActionContext;
 import org.springframework.stereotype.Controller;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 记住我登录Action
@@ -24,17 +27,21 @@ public class RemLoginAction extends ActionSupport {
 
     @Override
     public String execute() {
-        String token = CookieUtils.getCookie(ServletActionContext.getRequest(), "COMM");
+        HttpServletRequest request = ServletActionContext.getRequest();
+        HttpServletResponse response = ServletActionContext.getResponse();
+
+        String token = CookieUtils.getCookie(request, Constants.APP_NAME);
         if (token == null) {
             return LOGIN;
         }
         User user = systemService.rememberMeLogin(token);
         if (user == null) {
-            CookieUtils.getCookie(ServletActionContext.getRequest(),
-                    ServletActionContext.getResponse(), "COMM");
+            CookieUtils.getCookie(request, response, Constants.APP_NAME);
             return LOGIN;
         }
-        ActionContext.getContext().getSession().put("USER", user);
+
+        ActionContext.getContext().getSession().put(Constants.USER, user);
+        ActionContext.getContext().getSession().put(Constants.COMMUNITY, user.getCommunity());
         return user.getType();
     }
 

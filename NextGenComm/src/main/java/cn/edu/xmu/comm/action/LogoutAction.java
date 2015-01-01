@@ -1,5 +1,6 @@
 package cn.edu.xmu.comm.action;
 
+import cn.edu.xmu.comm.commons.utils.Constants;
 import cn.edu.xmu.comm.commons.utils.CookieUtils;
 import cn.edu.xmu.comm.entity.User;
 import cn.edu.xmu.comm.service.SystemService;
@@ -26,10 +27,10 @@ public class LogoutAction extends ActionSupport {
     @Override
     public String execute() {
         CookieUtils.getCookie(ServletActionContext.getRequest(),
-                ServletActionContext.getResponse(), "COMM");
+                ServletActionContext.getResponse(), Constants.APP_NAME);
         Map<String, Object> session = ActionContext.getContext().getSession();
-        systemService.logout((User) session.get("USER"));
-        session.remove("USER");
+        systemService.logout((User) session.get(Constants.USER));
+        session.remove(Constants.USER);
         return LOGIN;
     }
 
