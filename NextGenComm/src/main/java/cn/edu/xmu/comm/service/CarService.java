@@ -236,6 +236,7 @@ public class CarService {
      * @param license   车牌号
      * @return parkBill 完成的临时停车单
      */
+    @Transactional(readOnly = false)
     public ParkBill finishParkBill(Community community, String license) {
         ParkBill parkBill = getParkBillByLicense(community, license);
         if (parkBill == null)
@@ -385,7 +386,7 @@ public class CarService {
      * @param car 车辆
      */
     @Transactional(readOnly = false)
-    public void removeCarFreeParkPlace(Car car) {
+    public void deleteCarFreeParkPlace(Car car) {
         ParkPlace parkPlace = car.getParkPlace();
         parkPlace.freeParkPlace();
         carDAO.delete(car);
@@ -398,6 +399,29 @@ public class CarService {
      * @param license 车牌号
      */
     @Transactional(readOnly = false)
+    public void deleteCarFreeParkPlace(String license) {
+        Car car = getCarByLicense(license);
+        deleteCarFreeParkPlace(car);
+    }
+
+    /**
+     * 车辆租用到期释放停车位
+     *
+     * @param car 车辆
+     */
+    public void removeCarFreeParkPlace(Car car) {
+        ParkPlace parkPlace = car.getParkPlace();
+        car.setStatus(Car.CarStatus.NO);
+        parkPlace.freeParkPlace();
+        carDAO.merge(car);
+        parkPlaceDAO.merge(parkPlace);
+    }
+
+    /**
+     * 车辆租用到期释放停车位
+     *
+     * @param license 车牌号
+     */
     public void removeCarFreeParkPlace(String license) {
         Car car = getCarByLicense(license);
         removeCarFreeParkPlace(car);
@@ -449,6 +473,15 @@ public class CarService {
      */
     public List<ParkBill> getAllFinishParkBill(Community community) {
         return parkBillDAO.getAllFinishParkBill(getCommunityFromActionContext());
+    }
+
+    /**
+     * 依据id获取停车单
+     * @param id 编号
+     * @return 停车单
+     */
+    public ParkBill getParkBillById(Integer id) {
+        return parkBillDAO.get(id);
     }
 
 }

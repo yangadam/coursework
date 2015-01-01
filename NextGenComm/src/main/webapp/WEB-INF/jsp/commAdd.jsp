@@ -168,7 +168,7 @@
                     <ul class="dropdown-menu extended tasks">
                         <li>
                             <p>You have 12 pending tasks</p>
-                        </li>
+                        </li> q
                         <li>
                             <a href="#">
 								<span class="task">

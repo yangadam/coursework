@@ -24,7 +24,7 @@
         <global-results>
             <result name="login" type="redirect">login.do</result>
             <result name="admin" type="redirect">admin.do</result>
-            <result name="owner" type="redirect">admin.do</result>
+            <result name="owner" type="redirect">test.do</result>
         </global-results>
 
         <action name="rememberMeLogin" class="remLoginAction">
@@ -45,6 +45,16 @@
 
         <action name="admin">
             <result>/WEB-INF/jsp/admin/home.jsp</result>
+        </action>
+
+        <!-- Configure File Action -->
+        <action name="uploadPro" class="cn.edu.xmu.comm.action.UploadAction">
+            <param name="filesPath">/uploadFiles</param>
+            <result>/WEB-INF/jsp/test/Success.jsp</result>
+        </action>
+
+        <action name="test" class="testAction">
+            <result>/WEB-INF/jsp/test/test.jsp</result>
         </action>
 
     </package>
@@ -99,9 +109,11 @@
             <result>/WEB-INF/jsp/tempParkingList.jsp</result>
         </action>
 
-        <action name="tempParkingRegiste">
-            <result>/WEB-INF/jsp/tempParkingRegiste.jsp</result>
+        <action name="tempParkingRegiste" class="tempParkingRegisteAction">
+            <result name="rent">/WEB-INF/jsp/test/test.jsp</result>
+            <result name="temp">/WEB-INF/jsp/tempParkingRegiste.jsp</result>
         </action>
+
     </package>
 
     <package name="json" namespace="/json" extends="json-default">

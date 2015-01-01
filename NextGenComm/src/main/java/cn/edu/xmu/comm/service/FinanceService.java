@@ -1,20 +1,20 @@
 package cn.edu.xmu.comm.service;
 
+import cn.edu.xmu.comm.commons.exception.DeviceException;
 import cn.edu.xmu.comm.dao.CommunityDAO;
 import cn.edu.xmu.comm.dao.DeviceDAO;
 import cn.edu.xmu.comm.dao.GradientDAO;
 import cn.edu.xmu.comm.dao.OwnerDAO;
-import cn.edu.xmu.comm.entity.Community;
-import cn.edu.xmu.comm.entity.Device;
-import cn.edu.xmu.comm.entity.Gradient;
-import cn.edu.xmu.comm.entity.Owner;
+import cn.edu.xmu.comm.entity.*;
 import org.apache.commons.lang3.Validate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
+import java.util.SortedMap;
 
 /**
  * 财务模块Service
@@ -38,6 +38,16 @@ public class FinanceService {
 
     @Resource
     private GradientDAO gradientDAO;
+
+    /**
+     * 依据编号查找设备
+     *
+     * @param id 编号
+     * @return 设备
+     */
+    public Device getDeviceById(Integer id) {
+        return deviceDAO.get(id);
+    }
 
     /**
      * 添加梯度
@@ -119,6 +129,94 @@ public class FinanceService {
         for (Owner owner : allOwner) {
             owner.generateBill();
         }
+    }
+
+    /**
+     * 添加设备的读数
+     *
+     * @param device 指定设备
+     * @param value 设备读数
+     */
+    @Transactional(readOnly = false)
+    public void addDeviceValue(Device device, BigDecimal value) {
+        try {
+            device.addValue(new Date(), value);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        deviceDAO.merge(device);
+    }
+
+    /**
+     * 添加设备的读数
+     *
+     * @param deviceId 指定设备编号
+     * @param date 日期
+     * @param value 设备读数
+     */
+    @Transactional(readOnly = false)
+    public void addDeviceValue(Integer deviceId, Date date, BigDecimal value) {
+        Device device = deviceDAO.get(deviceId);
+        addDeviceValue(device, date, value);
+        deviceDAO.merge(device);
+    }
+
+    /**
+     * 添加设备的读数
+     *
+     * @param device 指定设备
+     * @param date 日期
+     * @param value 设备读数
+     */
+    //@Transactional(readOnly = false)
+    public void addDeviceValue(Device device, Date date, BigDecimal value) {
+        try {
+            device.addValue(date, value);
+        } catch (DeviceException e) {
+            e.printStackTrace();
+        }
+        deviceDAO.merge(device);
+    }
+
+    //@Transactional(readOnly = false)
+    public void delDeviceValue(Integer id) {
+        Device device = deviceDAO.get(id);
+        try {
+            device.delValue();
+        } catch (DeviceException e) {
+            e.printStackTrace();
+        }
+        deviceDAO.merge(device);
+    }
+
+    @Transactional(readOnly = false)
+    public void updateDeviceValue(Integer id, Date date, BigDecimal value) {
+        Device device = deviceDAO.get(id);
+        try {
+            device.updateValue(date, value);
+        } catch (DeviceException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 返回设备的所有读数
+     *
+     * @param device 设备
+     * @return 设备的所有读数
+     */
+    public SortedMap<Date, BigDecimal> getDeviceValue(Device device) {
+        return device.getValues();
+    }
+
+    /**
+     * 依据设备编号返回设备的所有读数
+     *
+     * @param deviceId 设备编号
+     * @return 设备的所有读数
+     */
+    public SortedMap<Date, BigDecimal> getDeviceValue(Integer deviceId) {
+        return getDeviceValue(deviceDAO.get(deviceId));
     }
 
 }

@@ -73,11 +73,13 @@
                 <div class="span12">
 
                     <div class="input-append">
-                        <input type="text" class="m-wrap" placeholder="请输入车牌号">
-                        <%--<button type="button" class="btn green btn-subscribe" ><span>车辆登记</span></button>--%>
-                        <a href="../guard/tempParkingRegiste.do" class="btn green">
-                            车辆登记</i>
-                        </a>
+                        <s:form action="tempParkingRegiste">
+                            <s:textfield name="license" type="text" class="m-wrap" placeholder="请输入车牌号"/>
+                            <%--<button type="button" class="btn green btn-subscribe" ><span>车辆登记</span></button>--%>
+                            <button type="submit" class="btn green">
+                                车辆登记
+                            </button>
+                        </s:form>
                     </div>
 
                     <!-- BEGIN TAB PORTLET-->
@@ -144,7 +146,7 @@
     <!-- END CONTAINER -->
 
 
-        <!-- BEGIN FOOTER -->
+    <!-- BEGIN FOOTER -->
     <%@include file="globalFooter.jsp" %>
     <!-- END FOOTER -->
 

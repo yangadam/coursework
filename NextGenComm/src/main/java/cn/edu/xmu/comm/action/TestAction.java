@@ -1,8 +1,10 @@
 package cn.edu.xmu.comm.action;
 
+import cn.edu.xmu.comm.commons.calc.impl.CountShareCalculator;
 import cn.edu.xmu.comm.commons.exception.DifferentCommunityException;
 import cn.edu.xmu.comm.entity.*;
 import cn.edu.xmu.comm.service.CarService;
+import cn.edu.xmu.comm.service.FinanceService;
 import cn.edu.xmu.comm.service.PropertyService;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 测试用的Action
@@ -27,21 +30,75 @@ public class TestAction extends ActionSupport {
     @Resource
     private CarService carService;
 
+    @Resource
+    private FinanceService financeService;
+
     @Override
     public String execute() {
         Owner owner = propertyService.getOwner("陆垚杰");
         ActionContext.getContext().getSession().put("USER", owner);
-        //addData();
-        // testFinishParkBill();
-        //testHasFreeTempParkPlace();
-        //testIsRentCar();
-        //testFinishParkBill();
-        testAddCarLockParkPlace();
-        //testRemoCarFreeParkPlace();
-        testconfirmCarRentParkPlace();
+        //addProperty();
+        //AddDeviceValue();
+        //testDelDeviceValue();
+        //testAddDeviceValue();
+        testAddDeviceValue();
+        testUpdateDevice();
+        testOrder();
         return SUCCESS;
     }
 
+    public void testAddDeviceValue() {
+        financeService.addDeviceValue(589, new Date(), BigDecimal.valueOf(10));
+    }
+
+    public void testUpdateDevice() {
+        Device device = financeService.getDeviceById(589);
+        financeService.updateDeviceValue(589, device.getLastTime(), BigDecimal.valueOf(50));
+        financeService.updateDeviceValue(589, new Date(), BigDecimal.valueOf(10));
+    }
+
+    public void testOrder() {
+        Device device = financeService.getDeviceById(589);
+    }
+
+    public void AddDeviceValue() {
+        for (long i = 0;i != 10;i++) {
+            financeService.addDeviceValue(589, new Date(System.currentTimeMillis()+i*10000), BigDecimal.valueOf(i * 10));
+        }
+    }
+
+    public void testDelDeviceValue() {
+        for (long i = 0;i != 10;i++) {
+            financeService.delDeviceValue(589);
+        }
+    }
+
+    public void addProperty() {
+        Community community = propertyService.getCommunity("五缘公寓");
+        List<Building> buildingList = addBuildings(community);
+        for (Building building: buildingList) {
+            List<Floor> floorList = addFloors(building);
+            for (Floor floor : floorList) {
+                List<Room> roomList = addRooms(floor);
+            }
+        }
+        propertyService.initialDefaultDevice(community, CountShareCalculator.class.getSimpleName());
+
+    }
+
+    public List<Building> addBuildings(Community community) {
+        return propertyService.addBuilding(1, 10, community);
+    }
+
+    public List<Floor> addFloors(Building building) {
+        return propertyService.addFloorBatch(1, 5, building);
+    }
+
+    public List<Room> addRooms(Floor floor) {
+        return propertyService.addRoomBatch(1, 5, 50.0, floor);
+    }
+
+    //region Test CarService
     public void testIsRentCar() {
         Community community = propertyService.getCommunity("五缘公寓");
         String license = "浙AJ9225";
@@ -131,10 +188,11 @@ public class TestAction extends ActionSupport {
     }
 
     private void testRemoCarFreeParkPlace() {
-        carService.removeCarFreeParkPlace("浙AJ9225");
+        carService.deleteCarFreeParkPlace("浙AJ9225");
     }
 
     private void testconfirmCarRentParkPlace() {
         carService.confirmCarRentParkPlace("浙AJ9225");
     }
+    //endregion
 }
