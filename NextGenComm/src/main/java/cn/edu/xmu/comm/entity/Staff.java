@@ -57,7 +57,7 @@ public class Staff extends User {
     private StaffType judgeType(String type) {
         StaffType[] types = StaffType.values();
         for (StaffType st : types) {
-            if (st.getPosition() == type) {
+            if (st.getPosition().equals(type)) {
                 return st;
             }
         }

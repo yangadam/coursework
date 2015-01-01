@@ -25,6 +25,7 @@
             <result name="unauthorized" type="redirect">/login.do</result>
             <result name="admin" type="redirect">admin.do</result>
             <result name="director" type="redirect">director.do</result>
+            <result name="clerk" type="redirect">clerk.do</result>
         </global-results>
     </package>
 
@@ -52,9 +53,18 @@
             <result>/WEB-INF/jsp/director/home.jsp</result>
         </action>
 
+        <action name="clerk">
+            <result>/WEB-INF/jsp/clerk/home.jsp</result>
+        </action>
+
     </package>
 
     <package name="admin" namespace="/admin" extends="default">
+
+        <global-results>
+            <result name="login" type="redirect">/rememberMeLogin.do</result>
+            <result name="unauthorized" type="redirect">/rememberMeLogin.do</result>
+        </global-results>
 
         <action name="community">
             <result>/WEB-INF/jsp/admin/comm.jsp</result>
@@ -77,6 +87,11 @@
     </package>
 
     <package name="director" namespace="/director" extends="default">
+
+        <global-results>
+            <result name="login" type="redirect">/rememberMeLogin.do</result>
+            <result name="unauthorized" type="redirect">/rememberMeLogin.do</result>
+        </global-results>
 
         <action name="building">
             <result>/WEB-INF/jsp/director/build.jsp</result>
@@ -107,6 +122,33 @@
 
     </package>
 
+    <package name="clerk" namespace="/clerk" extends="default">
+
+        <global-results>
+            <result name="login" type="redirect">/rememberMeLogin.do</result>
+            <result name="unauthorized" type="redirect">/rememberMeLogin.do</result>
+        </global-results>
+
+        <action name="building">
+            <result>/WEB-INF/jsp/clerk/build.jsp</result>
+        </action>
+
+        <action name="addBuild" class="buildAddAction">
+            <result type="redirect">building.do</result>
+            <result name="input">building.do</result>
+        </action>
+
+        <action name="room">
+            <result>/WEB-INF/jsp/clerk/room.jsp</result>
+        </action>
+
+        <action name="addRoom" class="roomAddAction">
+            <result type="redirect">room.do</result>
+            <result name="input">room.do</result>
+        </action>
+
+    </package>
+
     <!-- JSON package -->
     <package name="data" extends="json-default">
 
@@ -117,15 +159,18 @@
                 <param name="root">data</param>
                 <param name="excludeNullProperties">true</param>
             </result>
+            <result name="login" type="redirect">/rememberMeLogin.do</result>
+            <result name="unauthorized" type="redirect">/rememberMeLogin.do</result>
         </global-results>
 
         <action name="listComm" class="commListAction"/>
         <action name="listBuild" class="buildListAction"/>
-        <action name="listMng" class="directorAddAction"/>
+        <action name="listDir" class="directorListAction"/>
         <action name="commNames" class="commNameAction"/>
         <action name="buildNo" class="buildNoAction"/>
         <action name="floorNo" class="floorNoAction"/>
         <action name="listRoom" class="roomListAction"/>
+        <action name="listStaff" class="staffListAction"/>
 
     </package>
 

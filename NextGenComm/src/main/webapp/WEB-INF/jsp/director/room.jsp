@@ -87,7 +87,7 @@
                                     <tr>
                                         <th>房间号</th>
                                         <th>面积</th>
-                                        <th>户主</th>
+                                        <th>业主</th>
                                         <th>编辑</th>
                                         <th>删除</th>
                                     </tr>

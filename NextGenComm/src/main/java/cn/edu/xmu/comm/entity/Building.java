@@ -55,7 +55,7 @@ public class Building extends Property {
      */
     public Building(Integer no, Integer floorCount) {
         this.no = no;
-        this.childCount = floorCount;
+        this.unityCode = "B" + no;
         initFloors(floorCount);
     }
     //endregion

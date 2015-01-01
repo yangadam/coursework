@@ -1,5 +1,6 @@
 #创建数据库
-CREATE DATABASE IF NOT EXISTS comm;
+CREATE DATABASE IF NOT EXISTS comm
+  DEFAULT CHARACTER SET utf8;
 #选择数据库
 USE comm;
 #创建user表

@@ -40,6 +40,11 @@ public class FinanceServiceImpl implements FinanceService {
     @Resource
     private GradientDAO gradientDAO;
 
+    @Override
+    public Device getDeviceById(Integer id) {
+        return deviceDAO.get(id);
+    }
+
     /**
      * 添加梯度
      *

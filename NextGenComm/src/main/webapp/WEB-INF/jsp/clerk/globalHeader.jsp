@@ -2,12 +2,12 @@
 <div class="header navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container-fluid">
-            <a class="brand" href="/director.do">
-                <img src="../../../global/image/logo.png" alt="logo"/>
+            <a class="brand" href="/index.jsp">
+                <img src="../../global/image/logo.png" alt="logo"/>
             </a>
             <a class="brand" href="/director.do"><s:property value="#session['community'].name"/></a>
             <a href="javascript:" class="btn-navbar collapsed" data-toggle="collapse" data-target=".nav-collapse">
-                <img src="../../../global/image/menu-toggler.png" alt=""/>
+                <img src="../../global/image/menu-toggler.png" alt=""/>
             </a>
             <ul class="nav pull-right">
                 <li class="dropdown" id="header_notification_bar">
@@ -77,7 +77,7 @@
                         </li>
                         <li>
                             <a href="">
-                                <span class="photo"><img src="../../../global/image/avatar2.jpg" alt=""/></span>
+                                <span class="photo"><img src="../../global/image/avatar2.jpg" alt=""/></span>
 								<span class="subject">
 								<span class="from">Lisa Wong</span>
 								<span class="time">Just Now</span>
@@ -90,7 +90,7 @@
                         </li>
                         <li>
                             <a href="">
-                                <span class="photo"><img src="../../../global/image/avatar3.jpg" alt=""/></span>
+                                <span class="photo"><img src="../../global/image/avatar3.jpg" alt=""/></span>
 								<span class="subject">
 								<span class="from">Richard Doe</span>
 								<span class="time">16 mins</span>
@@ -103,7 +103,7 @@
                         </li>
                         <li>
                             <a href="">
-                                <span class="photo"><img src="../../../global/image/avatar1.jpg" alt=""/></span>
+                                <span class="photo"><img src="../../global/image/avatar1.jpg" alt=""/></span>
 								<span class="subject">
 								<span class="from">Bob Nilson</span>
 								<span class="time">2 hrs</span>
@@ -201,7 +201,7 @@
                 </li>
                 <li class="dropdown user">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <img alt="" src="../../../global/image/avatar1_small.jpg"/>
+                        <img alt="" src="../../global/image/avatar1_small.jpg"/>
                         <span class="username"><s:property value="#session['user'].name"/></span>
                         <i class="icon-angle-down"></i>
                     </a>

@@ -75,8 +75,7 @@ public class StaffServiceImpl implements StaffService {
 
     @Override
     public List<Staff> getAll(Community community) {
-
-        return null;
+        return staffDAO.getAll(community);
     }
 
 }

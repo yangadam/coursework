@@ -159,7 +159,7 @@
 <script type="text/javascript" src="../../../global/js/ui-modals.js"></script>
 <script type="text/javascript" src="../../../global/js/bootstrap-modal.js"></script>
 <script type="text/javascript" src="../../../global/js/bootstrap-modalmanager.js"></script>
-<script src="../../../custom/js/mng.js"></script>
+<script src="../../../custom/js/dir.js"></script>
 <script>
     jQuery(document).ready(function () {
         App.init();

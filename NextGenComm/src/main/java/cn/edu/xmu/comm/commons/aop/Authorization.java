@@ -42,11 +42,13 @@ public class Authorization {
     public Object processAction(ProceedingJoinPoint jp) throws java.lang.Throwable {
         User user = (User) ActionContext.getContext().getSession().get(Constants.USER);
         if (user == null) {
-            logger.info(jp.getSignature().getName() + ":用户没有登录");
+            logger.info(jp.getSignature().getDeclaringType().getSimpleName() +
+                    ":" + jp.getSignature().getName() + ":用户没有登录");
             return "login";
         }
         if (1 == 2) {
-            logger.info(jp.getSignature().getName() + ":用户没有权限");
+            logger.info(jp.getSignature().getDeclaringType().getSimpleName() +
+                    ":" + jp.getSignature().getName() + ":用户没有权限");
             return "unauthorized";
         }
         try {
@@ -63,11 +65,13 @@ public class Authorization {
     public Object processService(ProceedingJoinPoint jp) throws java.lang.Throwable {
         User user = (User) ActionContext.getContext().getSession().get(Constants.USER);
         if (user == null) {
-            logger.info(jp.getSignature().getName() + ":用户没有登录");
+            logger.info(jp.getSignature().getDeclaringType().getSimpleName() +
+                    ":" + jp.getSignature().getName() + ":用户没有登录");
             throw new NoUserInSessionException();
         }
         if (1 == 2) {
-            logger.info(jp.getSignature().getName() + ":用户没有权限");
+            logger.info(jp.getSignature().getDeclaringType().getSimpleName() +
+                    ":" + jp.getSignature().getName() + ":用户没有权限");
             throw new NoPermissionException();
         }
         return jp.proceed();

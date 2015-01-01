@@ -37,7 +37,7 @@ public class RoomListAction extends ActionSupport {
             if (room.getOwner() != null) {
                 row.add(room.getOwner().getName());
             } else {
-                row.add("");
+                row.add("无");
             }
             row.add(room.getId());
             row.add(room.getId());

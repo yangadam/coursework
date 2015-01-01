@@ -28,9 +28,6 @@ public class DirectorListAction extends ActionSupport {
     @Override
     public String execute() {
         List<Director> directors = staffService.getAllDirectors();
-        data = new HashMap<String, Object>();
-        data.put("iTotalRecords", 1);
-        data.put("iTotalDisplayRecords", 1);
         JSONArray aaData = new JSONArray();
         int i = 1;
         for (Director director : directors) {
@@ -43,6 +40,9 @@ public class DirectorListAction extends ActionSupport {
             row.add(director.getId());
             aaData.add(row);
         }
+        data = new HashMap<String, Object>();
+        data.put("iTotalRecords", directors.size());
+        data.put("iTotalDisplayRecords", directors.size());
         data.put("aaData", aaData);
         return SUCCESS;
     }

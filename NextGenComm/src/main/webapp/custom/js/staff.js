@@ -36,6 +36,10 @@ var TableEditable = function () {
                         "mRender": function (data, type, full) {
                             return '<a  href="#">删除</a>';
                         }
+                    },
+                    {
+                        'sDefaultContent': '',
+                        "aTargets": ['_all']
                     }
                 ]
             });

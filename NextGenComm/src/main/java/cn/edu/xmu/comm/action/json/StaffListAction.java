@@ -4,11 +4,13 @@ import cn.edu.xmu.comm.commons.utils.Constants;
 import cn.edu.xmu.comm.entity.Community;
 import cn.edu.xmu.comm.entity.Staff;
 import cn.edu.xmu.comm.service.StaffService;
+import com.alibaba.fastjson.JSONArray;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import org.springframework.stereotype.Controller;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,18 +23,36 @@ public class StaffListAction extends ActionSupport {
     @Resource
     private StaffService staffService;
 
-
     private Map<String, Object> data;
 
     @Override
     public String execute() {
         Community community = (Community) ActionContext.getContext()
                 .getSession().get(Constants.COMMUNITY);
-
         List<Staff> staffs = staffService.getAll(community);
-
-
+        JSONArray aaData = new JSONArray();
+        int i = 1;
+        for (Staff staff : staffs) {
+            JSONArray row = new JSONArray();
+            row.add(i++);
+            row.add(staff.getUsername());
+            row.add(staff.getName());
+            row.add(staff.getStaffType().getPosition());
+            aaData.add(row);
+        }
+        data = new HashMap<String, Object>();
+        data.put("iTotalRecords", staffs.size());
+        data.put("iTotalDisplayRecords", staffs.size());
+        data.put("aaData", aaData);
         return SUCCESS;
+    }
+
+    public Map<String, Object> getData() {
+        return data;
+    }
+
+    public void setData(Map<String, Object> data) {
+        this.data = data;
     }
 
 }

@@ -5,7 +5,7 @@ import cn.edu.xmu.comm.entity.Staff;
 /**
  * Created by Yiu-Wah WONG on 2015/1/1.
  */
-public class StaffTypeUtils {
+public class EnumUtils {
 
     public String[] getStaffType() {
         Staff.StaffType[] types = Staff.StaffType.values();

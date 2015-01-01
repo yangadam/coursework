@@ -30,7 +30,7 @@ public class RemLoginAction extends ActionSupport {
         HttpServletRequest request = ServletActionContext.getRequest();
         HttpServletResponse response = ServletActionContext.getResponse();
 
-        String token = CookieUtils.getCookie(request, Constants.USER);
+        String token = CookieUtils.getCookie(request, Constants.APP_NAME);
         if (token == null) {
             return LOGIN;
         }

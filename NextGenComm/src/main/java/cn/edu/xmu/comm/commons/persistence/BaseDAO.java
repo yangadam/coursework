@@ -100,10 +100,10 @@ public class BaseDAO<T, I extends Serializable> {
     public void persist(List<T> entities) {
         for (int i = 0; i < entities.size(); i++) {
             persist(entities.get(i));
-            if (i % 20 == 0) {
-                currentSession().flush();
-                currentSession().clear();
-            }
+//            if (i % 20 == 0) {
+//                currentSession().flush();
+//                currentSession().clear();
+//            }
         }
     }
 
@@ -123,6 +123,21 @@ public class BaseDAO<T, I extends Serializable> {
      */
     public void merge(T entity) {
         currentSession().merge(entity);
+    }
+
+    /**
+     * 将实体对象列表覆盖到数据库
+     *
+     * @param entities 实体对象
+     */
+    public void merge(List<T> entities) {
+        for (int i = 0; i < entities.size(); i++) {
+            merge(entities.get(i));
+            if (i % 20 == 0) {
+                currentSession().flush();
+                currentSession().clear();
+            }
+        }
     }
 
     /**

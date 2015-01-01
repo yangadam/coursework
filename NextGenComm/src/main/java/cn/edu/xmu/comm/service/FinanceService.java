@@ -14,6 +14,15 @@ import java.math.BigDecimal;
  * @version 12/31/2014 0031
  */
 public interface FinanceService {
+
+    /**
+     * 依据编号查找设备
+     *
+     * @param id 编号
+     * @return 设备
+     */
+    public Device getDeviceById(Integer id);
+
     /**
      * 添加梯度
      *

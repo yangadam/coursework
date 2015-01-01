@@ -14,7 +14,7 @@
             </form>
         </li>
         <li class="start">
-            <a href="/director.do">
+            <a href="/clerk.do">
                 <i class="icon-home"></i>
                 <span class="title">主页</span>
             </a>
@@ -27,32 +27,49 @@
                 <span class="arrow "></span>
             </a>
             <ul class="sub-menu">
+
                 <li class="">
-                    <a href="">
-                        <i class="icon-list-ul"></i>
-                        小区管理
-                    </a>
-                </li>
-                <li class="">
-                    <a href="/director/building.do">
+                    <a href="/clerk/building.do">
                         <i class="icon-list-ul"></i>
                         楼宇管理
                     </a>
                 </li>
                 <li>
-                    <a href="/director/room.do">
+                    <a href="/clerk/room.do">
                         <i class="icon-question-sign"></i>
                         房间管理
                     </a>
                 </li>
             </ul>
         </li>
-
         <li class="">
-            <a href="/director/staff.do">
+            <a href="">
                 <i class="icon-home"></i>
-                <span class="title">员工管理</span>
+                <span class="title">业主管理</span>
+                <span class="arrow "></span>
             </a>
+            <ul class="sub-menu">
+
+                <li class="">
+                    <a href="/clerk/">
+                        <i class="icon-list-ul"></i>
+                        业主列表
+                    </a>
+                </li>
+                <li>
+                    <a href="/clerk/">
+                        <i class="icon-question-sign"></i>
+                        业主入住
+                    </a>
+                </li>
+                <li>
+                    <a href="/clerk/">
+                        <i class="icon-question-sign"></i>
+                        业主变更
+                    </a>
+                </li>
+            </ul>
         </li>
+
     </ul>
 </div>
