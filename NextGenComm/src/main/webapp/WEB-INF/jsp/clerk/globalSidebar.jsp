@@ -49,21 +49,20 @@
                 <span class="arrow "></span>
             </a>
             <ul class="sub-menu">
-
                 <li class="">
-                    <a href="/clerk/">
+                    <a href="/clerk/owner.do">
                         <i class="icon-list-ul"></i>
                         业主列表
                     </a>
                 </li>
                 <li>
-                    <a href="/clerk/">
+                    <a href="/clerk/checkin.do">
                         <i class="icon-question-sign"></i>
-                        业主入住
+                        办理入住
                     </a>
                 </li>
                 <li>
-                    <a href="/clerk/">
+                    <a href="/clerk/change.do">
                         <i class="icon-question-sign"></i>
                         业主变更
                     </a>

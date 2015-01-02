@@ -2,6 +2,7 @@ package cn.edu.xmu.comm.dao;
 
 import cn.edu.xmu.comm.commons.persistence.BaseDAO;
 import cn.edu.xmu.comm.commons.persistence.Parameter;
+import cn.edu.xmu.comm.commons.utils.CastUtils;
 import cn.edu.xmu.comm.entity.Community;
 import cn.edu.xmu.comm.entity.Floor;
 import cn.edu.xmu.comm.entity.Room;
@@ -42,4 +43,15 @@ public class RoomDAO extends BaseDAO<Room, Integer> {
         return searchByQL(ql, new Parameter(community));
     }
 
+    public List<String[]> getVacantRoomNos(Integer floorId) {
+        String ql = "select r.id, r.no from Room r where r.floor.id = :p1 and r.owner is null";
+        List list = getAttrsByQL(ql, new Parameter(floorId));
+        return CastUtils.castToListStringArray(list);
+    }
+
+    public List<String[]> getNonVacantRoomNos(Integer floorId) {
+        String ql = "select r.id, r.no from Room r where r.floor.id = :p1 and r.owner is not null";
+        List list = getAttrsByQL(ql, new Parameter(floorId));
+        return CastUtils.castToListStringArray(list);
+    }
 }

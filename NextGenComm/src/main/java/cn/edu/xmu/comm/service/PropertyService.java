@@ -106,7 +106,7 @@ public interface PropertyService {
      * @see cn.edu.xmu.comm.commons.exception.DifferentCommunityException
      */
     @Transactional(readOnly = false)
-    void addOwnerToRoom(Owner owner, Room room) throws DifferentCommunityException;
+    void addOwnerToRoom(Integer owner, Integer room) throws DifferentCommunityException;
 
     /**
      * 添加私有设备
@@ -315,16 +315,26 @@ public interface PropertyService {
      * @param community 小区
      * @return 楼宇号列表
      */
-    List<Integer[]> getBuildingNos(Community community);
+    List<String[]> getBuildingNos(Community community);
 
     /**
      * @param buildId
      * @return
      */
-    List<Integer[]> getFloorNos(Integer buildId);
+    List<String[]> getFloorNos(Integer buildId);
 
     List<Room> getAllRooms(Integer floorId);
 
     Floor getFloor(Integer floorId);
+
+    List<String[]> getVacantRoomNos(Integer floorId);
+
+    Room getRoom(Integer roomId);
+
+    List<Owner> getAllOwners(Community community);
+
+    List<String[]> searchOwner(String term, Community community);
+
+    List<String[]> getNonVacantRoomNos(Integer floorId);
 
 }
