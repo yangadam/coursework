@@ -191,7 +191,7 @@
         <action name="floorNo" class="floorNoAction"/>
         <action name="vacantRoomNo" class="vacantRoomNoAction"/>
         <action name="roomInfo" class="roomInfoAction"/>
-        <action name="ownerNames" class="ownerNamesAction"/>
+        <action name="ownerSearch" class="ownerSearchAction"/>
 
     </package>
 

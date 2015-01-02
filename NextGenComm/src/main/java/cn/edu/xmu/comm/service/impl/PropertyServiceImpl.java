@@ -520,12 +520,12 @@ public class PropertyServiceImpl implements PropertyService {
     }
 
     @Override
-    public List<Integer[]> getBuildingNos(Community community) {
+    public List<String[]> getBuildingNos(Community community) {
         return buildingDAO.getIdsAndNos(community);
     }
 
     @Override
-    public List<Integer[]> getFloorNos(Integer buildId) {
+    public List<String[]> getFloorNos(Integer buildId) {
         return floorDAO.getIdsAndNos(buildId);
     }
 
@@ -541,7 +541,7 @@ public class PropertyServiceImpl implements PropertyService {
     }
 
     @Override
-    public List<Integer[]> getVacantRoomNos(Integer floorId) {
+    public List<String[]> getVacantRoomNos(Integer floorId) {
         return roomDAO.getVacantRoomNos(floorId);
     }
 
@@ -553,6 +553,11 @@ public class PropertyServiceImpl implements PropertyService {
     @Override
     public List<Owner> getAllOwners(Community community) {
         return ownerDAO.getAll(community);
+    }
+
+    @Override
+    public List<String[]> searchOwner(String term, Community community) {
+        return ownerDAO.buzzSearch(term, community);
     }
     //endregion
 

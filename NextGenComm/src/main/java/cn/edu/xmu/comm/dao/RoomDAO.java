@@ -44,10 +44,10 @@ public class RoomDAO extends BaseDAO<Room, Integer> {
     }
 
     @SuppressWarnings("unchecked")
-    public List<Integer[]> getVacantRoomNos(Integer floorId) {
+    public List<String[]> getVacantRoomNos(Integer floorId) {
         String ql = "select r.id, r.no from Room r where r.floor.id = :p1";
         List list = getAttrsByQL(ql, new Parameter(floorId));
-        return CastUtils.castToListIntegerArray(list);
+        return CastUtils.castToListStringArray(list);
     }
 
 }

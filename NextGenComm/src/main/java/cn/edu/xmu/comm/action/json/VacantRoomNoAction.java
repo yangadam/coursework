@@ -28,11 +28,11 @@ public class VacantRoomNoAction extends ActionSupport {
 
     @Override
     public String execute() {
-        List<Integer[]> list = propertyService.getVacantRoomNos(floorId);
+        List<String[]> list = propertyService.getVacantRoomNos(floorId);
         data = new HashMap<String, Object>();
         JSONArray ids = new JSONArray();
         JSONArray nos = new JSONArray();
-        for (Integer[] idAndNo : list) {
+        for (String[] idAndNo : list) {
             ids.add(idAndNo[0]);
             nos.add(idAndNo[1]);
         }

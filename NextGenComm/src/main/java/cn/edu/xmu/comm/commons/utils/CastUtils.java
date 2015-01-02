@@ -11,13 +11,13 @@ import java.util.List;
  */
 public class CastUtils {
 
-    public static List<Integer[]> castToListIntegerArray(List list) {
-        List<Integer[]> ret = new ArrayList<Integer[]>();
+    public static List<String[]> castToListStringArray(List list) {
+        List<String[]> ret = new ArrayList<String[]>();
         for (Object aList : list) {
             Object[] objects = (Object[]) aList;
-            Integer[] ints = new Integer[objects.length];
+            String[] ints = new String[objects.length];
             for (int i = 0; i < objects.length; i++) {
-                ints[i] = Integer.valueOf(objects[i].toString());
+                ints[i] = String.valueOf(objects[i].toString());
             }
             ret.add(ints);
         }

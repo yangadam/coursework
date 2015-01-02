@@ -2,6 +2,7 @@ package cn.edu.xmu.comm.dao;
 
 import cn.edu.xmu.comm.commons.persistence.BaseDAO;
 import cn.edu.xmu.comm.commons.persistence.Parameter;
+import cn.edu.xmu.comm.commons.utils.CastUtils;
 import cn.edu.xmu.comm.entity.Community;
 import cn.edu.xmu.comm.entity.Owner;
 import org.springframework.stereotype.Repository;
@@ -48,5 +49,11 @@ public class OwnerDAO extends BaseDAO<Owner, Integer> {
      */
     public List<Owner> getByName(Community community, String name) {
         return searchByQL("from Owner where name = :p1 and community = :p2", new Parameter(name, community));
+    }
+
+    public List<String[]> buzzSearch(String term, Community community) {
+        String ql = "select o.id, o.name, o.username from Owner o where o.community = :p1 and (o.username like :p2 or o.name like :p2)";
+        List list = searchByQL(ql, new Parameter(community, term + '%'));
+        return CastUtils.castToListStringArray(list);
     }
 }
