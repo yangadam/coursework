@@ -35,7 +35,7 @@ public class Owner extends User {
      */
     @OneToMany(targetEntity = Room.class, mappedBy = "owner",
             cascade = {CascadeType.MERGE})
-    private Set<Room> roomList = new HashSet<Room>();
+    private List<Room> roomList = new ArrayList<Room>();
 
     /**
      * 拥有的车辆列表
@@ -127,11 +127,11 @@ public class Owner extends User {
         this.community = community;
     }
 
-    public Set<Room> getRoomList() {
+    public List<Room> getRoomList() {
         return roomList;
     }
 
-    public void setRoomList(Set<Room> roomList) {
+    public void setRoomList(List<Room> roomList) {
         this.roomList = roomList;
     }
 

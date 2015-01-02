@@ -147,6 +147,23 @@
             <result name="input">room.do</result>
         </action>
 
+        <action name="checkin">
+            <result>/WEB-INF/jsp/clerk/checkin.jsp</result>
+        </action>
+
+        <action name="owner">
+            <result>/WEB-INF/jsp/clerk/owner.jsp</result>
+        </action>
+
+        <action name="addOwner" class="ownerAddAction">
+            <result type="redirect">owner.do</result>
+            <result name="input">owner.do</result>
+        </action>
+
+        <action name="doCheckIn" class="checkInAction">
+            <result>checkin.do</result>
+        </action>
+
     </package>
 
     <!-- JSON package -->
@@ -166,11 +183,15 @@
         <action name="listComm" class="commListAction"/>
         <action name="listBuild" class="buildListAction"/>
         <action name="listDir" class="directorListAction"/>
+        <action name="listRoom" class="roomListAction"/>
+        <action name="listStaff" class="staffListAction"/>
+        <action name="listOwner" class="ownerListAction"/>
         <action name="commNames" class="commNameAction"/>
         <action name="buildNo" class="buildNoAction"/>
         <action name="floorNo" class="floorNoAction"/>
-        <action name="listRoom" class="roomListAction"/>
-        <action name="listStaff" class="staffListAction"/>
+        <action name="vacantRoomNo" class="vacantRoomNoAction"/>
+        <action name="roomInfo" class="roomInfoAction"/>
+        <action name="ownerNames" class="ownerNamesAction"/>
 
     </package>
 

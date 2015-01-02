@@ -182,14 +182,16 @@ public class PropertyServiceImpl implements PropertyService {
     /**
      * 将业主添加到房间
      *
-     * @param owner 业主
-     * @param room  房间
+     * @param ownerId 业主
+     * @param roomId  房间
      * @throws DifferentCommunityException 小区不同异常
      * @see DifferentCommunityException
      */
     @Override
     @Transactional(readOnly = false)
-    public void addOwnerToRoom(Owner owner, Room room) throws DifferentCommunityException {
+    public void addOwnerToRoom(Integer ownerId, Integer roomId) throws DifferentCommunityException {
+        Owner owner = ownerDAO.get(ownerId);
+        Room room = roomDAO.get(roomId);
         owner.addRoom(room);
         roomDAO.merge(room);
         ownerDAO.merge(owner);
@@ -536,6 +538,21 @@ public class PropertyServiceImpl implements PropertyService {
     @Override
     public Floor getFloor(Integer floorId) {
         return floorDAO.get(floorId);
+    }
+
+    @Override
+    public List<Integer[]> getVacantRoomNos(Integer floorId) {
+        return roomDAO.getVacantRoomNos(floorId);
+    }
+
+    @Override
+    public Room getRoom(Integer roomId) {
+        return roomDAO.get(roomId);
+    }
+
+    @Override
+    public List<Owner> getAllOwners(Community community) {
+        return ownerDAO.getAll(community);
     }
     //endregion
 

@@ -14,21 +14,21 @@ import java.util.Map;
  * description
  *
  * @author Mengmeng Yang
- * @version 12/31/2014 0031
+ * @version 1/2/2015 0002
  */
 @Controller
-public class FloorNoAction extends ActionSupport {
+public class VacantRoomNoAction extends ActionSupport {
 
     @Resource
     private PropertyService propertyService;
 
     private Map<String, Object> data;
 
-    private Integer buildId;
+    private Integer floorId;
 
     @Override
     public String execute() {
-        List<Integer[]> list = propertyService.getFloorNos(buildId);
+        List<Integer[]> list = propertyService.getVacantRoomNos(floorId);
         data = new HashMap<String, Object>();
         JSONArray ids = new JSONArray();
         JSONArray nos = new JSONArray();
@@ -50,12 +50,11 @@ public class FloorNoAction extends ActionSupport {
         this.data = data;
     }
 
-    public Integer getBuildId() {
-        return buildId;
+    public Integer getFloorId() {
+        return floorId;
     }
 
-    public void setBuildId(Integer buildId) {
-        this.buildId = buildId;
+    public void setFloorId(Integer floorId) {
+        this.floorId = floorId;
     }
-
 }
