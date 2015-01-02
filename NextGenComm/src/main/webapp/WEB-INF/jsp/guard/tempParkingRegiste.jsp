@@ -1,5 +1,5 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en" class="no-js"> <!--<![endif]-->
 <!-- BEGIN HEAD -->
@@ -11,10 +11,10 @@
     <meta content="PumpKing" name="author"/>
     <%@include file="globalCSS.jsp" %>
     <!-- BEGIN PAGE LEVEL STYLES -->
-    <link rel="stylesheet" type="text/css" href="../../pumpking/css/select2_metro.css"/>
-    <link rel="stylesheet" href="../../pumpking/css/DT_bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../global/css/select2_metro.css"/>
+    <link rel="stylesheet" href="../../../global/css/DT_bootstrap.css"/>
     <!-- END PAGE LEVEL STYLES -->
-    <link rel="shortcut icon" href="../../pumpking/image/favicon.ico"/>
+    <link rel="shortcut icon" href="../../../global/image/favicon.ico"/>
 </head>
 <!-- END HEAD -->
 <!-- BEGIN BODY -->
@@ -153,24 +153,20 @@
     <!-- END FOOTER -->
     <%@include file="globalJS.jsp" %>
     <!-- BEGIN PAGE LEVEL PLUGINS -->
-    <script type="text/javascript" src="../../pumpking/js/select2.min.js"></script>
-    <script type="text/javascript" src="../../pumpking/js/jquery.dataTables.js"></script>
-    <script type="text/javascript" src="../../pumpking/js/DT_bootstrap.js"></script>
+    <script type="text/javascript" src="../../../global/js/select.min.js"></script>
+    <script type="text/javascript" src="../../../global/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" src="../../../global/js/DT_bootstrap.js"></script>
     <!-- END PAGE LEVEL PLUGINS -->
     <!-- BEGIN PAGE LEVEL SCRIPTS -->
-    <script src="../../pumpking/js/app.js"></script>
-    <script src="../../pumpking/js/form-wizard.js"></script>
-    <script>
-        jQuery(document).ready(function () {
-            App.init();
-            $(".page-sidebar-menu .title:contains('停车场管理')").closest(
-                    "li").addClass("active");
-            $(".page-sidebar-menu .title:contains('停车场管理')").closest(
-                    "li").find(".arrow").addClass("open");
-            $(".page-sidebar-menu .sub-menu a:contains('车辆登记')").closest(
-                    "li").addClass("active");
-        });
-    </script>
+    <script src="../../../custom/js/app.js"></script>
+    <script src="../../../global/js/form-wizard.js"></script>
+        <script>
+            jQuery(document).ready(function () {
+                App.init();
+                $(".page-sidebar-menu .title:contains('停车管理')").closest(
+                        "li").addClass("active");
+            });
+        </script>
     <!-- END JAVASCRIPTS -->
 </body>
 <!-- END BODY -->

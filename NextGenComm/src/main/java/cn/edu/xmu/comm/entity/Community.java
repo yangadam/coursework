@@ -90,6 +90,13 @@ public class Community extends Property {
      * 垃圾处理费金额
      */
     private BigDecimal garbageFee;
+
+    /**
+     * 滞纳金的计算方式，可能的方式
+     */
+    private String overDueFeeType;
+
+    private BigDecimal overDueFeeRate;
     //endregion
 
     Community() {
@@ -260,6 +267,23 @@ public class Community extends Property {
     public void setGarbageFee(BigDecimal garbageFee) {
         this.garbageFee = garbageFee;
     }
+
+    public String getOverDueFeeType() {
+        return overDueFeeType;
+    }
+
+    public void setOverDueFeeType(String overDueFeeType) {
+        this.overDueFeeType = overDueFeeType;
+    }
+
+    public BigDecimal getOverDueFeeRate() {
+        return overDueFeeRate;
+    }
+
+    public void setOverDueFeeRate(BigDecimal overDueFeeRate) {
+        this.overDueFeeRate = overDueFeeRate;
+    }
+
     //endregion
 
 

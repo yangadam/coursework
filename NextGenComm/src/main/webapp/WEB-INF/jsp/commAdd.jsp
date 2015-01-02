@@ -10,20 +10,20 @@
     <meta content="" name="description"/>
     <meta content="PumpKing" name="author"/>
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
-    <link href="../../pumpking/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-    <link href="../../pumpking/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>
-    <link href="../../pumpking/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
-    <link href="../../pumpking/css/style-metro.css" rel="stylesheet" type="text/css"/>
-    <link href="../../pumpking/css/style.css" rel="stylesheet" type="text/css"/>
-    <link href="../../pumpking/css/style-responsive.css" rel="stylesheet" type="text/css"/>
-    <link href="../../pumpking/css/default.css" rel="stylesheet" type="text/css" id="style_color"/>
-    <link href="../../pumpking/css/uniform.default.css" rel="stylesheet" type="text/css"/>
+    <link href="../../global/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="../../global/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>
+    <link href="../../global/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <link href="../../global/css/style-metro.css" rel="stylesheet" type="text/css"/>
+    <link href="../../global/css/style.css" rel="stylesheet" type="text/css"/>
+    <link href="../../global/css/style-responsive.css" rel="stylesheet" type="text/css"/>
+    <link href="../../global/css/default.css" rel="stylesheet" type="text/css" id="style_color"/>
+    <link href="../../global/css/uniform.default.css" rel="stylesheet" type="text/css"/>
     <!-- END GLOBAL MANDATORY STYLES -->
     <!-- BEGIN PAGE LEVEL STYLES -->
-    <link rel="stylesheet" type="text/css" href="../../pumpking/css/select2_metro.css"/>
-    <link rel="stylesheet" href="../../pumpking/css/DT_bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="../../global/css/select2_metro.css"/>
+    <link rel="stylesheet" href="../../global/css/DT_bootstrap.css"/>
     <!-- END PAGE LEVEL STYLES -->
-    <link rel="shortcut icon" href="../../pumpking/image/favicon.ico"/>
+    <link rel="shortcut icon" href="../../global/image/favicon.ico"/>
 </head>
 <!-- END HEAD -->
 <!-- BEGIN BODY -->
@@ -35,12 +35,12 @@
         <div class="container-fluid">
             <!-- BEGIN LOGO -->
             <a class="brand" href="/index.jsp">
-                <img src="../../pumpking/image/logo2.png" alt="logo"/>
+                <img src="../../global/image/logo.png" alt="logo"/>
             </a>
             <!-- END LOGO -->
             <!-- BEGIN RESPONSIVE MENU TOGGLER -->
             <a href="javascript:" class="btn-navbar collapsed" data-toggle="collapse" data-target=".nav-collapse">
-                <img src="../../pumpking/image/menu-toggler.png" alt=""/>
+                <img src="../../global/image/menu-toggler.png" alt=""/>
             </a>
             <!-- END RESPONSIVE MENU TOGGLER -->
             <!-- BEGIN TOP NAVIGATION MENU -->
@@ -116,7 +116,7 @@
                         </li>
                         <li>
                             <a href="inbox.html?a=view">
-                                <span class="photo"><img src="../../../pumpking/image/avatar2.jpg" alt=""/></span>
+                                <span class="photo"><img src="../../global/image/avatar2.jpg" alt=""/></span>
 								<span class="subject">
 								<span class="from">Lisa Wong</span>
 								<span class="time">Just Now</span>
@@ -129,7 +129,7 @@
                         </li>
                         <li>
                             <a href="inbox.html?a=view">
-                                <span class="photo"><img src="../../../pumpking/image/avatar3.jpg" alt=""/></span>
+                                <span class="photo"><img src="../../global/image/avatar3.jpg" alt=""/></span>
 								<span class="subject">
 								<span class="from">Richard Doe</span>
 								<span class="time">16 mins</span>
@@ -142,7 +142,7 @@
                         </li>
                         <li>
                             <a href="inbox.html?a=view">
-                                <span class="photo"><img src="../../../pumpking/image/avatar1.jpg" alt=""/></span>
+                                <span class="photo"><img src="../../global/image/avatar1.jpg" alt=""/></span>
 								<span class="subject">
 								<span class="from">Bob Nilson</span>
 								<span class="time">2 hrs</span>
@@ -245,7 +245,7 @@
                 <!-- BEGIN USER LOGIN DROPDOWN -->
                 <li class="dropdown user">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <img alt="" src="../../../pumpking/image/avatar1_small.jpg"/>
+                        <img alt="" src="../../global/image/avatar1_small.jpg"/>
                         <span class="username">杨 猛猛</span>
                         <i class="icon-angle-down"></i>
                     </a>

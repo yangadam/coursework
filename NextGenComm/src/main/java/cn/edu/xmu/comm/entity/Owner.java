@@ -1,5 +1,6 @@
 package cn.edu.xmu.comm.entity;
 
+import cn.edu.xmu.comm.commons.exception.DeviceException;
 import cn.edu.xmu.comm.commons.exception.DifferentCommunityException;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -104,7 +105,7 @@ public class Owner extends User {
     /**
      * 生成账单
      */
-    public void generateBill() {
+    public void generateBill() throws DeviceException {
 
         for (Room room : this.roomList) {
             room.generateRoom(this.unpaidBills);
@@ -114,6 +115,37 @@ public class Owner extends User {
             car.generateCar(this.unpaidBills);
         }
 
+    }
+
+    /**
+     * 支付账单项
+     *
+     * @param receiveBy 收款人
+     * @param billItems 账单
+     * @return 支付记录
+     */
+    public Payment payBillItems (User receiveBy, List<BillItem> billItems) {
+        for (BillItem billItem : billItems) {
+            unpaidBills.remove(billItem);
+            billItem.setBillItemStatus(BillItem.BillItemStatus.PAID);
+        }
+        return new Payment(this, receiveBy, billItems);
+    }
+
+    /**
+     * 获得超期欠缴费清单
+     *
+     * @return 清单列表
+     */
+    public List<BillItem> getOverDueBillItems() {
+        List<BillItem> resultBillItems = new ArrayList<BillItem>();
+        for (BillItem billItem : unpaidBills) {
+            if (billItem.isOverDue()) {
+                billItem.updateOverDueFee();
+                resultBillItems.add(billItem);
+            }
+        }
+        return resultBillItems;
     }
     //endregion
 
@@ -144,6 +176,9 @@ public class Owner extends User {
     }
 
     public List<BillItem> getUnpaidBills() {
+        for (BillItem billItem : unpaidBills) {
+            billItem.updateOverDueFee();
+        }
         return unpaidBills;
     }
 

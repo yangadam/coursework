@@ -20,7 +20,6 @@ import org.springframework.stereotype.Component;
  * @version 12/28/2014 0028
  */
 @Aspect
-@Component
 public class Authorization {
 
     private static Logger logger = LoggerFactory.getLogger(Logging.class);

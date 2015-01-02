@@ -4,6 +4,7 @@ import cn.edu.xmu.comm.commons.persistence.BaseDAO;
 import cn.edu.xmu.comm.commons.persistence.Parameter;
 import cn.edu.xmu.comm.entity.Community;
 import cn.edu.xmu.comm.entity.Owner;
+import cn.edu.xmu.comm.entity.Room;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -49,4 +50,14 @@ public class OwnerDAO extends BaseDAO<Owner, Integer> {
     public List<Owner> getByName(Community community, String name) {
         return searchByQL("from Owner where name = :p1 and community = :p2", new Parameter(name, community));
     }
+
+    /**
+     * 依据电话获取业主
+     * @param phoneNumber 电话号码
+     * @return 单个业主
+     */
+    public Owner getByPhoneNumber(String phoneNumber) {
+        return getByQL("from Owner where phoneNumber = :p1", new Parameter(phoneNumber));
+    }
+
 }

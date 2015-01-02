@@ -14,7 +14,7 @@ import java.io.IOException;
 
 public class FilesUtil {
 
-    public static void saveFile(File file, String fileName, String filesDirectory) throws IOException{
+    public void saveFile(File file, String fileName, String filesDirectory) throws IOException{
         FileInputStream in = null;
         FileOutputStream out = null;
 

@@ -116,22 +116,17 @@ public class PropertyServiceTest extends TestCase {
     @Test
     public void testAddOwner() {
         Community community = propertyService.getCommunity("五缘公寓");
-        Building building = propertyService.getBuildingByNo(1, community);
-        Floor floor = propertyService.getFloorByNo(1, building);
-        Room room1 = propertyService.getRoomByNo("101", floor);
-        Room room2 = propertyService.getRoomByNo("102", floor);
+        //Building building = propertyService.getBuildingByNo(1, community);
+        //Floor floor = propertyService.getFloorByNo(1, building);
+        //Room room1 = propertyService.getRoomByNo("101", floor);
+        //Room room2 = propertyService.getRoomByNo("102", floor);
         Owner owner = propertyService.addOwner("wyh", "123", "王耀华", community);
-        try {
+        /*try {
             owner.addRoom(room1);
         } catch (DifferentCommunityException e) {
             e.printStackTrace();
-        }
-        try {
-            propertyService.addOwner("lyj", "123", "陆垚杰", room2);
-        } catch (DifferentCommunityException e) {
-            e.printStackTrace();
-        }
-
+        }*/
+        propertyService.addOwner("lyj", "123", "陆垚杰", community);
     }
 
     @Test

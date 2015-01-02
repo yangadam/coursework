@@ -15,7 +15,7 @@ var TableEditable = function () {
                 "bProcessing": true,
                 "bFilter": false,
                 "bLengthChange": false,
-                "sAjaxSource": "/json/commListData.do",
+                "sAjaxSource": "/unchargedParkBill.do",
                 "oLanguage": {
                     "sSearch": "搜索",
                     "sLengthMenu": "每页显示 _MENU_ 条记录",
@@ -34,29 +34,11 @@ var TableEditable = function () {
                 "aoColumnDefs": [
                     {
                         'bSortable': false,
-                        "aTargets": [2],
-                        "mRender": function (data, type,
-                                             full) {
-                            return '<a href="commEdit.do?comm.id='
-                                + data + '">编辑</a>';
-                        }
-                    },
-                    {
-                        'bSortable': false,
                         "aTargets": [3],
                         "mRender": function (data, type,
                                              full) {
-                            return '<a href="#static" data-toggle="modal" id="' + data + '"onclick="deleteUser('
-                                + data + ')">删除</a>';
-                        }
-                    },
-                    {
-                        'bSortable': false,
-                        "aTargets": [4],
-                        "mRender": function (data, type,
-                                             full) {
-                            return '<a href="buildingList.do?comm.id='
-                                + data + '">详细信息</a>';
+                            return '<a href="commEdit.do?comm.id='
+                                + data + '">离开</a>';
                         }
                     }
                 ]

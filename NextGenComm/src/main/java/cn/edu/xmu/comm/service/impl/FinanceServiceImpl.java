@@ -1,13 +1,10 @@
 package cn.edu.xmu.comm.service.impl;
 
-import cn.edu.xmu.comm.dao.CommunityDAO;
-import cn.edu.xmu.comm.dao.DeviceDAO;
-import cn.edu.xmu.comm.dao.GradientDAO;
-import cn.edu.xmu.comm.dao.OwnerDAO;
-import cn.edu.xmu.comm.entity.Community;
-import cn.edu.xmu.comm.entity.Device;
-import cn.edu.xmu.comm.entity.Gradient;
-import cn.edu.xmu.comm.entity.Owner;
+import cn.edu.xmu.comm.commons.exception.DeviceException;
+import cn.edu.xmu.comm.commons.exception.MailException;
+import cn.edu.xmu.comm.commons.utils.MailUtils;
+import cn.edu.xmu.comm.dao.*;
+import cn.edu.xmu.comm.entity.*;
 import cn.edu.xmu.comm.service.FinanceService;
 import org.apache.commons.lang3.Validate;
 import org.springframework.stereotype.Service;
@@ -15,7 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.SortedMap;
 
 /**
  * 财务模块Service
@@ -40,7 +40,21 @@ public class FinanceServiceImpl implements FinanceService {
     @Resource
     private GradientDAO gradientDAO;
 
-    @Override
+    @Resource
+    private RoomDAO roomDAO;
+
+    @Resource
+    private PaymentDAO paymentDAO;
+
+    @Resource
+    private BillItemDAO billItemDAO;
+
+    /**
+     * 依据编号查找设备
+     *
+     * @param id 编号
+     * @return 设备
+     */
     public Device getDeviceById(Integer id) {
         return deviceDAO.get(id);
     }
@@ -52,7 +66,6 @@ public class FinanceServiceImpl implements FinanceService {
      * @param unitPrice 单价
      * @return 梯度对象
      */
-    @Override
     @Transactional(readOnly = false)
     public Gradient addGradient(Community community, BigDecimal unitPrice) {
         Gradient gradient = new Gradient(unitPrice);
@@ -70,7 +83,6 @@ public class FinanceServiceImpl implements FinanceService {
      * @param prices    价格
      * @return 梯度对象
      */
-    @Override
     @Transactional(readOnly = false)
     public Gradient addGradient(Community community, Double[] readings, BigDecimal[] prices) {
         Validate.isTrue(readings.length + 1 == prices.length, "梯度数值数目有错误。");
@@ -87,7 +99,6 @@ public class FinanceServiceImpl implements FinanceService {
      * @param gradient 梯度
      * @param device   设备
      */
-    @Override
     @Transactional(readOnly = false)
     public void applyGradient(Gradient gradient, Device device) {
         Validate.isTrue(gradient.getType().equals(device.getType()), "梯度与设备不匹配");
@@ -101,7 +112,6 @@ public class FinanceServiceImpl implements FinanceService {
      * @param gradient  梯度
      * @param community 小区
      */
-    @Override
     @Transactional(readOnly = false)
     public void applyPrivateGradient(Gradient gradient, Community community) {
         deviceDAO.applyPrivateGradient(gradient, community);
@@ -113,7 +123,6 @@ public class FinanceServiceImpl implements FinanceService {
      * @param gradient  梯度
      * @param community 小区
      */
-    @Override
     @Transactional(readOnly = false)
     public void applyShareGradient(Gradient gradient, Community community) {
         deviceDAO.applyShareGradient(gradient, community);
@@ -124,13 +133,276 @@ public class FinanceServiceImpl implements FinanceService {
      *
      * @param community 小区
      */
-    @Override
     @Transactional(readOnly = false)
-    public void generateBill(Community community) {
+    public void generateBill(Community community) throws DeviceException {
         List<Owner> allOwner = ownerDAO.getAll(community);
         for (Owner owner : allOwner) {
             owner.generateBill();
         }
+    }
+
+    /**
+     * 添加设备的读数
+     *
+     * @param device 指定设备
+     * @param value  设备读数
+     */
+    @Transactional(readOnly = false)
+    public void addDeviceValue(Device device, BigDecimal value) {
+        try {
+            device.addValue(new Date(), value);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        deviceDAO.merge(device);
+    }
+
+    /**
+     * 添加设备的读数
+     *
+     * @param deviceId 指定设备编号
+     * @param date     日期
+     * @param value    设备读数
+     */
+    @Transactional(readOnly = false)
+    public void addDeviceValue(Integer deviceId, Date date, BigDecimal value) {
+        Device device = deviceDAO.get(deviceId);
+        addDeviceValue(device, date, value);
+        deviceDAO.merge(device);
+    }
+
+    /**
+     * 添加设备的读数
+     *
+     * @param device 指定设备
+     * @param date   日期
+     * @param value  设备读数
+     */
+    @Transactional(readOnly = false)
+    public void addDeviceValue(Device device, Date date, BigDecimal value) {
+        try {
+            device.addValue(date, value);
+        } catch (DeviceException e) {
+            e.printStackTrace();
+        }
+        deviceDAO.merge(device);
+    }
+
+    @Transactional(readOnly = false)
+    public void delDeviceValue(Integer id) {
+        Device device = deviceDAO.get(id);
+        try {
+            device.delValue();
+        } catch (DeviceException e) {
+            e.printStackTrace();
+        }
+        deviceDAO.merge(device);
+    }
+
+    @Transactional(readOnly = false)
+    public void updateDeviceValue(Integer id, Date date, BigDecimal value) {
+        Device device = deviceDAO.get(id);
+        try {
+            device.updateValue(date, value);
+        } catch (DeviceException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 返回设备的所有读数
+     *
+     * @param device 设备
+     * @return 设备的所有读数
+     */
+    public SortedMap<Date, BigDecimal> getDeviceValue(Device device) {
+        return device.getValues();
+    }
+
+    /**
+     * 依据设备编号返回设备的所有读数
+     *
+     * @param deviceId 设备编号
+     * @return 设备的所有读数
+     */
+    public SortedMap<Date, BigDecimal> getDeviceValue(Integer deviceId) {
+        return getDeviceValue(deviceDAO.get(deviceId));
+    }
+
+    /**
+     * 获取业主所有的未缴费账单
+     *
+     * @param owner 业主
+     * @return 未缴费账单列表
+     */
+    public List<BillItem> getUnpaidBillItems(Owner owner) {
+        return owner.getUnpaidBills();
+    }
+
+    /**
+     * 获取业主所有的未缴费账单
+     *
+     * @param ownerId 业主编号
+     * @return 未缴费账单列表
+     */
+    public List<BillItem> getUnpaidBillItems(Integer ownerId) {
+        Owner owner = ownerDAO.get(ownerId);
+        return getUnpaidBillItems(owner);
+    }
+
+    /**
+     * 获取业主所有的未缴费账单
+     *
+     * @param phoneNumber 电话号码
+     * @return 未缴费账单列表
+     */
+    public List<BillItem> getUnpaidBillItemsByPhoneNumber(String phoneNumber) {
+        Owner owner = ownerDAO.getByPhoneNumber(phoneNumber);
+        return getUnpaidBillItems(owner);
+    }
+
+    /**
+     * 获取业主所有的未缴费账单
+     *
+     * @param room 房间
+     * @return 未缴费账单列表
+     */
+    public List<BillItem> getUnpaidBillItemsByRoom(Room room) {
+        Owner owner = room.getOwner();
+        return getUnpaidBillItems(owner);
+    }
+
+    /**
+     * 获取业主所有的未缴费账单
+     *
+     * @param roomId 房间编号
+     * @return 未缴费账单列表
+     */
+    public List<BillItem> getUnpaidBillItemsByRoom(Integer roomId) {
+        Room room = roomDAO.get(roomId);
+        return getUnpaidBillItemsByRoom(room);
+    }
+
+    /**
+     * 支付账单
+     *
+     * @param paidBy    付款人
+     * @param receiveBy 收款人
+     * @param billItems 账单(账单项列表)
+     * @return payment 支付记录
+     */
+    @Transactional(readOnly = false)
+    public Payment payBillItems(Owner paidBy, User receiveBy, List<BillItem> billItems) {
+        Payment payment = paidBy.payBillItems(receiveBy, billItems);
+        ownerDAO.merge(paidBy);
+        billItemDAO.merge(billItems);
+        paymentDAO.persist(payment);
+        return payment;
+    }
+
+    /**
+     * 获得超期欠缴费清单
+     *
+     * @param ownerId 业主编号
+     * @return 超期欠缴清单
+     */
+    public List<BillItem> getOverDueBillItems(Integer ownerId) {
+        Owner owner = ownerDAO.get(ownerId);
+        return owner.getOverDueBillItems();
+    }
+
+    /**
+     * 获取欠缴费用户
+     *
+     * @param community 社区
+     * @return 欠缴费用户列表
+     */
+    public List<Owner> getOwnerWithOverDue(Community community) {
+        List<Owner> owners = ownerDAO.getAll(community);
+        List<Owner> results = new ArrayList<Owner>();
+        for (Owner owner : owners) {
+            if (owner.getOverDueBillItems().size() > 0) {
+                results.add(owner);
+            }
+        }
+        return results;
+    }
+
+    /**
+     * 发送欠缴费邮件
+     *
+     * @param owner     业主
+     * @param mailUtils 邮件工具
+     * @throws MailException
+     */
+    public void sendOverDueMail(Owner owner, MailUtils mailUtils) throws MailException {
+        String email = owner.getEmail();
+        if (email == null) {
+            throw new MailException("没有邮件地址", owner);
+        }
+        String subject = getOverDueMailSubject(owner);
+        String context = getOverDueMailContext(owner);
+        mailUtils.sendMail(email, subject, context);
+    }
+
+    /**
+     * 邮件抬头
+     *
+     * @param owner 业主
+     * @return 邮件抬头
+     */
+    public String getOverDueMailSubject(Owner owner) {
+        return owner.getCommunity().getName() + " 欠缴费通知";
+    }
+
+    /**
+     * 邮件主题
+     *
+     * @param owner 业主
+     * @return 邮件主体
+     */
+    public String getOverDueMailContext(Owner owner) {
+        String head = "亲爱的" + owner.getName() + "先生/女士:" +
+                "<div>&nbsp; &nbsp; &nbsp; 您好！您在" + owner.getCommunity().getName() +
+                "尚有以下条目未缴费，请尽快缴费，谢谢！</div>";
+        List<BillItem> overDueBills = owner.getOverDueBillItems();
+        String body = "<table border=\"1\">";
+        body += "<tr>" +
+                "<td>条目名</td>" +
+                "<td>用量</td>" +
+                "<td>滞纳天数</td>" +
+                "<td>滞纳金金额</td>" +
+                "<td>总金额</td>" +
+                "</tr>";
+        for (BillItem billItem : overDueBills) {
+            String item = "<tr>";
+            item += "<td>" + billItem.getName() + "</td>";
+            item += "<td>" + billItem.getUsage() + "</td>";
+            item += "<td>" + billItem.getOverDueDays(new Date()) + "</td>";
+            item += "<td>" + billItem.getOverDueFee() + "</td>";
+            item += "<td>" + billItem.getAmount() + "</td>";
+            item += "</tr>";
+            body += item;
+        }
+        return head + body;
+    }
+
+    @Transactional(readOnly = false)
+    public void addBillItem() {
+        Owner owner = ownerDAO.get(4);
+        BillItem billItem = new BillItem("水费", "描述", BigDecimal.valueOf(100), BigDecimal.valueOf(500), owner, 2);
+        owner.getUnpaidBills().add(billItem);
+        billItemDAO.merge(billItem);
+        ownerDAO.merge(owner);
+    }
+
+    /**
+     * 获取已录入的设备
+     * @param community 社区
+     * @return 设备列表
+     */
+    public List<Device> getCanCalculateDevice(Community community) {
+        return deviceDAO.getCanCalculateDevice(community);
     }
 
 }

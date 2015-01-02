@@ -7,6 +7,8 @@ import cn.edu.xmu.comm.entity.Device;
 import cn.edu.xmu.comm.entity.Gradient;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * 设备DAO
  * Created by Roger on 2014/12/9 0009.
@@ -41,5 +43,9 @@ public class DeviceDAO extends BaseDAO<Device, Integer> {
                 "d.community = :p2 and d.shareType != null and d.type = :p3";
         Parameter param = new Parameter(gradient, community, gradient.getType());
         createQuery(ql, param).executeUpdate();
+    }
+
+    public List<Device> getCanCalculateDevice(Community community) {
+        return searchByQL("from Device where community = :p1 and isCalculated = :p2", new Parameter(community, false));
     }
 }
