@@ -62,7 +62,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/clerk/">
+                    <a href="/clerk/change.do">
                         <i class="icon-question-sign"></i>
                         业主变更
                     </a>

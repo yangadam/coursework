@@ -335,4 +335,6 @@ public interface PropertyService {
 
     List<String[]> searchOwner(String term, Community community);
 
+    List<String[]> getNonVacantRoomNos(Integer floorId);
+
 }

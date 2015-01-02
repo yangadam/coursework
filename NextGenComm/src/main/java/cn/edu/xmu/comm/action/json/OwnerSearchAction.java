@@ -33,7 +33,7 @@ public class OwnerSearchAction extends ActionSupport {
     public String execute() {
         Community community = (Community) ActionContext.getContext()
                 .getSession().get(Constants.COMMUNITY);
-        List<String[]> owners = propertyService.searchOwner(term, community);
+        List<String[]> owners = propertyService.searchOwner("", community);
         JSONArray ids = new JSONArray();
         JSONArray names = new JSONArray();
         JSONArray usernames = new JSONArray();

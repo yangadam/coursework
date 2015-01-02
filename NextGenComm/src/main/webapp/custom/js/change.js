@@ -6,6 +6,7 @@ var CheckIn = function () {
             var floorId = -1;
             var roomId = -1;
             var ownerId = -1;
+            var curOwnerId = -1;
 
             getBuild();
 
@@ -73,7 +74,7 @@ var CheckIn = function () {
 
             function getRoom() {
                 $("#room").empty();
-                $.getJSON("/vacantRoomNo.do?floorId=" + floorId, function (data) {
+                $.getJSON("/nonVacantRoomNo.do?floorId=" + floorId, function (data) {
                     var i;
                     for (i = 0; i < data["no"].length; i++) {
                         $("<option value='" + data["id"][i] + "'>" + data["no"][i]
@@ -90,6 +91,12 @@ var CheckIn = function () {
             function getRoomInfo() {
                 $.getJSON("/roomInfo.do?roomId=" + roomId, function (data) {
                     $("#area").val(data["area"]);
+                    if (data["owner.name"] != undefined) {
+                        $("#curOwner").val(data["owner.name"] + "    <" + data["owner.username"] + ">");
+                    } else {
+                        $("#curOwner").val("");
+                    }
+                    curOwnerId = data["owner.id"];
                     getOwner();
                 })
             }
@@ -98,8 +105,10 @@ var CheckIn = function () {
                 $.getJSON("/ownerSearch.do?term=owner", function (data) {
                     var i;
                     for (i = 0; i < data["id"].length; i++) {
-                        $("<option value='" + data["id"][i] + "'>" + data["name"][i] + "&nbsp;&nbsp;" +
-                        "&nbsp;&nbsp;&lt;" + data["username"][i] + "&gt;" + "</option>").appendTo('#owner');
+                        if (curOwnerId != data["id"][i]) {
+                            $("<option value='" + data["id"][i] + "'>" + data["name"][i] + "&nbsp;&nbsp;" +
+                            "&nbsp;&nbsp;&lt;" + data["username"][i] + "&gt;" + "</option>").appendTo('#owner');
+                        }
                     }
                     ownerId = $("#owner").children('option:selected').val();
                 })

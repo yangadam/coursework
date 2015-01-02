@@ -147,10 +147,6 @@
             <result name="input">room.do</result>
         </action>
 
-        <action name="checkin">
-            <result>/WEB-INF/jsp/clerk/checkin.jsp</result>
-        </action>
-
         <action name="owner">
             <result>/WEB-INF/jsp/clerk/owner.jsp</result>
         </action>
@@ -160,8 +156,22 @@
             <result name="input">owner.do</result>
         </action>
 
+        <action name="checkin">
+            <result>/WEB-INF/jsp/clerk/checkin.jsp</result>
+        </action>
+
         <action name="doCheckIn" class="checkInAction">
-            <result>checkin.do</result>
+            <result type="redirect">checkin.do</result>
+            <result name="input">checkin.do</result>
+        </action>
+
+        <action name="change">
+            <result>/WEB-INF/jsp/clerk/change.jsp</result>
+        </action>
+
+        <action name="doChage">
+            <result type="redirect">change.do</result>
+            <result name="input">change.do</result>
         </action>
 
     </package>
@@ -189,9 +199,11 @@
         <action name="commNames" class="commNameAction"/>
         <action name="buildNo" class="buildNoAction"/>
         <action name="floorNo" class="floorNoAction"/>
-        <action name="vacantRoomNo" class="vacantRoomNoAction"/>
+        <action name="vacantRoomNo" class="roomNoAction" method="vacant"/>
+        <action name="nonVacantRoomNo" class="roomNoAction" method="noneVacant"/>
         <action name="roomInfo" class="roomInfoAction"/>
         <action name="ownerSearch" class="ownerSearchAction"/>
+
 
     </package>
 

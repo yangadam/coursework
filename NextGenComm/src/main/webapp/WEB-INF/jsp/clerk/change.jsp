@@ -7,7 +7,7 @@
 <html>
 <head>
     <meta charset="utf-8"/>
-    <title>办理入住 | 物业管理系统</title>
+    <title>业主变更 | 物业管理系统</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <meta content="" name="description"/>
     <meta content="PumpKing" name="author"/>
@@ -42,7 +42,7 @@
                             <i class="icon-angle-right"></i>
                         </li>
                         <li>
-                            <a href="/clerk/checkin.do">办理入住</a>
+                            <a href="/clerk/change.do">业主变更</a>
                         </li>
                     </ul>
                 </div>
@@ -51,7 +51,7 @@
                 <div class="span12">
                     <div class="portlet box purple">
                         <div class="portlet-title">
-                            <div class="caption"><i class="icon-reorder"></i>办理入住</div>
+                            <div class="caption"><i class="icon-reorder"></i>业主变更</div>
                         </div>
                         <div class="portlet-body form">
                             <form action="#" id="form_sample_1" class="form-horizontal">
@@ -87,7 +87,14 @@
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label" for="owner">业主</label>
+                                    <label class="control-label" for="curOwner">当前业主</label>
+
+                                    <div class="controls">
+                                        <input type="text" id="curOwner" class="span6 select2" readonly>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label" for="owner">新入住业主</label>
 
                                     <div class="controls">
                                         <select id="owner" class="span6 m-wrap" name="category">
@@ -96,7 +103,7 @@
                                     </div>
                                 </div>
                                 <div class="form-actions">
-                                    <input type="submit" class="btn green" id="checkin" value="确认入住"/>
+                                    <input type="submit" class="btn green" id="checkin" value="确认更改"/>
                                 </div>
                             </form>
                         </div>
@@ -110,12 +117,12 @@
 <%@include file="globalJS.jsp" %>
 <script src="../../../global/js/select.min.js" type="text/javascript"></script>
 <script src="../../../custom/js/app.js" type="text/javascript"></script>
-<script src="../../../custom/js/checkin.js" type="text/javascript"></script>
+<script src="../../../custom/js/change.js" type="text/javascript"></script>
 <script>
     jQuery(document).ready(function () {
         App.init();
         $(".page-sidebar-menu .title:contains('业主管理')").closest("li").addClass("active");
-        $(".page-sidebar-menu .sub-menu a:contains('办理入住')").closest("li").addClass("active");
+        $(".page-sidebar-menu .sub-menu a:contains('业主变更')").closest("li").addClass("active");
         CheckIn.init();
         handleSelec2.init();
     });

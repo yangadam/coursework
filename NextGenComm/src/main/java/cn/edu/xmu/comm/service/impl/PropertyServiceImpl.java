@@ -559,6 +559,11 @@ public class PropertyServiceImpl implements PropertyService {
     public List<String[]> searchOwner(String term, Community community) {
         return ownerDAO.buzzSearch(term, community);
     }
+
+    @Override
+    public List<String[]> getNonVacantRoomNos(Integer floorId) {
+        return roomDAO.getNonVacantRoomNos(floorId);
+    }
     //endregion
 
 }
