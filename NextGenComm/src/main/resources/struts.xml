@@ -65,6 +65,13 @@
         <action name="test" class="testAction">
             <result>/WEB-INF/jsp/test/test.jsp</result>
         </action>
+        <!-- Configure File Action -->
+        <action name="uploadPro" class="cn.edu.xmu.comm.action.UploadAction">
+            <param name="filesPath">/uploadFiles</param>
+            <result>/WEB-INF/jsp/test/Success.jsp</result>
+        </action>
+
+
     </package>
 
     <package name="admin" namespace="/admin" extends="default">
@@ -78,9 +85,8 @@
             <result>/WEB-INF/jsp/admin/comm.jsp</result>
         </action>
 
-        <action name="addComm" class="commAddAction">
-            <result type="redirect">community.do</result>
-            <result name="input">community.do</result>
+        <action name="commAdd">
+            <result>/WEB-INF/jsp/commAdd.jsp</result>
         </action>
 
         <action name="director">

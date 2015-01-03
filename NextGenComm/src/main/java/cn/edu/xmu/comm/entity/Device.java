@@ -243,7 +243,8 @@ public class Device extends DataEntity {
     /**
      * 判断(date, value)插入后values是否date递增，value递增
      * 即在所有的date和value中的时间是否相同
-     * @param date 日期
+     *
+     * @param date  日期
      * @param value 读数
      * @return 是否符合要求
      */
@@ -253,6 +254,7 @@ public class Device extends DataEntity {
 
     /**
      * 从小到大排序 date在values所有date中的位置
+     *
      * @param date 日期
      * @return 位置
      */
@@ -268,6 +270,7 @@ public class Device extends DataEntity {
 
     /**
      * 从小到大排序 value在values所有value中的位置
+     *
      * @param value 日期
      * @return 位置
      */
@@ -283,6 +286,7 @@ public class Device extends DataEntity {
 
     /**
      * 返回一个sortedMap倒数第二个键(如果有的话)
+     *
      * @param sortedMap 排序的映射
      * @return 倒数第二个键 否则返回null
      */
@@ -402,8 +406,14 @@ public class Device extends DataEntity {
         return values;
     }
 
-    public Boolean getIsCalculated() {
-        return isCalculated;
+    /**
+     * 设置读数表
+     *
+     * @param values 读数表
+     *               保护当前读数和上月读数只能通过添加值和删除值实现
+     */
+    private void setValues(SortedMap<Date, BigDecimal> values) {
+        this.values = values;
     }
 
     private void setIsCalculatedTrue() {

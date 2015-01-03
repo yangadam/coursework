@@ -8,14 +8,18 @@ import javax.annotation.Resource;
 
 /**
  * Created by Roger on 2014/12/30 0030.
+ *
  */
 @Controller
 public class TempParkingRegisteAction extends ActionSupport {
 
-    private static String resultRent = "rent";
-    private static String resultTemp = "temp";
     @Resource
     CarService carService;
+
+    private static String resultRent = "rent";
+
+    private static String resultTemp = "temp";
+
     private String license;
 
     @Override
