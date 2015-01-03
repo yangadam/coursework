@@ -1,5 +1,6 @@
 package cn.edu.xmu.comm.action;
 
+import cn.edu.xmu.comm.commons.annotation.Required;
 import cn.edu.xmu.comm.entity.Floor;
 import cn.edu.xmu.comm.service.PropertyService;
 import com.opensymphony.xwork2.ActionSupport;
@@ -23,6 +24,7 @@ public class RoomAddAction extends ActionSupport {
     private Integer floorId;
 
     @Override
+    @Required(name = "director,clerk")
     public String execute() {
         Floor floor = propertyService.getFloor(floorId);
         propertyService.addRoom(roomNo, houseArea, floor);

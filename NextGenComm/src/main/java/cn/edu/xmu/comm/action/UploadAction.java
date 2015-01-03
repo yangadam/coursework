@@ -1,12 +1,13 @@
 package cn.edu.xmu.comm.action;
 
+import cn.edu.xmu.comm.commons.annotation.Required;
+import cn.edu.xmu.comm.commons.utils.FilesUtil;
+import com.opensymphony.xwork2.ActionSupport;
+import org.apache.struts2.util.ServletContextAware;
+
+import javax.servlet.ServletContext;
 import java.io.File;
 import java.io.IOException;
-import javax.servlet.ServletContext;
-
-import com.opensymphony.xwork2.ActionSupport;
-import cn.edu.xmu.comm.commons.utils.FilesUtil;
-import org.apache.struts2.util.ServletContextAware;
 
 /**
  * 上传文件
@@ -16,7 +17,14 @@ import org.apache.struts2.util.ServletContextAware;
  */
 public class UploadAction extends ActionSupport implements ServletContextAware{
 
+    private File file;
+    private String fileContentType;
+    private String fileFileName;
+    private String filesPath;
+    private ServletContext context;
+
     @Override
+    @Required(name = "director,clerk")
     public String execute(){
 
         FilesUtil filesUtil = new FilesUtil();
@@ -32,12 +40,6 @@ public class UploadAction extends ActionSupport implements ServletContextAware{
         return SUCCESS;
 
     }
-
-    private File file;
-    private String fileContentType;
-    private String fileFileName;
-    private String filesPath;
-    private ServletContext context;
 
     public File getFile() {
         return file;

@@ -1,5 +1,6 @@
 package cn.edu.xmu.comm.action;
 
+import cn.edu.xmu.comm.commons.annotation.Required;
 import cn.edu.xmu.comm.service.PropertyService;
 import com.opensymphony.xwork2.ActionSupport;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,7 @@ public class CommAddAction extends ActionSupport {
     private String commName;
 
     @Override
+    @Required(name = "admin")
     public String execute() {
         propertyService.addCommunity(commName);
         return SUCCESS;

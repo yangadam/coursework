@@ -13,6 +13,6 @@ import java.lang.annotation.*;
 @Documented
 public @interface Required {
 
-    String name() default "admin";
+    String name() default "admin,director,clerk,guard,cashier,owner";
 
 }

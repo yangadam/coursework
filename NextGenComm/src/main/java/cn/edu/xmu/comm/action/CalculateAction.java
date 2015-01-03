@@ -1,5 +1,6 @@
 package cn.edu.xmu.comm.action;
 
+import cn.edu.xmu.comm.commons.annotation.Required;
 import cn.edu.xmu.comm.commons.exception.DeviceException;
 import cn.edu.xmu.comm.commons.utils.Constants;
 import cn.edu.xmu.comm.entity.Community;
@@ -23,6 +24,7 @@ public class CalculateAction extends ActionSupport {
     private FinanceService financeService;
 
     @Override
+    @Required(name = "director,clerk")
     public String execute() {
         Community community = (Community) ActionContext.getContext().getSession().get(Constants.COMMUNITY);
         try {

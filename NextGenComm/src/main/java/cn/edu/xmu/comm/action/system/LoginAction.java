@@ -1,4 +1,4 @@
-package cn.edu.xmu.comm.action;
+package cn.edu.xmu.comm.action.system;
 
 import cn.edu.xmu.comm.commons.exception.PasswordIncorrectException;
 import cn.edu.xmu.comm.commons.exception.UserNotFoundException;

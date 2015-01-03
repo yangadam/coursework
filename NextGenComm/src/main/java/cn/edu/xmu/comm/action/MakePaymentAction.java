@@ -1,5 +1,6 @@
 package cn.edu.xmu.comm.action;
 
+import cn.edu.xmu.comm.commons.annotation.Required;
 import cn.edu.xmu.comm.commons.utils.Constants;
 import cn.edu.xmu.comm.entity.Owner;
 import cn.edu.xmu.comm.service.FinanceService;
@@ -22,6 +23,7 @@ public class MakePaymentAction extends ActionSupport {
     private FinanceService financeService;
 
     @Override
+    @Required(name = "owner")
     public String execute() {
         Owner owner = (Owner) ActionContext.getContext()
                 .getSession().get(Constants.USER);

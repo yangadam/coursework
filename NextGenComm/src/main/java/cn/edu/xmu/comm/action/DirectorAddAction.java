@@ -1,5 +1,6 @@
 package cn.edu.xmu.comm.action;
 
+import cn.edu.xmu.comm.commons.annotation.Required;
 import cn.edu.xmu.comm.entity.Community;
 import cn.edu.xmu.comm.service.PropertyService;
 import cn.edu.xmu.comm.service.StaffService;
@@ -29,6 +30,7 @@ public class DirectorAddAction extends ActionSupport {
     private String commName;
 
     @Override
+    @Required(name = "admin")
     public String execute() {
         Community community = propertyService.getCommunity(commName);
         staffService.addDirector(username, password, name, community);

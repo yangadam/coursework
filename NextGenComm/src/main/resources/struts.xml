@@ -47,23 +47,23 @@
             <result>login.do</result>
         </action>
 
-        <action name="admin">
+        <action name="admin" class="directAction" method="admin">
             <result>/WEB-INF/jsp/admin/home.jsp</result>
         </action>
 
-        <action name="director">
+        <action name="director" class="directAction" method="director">
             <result>/WEB-INF/jsp/director/home.jsp</result>
         </action>
 
-        <action name="clerk">
+        <action name="clerk" class="directAction" method="clerk">
             <result>/WEB-INF/jsp/clerk/home.jsp</result>
         </action>
 
-        <action name="guard">
+        <action name="guard" class="directAction" method="guard">
             <result>/WEB-INF/jsp/guard/home.jsp</result>
         </action>
 
-        <action name="owner">
+        <action name="owner" class="directAction" method="owner">
             <result>/WEB-INF/jsp/owner/home.jsp</result>
         </action>
 
@@ -77,7 +77,6 @@
             <result>/WEB-INF/jsp/test/Success.jsp</result>
         </action>
 
-
     </package>
 
     <package name="admin" namespace="/admin" extends="default">
@@ -87,7 +86,7 @@
             <result name="unauthorized" type="redirect">/rememberMeLogin.do</result>
         </global-results>
 
-        <action name="community">
+        <action name="community" class="directAction" method="admin">
             <result>/WEB-INF/jsp/admin/comm.jsp</result>
         </action>
 
@@ -101,7 +100,7 @@
             <result name="input">community.do</result>
         </action>
 
-        <action name="director">
+        <action name="director" class="directAction" method="admin">
             <result>/WEB-INF/jsp/admin/director.jsp</result>
         </action>
 
@@ -119,7 +118,7 @@
             <result name="unauthorized" type="redirect">/rememberMeLogin.do</result>
         </global-results>
 
-        <action name="building">
+        <action name="building" class="directAction" method="director">
             <result>/WEB-INF/jsp/director/build.jsp</result>
         </action>
 
@@ -128,7 +127,7 @@
             <result name="input">building.do</result>
         </action>
 
-        <action name="room">
+        <action name="room" class="directAction" method="director">
             <result>/WEB-INF/jsp/director/room.jsp</result>
         </action>
 
@@ -137,7 +136,7 @@
             <result name="input">room.do</result>
         </action>
 
-        <action name="staff">
+        <action name="staff" class="directAction" method="director">
             <result>/WEB-INF/jsp/director/staff.jsp</result>
         </action>
 
@@ -146,7 +145,7 @@
             <result name="input">staff.do</result>
         </action>
 
-        <action name="parkingLot">
+        <action name="parkingLot" class="directAction" method="director">
             <result>/WEB-INF/jsp/director/parkingLot.jsp</result>
         </action>
 
@@ -164,7 +163,7 @@
             <result name="unauthorized" type="redirect">/rememberMeLogin.do</result>
         </global-results>
 
-        <action name="building">
+        <action name="building" class="directAction" method="clerk">
             <result>/WEB-INF/jsp/clerk/build.jsp</result>
         </action>
 
@@ -173,7 +172,7 @@
             <result name="input">building.do</result>
         </action>
 
-        <action name="room">
+        <action name="room" class="directAction" method="clerk">
             <result>/WEB-INF/jsp/clerk/room.jsp</result>
         </action>
 
@@ -182,8 +181,7 @@
             <result name="input">room.do</result>
         </action>
 
-
-        <action name="checkin">
+        <action name="checkin" class="directAction" method="clerk">
             <result>/WEB-INF/jsp/clerk/checkin.jsp</result>
         </action>
 
@@ -192,11 +190,11 @@
             <result type="redirect">checkin.do</result>
         </action>
 
-        <action name="change">
+        <action name="change" class="directAction" method="clerk">
             <result>/WEB-INF/jsp/clerk/change.jsp</result>
         </action>
 
-        <action name="input">
+        <action name="input" class="directAction" method="clerk">
             <result>/WEB-INF/jsp/clerk/inputDevice.jsp</result>
         </action>
 
@@ -210,7 +208,7 @@
             <result type="redirect">input.do</result>
         </action>
 
-        <action name="owner">
+        <action name="owner" class="directAction" method="clerk">
             <result>/WEB-INF/jsp/clerk/owner.jsp</result>
         </action>
 
@@ -224,7 +222,7 @@
             <result type="redirect">input.do</result>
         </action>
 
-        <action name="share">
+        <action name="share" class="directAction" method="clerk">
             <result>/WEB-INF/jsp/clerk/share.jsp</result>
         </action>
 
@@ -237,7 +235,7 @@
             <result name="unauthorized" type="redirect">/rememberMeLogin.do</result>
         </global-results>
 
-        <action name="tempParkingList">
+        <action name="tempParkingList" class="directAction" method="guard">
             <result>/WEB-INF/jsp/guard/tempParkingList.jsp</result>
         </action>
 
@@ -263,7 +261,7 @@
         </action>
 
         <action name="makePayment" class="makePaymentAction">
-            <result>/owner.do</result>
+            <result type="redirect">billlist.do</result>
         </action>
 
     </package>

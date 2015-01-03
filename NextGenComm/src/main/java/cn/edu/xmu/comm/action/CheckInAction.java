@@ -1,5 +1,6 @@
 package cn.edu.xmu.comm.action;
 
+import cn.edu.xmu.comm.commons.annotation.Required;
 import cn.edu.xmu.comm.commons.exception.DifferentCommunityException;
 import cn.edu.xmu.comm.service.PropertyService;
 import com.opensymphony.xwork2.ActionSupport;
@@ -23,6 +24,7 @@ public class CheckInAction extends ActionSupport {
     private Integer ownerId;
 
     @Override
+    @Required(name = "director,clerk")
     public String execute() {
         try {
             propertyService.addOwnerToRoom(ownerId, roomId);
