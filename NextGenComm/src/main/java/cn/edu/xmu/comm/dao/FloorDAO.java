@@ -36,9 +36,9 @@ public class FloorDAO extends BaseDAO<Floor, Integer> {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public List<Integer[]> getIdsAndNos(Integer buildId) {
+    public List<String[]> getIdsAndNos(Integer buildId) {
         String ql = "select f.id, f.no from Floor f where f.building.id = :p1";
         List list = getAttrsByQL(ql, new Parameter(buildId));
-        return CastUtils.castToListIntegerArray(list);
+        return CastUtils.castToListStringArray(list);
     }
 }

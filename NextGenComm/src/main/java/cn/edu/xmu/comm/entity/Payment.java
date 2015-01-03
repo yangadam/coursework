@@ -3,6 +3,7 @@ package cn.edu.xmu.comm.entity;
 import cn.edu.xmu.comm.commons.persistence.DataEntity;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -35,7 +36,7 @@ public class Payment extends DataEntity {
      */
     @ManyToOne(targetEntity = User.class)
     @JoinColumn(name = "user_id")
-    private User recieveBy;
+    private User receiveBy;
 
     /**
      * 账单列表
@@ -46,8 +47,27 @@ public class Payment extends DataEntity {
     /**
      * 总费用
      */
-    private Double total;
+    private BigDecimal total;
     //endregion
+
+    Payment() {}
+
+    /**
+     * 构造函数
+     * @param paidBy 支付人
+     * @param receiveBy 接收人
+     * @param billItemList 账单项列表
+     */
+    Payment(Owner paidBy, User receiveBy, List<BillItem> billItemList) {
+        BigDecimal tempTotal = BigDecimal.ZERO;
+        this.paidBy = paidBy;
+        this.receiveBy = receiveBy;
+        this.billItemList = billItemList;
+        for (BillItem billItem : billItemList) {
+            tempTotal = tempTotal.add(billItem.getAmount());
+        }
+        this.total = tempTotal;
+    }
 
     //region Getters and Setters
     public Integer getId() {
@@ -67,11 +87,11 @@ public class Payment extends DataEntity {
     }
 
     public User getRecieveBy() {
-        return recieveBy;
+        return receiveBy;
     }
 
     public void setRecieveBy(User recieveBy) {
-        this.recieveBy = recieveBy;
+        this.receiveBy = recieveBy;
     }
 
     public List<BillItem> getBillItemList() {
@@ -82,11 +102,11 @@ public class Payment extends DataEntity {
         this.billItemList = billItemList;
     }
 
-    public Double getTotal() {
+    public BigDecimal getTotal() {
         return total;
     }
 
-    public void setTotal(Double total) {
+    public void setTotal(BigDecimal total) {
         this.total = total;
     }
     //endregion

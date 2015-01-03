@@ -53,4 +53,5 @@ public class CommListAction extends ActionSupport {
     public void setData(Map<String, Object> data) {
         this.data = data;
     }
+
 }

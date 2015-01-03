@@ -34,6 +34,11 @@ public class RoomInfoAction extends ActionSupport {
         Room room = propertyService.getRoom(roomId);
         data = new HashMap<String, Object>();
         data.put("area", room.getHouseArea());
+        if (room.getOwner() != null) {
+            data.put("owner.id", room.getOwner().getId());
+            data.put("owner.name", room.getOwner().getName());
+            data.put("owner.username", room.getOwner().getUsername());
+        }
         return SUCCESS;
     }
 

@@ -1,0 +1,64 @@
+package cn.edu.xmu.comm.action.json;
+
+import cn.edu.xmu.comm.commons.utils.Constants;
+import cn.edu.xmu.comm.entity.Community;
+import cn.edu.xmu.comm.entity.Owner;
+import cn.edu.xmu.comm.service.PropertyService;
+import com.alibaba.fastjson.JSONArray;
+import com.opensymphony.xwork2.ActionContext;
+import com.opensymphony.xwork2.ActionSupport;
+import org.springframework.stereotype.Controller;
+
+import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * description
+ *
+ * @author Mengmeng Yang
+ * @version 1/3/2015 0003
+ */
+@Controller
+public class ShareListAction extends ActionSupport {
+
+    @Resource
+    private PropertyService propertyService;
+
+    private Map<String, Object> data;
+
+    @Override
+    public String execute() {
+        Community community = (Community) ActionContext.getContext().
+                getSession().get(Constants.COMMUNITY);
+        List<Owner> owners = propertyService.getAllOwners(community);
+        JSONArray aaData = new JSONArray();
+        for (Owner owner : owners) {
+            JSONArray row = new JSONArray();
+            row.add(owner.getName());
+            row.add(owner.getUsername());
+            if (owner.getRoomList() == null) {
+                row.add(0);
+            } else {
+                row.add(owner.getRoomList().size());
+            }
+
+            aaData.add(row);
+        }
+        data = new HashMap<String, Object>();
+        data.put("iTotalRecords", owners.size());
+        data.put("iTotalDisplayRecords", owners.size());
+        data.put("aaData", aaData);
+        return SUCCESS;
+    }
+
+    public Map<String, Object> getData() {
+        return data;
+    }
+
+    public void setData(Map<String, Object> data) {
+        this.data = data;
+    }
+
+}

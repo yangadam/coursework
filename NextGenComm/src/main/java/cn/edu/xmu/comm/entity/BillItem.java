@@ -1,25 +1,21 @@
 package cn.edu.xmu.comm.entity;
 
+import cn.edu.xmu.comm.commons.calc.CalculatorFactory;
+import cn.edu.xmu.comm.commons.calc.IOverdueFineCalculator;
 import cn.edu.xmu.comm.commons.persistence.DataEntity;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * Created by Roger on 2014/12/5 0005.
+ *
  */
 @Entity
 public class BillItem extends DataEntity {
 
     //region Instance variables
-    /**
-     * 账单项状态，未支付
-     */
-    public static final int UNPAID = 0;
-    /**
-     * 账单项状态，已支付
-     */
-    public static final int PAID = 1;
     /**
      * 主键
      */
@@ -44,21 +40,20 @@ public class BillItem extends DataEntity {
      * 用量
      */
     @Column(name = "musage", nullable = true)
-    private BigDecimal usage;
+    private Double usage;
+
     /**
-     * 状态 0：未支付、1：已支付
-     * <li>{@link #UNPAID}</li>
-     * <li>{@link #PAID}</li>
+     * 账单项状态，PAID：已付款账单项、UNPAID：未付款账单项、OVERDUE：超期未付款
      */
-    private int status;
-    //endregion
+    private BillItemStatus billItemStatus;
+
     /**
      * 用户
      */
     @ManyToOne(fetch = FetchType.EAGER, targetEntity = Owner.class)
     @JoinColumn(name = "owner_id")
     private Owner owner;
-    //endregion
+
     /**
      * 支付
      */
@@ -66,10 +61,126 @@ public class BillItem extends DataEntity {
     @JoinColumn(name = "payment_id", nullable = true)
     private Payment payment;
 
+    /**
+     * 缴费期限 超过该间隔为超期
+     */
+    private Integer duration;
+
+    /**
+     * 滞纳金金额
+     */
+    private BigDecimal overDueFee;
+    //endregion
+
     //region Constructors
     public BillItem() {
-        this.status = UNPAID;
+        this.billItemStatus = BillItemStatus.UNPAID;
     }
+
+    public BillItem(String name, String description, BigDecimal amount, Double usage, Owner owner) {
+        super.prePersist();
+        this.name = name;
+        this.description = description;
+        this.amount = amount;
+        this.usage = usage;
+        this.owner = owner;
+        this.billItemStatus = BillItemStatus.UNPAID;
+        this.overDueFee = BigDecimal.ZERO;
+        setBillItemStatus(BillItemStatus.UNPAID);
+    }
+
+    public BillItem(String name, String description, BigDecimal amount, Double usage, Owner owner, Integer duration) {
+        this(name, description, amount, usage, owner);
+        this.duration = duration;
+    }
+    //endregion
+
+    //region Public Methods
+
+    /**
+     * 判断账单项是否超期
+     *
+     * @param date 日期
+     * @return 是否超期
+     */
+    public boolean isOverDue(Date date) {
+        if (billItemStatus == BillItemStatus.PAID) {
+            return false;
+        } else if (billItemStatus == BillItemStatus.OVERDUE) {
+            return true;
+        } else if (getIntervalDays(date, this.getCreateDate()) > duration) {
+            billItemStatus = BillItemStatus.OVERDUE;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 判断账单项是否超期
+     *
+     * @return 是否超期
+     */
+    public boolean isOverDue() {
+        return isOverDue(new Date());
+    }
+
+    /**
+     * 判断两个Date对象之间的天数间隔
+     *
+     * @param startDay 开始日期
+     * @param endDay   结束日期
+     * @return 天数间隔
+     */
+    public Integer getIntervalDays(Date startDay, Date endDay) {
+        if (startDay.after(endDay)) {
+            Date cal = startDay;
+            startDay = endDay;
+            endDay = cal;
+        }
+        long sl = startDay.getTime();
+        long el = endDay.getTime();
+        long ei = el - sl;
+        return (int) (ei / (1000 * 60 * 60 * 24));
+    }
+
+    /**
+     * 计算超期天数
+     * @param current 当前日期
+     * @return 超期天数
+     */
+    public Integer getOverDueDays(Date current) {
+        Integer overDueDays = getIntervalDays(this.getCreateDate(), current) - duration;
+        if (overDueDays <= 0)
+            return 0;
+        else
+            return overDueDays;
+    }
+
+    /**
+     * 更新滞纳金费用
+     *
+     * @return 滞纳金金额
+     */
+    public BigDecimal updateOverDueFee() {
+        // 若账单已经付款 或者 更新日期小于1天则不计算
+        if (billItemStatus == BillItemStatus.PAID /*|| getIntervalDays(getUpdateDate(), new Date()) < 1*/)
+            return overDueFee;
+        amount = amount.subtract(overDueFee);
+        Community community = owner.getCommunity();
+        String type = community.getOverDueFeeType();
+        IOverdueFineCalculator calculator = CalculatorFactory.getCalculator(type);
+        overDueFee = calculator.calculate(this);
+        if (overDueFee.compareTo(BigDecimal.ZERO) == 1)
+            billItemStatus = BillItemStatus.OVERDUE;
+        amount = amount.add(overDueFee);
+        // 记录更新日期
+        this.setUpdateDate(new Date());
+        return overDueFee;
+    }
+
+
+    //endregion
 
     //region Setters and Getters
     public Integer getId() {
@@ -97,6 +208,7 @@ public class BillItem extends DataEntity {
     }
 
     public BigDecimal getAmount() {
+        updateOverDueFee();
         return amount;
     }
 
@@ -104,20 +216,20 @@ public class BillItem extends DataEntity {
         this.amount = amount;
     }
 
-    public BigDecimal getUsage() {
+    public Double getUsage() {
         return usage;
     }
 
-    public void setUsage(BigDecimal usage) {
+    public void setUsage(Double usage) {
         this.usage = usage;
     }
 
-    public int getStatus() {
-        return status;
+    public BillItemStatus getBillItemStatus() {
+        return billItemStatus;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setBillItemStatus(BillItemStatus billItemStatus) {
+        this.billItemStatus = billItemStatus;
     }
 
     public Owner getOwner() {
@@ -127,9 +239,7 @@ public class BillItem extends DataEntity {
     public void setOwner(Owner owner) {
         this.owner = owner;
     }
-    //endregion
 
-    //region Constants
 
     public Payment getPayment() {
         return payment;
@@ -138,6 +248,45 @@ public class BillItem extends DataEntity {
     public void setPayment(Payment payment) {
         this.payment = payment;
     }
-    //endregionss
+
+    public Integer getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Integer duration) {
+        this.duration = duration;
+    }
+
+    public BigDecimal getOverDueFee() {
+        updateOverDueFee();
+        return overDueFee;
+    }
+
+    public void setOverDueFee(BigDecimal overDueFee) {
+        this.overDueFee = overDueFee;
+    }
+
+    //endregion
+
+    //region Constants
+
+    /**
+     * 账单项状态，PAID：已付款账单项、UNPAID：未付款账单项
+     */
+    public enum BillItemStatus {
+        PAID("已付款"), UNPAID("期限内未付款"), OVERDUE("超期未付款");
+
+        private String typeName;
+
+        private BillItemStatus(String typeName) {
+            this.typeName = typeName;
+        }
+
+        @Override
+        public String toString() {
+            return typeName;
+        }
+    }
+    //endregion
 
 }

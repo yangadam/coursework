@@ -18,11 +18,13 @@ public class UploadAction extends ActionSupport implements ServletContextAware{
 
     @Override
     public String execute(){
+
+        FilesUtil filesUtil = new FilesUtil();
         System.out.println("File Name is:"+getFileFileName());
         System.out.println("File ContentType is:"+getFileContentType());
         System.out.println("Files Directory is:"+filesPath);
         try {
-            FilesUtil.saveFile(getFile(), getFileFileName(), context.getRealPath("") + File.separator + filesPath);
+            filesUtil.saveFile(getFile(), getFileFileName(), context.getRealPath("") + File.separator + filesPath);
         } catch (IOException e) {
             e.printStackTrace();
             return INPUT;

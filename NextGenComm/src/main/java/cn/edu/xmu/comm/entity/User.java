@@ -75,10 +75,20 @@ public class User extends DataEntity {
     private String name;
 
     /**
+     * 手机号码
+     */
+    private String phoneNumber;
+
+    /**
      * 类型
      */
     @Transient
     private String classType;
+
+    /**
+     * 邮箱地址
+     */
+    private String email;
     //endregion
 
     User() {
@@ -185,6 +195,23 @@ public class User extends DataEntity {
     public void setName(String name) {
         this.name = name;
     }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     //endregion
 
 }

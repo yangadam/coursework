@@ -40,7 +40,7 @@ public class Community extends Property {
     /**
      * 物业主任
      */
-    @OneToOne(targetEntity = Director.class)
+    @OneToOne(targetEntity = Director.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "deirector_id")
     private Director director;
 
@@ -90,6 +90,16 @@ public class Community extends Property {
      * 垃圾处理费金额
      */
     private BigDecimal garbageFee;
+
+    /**
+     * 滞纳金的计算方式，可能的方式
+     */
+    private String overDueFeeType;
+
+    /**
+     * 滞纳金率
+     */
+    private BigDecimal overDueFeeRate;
     //endregion
 
     Community() {
@@ -99,7 +109,7 @@ public class Community extends Property {
     public Community(String name) {
         super();
         this.name = name;
-        this.unityCode = "";
+        this.unityCode = "C";
     }
 
     @Override
@@ -260,6 +270,23 @@ public class Community extends Property {
     public void setGarbageFee(BigDecimal garbageFee) {
         this.garbageFee = garbageFee;
     }
+
+    public String getOverDueFeeType() {
+        return overDueFeeType;
+    }
+
+    public void setOverDueFeeType(String overDueFeeType) {
+        this.overDueFeeType = overDueFeeType;
+    }
+
+    public BigDecimal getOverDueFeeRate() {
+        return overDueFeeRate;
+    }
+
+    public void setOverDueFeeRate(BigDecimal overDueFeeRate) {
+        this.overDueFeeRate = overDueFeeRate;
+    }
+
     //endregion
 
 

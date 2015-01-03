@@ -66,4 +66,5 @@ public class RoomListAction extends ActionSupport {
     public void setFloorId(Integer floorId) {
         this.floorId = floorId;
     }
+
 }

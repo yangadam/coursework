@@ -1,25 +1,4 @@
-#创建数据库
-CREATE DATABASE IF NOT EXISTS comm
-  DEFAULT CHARACTER SET utf8;
-#选择数据库
-USE comm;
-#创建user表
-CREATE TABLE IF NOT EXISTS user (
-  `id`         INT(11) NOT NULL AUTO_INCREMENT,
-  `password`   VARCHAR(255)     DEFAULT NULL,
-  `salt`       VARCHAR(255)     DEFAULT NULL,
-  `username`   VARCHAR(255)     DEFAULT NULL,
-  `createDate` DATE             DEFAULT NULL,
-  `updateDate` DATE             DEFAULT NULL,
-  `locked`     BIT(1)           DEFAULT NULL,
-  `name`       VARCHAR(255)     DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `UK_jreodf78a7pl5qidfh43axdfb` (`username`)
-)
-  ENGINE =InnoDB
-  AUTO_INCREMENT =12
-  DEFAULT CHARSET =utf8;
-#插入admin
+use comm;
 INSERT
 INTO
   user (username, password, salt, name, locked)

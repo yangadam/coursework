@@ -4,6 +4,7 @@ import cn.edu.xmu.comm.commons.calc.CalculatorFactory;
 import cn.edu.xmu.comm.commons.calc.IGarbageFeeCalculator;
 import cn.edu.xmu.comm.commons.calc.IManageFeeCalculator;
 import cn.edu.xmu.comm.commons.calc.IShareCalculator;
+import cn.edu.xmu.comm.commons.exception.DeviceException;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.DynamicInsert;
@@ -102,7 +103,7 @@ public class Room extends Property {
      *
      * @param billItems 未支付账单
      */
-    public void generateRoom(List<BillItem> billItems) {
+    public void generateRoom(List<BillItem> billItems) throws DeviceException {
         generateEnergy(billItems);
         generateShare(billItems);
         generateManageFee(billItems);
@@ -115,7 +116,7 @@ public class Room extends Property {
      *
      * @param billItems 未支付账单
      */
-    public void generateEnergy(List<BillItem> billItems) {
+    public void generateEnergy(List<BillItem> billItems) throws DeviceException {
         for (Device device : getDeviceList()) {
             BillItem billItem = new BillItem();
             billItem.setName(device.getType().toString());
@@ -132,7 +133,7 @@ public class Room extends Property {
      *
      * @param billItems 未支付账单
      */
-    public void generateShare(List<BillItem> billItems) {
+    public void generateShare(List<BillItem> billItems) throws DeviceException {
         BigDecimal totalAmount = BigDecimal.ZERO;
         for (Device device : getSharedDevice()) {
             String type = device.getShareType();

@@ -12,13 +12,11 @@
     <meta content="" name="description"/>
     <meta content="PumpKing" name="author"/>
     <%@include file="globalCSS.jsp" %>
-    <link rel="stylesheet" type="text/css" href="../../../global/css/select2_metro.css"/>
-
+    <link href="../../../global/css/select2_metro.css" rel="stylesheet" type="text/css"/>
     <link rel="shortcut icon" href="../../../global/image/favicon.ico"/>
 </head>
 <body class="page-header-fixed">
 <%@include file="globalHeader.jsp" %>
-
 <div class="page-container">
     <%@include file="globalSidebar.jsp" %>
     <div class="page-content">
@@ -84,9 +82,11 @@
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label">业主</label>
+                                    <label class="control-label" for="owner">业主</label>
 
                                     <div class="controls">
+                                        <%--<select id="owner" class="span6 m-wrap" name="category">--%>
+                                        <%--</select>--%>
                                         <input type="hidden" id="owner" class="span6 select2">
                                     </div>
                                 </div>
@@ -104,17 +104,14 @@
 <%@include file="globalFooter.jsp" %>
 <%@include file="globalJS.jsp" %>
 <script src="../../../global/js/select2.min.js" type="text/javascript"></script>
-<script src="../../../custom/js/checkin.js" type="text/javascript"></script>
-<script src="../../../global/js/bootstrap-modal.js" type="text/javascript"></script>
-<script src="../../../global/js/bootstrap-modalmanager.js" type="text/javascript"></script>
 <script src="../../../custom/js/app.js" type="text/javascript"></script>
+<script src="../../../custom/js/checkin.js" type="text/javascript"></script>
 <script>
     jQuery(document).ready(function () {
         App.init();
         $(".page-sidebar-menu .title:contains('业主管理')").closest("li").addClass("active");
         $(".page-sidebar-menu .sub-menu a:contains('办理入住')").closest("li").addClass("active");
         CheckIn.init();
-        HandleSelect2.init();
     });
 </script>
 </body>

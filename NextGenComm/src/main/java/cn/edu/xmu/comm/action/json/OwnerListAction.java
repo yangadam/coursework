@@ -49,7 +49,7 @@ public class OwnerListAction extends ActionSupport {
                 for (int j = 0; j < rooms.size(); j++) {
                     sb.append(rooms.get(j).getFullName());
                     if (j != rooms.size() - 1) {
-                        sb.append("\n");
+                        sb.append("<br/>");
                     }
                 }
                 row.add(sb.toString());

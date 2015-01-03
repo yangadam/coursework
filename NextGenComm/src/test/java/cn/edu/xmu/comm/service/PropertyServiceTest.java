@@ -1,6 +1,5 @@
 package cn.edu.xmu.comm.service;
 
-import cn.edu.xmu.comm.commons.exception.DifferentCommunityException;
 import cn.edu.xmu.comm.entity.*;
 import junit.framework.TestCase;
 import org.apache.commons.lang3.Validate;
@@ -84,13 +83,13 @@ public class PropertyServiceTest extends TestCase {
     public void testAddFloorBatch() throws Exception {
         Community community = propertyService.getCommunity("五缘公寓");
         Building building = propertyService.getBuildingByNo(1, community);
-//        propertyService.addFloorBatch(2, 10, building);
+        //propertyService.addFloorBatch(2, 10, building);
     }
 
     @Test
     public void testAddRoom() throws Exception {
         Community community = propertyService.getCommunity("五缘公寓");
-        Building building = propertyService.getBuildingByNo(1, community);
+        Building building = propertyService.getBuildingByNo(3, community);
         Floor floor = propertyService.getFloorByNo(1, building);
         propertyService.addRoom("101", 100.0, floor);
     }
@@ -116,22 +115,17 @@ public class PropertyServiceTest extends TestCase {
     @Test
     public void testAddOwner() {
         Community community = propertyService.getCommunity("五缘公寓");
-        Building building = propertyService.getBuildingByNo(1, community);
-        Floor floor = propertyService.getFloorByNo(1, building);
-        Room room1 = propertyService.getRoomByNo("101", floor);
-        Room room2 = propertyService.getRoomByNo("102", floor);
+        //Building building = propertyService.getBuildingByNo(1, community);
+        //Floor floor = propertyService.getFloorByNo(1, building);
+        //Room room1 = propertyService.getRoomByNo("101", floor);
+        //Room room2 = propertyService.getRoomByNo("102", floor);
         Owner owner = propertyService.addOwner("wyh", "123", "王耀华", community);
-        try {
+        /*try {
             owner.addRoom(room1);
         } catch (DifferentCommunityException e) {
             e.printStackTrace();
-        }
-        try {
-            propertyService.addOwner("lyj", "123", "陆垚杰", room2);
-        } catch (DifferentCommunityException e) {
-            e.printStackTrace();
-        }
-
+        }*/
+        propertyService.addOwner("lyj", "123", "陆垚杰", community);
     }
 
     @Test

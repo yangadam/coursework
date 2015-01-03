@@ -315,22 +315,27 @@ public interface PropertyService {
      * @param community 小区
      * @return 楼宇号列表
      */
-    List<Integer[]> getBuildingNos(Community community);
+    List<String[]> getBuildingNos(Community community);
 
     /**
      * @param buildId
      * @return
      */
-    List<Integer[]> getFloorNos(Integer buildId);
+    List<String[]> getFloorNos(Integer buildId);
 
     List<Room> getAllRooms(Integer floorId);
 
     Floor getFloor(Integer floorId);
 
-    List<Integer[]> getVacantRoomNos(Integer floorId);
+    List<String[]> getVacantRoomNos(Integer floorId);
 
     Room getRoom(Integer roomId);
 
     List<Owner> getAllOwners(Community community);
 
+    List<String[]> searchOwner(String term, Community community);
+
+    List<String[]> getNonVacantRoomNos(Integer floorId);
+
+    Boolean hasOwner(Community community, Integer ownerId);
 }

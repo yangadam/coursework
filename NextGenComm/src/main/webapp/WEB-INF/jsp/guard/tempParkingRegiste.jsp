@@ -1,5 +1,5 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en" class="no-js"> <!--<![endif]-->
 <!-- BEGIN HEAD -->
@@ -11,10 +11,10 @@
     <meta content="PumpKing" name="author"/>
     <%@include file="globalCSS.jsp" %>
     <!-- BEGIN PAGE LEVEL STYLES -->
-    <link rel="stylesheet" type="text/css" href="../../pumpking/css/select2_metro.css"/>
-    <link rel="stylesheet" href="../../pumpking/css/DT_bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../global/css/select2_metro.css"/>
+    <link rel="stylesheet" href="../../../global/css/DT_bootstrap.css"/>
     <!-- END PAGE LEVEL STYLES -->
-    <link rel="shortcut icon" href="../../pumpking/image/favicon.ico"/>
+    <link rel="shortcut icon" href="../../../global/image/favicon.ico"/>
 </head>
 <!-- END HEAD -->
 <!-- BEGIN BODY -->
@@ -73,48 +73,61 @@
                     <form action="#" class="horizontal-form">
                         <h3 class="form-section">访客车辆信息</h3>
 
-                        <div class="control-group">
-                            <label class="control-label">车牌号</label>
+                        <div class="control-group span12">
+                            <label class="control-label span2">车牌号</label>
 
-                            <div class="controls">
-                                <input type="text" class="m-wrap span7"/>
+                            <div class="controls span7">
+                                <s:label type="text" value="%{license}" cssClass="m-wrap" id="license"
+                                         cssStyle="padding-top:2px;"/>
                             </div>
                         </div>
                         <div class="control-group">
                             <label class="control-label">业主信息查询</label>
-
-                            <div class="controls">
-                                <select class="small m-wrap" tabindex="1">
-                                    <option value="Category 1">海韵13</option>
-                                    <option value="Category 2">海韵4</option>
-                                    <option value="Category 3">海韵2</option>
-                                    <option value="Category 4">海韵9</option>
-                                </select>
-                                <select class="small m-wrap" tabindex="1">
-                                    <option value="Category 1">1</option>
-                                    <option value="Category 2">2</option>
-                                    <option value="Category 3">3</option>
-                                    <option value="Category 4">4</option>
-                                </select>
-                                <select class="small m-wrap" tabindex="1">
-                                    <option value="Category 1">01</option>
-                                    <option value="Category 2">02</option>
-                                    <option value="Category 3">03</option>
-                                    <option value="Category 4">04</option>
-                                </select>
-                            </div>
                         </div>
-                        <div class="control-group">
+                        <div class="portlet-body form">
+                            <form action="#" id="form_sample_1" class="form-horizontal">
+                                <div class="control-group span12">
+                                    <label class="control-label span2" for="build">楼宇号</label>
+
+                                    <div class="controls span7">
+                                        <select id="build" class="span6 m-wrap" name="category">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="control-group span12" style="margin-left: 0px;">
+                                    <label class="control-label span2" for="floor">楼层号</label>
+
+                                    <div class="controls span7">
+                                        <select id="floor" class="span6 m-wrap" name="category">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="control-group span12" style="margin-left: 0px;">
+                                    <label class="control-label span2" for="room">房间号</label>
+
+                                    <div class="controls span7">
+                                        <select id="room" class="span6 m-wrap" name="category">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-actions"
+                                     style="background-color: transparent;border-top: transparent;padding-left: 20px;">
+                                    <input type="button" class="btn green" id="query_room" value="查询"/>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!--<div class="control-group">
                             <div class="controls">
                                 <div class="input-append">
                                     <input type="text" class="m-wrap" placeholder="请输入业主姓名">
                                         <%--<button type="button" class="btn green btn-subscribe" ><span>车辆登记</span></button>--%>
-                                    <a href="#" class="btn green">
-                                        查询</i>
+                                    <a href="#" id="query" class="btn green">
+                                        <i>查询</i>
                                     </a>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </form>
                     <!-- END FORM-->
                 </div>
@@ -123,22 +136,24 @@
                     <h3 class="form-section">挂名业主信息</h3>
 
                     <div class="well">
-                        <h4>陆垚杰</h4>
+                        <h4 id="owner_name">业主姓名</h4>
                         <address>
-                            <strong>厦门大学</strong><br>
-                            海韵13<br>
-                            #404<br>
-                            <abbr title="Phone">家庭电话:</abbr> (234) 145-1810
+                            <strong id="owner_community"><label></label></strong><br>
+                            <label id="owner_building">楼栋数</label>
+                            <label id="owner_room">房间号</label>
                         </address>
                         <address>
                             <strong>联系方式：</strong>
-                            <a href="mailto:#">18805929999</a>
+                            <a id="owner_phone"></a>
                         </address>
                     </div>
 
                     <div class="span8">
-                        <button type="submit" class="btn blue"><i class="icon-ok"></i>确认</button>
-                        <button type="button" class="btn">取消</button>
+                        <button type="submit" class="btn blue" id="addTempParkingBill"><i class="icon-ok"></i>确认
+                        </button>
+                        <a href="tempParkingList.do">
+                            <button type="button" class="btn">取消</button>
+                        </a>
                     </div>
                 </div>
 
@@ -153,24 +168,22 @@
     <!-- END FOOTER -->
     <%@include file="globalJS.jsp" %>
     <!-- BEGIN PAGE LEVEL PLUGINS -->
-    <script type="text/javascript" src="../../pumpking/js/select2.min.js"></script>
-    <script type="text/javascript" src="../../pumpking/js/jquery.dataTables.js"></script>
-    <script type="text/javascript" src="../../pumpking/js/DT_bootstrap.js"></script>
+        <script type="text/javascript" src="../../../global/js/select2.min.js"></script>
+    <script type="text/javascript" src="../../../global/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" src="../../../global/js/DT_bootstrap.js"></script>
     <!-- END PAGE LEVEL PLUGINS -->
     <!-- BEGIN PAGE LEVEL SCRIPTS -->
-    <script src="../../pumpking/js/app.js"></script>
-    <script src="../../pumpking/js/form-wizard.js"></script>
-    <script>
-        jQuery(document).ready(function () {
-            App.init();
-            $(".page-sidebar-menu .title:contains('停车场管理')").closest(
-                    "li").addClass("active");
-            $(".page-sidebar-menu .title:contains('停车场管理')").closest(
-                    "li").find(".arrow").addClass("open");
-            $(".page-sidebar-menu .sub-menu a:contains('车辆登记')").closest(
-                    "li").addClass("active");
-        });
-    </script>
+    <script src="../../../custom/js/app.js"></script>
+    <script src="../../../global/js/form-wizard.js"></script>
+        <script src="../../../custom/js/tempParkingRegiste.js"></script>
+        <script>
+            jQuery(document).ready(function () {
+                App.init();
+                $(".page-sidebar-menu .title:contains('停车管理')").closest(
+                        "li").addClass("active");
+                TempParkingRegiste.init();
+            });
+        </script>
     <!-- END JAVASCRIPTS -->
 </body>
 <!-- END BODY -->

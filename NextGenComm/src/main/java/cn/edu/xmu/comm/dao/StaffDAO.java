@@ -23,4 +23,10 @@ public class StaffDAO extends BaseDAO<Staff, Integer> {
         return searchByQL(ql, new Parameter(community));
     }
 
+    public void delete(Community community) {
+        String ql = "delete from Staff where community = :p1";
+        createQuery(ql, new Parameter(community)).executeUpdate();
+        currentSession().flush();
+        currentSession().clear();
+    }
 }

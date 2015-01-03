@@ -17,28 +17,41 @@ import java.util.Map;
  * @version 1/2/2015 0002
  */
 @Controller
-public class VacantRoomNoAction extends ActionSupport {
+public class RoomNoAction extends ActionSupport {
 
     @Resource
     private PropertyService propertyService;
 
     private Map<String, Object> data;
 
+    private Integer buildId;
     private Integer floorId;
 
-    @Override
-    public String execute() {
-        List<Integer[]> list = propertyService.getVacantRoomNos(floorId);
+    public String vacant() {
+        List<String[]> list = propertyService.getVacantRoomNos(floorId);
         data = new HashMap<String, Object>();
         JSONArray ids = new JSONArray();
         JSONArray nos = new JSONArray();
-        for (Integer[] idAndNo : list) {
+        for (String[] idAndNo : list) {
             ids.add(idAndNo[0]);
             nos.add(idAndNo[1]);
         }
         data.put("id", ids);
         data.put("no", nos);
+        return SUCCESS;
+    }
 
+    public String noneVacant() {
+        List<String[]> list = propertyService.getNonVacantRoomNos(floorId);
+        data = new HashMap<String, Object>();
+        JSONArray ids = new JSONArray();
+        JSONArray nos = new JSONArray();
+        for (String[] idAndNo : list) {
+            ids.add(idAndNo[0]);
+            nos.add(idAndNo[1]);
+        }
+        data.put("id", ids);
+        data.put("no", nos);
         return SUCCESS;
     }
 
@@ -48,6 +61,14 @@ public class VacantRoomNoAction extends ActionSupport {
 
     public void setData(Map<String, Object> data) {
         this.data = data;
+    }
+
+    public Integer getBuildId() {
+        return buildId;
+    }
+
+    public void setBuildId(Integer buildId) {
+        this.buildId = buildId;
     }
 
     public Integer getFloorId() {

@@ -11,7 +11,6 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 /**
  * 验证是否登陆
@@ -20,21 +19,20 @@ import org.springframework.stereotype.Component;
  * @version 12/28/2014 0028
  */
 @Aspect
-@Component
 public class Authorization {
 
     private static Logger logger = LoggerFactory.getLogger(Logging.class);
 
     @Pointcut("execution(* cn.edu.xmu.comm.action.*.*(..)) " +
+            "&& execution(* cn.edu.xmu.comm.action.json.*.*(..)) " +
             "&& !execution(* cn.edu.xmu.comm.action.*.get*(..)) " +
             "&& !execution(* cn.edu.xmu.comm.action.*.set*(..)) " +
             "&& !execution(* cn.edu.xmu.comm.action.LoginAction.*(..)) ")
     private void anyActionExceptLogin() {
     }
 
-    @Pointcut("execution(* cn.edu.xmu.comm.service.*.*(..)) " +
-            "&& !execution(* cn.edu.xmu.comm.service.impl.SystemServiceImpl.*login*(..))" +
-            "&& !execution(* cn.edu.xmu.comm.service.impl.SystemServiceImpl.*Login(..))")
+    @Pointcut("execution(* cn.edu.xmu.comm.service.impl.*.*(..)) " +
+            "&& !execution(* cn.edu.xmu.comm.service.impl.SystemServiceImpl.*(..))")
     private void anyServiceExceptLogin() {
     }
 
@@ -51,8 +49,9 @@ public class Authorization {
                     ":" + jp.getSignature().getName() + ":用户没有权限");
             return "unauthorized";
         }
+        Object ret;
         try {
-            Object ret = jp.proceed();
+            ret = jp.proceed();
             return ret;
         } catch (NoUserInSessionException ex) {
             return "login";

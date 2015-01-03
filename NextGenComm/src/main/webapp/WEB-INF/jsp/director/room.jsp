@@ -45,13 +45,27 @@
                     </ul>
                 </div>
             </div>
-            <div class="controls input-append">
-                <s:select id="build" name="buildNo" class="span3 m-wrap"
-                          data-placeholder="请选择楼宇" tabindex="1" list="{'请选择',''}"/>
-                <label class="">栋</label>
-                <s:select id="floor" name="floorNo" class="span3 m-wrap"
-                          data-placeholder="请选择楼层" tabindex="1" list="{'请选择',''}"/>
-                <label class="">层</label>
+            <div class="row-fluid">
+                <div class="span6 ">
+                    <div class="control-group">
+                        <label class="control-label">楼宇号</label>
+
+                        <div class="controls">
+                            <s:select id="build" name="buildNo" class="m-wrap span12"
+                                      data-placeholder="请选择楼宇" tabindex="1" list="{'请选择',''}"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="span6 ">
+                    <div class="control-group">
+                        <label class="control-label">楼层号</label>
+
+                        <div class="controls">
+                            <s:select id="floor" name="floorNo" class="m-wrap span12"
+                                      data-placeholder="请选择楼层" tabindex="1" list="{'请选择',''}"/>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="row-fluid">
                 <div class="span12">

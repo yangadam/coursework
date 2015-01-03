@@ -1,10 +1,10 @@
 package cn.edu.xmu.comm.service.impl;
 
+import cn.edu.xmu.comm.commons.utils.Constants;
 import cn.edu.xmu.comm.dao.*;
 import cn.edu.xmu.comm.entity.*;
 import cn.edu.xmu.comm.service.CarService;
 import com.opensymphony.xwork2.ActionContext;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +20,7 @@ import java.util.List;
 @Service
 @Transactional(readOnly = true)
 public class CarServiceImpl implements CarService {
-    @Autowired
+    @Resource
     private CarDAO carDAO;
 
     @Resource
@@ -43,11 +43,9 @@ public class CarServiceImpl implements CarService {
      *
      * @return 所在社区
      */
-    @Override
     public Community getCommunityFromActionContext() {
-        Owner owner = (Owner) ActionContext.getContext().getSession().get("USER");
-        //TODO
-        return owner.getCommunity();
+        Community community = (Community) ActionContext.getContext().getSession().get(Constants.COMMUNITY);
+        return community;
     }
 
     /**
@@ -55,7 +53,6 @@ public class CarServiceImpl implements CarService {
      *
      * @param car 车辆
      */
-    @Override
     @Transactional(readOnly = false)
     public void addCar(Car car) {
         carDAO.persist(car);
@@ -71,7 +68,6 @@ public class CarServiceImpl implements CarService {
      * @param parkPlace 停车位
      * @return 新添加的汽车
      */
-    @Override
     @Transactional(readOnly = false)
     public Car addCar(String license, Owner owner, Car.CarStatus status, ParkPlace parkPlace) {
         Car car = new Car(license, owner, status, parkPlace);
@@ -84,7 +80,6 @@ public class CarServiceImpl implements CarService {
      *
      * @param parkPlace 车位
      */
-    @Override
     @Transactional(readOnly = false)
     public void addParkPlace(ParkPlace parkPlace) {
         parkPlaceDAO.persist(parkPlace);
@@ -96,7 +91,6 @@ public class CarServiceImpl implements CarService {
      *
      * @param parkBill 停车账单
      */
-    @Override
     @Transactional(readOnly = false)
     public void addParkBill(ParkBill parkBill) {
         parkBillDAO.persist(parkBill);
@@ -107,7 +101,6 @@ public class CarServiceImpl implements CarService {
      *
      * @param parkingLot 停车场
      */
-    @Override
     @Transactional(readOnly = false)
     public void addParkingLot(ParkingLot parkingLot) {
         parkingLotDAO.persist(parkingLot);
@@ -122,7 +115,6 @@ public class CarServiceImpl implements CarService {
      * @param community 社区
      * @return ParkingLot tempParkingLot
      */
-    @Override
     public ParkingLot getTempParkingLot(Community community) {
         return parkingLotDAO.getTempParkingLot(community);
     }
@@ -133,7 +125,6 @@ public class CarServiceImpl implements CarService {
      * @param community 社区
      * @return ParkingLot rentParkingLot
      */
-    @Override
     public ParkingLot getRentParkingLot(Community community) {
         return parkingLotDAO.getRentParkingLot(community);
     }
@@ -143,7 +134,6 @@ public class CarServiceImpl implements CarService {
      *
      * @return 当前session中的租用停车场
      */
-    @Override
     public ParkingLot getRentParkingLotInSession() {
         return getRentParkingLot(getCommunityFromActionContext());
     }
@@ -157,7 +147,6 @@ public class CarServiceImpl implements CarService {
      * @param community 社区
      * @return Integer 社区临时停车场的大小
      */
-    @Override
     public int getCommunityTempParkingLotSize(Community community) {
         return getTempParkingLot(community).getParkingLotSize();
     }
@@ -168,7 +157,6 @@ public class CarServiceImpl implements CarService {
      * @param community 社区
      * @return Integer 社区中临时停车的数量
      */
-    @Override
     public int getSizeOfUnpaidParkingBIll(Community community) {
         return parkBillDAO.getSizeOfUnfinishedBill(community);
     }
@@ -179,8 +167,8 @@ public class CarServiceImpl implements CarService {
      * @param community 社区
      * @return Boolean 是否有空车位 True 有空车位
      */
-    @Override
     public Boolean hasFreeTempParkPlace(Community community) {
+        community = communityDAO.get(community.getId());
         Integer sizeTempParkingLot = getCommunityTempParkingLotSize(community);
         Integer sizeTempParking = getSizeOfUnpaidParkingBIll(community);
         return sizeTempParkingLot > sizeTempParking;
@@ -196,7 +184,6 @@ public class CarServiceImpl implements CarService {
      * @param license   车牌
      * @return true 有 false 无
      */
-    @Override
     public boolean carHasUnfinishBill(Community community, String license) {
         return parkBillDAO.carHasUnfinishBill(community, license);
     }
@@ -209,7 +196,6 @@ public class CarServiceImpl implements CarService {
      * @param license   车牌
      * @return parkBill 临时停车单
      */
-    @Override
     @Transactional(readOnly = false)
     public ParkBill addParkBill(Community community, Owner owner, String license) {
         ParkBill parkBill = new ParkBill(license, community, owner, new Timestamp(System.currentTimeMillis()));
@@ -220,6 +206,20 @@ public class CarServiceImpl implements CarService {
     }
 
     /**
+     * 新建临时停车单
+     *
+     * @param community 社区
+     * @param ownerId   业主编号
+     * @param license   车牌
+     * @return parkBill 临时停车单
+     */
+    @Transactional(readOnly = false)
+    public ParkBill addParkBill(Community community, Integer ownerId, String license) {
+        Owner owner = ownerDAO.get(ownerId);
+        return addParkBill(community, owner, license);
+    }
+
+    /**
      * 根据车牌来获得未完成的停车单(没有离开时间)
      * 社区信息由parkBillDao在session中获得
      *
@@ -227,7 +227,6 @@ public class CarServiceImpl implements CarService {
      * @param license   车牌号
      * @return ParkBill
      */
-    @Override
     public ParkBill getParkBillByLicense(Community community, String license) {
         return parkBillDAO.getUnfinishedParkBill(community, license);
     }
@@ -237,7 +236,6 @@ public class CarServiceImpl implements CarService {
      *
      * @param parkBill 未完成账单
      */
-    @Override
     @Transactional(readOnly = false)
     public ParkBill generateParkBill(ParkBill parkBill) {
         parkBill.setEndTime(new Date(System.currentTimeMillis()));
@@ -253,12 +251,29 @@ public class CarServiceImpl implements CarService {
      * @param license   车牌号
      * @return parkBill 完成的临时停车单
      */
-    @Override
+    @Transactional(readOnly = false)
     public ParkBill finishParkBill(Community community, String license) {
         ParkBill parkBill = getParkBillByLicense(community, license);
         if (parkBill == null)
             return null;
         parkBill = generateParkBill(parkBill);
+        parkBillDAO.merge(parkBill);
+        return parkBill;
+    }
+
+    /**
+     * 完成临时停车单
+     *
+     * @param parkBillId 停车单编号
+     * @return parkBill 完成的临时停车单
+     */
+    @Transactional(readOnly = false)
+    public ParkBill finishParkBill(Integer parkBillId) {
+        ParkBill parkBill = parkBillDAO.get(parkBillId);
+        if (parkBill == null)
+            return null;
+        parkBill = generateParkBill(parkBill);
+        parkBillDAO.merge(parkBill);
         return parkBill;
     }
     //endregion
@@ -271,7 +286,6 @@ public class CarServiceImpl implements CarService {
      * @param license 编号
      * @return Car 车辆
      */
-    @Override
     public Car getCarByLicense(String license) {
         return carDAO.get(license);
     }
@@ -283,7 +297,6 @@ public class CarServiceImpl implements CarService {
      * @param license   车牌
      * @return 该车是否拥有租用车位
      */
-    @Override
     public Boolean isRentCar(Community community, String license) {
         Car car = getCarByLicense(license);
         if (car == null)
@@ -299,7 +312,6 @@ public class CarServiceImpl implements CarService {
      * @param license 车牌
      * @return 该车是否拥有租用车位
      */
-    @Override
     public Boolean isRentCar(String license) {
         Community community = getCommunityFromActionContext();
         return isRentCar(community, license);
@@ -315,7 +327,6 @@ public class CarServiceImpl implements CarService {
      * @param name      姓名
      * @return 业主
      */
-    @Override
     public List<Owner> getOwnerByName(Community community, String name) {
         return ownerDAO.getByName(community, name);
     }
@@ -330,7 +341,6 @@ public class CarServiceImpl implements CarService {
      * @param status     状态 ：FREE:没有车位、LOCK:锁定的车位、RENT:租用的车位
      * @return 停车位列表
      */
-    @Override
     public List<ParkPlace> getParkPlaceRent(ParkingLot parkingLot, ParkPlace.ParkPlaceStatus status) {
         return parkPlaceDAO.getRentParkPlace(parkingLot, status);
     }
@@ -340,7 +350,6 @@ public class CarServiceImpl implements CarService {
      *
      * @return 可租用的停车位列表
      */
-    @Override
     public List<ParkPlace> getFreeParkPlaceRent() {
         return getParkPlaceRent(getRentParkingLotInSession(), ParkPlace.ParkPlaceStatus.FREE);
     }
@@ -350,7 +359,6 @@ public class CarServiceImpl implements CarService {
      *
      * @return 获取已租用的停车位
      */
-    @Override
     public List<ParkPlace> getRentParkPlaceRent() {
         return getParkPlaceRent(getRentParkingLotInSession(), ParkPlace.ParkPlaceStatus.RENT);
     }
@@ -360,7 +368,6 @@ public class CarServiceImpl implements CarService {
      *
      * @return 获取已锁定的停车位
      */
-    @Override
     public List<ParkPlace> getParkPlaceRent() {
         return getParkPlaceRent(getRentParkingLotInSession(), ParkPlace.ParkPlaceStatus.LOCK);
     }
@@ -374,7 +381,6 @@ public class CarServiceImpl implements CarService {
      * @param parkPlace 停车位
      * @return 新增的车辆
      */
-    @Override
     @Transactional(readOnly = false)
     public Car addCarLockParkPlace(String license, Owner owner, ParkPlace parkPlace) {
         Car car = new Car(license, owner, Car.CarStatus.RENT, parkPlace);
@@ -389,7 +395,6 @@ public class CarServiceImpl implements CarService {
      *
      * @param car
      */
-    @Override
     public void confirmCarRentParkPlace(Car car) {
         ParkPlace parkPlace = car.getParkPlace();
         parkPlace.rentParkPlace();
@@ -401,7 +406,6 @@ public class CarServiceImpl implements CarService {
      *
      * @param license 车牌号
      */
-    @Override
     @Transactional(readOnly = false)
     public void confirmCarRentParkPlace(String license) {
         Car car = getCarByLicense(license);
@@ -413,9 +417,8 @@ public class CarServiceImpl implements CarService {
      *
      * @param car 车辆
      */
-    @Override
     @Transactional(readOnly = false)
-    public void removeCarFreeParkPlace(Car car) {
+    public void deleteCarFreeParkPlace(Car car) {
         ParkPlace parkPlace = car.getParkPlace();
         parkPlace.freeParkPlace();
         carDAO.delete(car);
@@ -427,8 +430,30 @@ public class CarServiceImpl implements CarService {
      *
      * @param license 车牌号
      */
-    @Override
     @Transactional(readOnly = false)
+    public void deleteCarFreeParkPlace(String license) {
+        Car car = getCarByLicense(license);
+        deleteCarFreeParkPlace(car);
+    }
+
+    /**
+     * 车辆租用到期释放停车位
+     *
+     * @param car 车辆
+     */
+    public void removeCarFreeParkPlace(Car car) {
+        ParkPlace parkPlace = car.getParkPlace();
+        car.setStatus(Car.CarStatus.NO);
+        parkPlace.freeParkPlace();
+        carDAO.merge(car);
+        parkPlaceDAO.merge(parkPlace);
+    }
+
+    /**
+     * 车辆租用到期释放停车位
+     *
+     * @param license 车牌号
+     */
     public void removeCarFreeParkPlace(String license) {
         Car car = getCarByLicense(license);
         removeCarFreeParkPlace(car);
@@ -440,7 +465,6 @@ public class CarServiceImpl implements CarService {
      * @param position 车位位置
      * @return 找到的车位
      */
-    @Override
     public ParkPlace getRentParkPlaceByPosition(String position) {
         return parkPlaceDAO.get(getRentParkingLotInSession(), position);
     }
@@ -450,7 +474,6 @@ public class CarServiceImpl implements CarService {
      *
      * @return 该社区中所有未完成的停车单
      */
-    @Override
     public List<ParkBill> getAllUnfinishParkBill() {
         return getAllUnfinishParkBill(getCommunityFromActionContext());
     }
@@ -461,9 +484,8 @@ public class CarServiceImpl implements CarService {
      * @param community 社区
      * @return 该社区中所有未完成的停车单
      */
-    @Override
     public List<ParkBill> getAllUnfinishParkBill(Community community) {
-        return parkBillDAO.getAllUnfinishParkBill(getCommunityFromActionContext());
+        return parkBillDAO.getAllUnfinishParkBill(community);
     }
 
     /**
@@ -471,7 +493,6 @@ public class CarServiceImpl implements CarService {
      *
      * @return 获取该社区中所有已完成的停车单
      */
-    @Override
     public List<ParkBill> getAllFinishParkBill() {
         return getAllFinishParkBill(getCommunityFromActionContext());
     }
@@ -482,9 +503,18 @@ public class CarServiceImpl implements CarService {
      * @param community 社区
      * @return 获取该社区中所有已完成的停车单
      */
-    @Override
     public List<ParkBill> getAllFinishParkBill(Community community) {
         return parkBillDAO.getAllFinishParkBill(getCommunityFromActionContext());
+    }
+
+    /**
+     * 依据id获取停车单
+     *
+     * @param id 编号
+     * @return 停车单
+     */
+    public ParkBill getParkBillById(Integer id) {
+        return parkBillDAO.get(id);
     }
 
 }

@@ -43,11 +43,23 @@ public class RoomDAO extends BaseDAO<Room, Integer> {
         return searchByQL(ql, new Parameter(community));
     }
 
-    @SuppressWarnings("unchecked")
-    public List<Integer[]> getVacantRoomNos(Integer floorId) {
-        String ql = "select r.id, r.no from Room r where r.floor.id = :p1";
+    public List<String[]> getVacantRoomNos(Integer floorId) {
+        String ql = "select r.id, r.no from Room r where r.floor.id = :p1 and r.owner is null";
         List list = getAttrsByQL(ql, new Parameter(floorId));
-        return CastUtils.castToListIntegerArray(list);
+        return CastUtils.castToListStringArray(list);
     }
 
+    public List<String[]> getNonVacantRoomNos(Integer floorId) {
+        String ql = "select r.id, r.no from Room r where r.floor.id = :p1 and r.owner is not null";
+        List list = getAttrsByQL(ql, new Parameter(floorId));
+        return CastUtils.castToListStringArray(list);
+    }
+
+    public void delete(Community community) {
+        String ql = "select r from Room r where r.floor.building.community = :p1";
+        List<Room> list = searchByQL(ql, new Parameter(community));
+        for (Room room : list) {
+            delete(room);
+        }
+    }
 }

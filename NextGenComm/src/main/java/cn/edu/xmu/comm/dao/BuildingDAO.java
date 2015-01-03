@@ -41,9 +41,9 @@ public class BuildingDAO extends BaseDAO<Building, Integer> {
     }
 
     @SuppressWarnings("unchecked")
-    public List<Integer[]> getIdsAndNos(Community community) {
+    public List<String[]> getIdsAndNos(Community community) {
         String ql = "select b.id, b.no from Building b where b.community = :p1";
         List list = getAttrsByQL(ql, new Parameter(community));
-        return CastUtils.castToListIntegerArray(list);
+        return CastUtils.castToListStringArray(list);
     }
 }

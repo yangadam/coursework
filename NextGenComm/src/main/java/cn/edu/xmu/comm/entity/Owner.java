@@ -1,5 +1,6 @@
 package cn.edu.xmu.comm.entity;
 
+import cn.edu.xmu.comm.commons.exception.DeviceException;
 import cn.edu.xmu.comm.commons.exception.DifferentCommunityException;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -40,15 +41,19 @@ public class Owner extends User {
     /**
      * 拥有的车辆列表
      */
-    @OneToMany(targetEntity = Car.class, mappedBy = "owner")
+    @OneToMany(targetEntity = Car.class, mappedBy = "owner", cascade = CascadeType.ALL)
     private Set<Car> carList = new HashSet<Car>();
 
     /**
      * 未支付的账单项列表
      * （注意：公维金是单独交的，但是一起算，交到不同的账户。）
      */
-    @OneToMany(targetEntity = BillItem.class, mappedBy = "owner")
+    @OneToMany(targetEntity = BillItem.class, mappedBy = "owner", cascade = CascadeType.ALL)
     private List<BillItem> unpaidBills = new ArrayList<BillItem>();
+
+    @OneToMany(targetEntity = Payment.class, mappedBy = "paidBy", cascade = CascadeType.ALL)
+    private List<Payment> paymentList = new ArrayList<Payment>();
+
     //endregion
 
     Owner() {
@@ -104,7 +109,7 @@ public class Owner extends User {
     /**
      * 生成账单
      */
-    public void generateBill() {
+    public void generateBill() throws DeviceException {
 
         for (Room room : this.roomList) {
             room.generateRoom(this.unpaidBills);
@@ -114,6 +119,37 @@ public class Owner extends User {
             car.generateCar(this.unpaidBills);
         }
 
+    }
+
+    /**
+     * 支付账单项
+     *
+     * @param receiveBy 收款人
+     * @param billItems 账单
+     * @return 支付记录
+     */
+    public Payment payBillItems (User receiveBy, List<BillItem> billItems) {
+        for (BillItem billItem : billItems) {
+            unpaidBills.remove(billItem);
+            billItem.setBillItemStatus(BillItem.BillItemStatus.PAID);
+        }
+        return new Payment(this, receiveBy, billItems);
+    }
+
+    /**
+     * 获得超期欠缴费清单
+     *
+     * @return 清单列表
+     */
+    public List<BillItem> getOverDueBillItems() {
+        List<BillItem> resultBillItems = new ArrayList<BillItem>();
+        for (BillItem billItem : unpaidBills) {
+            if (billItem.isOverDue()) {
+                billItem.updateOverDueFee();
+                resultBillItems.add(billItem);
+            }
+        }
+        return resultBillItems;
     }
     //endregion
 
@@ -144,12 +180,24 @@ public class Owner extends User {
     }
 
     public List<BillItem> getUnpaidBills() {
+        for (BillItem billItem : unpaidBills) {
+            billItem.updateOverDueFee();
+        }
         return unpaidBills;
     }
 
     public void setUnpaidBills(List<BillItem> unpaidBills) {
         this.unpaidBills = unpaidBills;
     }
+
+    public List<Payment> getPaymentList() {
+        return paymentList;
+    }
+
+    public void setPaymentList(List<Payment> paymentList) {
+        this.paymentList = paymentList;
+    }
+
     //endregion
 
 }

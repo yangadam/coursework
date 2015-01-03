@@ -7,7 +7,10 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Date;
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 /**
  * 设备类
@@ -71,7 +74,7 @@ public class Device extends DataEntity {
     )
     @OrderBy
     @Column(name = "device_values")
-    private SortedMap<Date, BigDecimal> values = new TreeMap<Date, BigDecimal>();
+    private SortedMap<Date, Double> values = new TreeMap<Date, Double>();
 
     /**
      * 类型
@@ -95,12 +98,14 @@ public class Device extends DataEntity {
     /**
      * 当前读数
      */
-    private BigDecimal currentValue;
+    private Double currentValue;
 
     /**
      * 上次读数
      */
-    private BigDecimal lastValue;
+    private Double lastValue;
+
+    private Boolean isCalculated;
     //endregion
 
     Device() {
@@ -108,31 +113,35 @@ public class Device extends DataEntity {
 
     /**
      * 构造函数（私有表）
-     *  @param no       设备号
+     *
+     * @param no       设备号
      * @param property 设备所属位置
      * @param value    初始值
      * @param type     设备类型
      */
-    public Device(String no, Property property, BigDecimal value, DeviceType type) {
+    public Device(String no, Property property, Double value, DeviceType type) {
         this(no, property, value, type, null);
+        this.isCalculated = true;
     }
 
     /**
      * 构造函数（公摊表）
-     *  @param no        设备号
+     *
+     * @param no        设备号
      * @param property  设备所属位置
      * @param value     初始值
      * @param type      设备类型
      * @param shareType 公摊类型
      */
-    public Device(String no, Property property, BigDecimal value, DeviceType type, String shareType) {
+    public Device(String no, Property property, Double value, DeviceType type, String shareType) {
         this.no = no;
         this.type = type;
         this.shareType = shareType;
         this.values.put(new Date(), value);
         this.community = property.getCommunity();
-        this.lastValue = BigDecimal.ZERO;
-        this.currentValue = BigDecimal.ZERO;
+        this.lastValue = 0.0;
+        this.currentValue = 0.0;
+        this.isCalculated = true;
         property.addDevice(this);
     }
 
@@ -143,8 +152,8 @@ public class Device extends DataEntity {
      *
      * @return 用量
      */
-    public BigDecimal getUsage() {
-        return currentValue.subtract(lastValue);
+    public Double getUsage() {
+        return currentValue - lastValue;
     }
 
     /**
@@ -152,25 +161,27 @@ public class Device extends DataEntity {
      *
      * @return 费用
      */
-    public BigDecimal calculate() {
+    public BigDecimal calculate() throws DeviceException {
+        if (isCalculated)
+            throw new DeviceException("未录入本月的读数");
         BigDecimal totalAmount = BigDecimal.ZERO;
         BigDecimal amount;
-        BigDecimal lastValue = BigDecimal.ZERO;
-        BigDecimal curValue;
-        Iterator it = getGradientMap().entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry entry = (Map.Entry) it.next();
-            if (getUsage().compareTo((BigDecimal) entry.getKey()) == 1) {
-                curValue = ((BigDecimal) entry.getKey()).subtract(lastValue);
-                amount = ((BigDecimal) entry.getValue()).multiply(curValue);
+        Double lastValue = 0.0;
+        Double curValue;
+        for (Object o : getGradientMap().entrySet()) {
+            Map.Entry entry = (Map.Entry) o;
+            if (getUsage().compareTo((Double) entry.getKey()) == 1) {
+                curValue = (Double) entry.getKey() - lastValue;
+                amount = ((BigDecimal) entry.getValue()).multiply(BigDecimal.valueOf(curValue));
                 totalAmount.add(amount);
             } else {
-                curValue = getUsage().subtract(lastValue);
-                amount = ((BigDecimal) entry.getValue()).multiply(curValue);
+                curValue = getUsage() - lastValue;
+                amount = ((BigDecimal) entry.getValue()).multiply(BigDecimal.valueOf(curValue));
                 totalAmount = totalAmount.add(amount);
             }
-            lastValue = (BigDecimal) entry.getKey();
+            lastValue = (Double) entry.getKey();
         }
+        setIsCalculatedTrue();
         return totalAmount;
     }
 
@@ -187,7 +198,9 @@ public class Device extends DataEntity {
      * @param date  日期
      * @param value 读数
      */
-    public void addValue(Date date, BigDecimal value) throws DeviceException {
+    public void addValue(Date date, Double value) throws DeviceException {
+        if (!isCalculated)
+            throw new DeviceException("上次费用尚未计算");
         if (date.before(getLastTime()))
             throw new DeviceException("不能添加最后一次录入时间之后的读数");
         if (values.containsKey(date))
@@ -197,6 +210,7 @@ public class Device extends DataEntity {
         lastValue = currentValue;
         currentValue = value;
         getValues().put(date, value);
+        setIsCalculatedFalse();
     }
 
     /**
@@ -218,16 +232,25 @@ public class Device extends DataEntity {
      *
      * @param date  日期
      * @param value 读数
-     * @throws Exception
+     * @throws DeviceException
      */
-    public void updateValue(Date date, BigDecimal value) throws DeviceException {
-        if (!values.containsKey(date))
-            throw new DeviceException("没有" + date.toString() + "时刻的读数");
+    public void updateValue(Date date, Double value) {
         // 若新值放入Map中仍date递增，value递增，视为有效插入
-        BigDecimal tempValue = values.get(date);
+        Double tempValue = values.get(date);
         values.put(date, value);
         if (!isValueValidate(date, value))
             values.put(date, tempValue);
+        currentValue = value;
+    }
+
+    /**
+     * 修改最后一个读数
+     *
+     * @param value 修改后的值
+     */
+    public void updateLastValue(Double value) {
+        Date date = values.lastKey();
+        updateValue(date, value);
     }
 
     /**
@@ -238,7 +261,7 @@ public class Device extends DataEntity {
      * @param value 读数
      * @return 是否符合要求
      */
-    public boolean isValueValidate(Date date, BigDecimal value) {
+    public boolean isValueValidate(Date date, Double value) {
         return orderOfDates(date) == orderOfValues(value);
     }
 
@@ -264,9 +287,9 @@ public class Device extends DataEntity {
      * @param value 日期
      * @return 位置
      */
-    public int orderOfValues(BigDecimal value) {
+    public int orderOfValues(Double value) {
         int order = 0;
-        for (BigDecimal v : values.values()) {
+        for (Double v : values.values()) {
             if (value.compareTo(v) <= 0)
                 break;
             order += 1;
@@ -280,11 +303,11 @@ public class Device extends DataEntity {
      * @param sortedMap 排序的映射
      * @return 倒数第二个键 否则返回null
      */
-    private Date lastButOneKey(SortedMap<Date, BigDecimal> sortedMap) {
+    private Date lastButOneKey(SortedMap<Date, Double> sortedMap) {
         if (sortedMap.size() <= 1)
             return null;
         Date lastDate = sortedMap.lastKey();
-        BigDecimal lastValue = sortedMap.get(sortedMap.lastKey());
+        Double lastValue = sortedMap.get(sortedMap.lastKey());
         sortedMap.remove(lastDate);
         Date result = values.lastKey();
         sortedMap.put(lastDate, lastValue);
@@ -354,7 +377,7 @@ public class Device extends DataEntity {
         this.shareType = shareType;
     }
 
-    private BigDecimal getCurrentValue() {
+    public Double getCurrentValue() {
         return currentValue;
     }
 
@@ -364,11 +387,11 @@ public class Device extends DataEntity {
      * @param currentValue 当前读数
      *                     保护当前读数和上月读数只能通过添加值和删除值实现
      */
-    private void setCurrentValue(BigDecimal currentValue) {
+    private void setCurrentValue(Double currentValue) {
         this.currentValue = currentValue;
     }
 
-    public BigDecimal getLastValue() {
+    public Double getLastValue() {
         return lastValue;
     }
 
@@ -378,11 +401,11 @@ public class Device extends DataEntity {
      * @param lastValue 上次读数
      *                  保护当前读数和上月读数只能通过添加值和删除值实现
      */
-    private void setLastValue(BigDecimal lastValue) {
+    private void setLastValue(Double lastValue) {
         this.lastValue = lastValue;
     }
 
-    public SortedMap<Date, BigDecimal> getValues() {
+    public SortedMap<Date, Double> getValues() {
         return values;
     }
 
@@ -392,10 +415,21 @@ public class Device extends DataEntity {
      * @param values 读数表
      *               保护当前读数和上月读数只能通过添加值和删除值实现
      */
-    private void setValues(SortedMap<Date, BigDecimal> values) {
+    private void setValues(SortedMap<Date, Double> values) {
         this.values = values;
     }
 
+    public Boolean getIsCalculated() {
+        return isCalculated;
+    }
+
+    private void setIsCalculatedTrue() {
+        this.isCalculated = true;
+    }
+
+    private void setIsCalculatedFalse() {
+        this.isCalculated = false;
+    }
     //endregion
 
     /**
