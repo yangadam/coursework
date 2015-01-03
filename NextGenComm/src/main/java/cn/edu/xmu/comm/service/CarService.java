@@ -131,6 +131,17 @@ public interface CarService {
     ParkBill addParkBill(Community community, Owner owner, String license);
 
     /**
+     * 新建临时停车单
+     *
+     * @param community 社区
+     * @param ownerId   业主编号
+     * @param license   车牌
+     * @return parkBill 临时停车单
+     */
+    @Transactional(readOnly = false)
+    ParkBill addParkBill(Community community, Integer ownerId, String license);
+
+    /**
      * 根据车牌来获得未完成的停车单(没有离开时间)
      * 社区信息由parkBillDao在session中获得
      *
@@ -156,6 +167,15 @@ public interface CarService {
      * @return parkBill 完成的临时停车单
      */
     ParkBill finishParkBill(Community community, String license);
+
+    /**
+     * 完成临时停车单
+     *
+     * @param parkBillId 停车单编号
+     * @return parkBill 完成的临时停车单
+     */
+    @Transactional(readOnly = false)
+    public ParkBill finishParkBill(Integer parkBillId);
 
     /**
      * 根据Id获得车辆

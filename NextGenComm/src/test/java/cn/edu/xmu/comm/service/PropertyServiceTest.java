@@ -1,6 +1,5 @@
 package cn.edu.xmu.comm.service;
 
-import cn.edu.xmu.comm.commons.exception.DifferentCommunityException;
 import cn.edu.xmu.comm.entity.*;
 import junit.framework.TestCase;
 import org.apache.commons.lang3.Validate;
@@ -84,13 +83,13 @@ public class PropertyServiceTest extends TestCase {
     public void testAddFloorBatch() throws Exception {
         Community community = propertyService.getCommunity("五缘公寓");
         Building building = propertyService.getBuildingByNo(1, community);
-//        propertyService.addFloorBatch(2, 10, building);
+        //propertyService.addFloorBatch(2, 10, building);
     }
 
     @Test
     public void testAddRoom() throws Exception {
         Community community = propertyService.getCommunity("五缘公寓");
-        Building building = propertyService.getBuildingByNo(1, community);
+        Building building = propertyService.getBuildingByNo(3, community);
         Floor floor = propertyService.getFloorByNo(1, building);
         propertyService.addRoom("101", 100.0, floor);
     }

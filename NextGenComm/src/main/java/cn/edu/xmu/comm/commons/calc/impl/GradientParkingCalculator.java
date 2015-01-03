@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 
 /**
  * Created by Roger on 2014/12/25 0025.
+ *
  */
 public class GradientParkingCalculator implements IParkingCalculator {
 

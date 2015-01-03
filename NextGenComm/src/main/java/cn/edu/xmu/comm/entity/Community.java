@@ -96,6 +96,9 @@ public class Community extends Property {
      */
     private String overDueFeeType;
 
+    /**
+     * 滞纳金率
+     */
     private BigDecimal overDueFeeRate;
     //endregion
 

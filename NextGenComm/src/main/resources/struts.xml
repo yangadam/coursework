@@ -65,6 +65,13 @@
         <action name="test" class="testAction">
             <result>/WEB-INF/jsp/test/test.jsp</result>
         </action>
+        <!-- Configure File Action -->
+        <action name="uploadPro" class="cn.edu.xmu.comm.action.UploadAction">
+            <param name="filesPath">/uploadFiles</param>
+            <result>/WEB-INF/jsp/test/Success.jsp</result>
+        </action>
+
+
     </package>
 
     <package name="admin" namespace="/admin" extends="default">
@@ -160,6 +167,7 @@
             <result name="input">room.do</result>
         </action>
 
+
         <action name="checkin">
             <result>/WEB-INF/jsp/clerk/checkin.jsp</result>
         </action>
@@ -223,6 +231,10 @@
             <result name="temp">/WEB-INF/jsp/guard/tempParkingRegiste.jsp</result>
         </action>
 
+        <action name="toTempParkingRegiste" class="toTempParkingRegisteAction">
+            <result>/WEB-INF/jsp/guard/tempParkingRegiste.jsp</result>
+        </action>
+
     </package>
 
     <!-- JSON package -->
@@ -258,6 +270,10 @@
         <action name="deviceList" class="deviceListAction"/>
         <action name="count" class="deviceCountAction"/>
 
+        <action name="chargedParkBill" class="tempParkingChargedListAction"/>
+        <action name="tempRegister" class="tempParkingRegisteAction"/>
+        <action name="ownerByRoom" class="ownerByRoomAction"/>
+        <action name="tempParkBillAdd" class="tempParkBillAddAction"/>
     </package>
 
 </struts>

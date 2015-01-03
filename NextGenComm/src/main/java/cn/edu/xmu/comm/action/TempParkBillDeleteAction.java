@@ -9,28 +9,29 @@ import javax.annotation.Resource;
 
 /**
  * Created by Yiu-Wah WONG on 2014/12/31.
+ *
  */
 @Controller
-public class TempCarDeleteAction extends ActionSupport {
+public class TempParkBillDeleteAction extends ActionSupport {
 
     @Resource
     private CarService carService;
 
-    private Integer carBillId;
+    private Integer parkBillId;
 
     private ParkBill parkBill;
 
     public String execute() {
-//        carService.finishParkBill(carBillId);
+        carService.finishParkBill(parkBillId);
         return SUCCESS;
     }
 
-    public Integer getCarBillId() {
-        return carBillId;
+    public Integer getParkBillId() {
+        return parkBillId;
     }
 
-    public void setCarBillId(Integer carBillId) {
-        this.carBillId = carBillId;
+    public void setParkBillId(Integer parkBillId) {
+        this.parkBillId = parkBillId;
     }
 
     public ParkBill getParkBill() {

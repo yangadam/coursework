@@ -171,7 +171,7 @@ public class BillItem extends DataEntity {
         String type = community.getOverDueFeeType();
         IOverdueFineCalculator calculator = CalculatorFactory.getCalculator(type);
         overDueFee = calculator.calculate(this);
-        if (overDueFee.compareTo(BigDecimal.ZERO) > 1)
+        if (overDueFee.compareTo(BigDecimal.ZERO) == 1)
             billItemStatus = BillItemStatus.OVERDUE;
         amount = amount.add(overDueFee);
         // 记录更新日期

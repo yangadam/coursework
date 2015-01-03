@@ -1,4 +1,4 @@
-package cn.edu.xmu.comm.action;
+package cn.edu.xmu.comm.action.json;
 
 import cn.edu.xmu.comm.service.CarService;
 import com.opensymphony.xwork2.ActionSupport;
@@ -7,23 +7,19 @@ import org.springframework.stereotype.Controller;
 import javax.annotation.Resource;
 
 /**
- * Created by Roger on 2014/12/30 0030.
+ * Created by Roger on 2015/1/3 0003.
+ *
  */
 @Controller
-public class TempParkingRegisteAction extends ActionSupport {
+public class ToTempParkingRegisteAction extends ActionSupport {
 
-    private static String resultRent = "rent";
-    private static String resultTemp = "temp";
     @Resource
-    CarService carService;
+    private CarService carService;
+
     private String license;
 
-    @Override
     public String execute() {
-        if (carService.isRentCar(license))
-            return resultRent;
-        else
-            return resultTemp;
+        return SUCCESS;
     }
 
     public String getLicense() {
@@ -33,4 +29,5 @@ public class TempParkingRegisteAction extends ActionSupport {
     public void setLicense(String license) {
         this.license = license;
     }
+
 }
