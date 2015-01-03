@@ -54,4 +54,12 @@ public class RoomDAO extends BaseDAO<Room, Integer> {
         List list = getAttrsByQL(ql, new Parameter(floorId));
         return CastUtils.castToListStringArray(list);
     }
+
+    public void delete(Community community) {
+        String ql = "select r from Room r where r.floor.building.community = :p1";
+        List<Room> list = searchByQL(ql, new Parameter(community));
+        for (Room room : list) {
+            delete(room);
+        }
+    }
 }

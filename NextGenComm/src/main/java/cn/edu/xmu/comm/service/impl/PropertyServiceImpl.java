@@ -42,6 +42,9 @@ public class PropertyServiceImpl implements PropertyService {
 
     @Resource
     private DeviceDAO deviceDAO;
+
+    @Resource
+    private StaffDAO staffDAO;
     //endregion
 
     //region Add Operations
@@ -71,9 +74,10 @@ public class PropertyServiceImpl implements PropertyService {
     @Override
     @Transactional(readOnly = false)
     public Building addBuilding(Integer no, Integer floorCount, Community community) {
-        communityDAO.refresh(community);
+        Community community1 = communityDAO.get(community.getId());
+//        communityDAO.refresh(community1);
         Building building = new Building(no, floorCount);
-        community.addBuilding(building);
+        community1.addBuilding(building);
         buildingDAO.persist(building);
         return building;
     }
@@ -241,10 +245,11 @@ public class PropertyServiceImpl implements PropertyService {
     @Override
     @Transactional(readOnly = false)
     public void initialDefaultDevice(Community community, String shareType) {
+        community = communityDAO.get(community.getId());
         BigDecimal zero = BigDecimal.ZERO;
         if (community.getDeviceList().isEmpty()) {
-            addDevice(null, community, zero, Device.DeviceType.WATER, shareType);
-            addDevice(null, community, zero, Device.DeviceType.ELECTRICITY, shareType);
+            addDevice(community.getUnityCode() + "#1", community, zero, Device.DeviceType.WATER, shareType);
+            addDevice(community.getUnityCode() + "#2", community, zero, Device.DeviceType.ELECTRICITY, shareType);
         }
         for (Building building : community.getBuildingList()) {
             initialDefaultDevice(building, shareType);
@@ -262,8 +267,8 @@ public class PropertyServiceImpl implements PropertyService {
     public void initialDefaultDevice(Building building, String shareType) {
         BigDecimal zero = BigDecimal.ZERO;
         if (building.getDeviceList().isEmpty()) {
-            addDevice(null, building, zero, Device.DeviceType.WATER, shareType);
-            addDevice(null, building, zero, Device.DeviceType.ELECTRICITY, shareType);
+            addDevice(building.getUnityCode() + "#1", building, zero, Device.DeviceType.WATER, shareType);
+            addDevice(building.getUnityCode() + "#2", building, zero, Device.DeviceType.ELECTRICITY, shareType);
         }
         for (Floor floor : building.getFloorList()) {
             initialDefaultDevice(floor, shareType);
@@ -281,8 +286,8 @@ public class PropertyServiceImpl implements PropertyService {
     public void initialDefaultDevice(Floor floor, String shareType) {
         BigDecimal zero = BigDecimal.ZERO;
         if (floor.getDeviceList().isEmpty()) {
-            addDevice(null, floor, zero, Device.DeviceType.WATER, shareType);
-            addDevice(null, floor, zero, Device.DeviceType.ELECTRICITY, shareType);
+            addDevice(floor.getUnityCode() + "#1", floor, zero, Device.DeviceType.WATER, shareType);
+            addDevice(floor.getUnityCode() + "#2", floor, zero, Device.DeviceType.ELECTRICITY, shareType);
         }
         for (Room room : floor.getRoomList()) {
             initialDefaultDevice(room);
@@ -299,8 +304,8 @@ public class PropertyServiceImpl implements PropertyService {
     public void initialDefaultDevice(Room room) {
         BigDecimal zero = BigDecimal.ZERO;
         if (room.getDeviceList().isEmpty()) {
-            addDevice(null, room, zero, Device.DeviceType.WATER);
-            addDevice(null, room, zero, Device.DeviceType.ELECTRICITY);
+            addDevice(room.getUnityCode() + "#1", room, zero, Device.DeviceType.WATER);
+            addDevice(room.getUnityCode() + "#2", room, zero, Device.DeviceType.ELECTRICITY);
         }
     }
     //endregion
@@ -390,7 +395,11 @@ public class PropertyServiceImpl implements PropertyService {
 
     @Override
     @Transactional(readOnly = false)
-    public void delCommunity(Integer community) {
+    public void delCommunity(Integer id) {
+        Community community = communityDAO.get(id);
+        roomDAO.delete(community);
+        ownerDAO.delete(community);
+        staffDAO.delete(community);
         communityDAO.delete(community);
     }
 
@@ -563,6 +572,24 @@ public class PropertyServiceImpl implements PropertyService {
     @Override
     public List<String[]> getNonVacantRoomNos(Integer floorId) {
         return roomDAO.getNonVacantRoomNos(floorId);
+    }
+
+    @Override
+    @Transactional(readOnly = false)
+    public void delAllOwner(Community community) {
+        ownerDAO.delete(community);
+    }
+
+    @Override
+    @Transactional(readOnly = false)
+    public void delAllRoom(Community community) {
+        roomDAO.delete(community);
+    }
+
+    @Override
+    @Transactional(readOnly = false)
+    public void delAllStaff(Community community) {
+        staffDAO.delete(community);
     }
     //endregion
 

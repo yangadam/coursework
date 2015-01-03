@@ -405,4 +405,9 @@ public class FinanceServiceImpl implements FinanceService {
         return deviceDAO.getCanCalculateDevice(community);
     }
 
+    @Override
+    public Device getDeviceByNo(Community community, String deviceNo) {
+        return deviceDAO.getByNo(community, deviceNo);
+    }
+
 }

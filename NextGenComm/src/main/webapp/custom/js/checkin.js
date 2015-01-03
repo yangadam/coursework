@@ -24,19 +24,24 @@ var CheckIn = function () {
                 getRoomInfo();
             });
 
-            $("#owner").change(function () {
-                ownerId = $(this).children('option:selected').val();
+            $("#owner").on("change", function (e) {
+                ownerId = e.val;
             });
 
             $("#checkin").click(function () {
                 var message = "";
                 if (roomId == undefined || roomId == -1) {
-                    message.append("请选择房间。");
+                    message += "请选择房间。";
                 }
                 if (ownerId == undefined || ownerId == -1) {
-                    message.append("\n请选择业主");
+                    message += "\n请选择业主";
                 }
-                $.post("doCheckIn.do?roomId=" + roomId + "&ownerId=" + ownerId);
+                if (message == "") {
+                    alert(message);
+                    $.post("doCheckIn.do?roomId=" + roomId + "&ownerId=" + ownerId);
+                } else {
+                    alert(message);
+                }
             });
 
             function getBuild() {
@@ -90,69 +95,46 @@ var CheckIn = function () {
             function getRoomInfo() {
                 $.getJSON("/roomInfo.do?roomId=" + roomId, function (data) {
                     $("#area").val(data["area"]);
-                    getOwner();
                 })
             }
 
-            function getOwner() {
-                $.getJSON("/ownerSearch.do?term=owner", function (data) {
-                    var i;
-                    for (i = 0; i < data["id"].length; i++) {
-                        $("<option value='" + data["id"][i] + "'>" + data["name"][i] + "&nbsp;&nbsp;" +
-                        "&nbsp;&nbsp;&lt;" + data["username"][i] + "&gt;" + "</option>").appendTo('#owner');
-                    }
-                    ownerId = $("#owner").children('option:selected').val();
-                })
+            function ownerFormatResult(owner) {
+                return "<option value='" + owner["id"] + "'>" + owner["name"] + "&nbsp;&nbsp;" +
+                    "&nbsp;&nbsp;&lt;" + owner["username"] + "&gt;" + "</option>";
             }
+
+            function ownerFormatSelection(owner) {
+                return "<option value='" + owner["id"] + "'>" + owner["name"] + "&nbsp;&nbsp;" +
+                    "&nbsp;&nbsp;&lt;" + owner["username"] + "&gt;" + "</option>";
+            }
+
+            $("#owner").select2({
+                placeholder: "请指定业主",
+                minimumInputLength: 2,
+                ajax: {
+                    url: "/ownerSearch.do",
+                    dataType: 'json',
+                    data: function (term, page) {
+                        return {
+                            term: term
+                        };
+                    },
+                    results: function (data, page) {
+                        return {
+                            results: data["owners"]
+                        };
+                    }
+                },
+                formatResult: ownerFormatResult,
+                formatSelection: ownerFormatSelection,
+                dropdownCssClass: "bigdrop",
+                escapeMarkup: function (m) {
+                    return m;
+                }
+            });
+
 
         }
     };
-
 }();
 
-var handleSelec2 = function () {
-
-    $("#owner").select2({
-        placeholder: "Search for a movie",
-        minimumInputLength: 1,
-        ajax: { // instead of writing the function to execute the request we use Select2's convenient helper
-            url: "http://api.rottentomatoes.com/api/public/v1.0/movies.json",
-            dataType: 'jsonp',
-            data: function (term, page) {
-                return {
-                    q: term, // search term
-                    page_limit: 10,
-                    apikey: "ju6z9mjyajq2djue3gbvv26t" // please do not use so this example keeps working
-                };
-            },
-            results: function (data, page) { // parse the results into the format expected by Select2.
-                // since we are using custom formatting functions we do not need to alter remote JSON data
-                return {
-                    results: data.movies
-                };
-            }
-        },
-        initSelection: function (element, callback) {
-            // the input tag has a value attribute preloaded that points to a preselected movie's id
-            // this function resolves that id attribute to an object that select2 can render
-            // using its formatResult renderer - that way the movie name is shown preselected
-            var id = $(element).val();
-            if (id !== "") {
-                $.ajax("http://api.rottentomatoes.com/api/public/v1.0/movies/" + id + ".json", {
-                    data: {
-                        apikey: "ju6z9mjyajq2djue3gbvv26t"
-                    },
-                    dataType: "jsonp"
-                }).done(function (data) {
-                    callback(data);
-                });
-            }
-        },
-        formatResult: movieFormatResult, // omitted for brevity, see the source of this page
-        formatSelection: movieFormatSelection, // omitted for brevity, see the source of this page
-        dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
-        escapeMarkup: function (m) {
-            return m;
-        } // we do not want to escape markup since we are displaying html in results
-    });
-};

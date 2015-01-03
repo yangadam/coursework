@@ -1,9 +1,9 @@
 var TableEditable = function () {
     return {
         init: function () {
-            var oTable = $('#sample_editable_1').dataTable({
+            var oTable = jQuery('#sample_editable_1').dataTable({
                 "bPaginate": true,
-                "sAjaxSource": "/listComm.do",
+                "sAjaxSource": "/listBuild.do",
                 "aLengthMenu": [
                     [5, 15, 20, -1],
                     [5, 15, 20, "All"] // change per page values here
@@ -22,30 +22,39 @@ var TableEditable = function () {
                 "aoColumnDefs": [
                     {
                         'bSortable': false,
-                        "aTargets": [3],
+                        "aTargets": [2],
                         "mRender": function (data, type, full) {
                             return '<a  href="/">编辑</a>';
                         }
                     },
                     {
                         'bSortable': false,
-                        "aTargets": [4],
+                        "aTargets": [3],
                         "mRender": function (data, type, full) {
-                            return '<a  href="delComm.do?commId=' + data + '">删除</a>';
+                            return '<a  href="#">删除</a>';
                         }
                     }
                 ]
             });
 
-            $('#sample_editable_1_new').click(function (e) {
-                $("#add-comm").removeClass("hide");
-            });
-
-            function del(commId) {
-                alert(commId);
-                $.post("delComm.do?commId=" + commId);
-            }
-
         }
     };
 }();
+function check(obj) {
+    $.getJSON("/deviceValue.do?deviceNo=" + $(obj).val(), function (data) {
+        if (data["lastValue"] != undefined) {
+            $("#lastValue").val(data["lastValue"]);
+            alert(data["type"]);
+            if (data["type"] == "电表") {
+                $(".unit").text("度");
+            } else if (data["type"] == "水表") {
+                $(".unit").text("m³");
+            }
+            $("#record").enable();
+        } else {
+            $("#lastValue").val("");
+            $(".unit").text("");
+            $("#record").disable();
+        }
+    })
+}

@@ -553,7 +553,7 @@
 <script src="../../global/js/jquery.uniform.min.js" type="text/javascript"></script>
 <!-- END CORE PLUGINS -->
 <!-- BEGIN PAGE LEVEL PLUGINS -->
-<script type="text/javascript" src="../../global/js/select.min.js"></script>
+<script type="text/javascript" src="../../global/js/select2.min.js"></script>
 <script type="text/javascript" src="../../global/js/jquery.dataTables.js"></script>
 <script type="text/javascript" src="../../global/js/DT_bootstrap.js"></script>
 

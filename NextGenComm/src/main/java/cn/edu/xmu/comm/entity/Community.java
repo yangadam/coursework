@@ -40,7 +40,7 @@ public class Community extends Property {
     /**
      * 物业主任
      */
-    @OneToOne(targetEntity = Director.class)
+    @OneToOne(targetEntity = Director.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "deirector_id")
     private Director director;
 
@@ -106,7 +106,7 @@ public class Community extends Property {
     public Community(String name) {
         super();
         this.name = name;
-        this.unityCode = "";
+        this.unityCode = "C";
     }
 
     @Override

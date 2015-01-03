@@ -41,15 +41,19 @@ public class Owner extends User {
     /**
      * 拥有的车辆列表
      */
-    @OneToMany(targetEntity = Car.class, mappedBy = "owner")
+    @OneToMany(targetEntity = Car.class, mappedBy = "owner", cascade = CascadeType.ALL)
     private Set<Car> carList = new HashSet<Car>();
 
     /**
      * 未支付的账单项列表
      * （注意：公维金是单独交的，但是一起算，交到不同的账户。）
      */
-    @OneToMany(targetEntity = BillItem.class, mappedBy = "owner")
+    @OneToMany(targetEntity = BillItem.class, mappedBy = "owner", cascade = CascadeType.ALL)
     private List<BillItem> unpaidBills = new ArrayList<BillItem>();
+
+    @OneToMany(targetEntity = Payment.class, mappedBy = "paidBy", cascade = CascadeType.ALL)
+    private List<Payment> paymentList = new ArrayList<Payment>();
+
     //endregion
 
     Owner() {
@@ -185,6 +189,15 @@ public class Owner extends User {
     public void setUnpaidBills(List<BillItem> unpaidBills) {
         this.unpaidBills = unpaidBills;
     }
+
+    public List<Payment> getPaymentList() {
+        return paymentList;
+    }
+
+    public void setPaymentList(List<Payment> paymentList) {
+        this.paymentList = paymentList;
+    }
+
     //endregion
 
 }

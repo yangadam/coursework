@@ -7,8 +7,10 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.*;
-import java.util.concurrent.ExecutionException;
+import java.util.Date;
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 /**
  * 设备类
@@ -243,8 +245,7 @@ public class Device extends DataEntity {
     /**
      * 判断(date, value)插入后values是否date递增，value递增
      * 即在所有的date和value中的时间是否相同
-     *
-     * @param date  日期
+     * @param date 日期
      * @param value 读数
      * @return 是否符合要求
      */
@@ -410,10 +411,14 @@ public class Device extends DataEntity {
      * 设置读数表
      *
      * @param values 读数表
-     *               保护当前读数和上月读数只能通过添加值和删除值实现
+     * 保护当前读数和上月读数只能通过添加值和删除值实现
      */
     private void setValues(SortedMap<Date, BigDecimal> values) {
         this.values = values;
+    }
+
+    public Boolean getIsCalculated() {
+        return isCalculated;
     }
 
     private void setIsCalculatedTrue() {

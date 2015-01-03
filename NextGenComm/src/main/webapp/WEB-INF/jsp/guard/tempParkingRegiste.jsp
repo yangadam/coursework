@@ -153,7 +153,7 @@
     <!-- END FOOTER -->
     <%@include file="globalJS.jsp" %>
     <!-- BEGIN PAGE LEVEL PLUGINS -->
-    <script type="text/javascript" src="../../../global/js/select.min.js"></script>
+        <script type="text/javascript" src="../../../global/js/select2.min.js"></script>
     <script type="text/javascript" src="../../../global/js/jquery.dataTables.js"></script>
     <script type="text/javascript" src="../../../global/js/DT_bootstrap.js"></script>
     <!-- END PAGE LEVEL PLUGINS -->

@@ -12,12 +12,7 @@
     <meta content="" name="description"/>
     <meta content="PumpKing" name="author"/>
     <%@include file="globalCSS.jsp" %>
-    <link href="../../../global/css/select2_metro.css"/>
-    <link href="../../../global/css/jquery.gritter.css" rel="stylesheet" type="text/css"/>
-    <link href="../../../global/css/daterangepicker.css" rel="stylesheet" type="text/css"/>
-    <link href="../../../global/css/fullcalendar.css" rel="stylesheet" type="text/css"/>
-    <link href="../../../global/css/jqvmap.css" rel="stylesheet" type="text/css" pumpking="screen"/>
-    <link href="../../../global/css/jquery.easy-pie-chart.css" rel="stylesheet" type="text/css" pumpking="screen"/>
+    <link href="../../../global/css/select2_metro.css" rel="stylesheet" type="text/css"/>
     <link rel="shortcut icon" href="../../../global/image/favicon.ico"/>
 </head>
 <body class="page-header-fixed">
@@ -90,9 +85,9 @@
                                     <label class="control-label" for="owner">业主</label>
 
                                     <div class="controls">
-                                        <select id="owner" class="span6 m-wrap" name="category">
-                                        </select>
-                                        <%--<input type="hidden" id="owner" class="span6 select2">--%>
+                                        <%--<select id="owner" class="span6 m-wrap" name="category">--%>
+                                        <%--</select>--%>
+                                        <input type="hidden" id="owner" class="span6 select2">
                                     </div>
                                 </div>
                                 <div class="form-actions">
@@ -108,7 +103,7 @@
 </div>
 <%@include file="globalFooter.jsp" %>
 <%@include file="globalJS.jsp" %>
-<script src="../../../global/js/select.min.js" type="text/javascript"></script>
+<script src="../../../global/js/select2.min.js" type="text/javascript"></script>
 <script src="../../../custom/js/app.js" type="text/javascript"></script>
 <script src="../../../custom/js/checkin.js" type="text/javascript"></script>
 <script>
@@ -117,7 +112,6 @@
         $(".page-sidebar-menu .title:contains('业主管理')").closest("li").addClass("active");
         $(".page-sidebar-menu .sub-menu a:contains('办理入住')").closest("li").addClass("active");
         CheckIn.init();
-        handleSelec2.init();
     });
 </script>
 </body>

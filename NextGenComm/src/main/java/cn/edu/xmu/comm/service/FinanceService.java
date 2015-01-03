@@ -3,13 +3,10 @@ package cn.edu.xmu.comm.service;
 import cn.edu.xmu.comm.commons.exception.DeviceException;
 import cn.edu.xmu.comm.commons.exception.MailException;
 import cn.edu.xmu.comm.commons.utils.MailUtils;
-import cn.edu.xmu.comm.dao.*;
 import cn.edu.xmu.comm.entity.*;
-import org.apache.commons.lang3.Validate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -117,10 +114,10 @@ public interface FinanceService {
      * @param date 日期
      * @param value 设备读数
      */
-    //@Transactional(readOnly = false)
+    @Transactional(readOnly = false)
     public void addDeviceValue(Device device, Date date, BigDecimal value);
 
-    //@Transactional(readOnly = false)
+    @Transactional(readOnly = false)
     public void delDeviceValue(Integer id);
 
     @Transactional(readOnly = false)
@@ -214,5 +211,7 @@ public interface FinanceService {
      * @return 设备列表
      */
     public List<Device> getCanCalculateDevice(Community community);
+
+    Device getDeviceByNo(Community community, String deviceNo);
 
 }
