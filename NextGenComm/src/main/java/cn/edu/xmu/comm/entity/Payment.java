@@ -34,9 +34,9 @@ public class Payment extends DataEntity {
     /**
      * 收款人
      */
-    @ManyToOne(targetEntity = User.class)
+    @ManyToOne(targetEntity = Staff.class)
     @JoinColumn(name = "user_id")
-    private User receiveBy;
+    private Staff receiveBy;
 
     /**
      * 账单列表
@@ -50,21 +50,33 @@ public class Payment extends DataEntity {
     private BigDecimal total;
     //endregion
 
-    Payment() {}
+    Payment() {
+    }
 
     /**
      * 构造函数
-     * @param paidBy 支付人
+     *
+     * @param paidBy    支付人
      * @param receiveBy 接收人
+     */
+    Payment(Owner paidBy, Staff receiveBy) {
+        this(paidBy, receiveBy, paidBy.getUnpaidBills());
+    }
+
+    /**
+     * 构造函数
+     *
+     * @param paidBy       支付人
+     * @param receiveBy    接收人
      * @param billItemList 账单项列表
      */
-    Payment(Owner paidBy, User receiveBy, List<BillItem> billItemList) {
+    Payment(Owner paidBy, Staff receiveBy, List<BillItem> billItemList) {
         BigDecimal tempTotal = BigDecimal.ZERO;
         this.paidBy = paidBy;
         this.receiveBy = receiveBy;
         this.billItemList = billItemList;
         for (BillItem billItem : billItemList) {
-            tempTotal = tempTotal.add(billItem.getAmount());
+            tempTotal = tempTotal.add(billItem.getAmount()).add(billItem.getOverDueFee());
         }
         this.total = tempTotal;
     }
@@ -86,11 +98,11 @@ public class Payment extends DataEntity {
         this.paidBy = paidBy;
     }
 
-    public User getRecieveBy() {
+    public Staff getRecieveBy() {
         return receiveBy;
     }
 
-    public void setRecieveBy(User recieveBy) {
+    public void setRecieveBy(Staff recieveBy) {
         this.receiveBy = recieveBy;
     }
 

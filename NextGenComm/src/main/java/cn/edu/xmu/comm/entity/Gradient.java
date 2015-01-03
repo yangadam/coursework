@@ -55,7 +55,8 @@ public class Gradient extends DataEntity {
      *
      * @param unitPrice 单价
      */
-    public Gradient(BigDecimal unitPrice) {
+    public Gradient(BigDecimal unitPrice, Device.DeviceType type) {
+        this.type = type;
         gradient.put(Double.MAX_VALUE, unitPrice);
     }
 
@@ -65,7 +66,8 @@ public class Gradient extends DataEntity {
      * @param readings 读数
      * @param prices   价格
      */
-    public Gradient(Double[] readings, BigDecimal[] prices) {
+    public Gradient(Double[] readings, BigDecimal[] prices, Device.DeviceType type) {
+        this.type = type;
         for (int i = 0; i < readings.length; i++) {
             gradient.put(readings[i], prices[i]);
         }

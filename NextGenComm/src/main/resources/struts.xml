@@ -27,6 +27,7 @@
             <result name="director" type="redirect">director.do</result>
             <result name="clerk" type="redirect">clerk.do</result>
             <result name="guard" type="redirect">guard.do</result>
+            <result name="owner" type="redirect">owner.do</result>
         </global-results>
     </package>
 
@@ -62,9 +63,14 @@
             <result>/WEB-INF/jsp/guard/home.jsp</result>
         </action>
 
+        <action name="owner">
+            <result>/WEB-INF/jsp/owner/home.jsp</result>
+        </action>
+
         <action name="test" class="testAction">
             <result>/WEB-INF/jsp/test/test.jsp</result>
         </action>
+
         <!-- Configure File Action -->
         <action name="uploadPro" class="cn.edu.xmu.comm.action.UploadAction">
             <param name="filesPath">/uploadFiles</param>
@@ -144,6 +150,15 @@
         <action name="tempParkingPaying" class="tempParkingPaying">
             <result type="redirect">tempParkingPaying.do</result>
             <result name="input">tempParkingPaying.do</result>
+        </action>
+
+        <action name="parkingLot">
+            <result>/WEB-INF/jsp/director/parkingLot.jsp</result>
+        </action>
+
+        <action name="addParkPlace" class="parkPlaceAddAction">
+            <result type="redirect">parkingLot.do</result>
+            <result name="input">parkingLot.do</result>
         </action>
 
     </package>
@@ -252,6 +267,22 @@
 
     </package>
 
+    <package name="owner" namespace="/owner" extends="default">
+        <global-results>
+            <result name="login" type="redirect">/rememberMeLogin.do</result>
+            <result name="unauthorized" type="redirect">/rememberMeLogin.do</result>
+        </global-results>
+
+        <action name="billlist" class="billListAction">
+            <result>/WEB-INF/jsp/owner/billlist.jsp</result>
+        </action>
+
+        <action name="makePayment" class="makePaymentAction">
+            <result>/owner.do</result>
+        </action>
+
+    </package>
+
     <!-- JSON package -->
     <package name="data" extends="json-default">
 
@@ -284,11 +315,11 @@
         <action name="unchargedParkBill" class="tempParkingUnchargedListAction"/>
         <action name="deviceList" class="deviceListAction"/>
         <action name="count" class="deviceCountAction"/>
-
         <action name="chargedParkBill" class="tempParkingChargedListAction"/>
         <action name="tempRegister" class="tempParkingRegisteAction"/>
         <action name="ownerByRoom" class="ownerByRoomAction"/>
         <action name="tempParkBillAdd" class="tempParkBillAddAction"/>
+        <action name="listParkPlace" class="parkPlaceListAction"/>
     </package>
 
 </struts>

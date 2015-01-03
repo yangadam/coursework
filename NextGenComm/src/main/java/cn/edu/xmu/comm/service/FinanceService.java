@@ -40,7 +40,7 @@ public interface FinanceService {
      * @return 梯度对象
      */
     @Transactional(readOnly = false)
-    public Gradient addGradient(Community community, BigDecimal unitPrice);
+    public Gradient addGradient(Community community, BigDecimal unitPrice, Device.DeviceType type);
 
     /**
      * 添加梯度
@@ -51,7 +51,7 @@ public interface FinanceService {
      * @return 梯度对象
      */
     @Transactional(readOnly = false)
-    public Gradient addGradient(Community community, Double[] readings, BigDecimal[] prices);
+    public Gradient addGradient(Community community, Double[] readings, BigDecimal[] prices, Device.DeviceType type);
 
     /**
      * 将梯度应用到设备
@@ -188,7 +188,7 @@ public interface FinanceService {
      * @return payment 支付记录
      */
     @Transactional(readOnly = false)
-    public Payment payBillItems(Owner paidBy, User receiveBy, List<BillItem> billItems);
+    public Payment makePayment(Owner paidBy, Staff receiveBy, List<BillItem> billItems);
 
     /**
      * 获得超期欠缴费清单
@@ -222,4 +222,8 @@ public interface FinanceService {
     Long getInputDeviceCount(Community community);
 
     Long getDeviceCount(Community community);
+
+    List<Gradient> getGradients(Community community);
+
+    void makePayment(Integer id);
 }

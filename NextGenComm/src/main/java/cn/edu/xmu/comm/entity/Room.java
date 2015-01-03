@@ -119,7 +119,7 @@ public class Room extends Property {
     public void generateEnergy(List<BillItem> billItems) throws DeviceException {
         for (Device device : getDeviceList()) {
             BillItem billItem = new BillItem();
-            billItem.setName(device.getType().toString());
+            billItem.setName(device.getType().getFeeType());
             billItem.setDescription(fullName);
             billItem.setUsage(device.getUsage());
             billItem.setAmount(device.calculate());

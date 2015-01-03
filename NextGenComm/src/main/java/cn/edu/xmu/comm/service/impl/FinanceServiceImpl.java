@@ -67,11 +67,10 @@ public class FinanceServiceImpl implements FinanceService {
      * @return 梯度对象
      */
     @Transactional(readOnly = false)
-    public Gradient addGradient(Community community, BigDecimal unitPrice) {
-        Gradient gradient = new Gradient(unitPrice);
+    public Gradient addGradient(Community community, BigDecimal unitPrice, Device.DeviceType type) {
+        Gradient gradient = new Gradient(unitPrice, type);
         community.getGradients().add(gradient);
         gradientDAO.persist(gradient);
-        communityDAO.merge(community);
         return gradient;
     }
 
@@ -84,9 +83,9 @@ public class FinanceServiceImpl implements FinanceService {
      * @return 梯度对象
      */
     @Transactional(readOnly = false)
-    public Gradient addGradient(Community community, Double[] readings, BigDecimal[] prices) {
+    public Gradient addGradient(Community community, Double[] readings, BigDecimal[] prices, Device.DeviceType type) {
         Validate.isTrue(readings.length + 1 == prices.length, "梯度数值数目有错误。");
-        Gradient gradient = new Gradient(readings, prices);
+        Gradient gradient = new Gradient(readings, prices, type);
         community.getGradients().add(gradient);
         gradientDAO.persist(gradient);
         communityDAO.merge(community);
@@ -292,8 +291,8 @@ public class FinanceServiceImpl implements FinanceService {
      * @return payment 支付记录
      */
     @Transactional(readOnly = false)
-    public Payment payBillItems(Owner paidBy, User receiveBy, List<BillItem> billItems) {
-        Payment payment = paidBy.payBillItems(receiveBy, billItems);
+    public Payment makePayment(Owner paidBy, Staff receiveBy, List<BillItem> billItems) {
+        Payment payment = paidBy.makePayment(receiveBy, billItems);
         ownerDAO.merge(paidBy);
         billItemDAO.merge(billItems);
         paymentDAO.persist(payment);
@@ -381,7 +380,7 @@ public class FinanceServiceImpl implements FinanceService {
             String item = "<tr>";
             item += "<td>" + billItem.getName() + "</td>";
             item += "<td>" + billItem.getUsage() + "</td>";
-            item += "<td>" + billItem.getOverDueDays(new Date()) + "</td>";
+            item += "<td>" + billItem.getOverDueDays() + "</td>";
             item += "<td>" + billItem.getAmount().subtract(billItem.getOverDueFee()) + "</td>";
             item += "<td>" + billItem.getOverDueFee() + "</td>";
             item += "<td>" + billItem.getAmount() + "</td>";
@@ -421,6 +420,20 @@ public class FinanceServiceImpl implements FinanceService {
     @Override
     public Long getDeviceCount(Community community) {
         return deviceDAO.getCount(community);
+    }
+
+    @Override
+    public List<Gradient> getGradients(Community community) {
+        return gradientDAO.getAll(community);
+    }
+
+    @Override
+    public void makePayment(Integer id) {
+        Owner owner = ownerDAO.get(id);
+        Payment payment = owner.makePayment(null);
+        paymentDAO.persist(payment);
+        ownerDAO.flush();
+        ownerDAO.clear();
     }
 
 }
