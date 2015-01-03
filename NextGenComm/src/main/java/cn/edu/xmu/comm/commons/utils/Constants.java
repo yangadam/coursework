@@ -15,4 +15,7 @@ public interface Constants {
     //cookie key
     public static final String APP_NAME = "NextGenComm";
 
+    //Car Type
+    public static final String RENT = "租用";
+    public static final String TEMP = "临时";
 }

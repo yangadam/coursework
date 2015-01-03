@@ -24,7 +24,7 @@ public class ParkingLot {
      * 包含的停车位
      */
     @OneToMany(mappedBy = "parkingLot", targetEntity = ParkPlace.class, cascade = CascadeType.ALL)
-    private List<ParkPlace> parkPlaces;
+    private List<ParkPlace> parkPlaces = new ArrayList<ParkPlace>();
     /**
      * 所属小区
      */

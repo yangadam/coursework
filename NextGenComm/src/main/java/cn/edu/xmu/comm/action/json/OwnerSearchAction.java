@@ -9,6 +9,8 @@ import com.opensymphony.xwork2.ActionSupport;
 import org.springframework.stereotype.Controller;
 
 import javax.annotation.Resource;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,8 +33,14 @@ public class OwnerSearchAction extends ActionSupport {
 
     @Override
     public String execute() {
+        try {
+            term = URLDecoder.decode(term, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         Community community = (Community) ActionContext.getContext()
                 .getSession().get(Constants.COMMUNITY);
+
         List<String[]> list = propertyService.searchOwner(term, community);
         JSONArray owners = new JSONArray();
         for (String[] aList : list) {

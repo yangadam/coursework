@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +45,9 @@ public class PropertyServiceImpl implements PropertyService {
 
     @Resource
     private StaffDAO staffDAO;
+
+    @Resource
+    private ParkingLotDAO parkingLotDAO;
     //endregion
 
     //region Add Operations
@@ -59,7 +63,48 @@ public class PropertyServiceImpl implements PropertyService {
     public Community addCommunity(String name) {
         Community community = new Community(name);
         communityDAO.persist(community);
+        ParkingLot tempParkingLot = newTempParkingLot(community);
+        ParkingLot rentParkingLot = newRentParkingLot(community);
+        community.getParkingLotList().add(tempParkingLot);
+        community.getParkingLotList().add(rentParkingLot);
+        communityDAO.merge(community);
         return community;
+    }
+
+    /**
+     * 新建临时停车场
+     * @param community 社区
+     * @return 临时停车场
+     */
+    @Transactional(readOnly = false)
+    public ParkingLot newTempParkingLot(Community community) {
+        ParkingLot tempParkingLot = new ParkingLot();
+        tempParkingLot.setType(ParkingLot.ParkingLotStatus.TEMP);
+        tempParkingLot.setFeeType("GradientParkingCalculator");
+        tempParkingLot.setCommunity(community);
+        tempParkingLot.getGradient().put(30, BigDecimal.valueOf(5));
+        tempParkingLot.getGradient().put(90, BigDecimal.valueOf(10));
+        tempParkingLot.getGradient().put(150, BigDecimal.valueOf(15));
+        tempParkingLot.getGradient().put(210, BigDecimal.valueOf(20));
+        tempParkingLot.setName(community.getName() + "临时停车场");
+        parkingLotDAO.persist(tempParkingLot);
+        return tempParkingLot;
+    }
+
+    /**
+     * 新建租用停车场
+     *
+     * @param community 社区
+     * @return 租用停车场
+     */
+    @Transactional(readOnly = false)
+    public ParkingLot newRentParkingLot(Community community) {
+        ParkingLot rentParkingLot = new ParkingLot();
+        rentParkingLot.setType(ParkingLot.ParkingLotStatus.RENT);
+        rentParkingLot.setCommunity(community);
+        rentParkingLot.setName(community.getName() + "租用停车场");
+        parkingLotDAO.persist(rentParkingLot);
+        return rentParkingLot;
     }
 
     /**
@@ -570,6 +615,12 @@ public class PropertyServiceImpl implements PropertyService {
     @Override
     public List<String[]> getNonVacantRoomNos(Integer floorId) {
         return roomDAO.getNonVacantRoomNos(floorId);
+    }
+
+    @Override
+    public Boolean hasOwner(Community community, Integer ownerId) {
+        Owner owner = ownerDAO.get(ownerId);
+        return community.getId() == owner.getCommunity().getId();
     }
 
     //endregion

@@ -85,6 +85,21 @@ public class CarServiceImpl implements CarService {
         parkPlaceDAO.persist(parkPlace);
     }
 
+    /**
+     * 添加车位
+     *
+     * @param parkingLotId 停车场编号
+     * @param position     位置
+     */
+    @Transactional(readOnly = false)
+    public void addParkPlace(Integer parkingLotId, String position) {
+        ParkingLot parkingLot = parkingLotDAO.get(parkingLotId);
+        ParkPlace parkPlace = new ParkPlace(position, parkingLot);
+        parkingLot.getParkPlaces().add(parkPlace);
+        parkPlace.setParkingLot(parkingLot);
+        parkPlaceDAO.persist(parkPlace);
+        parkingLotDAO.merge(parkingLot);
+    }
 
     /**
      * 添加停车账单
@@ -517,4 +532,17 @@ public class CarServiceImpl implements CarService {
         return parkBillDAO.get(id);
     }
 
+    /**
+     * 获取社区中所有的车位
+     *
+     * @param community 社区
+     * @return 所有的车位
+     */
+    public List<ParkPlace> getAllParkPlace(Community community) {
+        ParkingLot parkingLotRent = community.getParkingLot(ParkingLot.ParkingLotStatus.RENT);
+        ParkingLot parkingLotTemp = community.getParkingLot(ParkingLot.ParkingLotStatus.TEMP);
+        List<ParkPlace> resultList = parkingLotRent.getParkPlaces();
+        resultList.addAll(parkingLotTemp.getParkPlaces());
+        return resultList;
+    }
 }

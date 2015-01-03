@@ -320,4 +320,22 @@ public interface CarService {
      * @return 获取该社区中所有已完成的停车单
      */
     List<ParkBill> getAllFinishParkBill(Community community);
+
+    /**
+     * 添加车位
+     *
+     * @param parkingLotId 停车场编号
+     * @param position     位置
+     */
+    void addParkPlace(Integer parkingLotId, String position);
+
+    /**
+     * 获取所有的停车位
+     *
+     * @param community 社区
+     * @return 所有的停车位
+     */
+    List<ParkPlace> getAllParkPlace(Community community);
+
+
 }
