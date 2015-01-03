@@ -3,6 +3,7 @@ package cn.edu.xmu.comm.entity;
 import cn.edu.xmu.comm.commons.calc.CalculatorFactory;
 import cn.edu.xmu.comm.commons.calc.IOverdueFineCalculator;
 import cn.edu.xmu.comm.commons.persistence.DataEntity;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -170,7 +171,7 @@ public class BillItem extends DataEntity {
         String type = community.getOverDueFeeType();
         IOverdueFineCalculator calculator = CalculatorFactory.getCalculator(type);
         overDueFee = calculator.calculate(this);
-        if (overDueFee.compareTo(BigDecimal.ZERO) > 1)
+        if (overDueFee.compareTo(BigDecimal.ZERO) == 1)
             billItemStatus = BillItemStatus.OVERDUE;
         amount = amount.add(overDueFee);
         // 记录更新日期

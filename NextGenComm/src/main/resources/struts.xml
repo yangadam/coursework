@@ -193,6 +193,7 @@
             <result name="input">owner.do</result>
         </action>
 
+
     </package>
 
     <package name="guard" namespace="/guard" extends="default">
@@ -209,6 +210,10 @@
         <action name="tempParkingRegiste" class="tempParkingRegisteAction">
             <result name="rent">/WEB-INF/jsp/test/test.jsp</result>
             <result name="temp">/WEB-INF/jsp/guard/tempParkingRegiste.jsp</result>
+        </action>
+
+        <action name="toTempParkingRegiste" class="toTempParkingRegisteAction">
+            <result>/WEB-INF/jsp/guard/tempParkingRegiste.jsp</result>
         </action>
 
     </package>
@@ -242,7 +247,10 @@
         <action name="ownerSearch" class="ownerSearchAction"/>
         <action name="roomInfo" class="roomInfoAction"/>
         <action name="unchargedParkBill" class="tempParkingUnchargedListAction"/>
-
+        <action name="chargedParkBill" class="tempParkingChargedListAction"/>
+        <action name="tempRegister" class="tempParkingRegisteAction"/>
+        <action name="ownerByRoom" class="ownerByRoomAction"/>
+        <action name="tempParkBillAdd" class="tempParkBillAddAction"/>
     </package>
 
 </struts>

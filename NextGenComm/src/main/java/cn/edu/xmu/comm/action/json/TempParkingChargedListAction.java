@@ -4,7 +4,6 @@ import cn.edu.xmu.comm.commons.utils.Constants;
 import cn.edu.xmu.comm.entity.Community;
 import cn.edu.xmu.comm.entity.ParkBill;
 import cn.edu.xmu.comm.service.CarService;
-import cn.edu.xmu.comm.service.PropertyService;
 import com.alibaba.fastjson.JSONArray;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
@@ -15,28 +14,29 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Created by Roger on 2015/1/3 0003.
+ */
 @Controller
-public class TempParkingUnchargedListAction extends ActionSupport {
+public class TempParkingChargedListAction extends ActionSupport {
 
     @Resource
     private CarService carService;
-
-    @Resource
-    private PropertyService propertyService;
 
     private Map<String, Object> data;
 
     @Override
     public String execute() {
         Community community = (Community) ActionContext.getContext().getSession().get(Constants.COMMUNITY);
-        List<ParkBill> parkBills = carService.getAllUnfinishParkBill(community);
+        List<ParkBill> parkBills = carService.getAllFinishParkBill(community);
         JSONArray aaData = new JSONArray();
         for (ParkBill parkBill : parkBills) {
             JSONArray row = new JSONArray();
             row.add(parkBill.getLicense());
             row.add(parkBill.getOwner().getName());
             row.add(parkBill.getStartTime());
-            row.add(parkBill.getId());
+            row.add(parkBill.getEndTime());
+            row.add(parkBill.getFee());
             aaData.add(row);
         }
         data = new HashMap<String, Object>();
@@ -54,5 +54,6 @@ public class TempParkingUnchargedListAction extends ActionSupport {
     public void setData(Map<String, Object> data) {
         this.data = data;
     }
+
 
 }

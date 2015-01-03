@@ -56,7 +56,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/clerk/checkin.do">
+                    <a href="/clerk/checkIn.do">
                         <i class="icon-question-sign"></i>
                         办理入住
                     </a>

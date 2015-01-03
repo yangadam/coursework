@@ -245,7 +245,8 @@ public class Device extends DataEntity {
     /**
      * 判断(date, value)插入后values是否date递增，value递增
      * 即在所有的date和value中的时间是否相同
-     * @param date 日期
+     *
+     * @param date  日期
      * @param value 读数
      * @return 是否符合要求
      */

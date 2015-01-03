@@ -365,25 +365,31 @@ public class FinanceServiceImpl implements FinanceService {
         String head = "亲爱的" + owner.getName() + "先生/女士:" +
                 "<div>&nbsp; &nbsp; &nbsp; 您好！您在" + owner.getCommunity().getName() +
                 "尚有以下条目未缴费，请尽快缴费，谢谢！</div>";
+        List<BillItem> unpaidBillitem = owner.getUnpaidBills();
         List<BillItem> overDueBills = owner.getOverDueBillItems();
-        String body = "<table border=\"1\">";
+        String body = "<div><table border=\"0.5\">";
         body += "<tr>" +
                 "<td>条目名</td>" +
                 "<td>用量</td>" +
                 "<td>滞纳天数</td>" +
+                "<td>原金额</td>" +
                 "<td>滞纳金金额</td>" +
                 "<td>总金额</td>" +
+                "<td>备注</td>" +
                 "</tr>";
         for (BillItem billItem : overDueBills) {
             String item = "<tr>";
             item += "<td>" + billItem.getName() + "</td>";
             item += "<td>" + billItem.getUsage() + "</td>";
             item += "<td>" + billItem.getOverDueDays(new Date()) + "</td>";
+            item += "<td>" + billItem.getAmount().subtract(billItem.getOverDueFee()) + "</td>";
             item += "<td>" + billItem.getOverDueFee() + "</td>";
             item += "<td>" + billItem.getAmount() + "</td>";
+            item += "<td>" + billItem.getDescription() + "</td>";
             item += "</tr>";
             body += item;
         }
+        body += "</table></div>";
         return head + body;
     }
 

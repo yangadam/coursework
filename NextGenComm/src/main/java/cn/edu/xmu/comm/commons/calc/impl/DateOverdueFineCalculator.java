@@ -4,6 +4,8 @@ import cn.edu.xmu.comm.commons.calc.IOverdueFineCalculator;
 import cn.edu.xmu.comm.entity.BillItem;
 import cn.edu.xmu.comm.entity.Community;
 import cn.edu.xmu.comm.entity.Owner;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -12,6 +14,8 @@ import java.util.Date;
  * Created by Roger on 2015/1/2 0002.
  *
  */
+@Component
+@Lazy
 public class DateOverdueFineCalculator implements IOverdueFineCalculator{
 
     /**

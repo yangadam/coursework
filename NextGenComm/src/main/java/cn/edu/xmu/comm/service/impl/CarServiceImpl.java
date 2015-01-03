@@ -5,7 +5,6 @@ import cn.edu.xmu.comm.dao.*;
 import cn.edu.xmu.comm.entity.*;
 import cn.edu.xmu.comm.service.CarService;
 import com.opensymphony.xwork2.ActionContext;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -169,6 +168,7 @@ public class CarServiceImpl implements CarService {
      * @return Boolean 是否有空车位 True 有空车位
      */
     public Boolean hasFreeTempParkPlace(Community community) {
+        community = communityDAO.get(community.getId());
         Integer sizeTempParkingLot = getCommunityTempParkingLotSize(community);
         Integer sizeTempParking = getSizeOfUnpaidParkingBIll(community);
         return sizeTempParkingLot > sizeTempParking;
@@ -203,6 +203,20 @@ public class CarServiceImpl implements CarService {
         communityDAO.merge(parkBill.getCommunity());
         ownerDAO.merge(parkBill.getOwner());
         return parkBill;
+    }
+
+    /**
+     * 新建临时停车单
+     *
+     * @param community 社区
+     * @param ownerId   业主编号
+     * @param license   车牌
+     * @return parkBill 临时停车单
+     */
+    @Transactional(readOnly = false)
+    public ParkBill addParkBill(Community community, Integer ownerId, String license) {
+        Owner owner = ownerDAO.get(ownerId);
+        return addParkBill(community, owner, license);
     }
 
     /**
@@ -243,6 +257,23 @@ public class CarServiceImpl implements CarService {
         if (parkBill == null)
             return null;
         parkBill = generateParkBill(parkBill);
+        parkBillDAO.merge(parkBill);
+        return parkBill;
+    }
+
+    /**
+     * 完成临时停车单
+     *
+     * @param parkBillId 停车单编号
+     * @return parkBill 完成的临时停车单
+     */
+    @Transactional(readOnly = false)
+    public ParkBill finishParkBill(Integer parkBillId) {
+        ParkBill parkBill = parkBillDAO.get(parkBillId);
+        if (parkBill == null)
+            return null;
+        parkBill = generateParkBill(parkBill);
+        parkBillDAO.merge(parkBill);
         return parkBill;
     }
     //endregion

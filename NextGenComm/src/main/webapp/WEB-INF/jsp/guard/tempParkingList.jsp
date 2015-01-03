@@ -73,13 +73,12 @@
                 <div class="span12">
 
                     <div class="input-append">
-                        <s:form action="tempParkingRegiste">
-                            <s:textfield name="license" type="text" class="m-wrap" placeholder="请输入车牌号"/>
-                            <%--<button type="button" class="btn green btn-subscribe" ><span>车辆登记</span></button>--%>
-                            <button type="submit" class="btn green">
-                                车辆登记
-                            </button>
-                        </s:form>
+                        <s:textfield id="license" type="text" class="m-wrap" placeholder="请输入车牌号"/>
+                        <%--<button type="button" class="btn green btn-subscribe" ><span>车辆登记</span></button>--%>
+                        <button onclick="tempRegister()" type="submit" class="btn green">
+                            车辆登记
+                        </button>
+                        <label id="isTemp"></label>
                     </div>
 
                     <!-- BEGIN TAB PORTLET-->
@@ -159,14 +158,46 @@
     <!-- END PAGE LEVEL PLUGINS -->
     <!-- BEGIN PAGE LEVEL SCRIPTS -->
     <script src="../../../custom/js/app.js"></script>
-    <script src="../../../custom/js/tempParkingRegiste.js"></script>
+        <script src="../../../custom/js/tempChargedParking.js"></script>
+        <script src="../../../custom/js/tempUnchargedParking.js"></script>
     <script>
+        $.extend({
+            StandardPost: function (url, args) {
+                var form = $("<form method='post'></form>"),
+                        input;
+                form.attr({"action": url});
+                $.each(args, function (key, value) {
+                    input = $("<input type='hidden'>");
+                    input.attr({"name": key});
+                    input.val(value);
+                    form.append(input);
+                });
+                form.submit();
+            }
+        });
         jQuery(document).ready(function () {
             App.init();
             $(".page-sidebar-menu .title:contains('停车管理')").closest(
                     "li").addClass("active");
-            TableEditable.init();
+            FinishedParkBillTale.init();
+            UnfinishedParkBillTale.init();
         });
+        function tempRegister() {
+            if ($("#license").val() == "") {
+                return;
+            }
+            license_u = $("#license").val();
+            license_u = encodeURI(encodeURI(license_u));
+            $.getJSON("tempRegister.do?license=" + license_u, function (data) {
+                if (data["TYPE"] == "RENT") {
+                    $("#isTemp").text($("#license").val() + "为小区内车辆");
+                    $("#license").val("");
+                }
+                else if (data["TYPE"] == "TEMP") {
+                    $.StandardPost('toTempParkingRegiste.do', {license: $("#license").val()});
+                }
+            });
+        }
     </script>
     <!-- END JAVASCRIPTS -->
 

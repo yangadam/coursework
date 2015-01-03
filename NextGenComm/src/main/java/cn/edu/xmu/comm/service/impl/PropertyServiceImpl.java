@@ -74,10 +74,9 @@ public class PropertyServiceImpl implements PropertyService {
     @Override
     @Transactional(readOnly = false)
     public Building addBuilding(Integer no, Integer floorCount, Community community) {
-        Community community1 = communityDAO.get(community.getId());
-//        communityDAO.refresh(community1);
+        community = communityDAO.get(community.getId());
         Building building = new Building(no, floorCount);
-        community1.addBuilding(building);
+        community.addBuilding(building);
         buildingDAO.persist(building);
         return building;
     }
@@ -590,6 +589,12 @@ public class PropertyServiceImpl implements PropertyService {
     @Transactional(readOnly = false)
     public void delAllStaff(Community community) {
         staffDAO.delete(community);
+    }
+
+    @Override
+    public Boolean hasOwner(Community community, Integer ownerId) {
+        Owner owner = ownerDAO.get(ownerId);
+        return community.getId() == owner.getCommunity().getId();
     }
     //endregion
 

@@ -2,6 +2,7 @@ package cn.edu.xmu.comm.action;
 
 import cn.edu.xmu.comm.commons.exception.MailException;
 import cn.edu.xmu.comm.commons.utils.MailUtils;
+import cn.edu.xmu.comm.dao.OwnerDAO;
 import cn.edu.xmu.comm.entity.*;
 import cn.edu.xmu.comm.service.CarService;
 import cn.edu.xmu.comm.service.FinanceService;
@@ -33,9 +34,13 @@ public class TestAction extends ActionSupport {
     @Resource
     private FinanceService financeService;
 
+    @Resource
+    private OwnerDAO ownerDAO;
+
     @Override
     public String execute() {
         Owner owner = propertyService.getOwner("陆垚杰");
+        Community community = propertyService.getCommunity("五缘公寓");
         ActionContext.getContext().getSession().put("USER", owner);
         //addProperty();
         //AddDeviceValue();
@@ -46,9 +51,26 @@ public class TestAction extends ActionSupport {
         //testOrder();
         //addBillItems(owner);
         //addParkingLot();
-        financeService.addBillItem();
-        SendMail();
+        //financeService.addBillItem();
+        //SendMail();
+        //addParkingLot();
+        //newParkBill(owner, community);
+        try {
+            testAddRoom();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return SUCCESS;
+    }
+
+    public void testAddRoom() throws Exception {
+        Community community = propertyService.getCommunity("五缘公寓");
+        Building building = propertyService.getBuildingByNo(3, community);
+        Floor floor = propertyService.getFloorByNo(1, building);
+        Room room = propertyService.addRoom("101", 100.0, floor);
+        Owner owner = propertyService.getOwner("lyj");
+        owner.getRoomList().add(room);
+        ownerDAO.merge(owner);
     }
 
     public void SendMail() {
@@ -140,31 +162,30 @@ public class TestAction extends ActionSupport {
         }
     }
 
-    public void addProperty() {
-        Community community = propertyService.getCommunity("五缘公寓");
-        List<Building> buildingList = addBuildings(community);
-        for (Building building: buildingList) {
-            List<Floor> floorList = addFloors(building);
-            for (Floor floor : floorList) {
-                List<Room> roomList = addRooms(floor);
-            }
-        }
-        propertyService.initialDefaultDevice(community, CountShareCalculator.class.getSimpleName());
+//    public void addProperty() {
+//        Community community = propertyService.getCommunity("五缘公寓");
+//        List<Building> buildingList = addBuildings(community);
+//        for (Building building: buildingList) {
+//            List<Floor> floorList = addFloors(building);
+//            for (Floor floor : floorList) {
+//                List<Room> roomList = addRooms(floor);
+//            }
+//        }
+//        propertyService.initialDefaultDevice(community, CountShareCalculator.class.getSimpleName());
+//
+//    }
 
-    }
-
-    public List<Building> addBuildings(Community community) {
+    public Building addBuildings(Community community) {
         return propertyService.addBuilding(1, 10, community);
     }
 
-    public List<Floor> addFloors(Building building) {
-        return propertyService.addFloorBatch(1, 5, building);
-    }
+//    public List<Floor> addFloors(Building building) {
+//        return propertyService.addFloorBatch(1, 5, building);
+//    }
 
     public List<Room> addRooms(Floor floor) {
         return propertyService.addRoomBatch(1, 5, 50.0, floor);
     }
->>>>>>> develop
 
     //region Test CarService
     public void testIsRentCar() {
