@@ -120,6 +120,12 @@
             <result name="input">staff.do</result>
         </action>
 
+        <!--临时的打印停车费的界面，先填在Director目录下-->
+        <action name="tempParkingPaying" class="tempParkingPaying">
+            <result type="redirect">tempParkingPaying.do</result>
+            <result name="input">tempParkingPaying.do</result>
+        </action>
+
     </package>
 
     <package name="clerk" namespace="/clerk" extends="default">
@@ -163,6 +169,15 @@
         <action name="doCheckIn" class="checkInAction">
             <result>checkin.do</result>
         </action>
+
+    </package>
+
+    <package name="guard" namespace="/guard" extends="default">
+
+        <global-results>
+            <result name="login" type="redirect">/rememberMeLogin.do</result>
+            <result name="unauthorized" type="redirect">/rememberMeLogin.do</result>
+        </global-results>
 
     </package>
 
