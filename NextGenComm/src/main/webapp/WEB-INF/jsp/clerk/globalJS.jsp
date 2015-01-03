@@ -10,3 +10,4 @@
 <script src="../../../global/js/excanvas.min.js"></script>
 <script src="../../../global/js/respond.min.js"></script>
 <![endif]-->
+<script src="../../../custom/js/app.js" type="text/javascript"></script>

@@ -44,6 +44,24 @@ public class ParkPlace {
     private ParkPlaceStatus parkPlaceStatus;
     //endregion
 
+    public ParkPlace() {
+
+    }
+
+    public ParkPlace(String position, ParkingLot parkingLot, BigDecimal monthlyFee) {
+        this.position = position;
+        this.parkingLot = parkingLot;
+        this.parkPlaceStatus = ParkPlaceStatus.FREE;
+        this.monthlyFee = monthlyFee;
+    }
+
+    public ParkPlace(String position, ParkingLot parkingLot) {
+        this.position = position;
+        this.parkingLot = parkingLot;
+        this.parkPlaceStatus = ParkPlaceStatus.FREE;
+        this.monthlyFee = BigDecimal.ZERO;
+    }
+
     //region Update ParkPlace Status
     /**
      * 锁定车位

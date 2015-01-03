@@ -45,6 +45,12 @@
                         房间管理
                     </a>
                 </li>
+                <li>
+                    <a href="/director/parkingLot.do">
+                        <i class="icon-list-ul"></i>
+                        停车场管理
+                    </a>
+                </li>
             </ul>
         </li>
 
