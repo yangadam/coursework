@@ -157,7 +157,7 @@ public abstract class Property extends DataEntity {
         if (device.getNo() == null) {
             device.setNo(unityCode + "#" + deviceList.size());
         }
-        deviceList.add(device);
+//        deviceList.add(device);
     }
 
     //region Getters and Setters

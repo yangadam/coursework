@@ -337,4 +337,9 @@ public interface PropertyService {
 
     List<String[]> getNonVacantRoomNos(Integer floorId);
 
+    void delAllOwner(Community community);
+
+    void delAllRoom(Community community);
+
+    void delAllStaff(Community community);
 }

@@ -23,7 +23,7 @@
         <global-results>
             <result name="login" type="redirect">login.do</result>
             <result name="unauthorized" type="redirect">login.do</result>
-            <result name="admin" type="redirect">test.do</result>
+            <result name="admin" type="redirect">admin.do</result>
             <result name="director" type="redirect">director.do</result>
             <result name="clerk" type="redirect">clerk.do</result>
             <result name="guard" type="redirect">guard.do</result>
@@ -79,6 +79,11 @@
         </action>
 
         <action name="addComm" class="commAddAction">
+            <result type="redirect">community.do</result>
+            <result name="input">community.do</result>
+        </action>
+
+        <action name="delComm" class="commDelAction">
             <result type="redirect">community.do</result>
             <result name="input">community.do</result>
         </action>
@@ -155,6 +160,33 @@
             <result name="input">room.do</result>
         </action>
 
+
+        <action name="checkin">
+            <result>/WEB-INF/jsp/clerk/checkin.jsp</result>
+        </action>
+
+        <action name="doCheckIn" class="checkInAction">
+            <result name="input">checkin.do</result>
+            <result type="redirect">checkin.do</result>
+        </action>
+
+        <action name="change">
+            <result>/WEB-INF/jsp/clerk/change.jsp</result>
+        </action>
+
+        <action name="input">
+            <result>/WEB-INF/jsp/clerk/inputDevice.jsp</result>
+        </action>
+
+        <action name="owner">
+            <result>/WEB-INF/jsp/clerk/owner.jsp</result>
+        </action>
+
+        <action name="addOwner" class="ownerAddAction">
+            <result type="redirect">owner.do</result>
+            <result name="input">owner.do</result>
+        </action>
+
     </package>
 
     <package name="guard" namespace="/guard" extends="default">
@@ -192,11 +224,17 @@
         <action name="listComm" class="commListAction"/>
         <action name="listBuild" class="buildListAction"/>
         <action name="listDir" class="directorListAction"/>
+        <action name="listOwner" class="ownerListAction"/>
         <action name="commNames" class="commNameAction"/>
         <action name="buildNo" class="buildNoAction"/>
         <action name="floorNo" class="floorNoAction"/>
         <action name="listRoom" class="roomListAction"/>
         <action name="listStaff" class="staffListAction"/>
+        <action name="deviceValue" class="deviceValueAction"/>
+        <action name="vacantRoomNo" class="roomNoAction" method="vacant"/>
+        <action name="nonVacantRoomNo" class="roomNoAction" method="noneVacant"/>
+        <action name="ownerSearch" class="ownerSearchAction"/>
+        <action name="roomInfo" class="roomInfoAction"/>
         <action name="unchargedParkBill" class="tempParkingUnchargedListAction"/>
 
     </package>

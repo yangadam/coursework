@@ -69,6 +69,11 @@
                 </li>
             </ul>
         </li>
-
+        <li class="">
+            <a href="/clerk/input.do">
+                <i class="icon-home"></i>
+                <span class="title">水电读数</span>
+            </a>
+        </li>
     </ul>
 </div>

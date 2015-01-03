@@ -156,6 +156,7 @@ public class BaseDAO<T, I extends Serializable> {
      */
     public void delete(T entity) {
         currentSession().delete(entity);
+        currentSession().flush();
     }
 
     /**
@@ -166,6 +167,7 @@ public class BaseDAO<T, I extends Serializable> {
     public void delete(I id) {
         String ql = "delete from " + clazzName + " t where t.id = :p1";
         createQuery(ql, new Parameter(id)).executeUpdate();
+        currentSession().flush();
     }
 
     /**

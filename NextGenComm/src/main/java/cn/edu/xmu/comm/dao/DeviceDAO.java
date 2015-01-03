@@ -48,4 +48,9 @@ public class DeviceDAO extends BaseDAO<Device, Integer> {
     public List<Device> getCanCalculateDevice(Community community) {
         return searchByQL("from Device where community = :p1 and isCalculated = :p2", new Parameter(community, false));
     }
+
+    public Device getByNo(Community community, String deviceNo) {
+        String ql = "select d from Device d where d.community = :p1 and d.deviceNo = :p2 and d.isCalculated = :p3";
+        return getByQL(ql, new Parameter(community, deviceNo, true));
+    }
 }

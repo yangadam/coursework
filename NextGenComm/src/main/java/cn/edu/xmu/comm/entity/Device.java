@@ -7,8 +7,10 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.*;
-import java.util.concurrent.ExecutionException;
+import java.util.Date;
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 /**
  * 设备类
@@ -360,17 +362,7 @@ public class Device extends DataEntity {
         this.shareType = shareType;
     }
 
-    /**
-     * 设置读数表
-     *
-     * @param values 读数表
-     * 保护当前读数和上月读数只能通过添加值和删除值实现
-     */
-    private void setValues(SortedMap<Date, BigDecimal> values) {
-        this.values = values;
-    }
-
-    private BigDecimal getCurrentValue() {
+    public BigDecimal getCurrentValue() {
         return currentValue;
     }
 
@@ -400,6 +392,16 @@ public class Device extends DataEntity {
 
     public SortedMap<Date, BigDecimal> getValues() {
         return values;
+    }
+
+    /**
+     * 设置读数表
+     *
+     * @param values 读数表
+     * 保护当前读数和上月读数只能通过添加值和删除值实现
+     */
+    private void setValues(SortedMap<Date, BigDecimal> values) {
+        this.values = values;
     }
 
     public Boolean getIsCalculated() {

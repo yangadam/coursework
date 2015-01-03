@@ -91,7 +91,9 @@ public class SystemServiceImpl implements SystemService {
     @Override
     @Transactional(readOnly = false)
     public void logout(User user) {
-        clearRememberMeToken(user.getId());
+        if (user != null) {
+            clearRememberMeToken(user.getId());
+        }
     }
 
     /**

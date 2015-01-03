@@ -2,48 +2,45 @@ package cn.edu.xmu.comm.action.json;
 
 import cn.edu.xmu.comm.commons.utils.Constants;
 import cn.edu.xmu.comm.entity.Community;
+import cn.edu.xmu.comm.entity.Device;
+import cn.edu.xmu.comm.service.FinanceService;
 import cn.edu.xmu.comm.service.PropertyService;
-import com.alibaba.fastjson.JSONArray;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import org.springframework.stereotype.Controller;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
  * description
  *
  * @author Mengmeng Yang
- * @version 1/2/2015 0002
+ * @version 1/3/2015 0003
  */
 @Controller
-public class OwnerSearchAction extends ActionSupport {
+public class DeviceValueAction extends ActionSupport {
+
+    @Resource
+    private FinanceService financeService;
 
     @Resource
     private PropertyService propertyService;
 
     private Map<String, Object> data;
 
-    private String term;
+    private String deviceNo;
 
     @Override
     public String execute() {
-        Community community = (Community) ActionContext.getContext()
-                .getSession().get(Constants.COMMUNITY);
-        List<String[]> list = propertyService.searchOwner("", community);
-        JSONArray owners = new JSONArray();
-        for (String[] aList : list) {
-            Map<String, Object> row = new HashMap<String, Object>();
-            row.put("id", aList[0]);
-            row.put("name", aList[1]);
-            row.put("username", aList[2]);
-            owners.add(row);
-        }
+        Community community = (Community) ActionContext.getContext().
+                getSession().get(Constants.COMMUNITY);
+        Device device = financeService.getDeviceByNo(community, deviceNo);
         data = new HashMap<String, Object>();
-        data.put("owners", owners);
+        data.put("id", device.getId());
+        data.put("lastValue", device.getCurrentValue());
+        data.put("type", device.getType());
         return SUCCESS;
     }
 
@@ -55,11 +52,11 @@ public class OwnerSearchAction extends ActionSupport {
         this.data = data;
     }
 
-    public String getTerm() {
-        return term;
+    public String getDeviceNo() {
+        return deviceNo;
     }
 
-    public void setTerm(String term) {
-        this.term = term;
+    public void setDeviceNo(String deviceNo) {
+        this.deviceNo = deviceNo;
     }
 }
