@@ -27,6 +27,7 @@
             <result name="director" type="redirect">director.do</result>
             <result name="clerk" type="redirect">clerk.do</result>
             <result name="guard" type="redirect">guard.do</result>
+            <result name="owner" type="redirect">owner.do</result>
         </global-results>
     </package>
 
@@ -62,9 +63,14 @@
             <result>/WEB-INF/jsp/guard/home.jsp</result>
         </action>
 
+        <action name="owner">
+            <result>/WEB-INF/jsp/owner/home.jsp</result>
+        </action>
+
         <action name="test" class="testAction">
             <result>/WEB-INF/jsp/test/test.jsp</result>
         </action>
+
         <!-- Configure File Action -->
         <action name="uploadPro" class="cn.edu.xmu.comm.action.UploadAction">
             <param name="filesPath">/uploadFiles</param>
@@ -177,13 +183,13 @@
         </action>
 
 
-        <action name="checkIn">
+        <action name="checkin">
             <result>/WEB-INF/jsp/clerk/checkin.jsp</result>
         </action>
 
         <action name="doCheckIn" class="checkInAction">
-            <result name="input">checkIn.do</result>
-            <result type="redirect">checkIn.do</result>
+            <result name="input">checkin.do</result>
+            <result type="redirect">checkin.do</result>
         </action>
 
         <action name="change">
@@ -242,6 +248,22 @@
 
         <action name="toTempParkingRegiste" class="toTempParkingRegisteAction">
             <result>/WEB-INF/jsp/guard/tempParkingRegiste.jsp</result>
+        </action>
+
+    </package>
+
+    <package name="owner" namespace="/owner" extends="default">
+        <global-results>
+            <result name="login" type="redirect">/rememberMeLogin.do</result>
+            <result name="unauthorized" type="redirect">/rememberMeLogin.do</result>
+        </global-results>
+
+        <action name="billlist" class="billListAction">
+            <result>/WEB-INF/jsp/owner/billlist.jsp</result>
+        </action>
+
+        <action name="makePayment" class="makePaymentAction">
+            <result>/owner.do</result>
         </action>
 
     </package>

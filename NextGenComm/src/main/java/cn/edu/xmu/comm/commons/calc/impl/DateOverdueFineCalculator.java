@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * Created by Roger on 2015/1/2 0002.
@@ -25,11 +24,10 @@ public class DateOverdueFineCalculator implements IOverdueFineCalculator{
      */
     @Override
     public BigDecimal calculate(BillItem billItem) {
-        Date date = new Date();
         Owner owner = billItem.getOwner();
         Community community = owner.getCommunity();
         BigDecimal rate = community.getOverDueFeeRate();
-        BigDecimal diffDays = BigDecimal.valueOf(billItem.getOverDueDays(date));
+        BigDecimal diffDays = BigDecimal.valueOf(billItem.getOverDueDays());
         return diffDays.multiply(rate);
     }
 

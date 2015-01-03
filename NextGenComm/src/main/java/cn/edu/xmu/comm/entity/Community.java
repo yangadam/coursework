@@ -109,7 +109,7 @@ public class Community extends Property {
     public Community(String name) {
         super();
         this.name = name;
-        this.unityCode = "C";
+        this.unityCode = "";
     }
 
     @Override

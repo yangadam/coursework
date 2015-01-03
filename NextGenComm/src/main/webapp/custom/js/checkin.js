@@ -37,7 +37,6 @@ var CheckIn = function () {
                     message += "\n请选择业主";
                 }
                 if (message == "") {
-                    alert(message);
                     $.post("doCheckIn.do?roomId=" + roomId + "&ownerId=" + ownerId);
                 } else {
                     alert(message);

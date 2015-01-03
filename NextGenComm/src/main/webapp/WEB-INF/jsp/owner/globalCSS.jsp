@@ -7,5 +7,3 @@
 <link href="../../../global/css/default.css" rel="stylesheet" type="text/css" id="style_color"/>
 <link href="../../../global/css/uniform.default.css" rel="stylesheet" type="text/css"/>
 <link href="../../../global/css/bootstrap-modal.css" rel="stylesheet" type="text/css"/>
-
-<script src="../../../custom/js/app.js" type="text/javascript"></script>

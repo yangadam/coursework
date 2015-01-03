@@ -10,7 +10,6 @@ import java.util.Date;
 
 /**
  * Created by Roger on 2014/12/5 0005.
- *
  */
 @Entity
 public class BillItem extends DataEntity {
@@ -22,15 +21,18 @@ public class BillItem extends DataEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     /**
      * 账单项名称
      */
     @Column(nullable = false)
     private String name;
+
     /**
      * 账单项描述
      */
     private String description;
+
     /**
      * 金额
      */
@@ -65,7 +67,6 @@ public class BillItem extends DataEntity {
      * 缴费期限 超过该间隔为超期
      */
     private Integer duration;
-
     /**
      * 滞纳金金额
      */
@@ -146,10 +147,11 @@ public class BillItem extends DataEntity {
 
     /**
      * 计算超期天数
-     * @param current 当前日期
+     *
      * @return 超期天数
      */
-    public Integer getOverDueDays(Date current) {
+    public Integer getOverDueDays() {
+        Date current = new Date();
         Integer overDueDays = getIntervalDays(this.getCreateDate(), current) - duration;
         if (overDueDays <= 0)
             return 0;
@@ -166,14 +168,12 @@ public class BillItem extends DataEntity {
         // 若账单已经付款 或者 更新日期小于1天则不计算
         if (billItemStatus == BillItemStatus.PAID /*|| getIntervalDays(getUpdateDate(), new Date()) < 1*/)
             return overDueFee;
-        amount = amount.subtract(overDueFee);
         Community community = owner.getCommunity();
         String type = community.getOverDueFeeType();
         IOverdueFineCalculator calculator = CalculatorFactory.getCalculator(type);
         overDueFee = calculator.calculate(this);
         if (overDueFee.compareTo(BigDecimal.ZERO) == 1)
             billItemStatus = BillItemStatus.OVERDUE;
-        amount = amount.add(overDueFee);
         // 记录更新日期
         this.setUpdateDate(new Date());
         return overDueFee;

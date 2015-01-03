@@ -73,7 +73,7 @@ public class Floor extends Property {
     public void addRoom(Room room) {
         room.setFloor(this);
         room.setUnityCode(unityCode + "R" + room.getNo());
-        room.setFullName(no + "号楼" + room.getNo());
+        room.setFullName(building.getNo() + "号楼" + room.getNo());
         room.registerRoom();
         roomList.add(room);
     }

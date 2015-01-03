@@ -436,18 +436,25 @@ public class Device extends DataEntity {
      * 设备类型
      */
     public enum DeviceType {
-        WATER("水表"), ELECTRICITY("电表");
+        WATER("水表", "水费"), ELECTRICITY("电表", "电费");
 
         private String typeName;
+        private String feeType;
 
-        private DeviceType(String typeName) {
+        private DeviceType(String typeName, String feeType) {
             this.typeName = typeName;
+            this.feeType = feeType;
+        }
+
+        public String getFeeType() {
+            return feeType;
         }
 
         @Override
         public String toString() {
             return typeName;
         }
+
     }
 
 }

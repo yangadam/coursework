@@ -6,6 +6,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -128,9 +129,10 @@ public class Owner extends User {
      * @param billItems 账单
      * @return 支付记录
      */
-    public Payment payBillItems (User receiveBy, List<BillItem> billItems) {
+    public Payment makePayment(Staff receiveBy, List<BillItem> billItems) {
+        unpaidBills.removeAll(billItems);
         for (BillItem billItem : billItems) {
-            unpaidBills.remove(billItem);
+            billItem.setOwner(null);
             billItem.setBillItemStatus(BillItem.BillItemStatus.PAID);
         }
         return new Payment(this, receiveBy, billItems);
@@ -196,6 +198,19 @@ public class Owner extends User {
 
     public void setPaymentList(List<Payment> paymentList) {
         this.paymentList = paymentList;
+    }
+
+    public BigDecimal getTotal() {
+        BigDecimal total = BigDecimal.ZERO;
+        for (BillItem billItem : unpaidBills) {
+            total = total.add(billItem.getAmount());
+            total = total.add(billItem.getOverDueFee());
+        }
+        return total;
+    }
+
+    public Payment makePayment(Staff recieveBy) {
+        return makePayment(recieveBy, unpaidBills);
     }
 
     //endregion
