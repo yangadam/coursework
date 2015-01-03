@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -212,7 +211,7 @@ public class PropertyServiceImpl implements PropertyService {
      */
     @Override
     @Transactional(readOnly = false)
-    public Device addDevice(String no, Property property, BigDecimal value, Device.DeviceType type) {
+    public Device addDevice(String no, Property property, Double value, Device.DeviceType type) {
         Device device = new Device(no, property, value, type);
         deviceDAO.persist(device);
         return device;
@@ -230,7 +229,7 @@ public class PropertyServiceImpl implements PropertyService {
      */
     @Override
     @Transactional(readOnly = false)
-    public Device addDevice(String no, Property property, BigDecimal value, Device.DeviceType type, String shareType) {
+    public Device addDevice(String no, Property property, Double value, Device.DeviceType type, String shareType) {
         Device device = new Device(no, property, value, type, shareType);
         deviceDAO.persist(device);
         return device;
@@ -246,7 +245,7 @@ public class PropertyServiceImpl implements PropertyService {
     @Transactional(readOnly = false)
     public void initialDefaultDevice(Community community, String shareType) {
         community = communityDAO.get(community.getId());
-        BigDecimal zero = BigDecimal.ZERO;
+        Double zero = 0.0;
         if (community.getDeviceList().isEmpty()) {
             addDevice(community.getUnityCode() + "#1", community, zero, Device.DeviceType.WATER, shareType);
             addDevice(community.getUnityCode() + "#2", community, zero, Device.DeviceType.ELECTRICITY, shareType);
@@ -265,7 +264,7 @@ public class PropertyServiceImpl implements PropertyService {
     @Override
     @Transactional(readOnly = false)
     public void initialDefaultDevice(Building building, String shareType) {
-        BigDecimal zero = BigDecimal.ZERO;
+        Double zero = 0.0;
         if (building.getDeviceList().isEmpty()) {
             addDevice(building.getUnityCode() + "#1", building, zero, Device.DeviceType.WATER, shareType);
             addDevice(building.getUnityCode() + "#2", building, zero, Device.DeviceType.ELECTRICITY, shareType);
@@ -284,7 +283,7 @@ public class PropertyServiceImpl implements PropertyService {
     @Override
     @Transactional(readOnly = false)
     public void initialDefaultDevice(Floor floor, String shareType) {
-        BigDecimal zero = BigDecimal.ZERO;
+        Double zero = 0.0;
         if (floor.getDeviceList().isEmpty()) {
             addDevice(floor.getUnityCode() + "#1", floor, zero, Device.DeviceType.WATER, shareType);
             addDevice(floor.getUnityCode() + "#2", floor, zero, Device.DeviceType.ELECTRICITY, shareType);
@@ -302,7 +301,7 @@ public class PropertyServiceImpl implements PropertyService {
     @Override
     @Transactional(readOnly = false)
     public void initialDefaultDevice(Room room) {
-        BigDecimal zero = BigDecimal.ZERO;
+        Double zero = 0.0;
         if (room.getDeviceList().isEmpty()) {
             addDevice(room.getUnityCode() + "#1", room, zero, Device.DeviceType.WATER);
             addDevice(room.getUnityCode() + "#2", room, zero, Device.DeviceType.ELECTRICITY);
@@ -574,23 +573,6 @@ public class PropertyServiceImpl implements PropertyService {
         return roomDAO.getNonVacantRoomNos(floorId);
     }
 
-    @Override
-    @Transactional(readOnly = false)
-    public void delAllOwner(Community community) {
-        ownerDAO.delete(community);
-    }
-
-    @Override
-    @Transactional(readOnly = false)
-    public void delAllRoom(Community community) {
-        roomDAO.delete(community);
-    }
-
-    @Override
-    @Transactional(readOnly = false)
-    public void delAllStaff(Community community) {
-        staffDAO.delete(community);
-    }
     //endregion
 
 }

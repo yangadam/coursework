@@ -3,6 +3,7 @@ package cn.edu.xmu.comm.entity;
 import cn.edu.xmu.comm.commons.calc.CalculatorFactory;
 import cn.edu.xmu.comm.commons.calc.IOverdueFineCalculator;
 import cn.edu.xmu.comm.commons.persistence.DataEntity;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -39,7 +40,7 @@ public class BillItem extends DataEntity {
      * 用量
      */
     @Column(name = "musage", nullable = true)
-    private BigDecimal usage;
+    private Double usage;
 
     /**
      * 账单项状态，PAID：已付款账单项、UNPAID：未付款账单项、OVERDUE：超期未付款
@@ -76,7 +77,7 @@ public class BillItem extends DataEntity {
         this.billItemStatus = BillItemStatus.UNPAID;
     }
 
-    public BillItem(String name, String description, BigDecimal amount, BigDecimal usage, Owner owner) {
+    public BillItem(String name, String description, BigDecimal amount, Double usage, Owner owner) {
         super.prePersist();
         this.name = name;
         this.description = description;
@@ -88,7 +89,7 @@ public class BillItem extends DataEntity {
         setBillItemStatus(BillItemStatus.UNPAID);
     }
 
-    public BillItem(String name, String description, BigDecimal amount, BigDecimal usage, Owner owner, Integer duration) {
+    public BillItem(String name, String description, BigDecimal amount, Double usage, Owner owner, Integer duration) {
         this(name, description, amount, usage, owner);
         this.duration = duration;
     }
@@ -215,11 +216,11 @@ public class BillItem extends DataEntity {
         this.amount = amount;
     }
 
-    public BigDecimal getUsage() {
+    public Double getUsage() {
         return usage;
     }
 
-    public void setUsage(BigDecimal usage) {
+    public void setUsage(Double usage) {
         this.usage = usage;
     }
 

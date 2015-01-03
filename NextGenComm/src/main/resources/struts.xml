@@ -160,7 +160,6 @@
             <result name="input">room.do</result>
         </action>
 
-
         <action name="checkin">
             <result>/WEB-INF/jsp/clerk/checkin.jsp</result>
         </action>
@@ -178,6 +177,16 @@
             <result>/WEB-INF/jsp/clerk/inputDevice.jsp</result>
         </action>
 
+        <action name="inputValue" class="inputValueAction">
+            <result name="input">input.do</result>
+            <result type="redirect">input.do</result>
+        </action>
+
+        <action name="updateValue" class="updateValueAction">
+            <result name="input">input.do</result>
+            <result type="redirect">input.do</result>
+        </action>
+
         <action name="owner">
             <result>/WEB-INF/jsp/clerk/owner.jsp</result>
         </action>
@@ -185,6 +194,15 @@
         <action name="addOwner" class="ownerAddAction">
             <result type="redirect">owner.do</result>
             <result name="input">owner.do</result>
+        </action>
+
+        <action name="calculate" class="calculateAction">
+            <result name="input">input.do</result>
+            <result type="redirect">input.do</result>
+        </action>
+
+        <action name="share">
+            <result>/WEB-INF/jsp/clerk/share.jsp</result>
         </action>
 
     </package>
@@ -234,8 +252,11 @@
         <action name="vacantRoomNo" class="roomNoAction" method="vacant"/>
         <action name="nonVacantRoomNo" class="roomNoAction" method="noneVacant"/>
         <action name="ownerSearch" class="ownerSearchAction"/>
+        <action name="deviceSearch" class="deviceSearchAction"/>
         <action name="roomInfo" class="roomInfoAction"/>
         <action name="unchargedParkBill" class="tempParkingUnchargedListAction"/>
+        <action name="deviceList" class="deviceListAction"/>
+        <action name="count" class="deviceCountAction"/>
 
     </package>
 

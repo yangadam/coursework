@@ -102,21 +102,8 @@ var Change = function () {
                 })
             }
 
-            //function getOwner() {
-            //    $("#owner").empty();
-            //    $.getJSON("/ownerSearch.do?term=owner", function (data) {
-            //        var i;
-            //        for (i = 0; i < data["id"].length; i++) {
-            //            if (curOwnerId != data["id"][i]) {
-            //                $("<option value='" + data["id"][i] + "'>" + data["name"][i] + "&nbsp;&nbsp;" +
-            //                "&nbsp;&nbsp;&lt;" + data["username"][i] + "&gt;" + "</option>").appendTo('#owner');
-            //            }
-            //        }
-            //        ownerId = $("#owner").children('option:selected').val();
-            //    })
-            //}
             function ownerFormatResult(owner) {
-                return "<option value='" + owner["id"] + "'>" + owner["name"] + "&nbsp;&nbsp;" +
+                return "<option onclick(do()) value='" + owner["id"] + "'>" + owner["name"] + "&nbsp;&nbsp;" +
                     "&nbsp;&nbsp;&lt;" + owner["username"] + "&gt;" + "</option>";
             }
 
@@ -127,7 +114,7 @@ var Change = function () {
 
             $("#owner").select2({
                 placeholder: "请指定业主",
-                minimumInputLength: 2,
+                minimumInputLength: 1,
                 ajax: {
                     url: "/ownerSearch.do",
                     dataType: 'json',

@@ -110,7 +110,7 @@ var CheckIn = function () {
 
             $("#owner").select2({
                 placeholder: "请指定业主",
-                minimumInputLength: 2,
+                minimumInputLength: 1,
                 ajax: {
                     url: "/ownerSearch.do",
                     dataType: 'json',

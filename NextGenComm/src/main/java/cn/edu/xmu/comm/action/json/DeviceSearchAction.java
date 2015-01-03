@@ -2,6 +2,7 @@ package cn.edu.xmu.comm.action.json;
 
 import cn.edu.xmu.comm.commons.utils.Constants;
 import cn.edu.xmu.comm.entity.Community;
+import cn.edu.xmu.comm.service.FinanceService;
 import cn.edu.xmu.comm.service.PropertyService;
 import com.alibaba.fastjson.JSONArray;
 import com.opensymphony.xwork2.ActionContext;
@@ -17,10 +18,13 @@ import java.util.Map;
  * description
  *
  * @author Mengmeng Yang
- * @version 1/2/2015 0002
+ * @version 1/3/2015 0003
  */
 @Controller
-public class OwnerSearchAction extends ActionSupport {
+public class DeviceSearchAction extends ActionSupport {
+
+    @Resource
+    private FinanceService financeService;
 
     @Resource
     private PropertyService propertyService;
@@ -33,17 +37,18 @@ public class OwnerSearchAction extends ActionSupport {
     public String execute() {
         Community community = (Community) ActionContext.getContext()
                 .getSession().get(Constants.COMMUNITY);
-        List<String[]> list = propertyService.searchOwner(term, community);
-        JSONArray owners = new JSONArray();
+        List<String[]> list = financeService.searchDevice(term.toUpperCase(), community);
+        JSONArray devices = new JSONArray();
         for (String[] aList : list) {
             Map<String, Object> row = new HashMap<String, Object>();
             row.put("id", aList[0]);
-            row.put("name", aList[1]);
-            row.put("username", aList[2]);
-            owners.add(row);
+            row.put("no", aList[1]);
+            row.put("type", aList[2]);
+            row.put("currentValue", aList[3]);
+            devices.add(row);
         }
         data = new HashMap<String, Object>();
-        data.put("owners", owners);
+        data.put("devices", devices);
         return SUCCESS;
     }
 
@@ -62,4 +67,5 @@ public class OwnerSearchAction extends ActionSupport {
     public void setTerm(String term) {
         this.term = term;
     }
+
 }

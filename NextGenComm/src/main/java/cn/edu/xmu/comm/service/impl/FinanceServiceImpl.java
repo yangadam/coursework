@@ -138,6 +138,8 @@ public class FinanceServiceImpl implements FinanceService {
         List<Owner> allOwner = ownerDAO.getAll(community);
         for (Owner owner : allOwner) {
             owner.generateBill();
+            ownerDAO.flush();
+            ownerDAO.clear();
         }
     }
 
@@ -148,7 +150,7 @@ public class FinanceServiceImpl implements FinanceService {
      * @param value  设备读数
      */
     @Transactional(readOnly = false)
-    public void addDeviceValue(Device device, BigDecimal value) {
+    public void addDeviceValue(Device device, Double value) {
         try {
             device.addValue(new Date(), value);
         } catch (Exception e) {
@@ -165,7 +167,7 @@ public class FinanceServiceImpl implements FinanceService {
      * @param value    设备读数
      */
     @Transactional(readOnly = false)
-    public void addDeviceValue(Integer deviceId, Date date, BigDecimal value) {
+    public void addDeviceValue(Integer deviceId, Date date, Double value) {
         Device device = deviceDAO.get(deviceId);
         addDeviceValue(device, date, value);
         deviceDAO.merge(device);
@@ -179,7 +181,7 @@ public class FinanceServiceImpl implements FinanceService {
      * @param value  设备读数
      */
     @Transactional(readOnly = false)
-    public void addDeviceValue(Device device, Date date, BigDecimal value) {
+    public void addDeviceValue(Device device, Date date, Double value) {
         try {
             device.addValue(date, value);
         } catch (DeviceException e) {
@@ -199,14 +201,12 @@ public class FinanceServiceImpl implements FinanceService {
         deviceDAO.merge(device);
     }
 
+
     @Transactional(readOnly = false)
-    public void updateDeviceValue(Integer id, Date date, BigDecimal value) {
+    public void updateDeviceValue(Integer id, Double value) {
         Device device = deviceDAO.get(id);
-        try {
-            device.updateValue(date, value);
-        } catch (DeviceException e) {
-            e.printStackTrace();
-        }
+        device.updateLastValue(value);
+        deviceDAO.merge(device);
     }
 
     /**
@@ -215,7 +215,7 @@ public class FinanceServiceImpl implements FinanceService {
      * @param device 设备
      * @return 设备的所有读数
      */
-    public SortedMap<Date, BigDecimal> getDeviceValue(Device device) {
+    public SortedMap<Date, Double> getDeviceValue(Device device) {
         return device.getValues();
     }
 
@@ -225,7 +225,7 @@ public class FinanceServiceImpl implements FinanceService {
      * @param deviceId 设备编号
      * @return 设备的所有读数
      */
-    public SortedMap<Date, BigDecimal> getDeviceValue(Integer deviceId) {
+    public SortedMap<Date, Double> getDeviceValue(Integer deviceId) {
         return getDeviceValue(deviceDAO.get(deviceId));
     }
 
@@ -387,17 +387,9 @@ public class FinanceServiceImpl implements FinanceService {
         return head + body;
     }
 
-    @Transactional(readOnly = false)
-    public void addBillItem() {
-        Owner owner = ownerDAO.get(4);
-        BillItem billItem = new BillItem("水费", "描述", BigDecimal.valueOf(100), BigDecimal.valueOf(500), owner, 2);
-        owner.getUnpaidBills().add(billItem);
-        billItemDAO.merge(billItem);
-        ownerDAO.merge(owner);
-    }
-
     /**
      * 获取已录入的设备
+     *
      * @param community 社区
      * @return 设备列表
      */
@@ -408,6 +400,21 @@ public class FinanceServiceImpl implements FinanceService {
     @Override
     public Device getDeviceByNo(Community community, String deviceNo) {
         return deviceDAO.getByNo(community, deviceNo);
+    }
+
+    @Override
+    public List<String[]> searchDevice(String term, Community community) {
+        return deviceDAO.buzzSearch(term, community);
+    }
+
+    @Override
+    public Long getInputDeviceCount(Community community) {
+        return deviceDAO.getInputCount(community);
+    }
+
+    @Override
+    public Long getDeviceCount(Community community) {
+        return deviceDAO.getCount(community);
     }
 
 }

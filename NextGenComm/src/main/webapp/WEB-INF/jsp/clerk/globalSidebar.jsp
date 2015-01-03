@@ -70,10 +70,25 @@
             </ul>
         </li>
         <li class="">
-            <a href="/clerk/input.do">
+            <a href="">
                 <i class="icon-home"></i>
-                <span class="title">水电读数</span>
+                <span class="title">费用管理</span>
+                <span class="arrow "></span>
             </a>
+            <ul class="sub-menu">
+                <li class="">
+                    <a href="/clerk/input.do">
+                        <i class="icon-list-ul"></i>
+                        水电录入计算
+                    </a>
+                </li>
+                <li>
+                    <a href="/clerk/share.do">
+                        <i class="icon-question-sign"></i>
+                        业主公摊信息
+                    </a>
+                </li>
+            </ul>
         </li>
     </ul>
 </div>

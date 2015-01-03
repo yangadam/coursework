@@ -2,7 +2,8 @@ package cn.edu.xmu.comm.action.json;
 
 import cn.edu.xmu.comm.commons.utils.Constants;
 import cn.edu.xmu.comm.entity.Community;
-import cn.edu.xmu.comm.service.PropertyService;
+import cn.edu.xmu.comm.entity.Device;
+import cn.edu.xmu.comm.service.FinanceService;
 import com.alibaba.fastjson.JSONArray;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
@@ -17,33 +18,35 @@ import java.util.Map;
  * description
  *
  * @author Mengmeng Yang
- * @version 1/2/2015 0002
+ * @version 1/3/2015 0003
  */
 @Controller
-public class OwnerSearchAction extends ActionSupport {
+public class DeviceListAction extends ActionSupport {
 
     @Resource
-    private PropertyService propertyService;
+    private FinanceService financeService;
 
     private Map<String, Object> data;
 
-    private String term;
-
     @Override
-    public String execute() {
+    public String execute() throws Exception {
         Community community = (Community) ActionContext.getContext()
                 .getSession().get(Constants.COMMUNITY);
-        List<String[]> list = propertyService.searchOwner(term, community);
-        JSONArray owners = new JSONArray();
-        for (String[] aList : list) {
-            Map<String, Object> row = new HashMap<String, Object>();
-            row.put("id", aList[0]);
-            row.put("name", aList[1]);
-            row.put("username", aList[2]);
-            owners.add(row);
+        List<Device> devices = financeService.getCanCalculateDevice(community);
+        JSONArray aaData = new JSONArray();
+        for (Device device : devices) {
+            JSONArray row = new JSONArray();
+            row.add(device.getNo());
+            row.add(device.getCurrentValue());
+            row.add(device.getLastValue());
+            row.add(device.getType().toString());
+            row.add(device.getId());
+            aaData.add(row);
         }
         data = new HashMap<String, Object>();
-        data.put("owners", owners);
+        data.put("iTotalRecords", devices.size());
+        data.put("iTotalDisplayRecords", devices.size());
+        data.put("aaData", aaData);
         return SUCCESS;
     }
 
@@ -55,11 +58,4 @@ public class OwnerSearchAction extends ActionSupport {
         this.data = data;
     }
 
-    public String getTerm() {
-        return term;
-    }
-
-    public void setTerm(String term) {
-        this.term = term;
-    }
 }

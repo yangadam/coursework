@@ -13,11 +13,8 @@
     <meta content="PumpKing" name="author"/>
 
     <%@include file="globalCSS.jsp" %>
-    <link href="../../../global/css/jquery.gritter.css" rel="stylesheet" type="text/css"/>
-    <link href="../../../global/css/daterangepicker.css" rel="stylesheet" type="text/css"/>
-    <link href="../../../global/css/fullcalendar.css" rel="stylesheet" type="text/css"/>
-    <link href="../../../global/css/jqvmap.css" rel="stylesheet" type="text/css" pumpking="screen"/>
-    <link href="../../../global/css/jquery.easy-pie-chart.css" rel="stylesheet" type="text/css" pumpking="screen"/>
+    <link href="../../../global/css/select2_metro.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="../../../global/css/DT_bootstrap.css"/>
     <link rel="shortcut icon" href="../../../global/image/favicon.ico"/>
 </head>
 
@@ -39,7 +36,10 @@
                             <i class="icon-angle-right"></i>
                         </li>
                         <li>
-                            <i class="icon-home"></i>
+                            <span>费用管理</span>
+                            <i class="icon-angle-right"></i>
+                        </li>
+                        <li>
                             <a href="/clerk/input.do">录入水电信息</a>
                         </li>
                     </ul>
@@ -47,6 +47,13 @@
             </div>
             <div class="row-fluid">
                 <div class="span12">
+                    <div class="portlet-body">
+                        <p>
+                            <button id="calc" class="btn green big btn-block" onclick="calculate()">计算<span
+                                    id="count"></span>
+                                <i class="m-icon-big-swapright m-icon-white"></i></button>
+                        </p>
+                    </div>
                     <div class="portlet box blue">
                         <div class="portlet-title">
                             <div class="caption"><i class="icon-edit"></i>已录入设备</div>
@@ -76,8 +83,7 @@
                                         <th>当前读数</th>
                                         <th>上次读数</th>
                                         <th>设备类型</th>
-                                        <th>编辑</th>
-                                        <th>删除</th>
+                                        <th>修改</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -85,37 +91,46 @@
                                 </table>
                                 <div id="static" class="modal hide fade" tabindex="-1" data-backdrop="static"
                                      data-keyboard="false">
-                                    <div class="modal-body">
-                                        <p>确定要删除此项吗？</p>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" data-dismiss="modal" class="btn">取消</button>
-                                        <button type="button" data-dismiss="modal" class="btn green">确认</button>
-                                    </div>
+                                    <s:form action="updateValue" class="form-horizontal">
+                                        <div class="modal-body">
+                                            <s:hidden id="modifyId" name="deviceId"/>
+                                            <div class="control-group">
+                                                <label class="control-label" for="lastValue">输入读数</label>
+
+                                                <div class="controls">
+                                                    <s:textfield name="newValue" value="" class="span6 m-wrap"/>
+                                                    <span class="help-inline unit"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <s:submit id="inputValue" class="btn blue" value="确认"/>
+                                            <button type="button" data-dismiss="modal" class="btn">取消</button>
+                                        </div>
+                                    </s:form>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div id="add-owner" class="portlet box blue">
+                    <div id="input" class="portlet box blue">
                         <div class="portlet-title">
-                            <div class="caption"><i class="icon-reorder"></i>添加读数</div>
+                            <div class="caption"><i class="icon-reorder"></i>录入读数</div>
                             <div class="tools">
                                 <a href="javascript:" class="collapse"></a>
                             </div>
                         </div>
                         <div class="portlet-body form">
-                            <s:form action="addRoom" class="form-horizontal">
+                            <s:form action="inputValue" class="form-horizontal">
                                 <div class="control-group">
-                                    <label class="control-label">设备号</label>
+                                    <label class="control-label" for="device">设备号</label>
 
                                     <div class="controls">
-                                        <s:textfield id="deviceNo" name="roomNo" value="" class="span6 m-wrap"
-                                                     onchange="check(this)"/>
-                                        <span class="help-inline">默认形式：CB+楼宇号+F+楼层号+R+房间号</span>
+                                        <input type="hidden" id="device" class="span6 select2">
+                                        <span class="help-inline">默认形式：[B + 楼宇号] + [F + 楼层号] + [R + 房间号] + # + 数字</span>
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label">上次读数</label>
+                                    <label class="control-label" for="lastValue">上次读数</label>
 
                                     <div class="controls">
                                         <s:textfield id="lastValue" value="" class="span6 m-wrap" readonly="true"/>
@@ -126,12 +141,13 @@
                                     <label class="control-label">当前读数</label>
 
                                     <div class="controls">
-                                        <s:textfield value="" class="span6 m-wrap"/>
+                                        <s:textfield name="curValue" value="" class="span6 m-wrap"/>
                                         <span class="help-inline unit"></span>
                                     </div>
                                 </div>
+                                <s:hidden id="deviceId" name="deviceId"/>
                                 <div class="form-actions">
-                                    <s:submit id="record" class="btn blue" value="确认" disabled="true"/>
+                                    <s:submit id="inputValue" class="btn blue" value="确认"/>
                                     <button type="button" class="btn">重置</button>
                                 </div>
                             </s:form>
@@ -145,12 +161,23 @@
 <%@include file="globalFooter.jsp" %>
 <%@include file="globalJS.jsp" %>
 <script src="../../../global/js/select2.min.js" type="text/javascript"></script>
+<script src="../../../global/js/jquery.dataTables.min.js" type="text/javascript"></script>
+<script src="../../../global/js/DT_bootstrap.js" type="text/javascript"></script>
 <script src="../../../custom/js/inputDevice.js" type="text/javascript"></script>
 
 <script>
     jQuery(document).ready(function () {
         App.init();
-        $(".page-sidebar-menu .title:contains('录入水电读数')").closest("li").addClass("active");
+        $.getJSON("/count.do", function (data) {
+            if (data["inputCount"] != data["total"]) {
+                $("#calc").attr({"disabled": "disabled"});
+            } else {
+                $("#calc").removeAttr("disabled");
+            }
+            $("#count").text("  " + data["inputCount"] + "/" + data["total"]);
+        });
+        $(".page-sidebar-menu .title:contains('费用管理')").closest("li").addClass("active");
+        $(".page-sidebar-menu .sub-menu a:contains('水电录入计算')").closest("li").addClass("active");
         TableEditable.init();
     });
 </script>

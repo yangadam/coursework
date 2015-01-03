@@ -3,7 +3,7 @@ var TableEditable = function () {
         init: function () {
             var oTable = jQuery('#sample_editable_1').dataTable({
                 "bPaginate": true,
-                "sAjaxSource": "/listBuild.do",
+                "sAjaxSource": "/deviceList.do",
                 "aLengthMenu": [
                     [5, 15, 20, -1],
                     [5, 15, 20, "All"] // change per page values here
@@ -22,39 +22,70 @@ var TableEditable = function () {
                 "aoColumnDefs": [
                     {
                         'bSortable': false,
-                        "aTargets": [2],
+                        "aTargets": [4],
                         "mRender": function (data, type, full) {
-                            return '<a  href="/">编辑</a>';
-                        }
-                    },
-                    {
-                        'bSortable': false,
-                        "aTargets": [3],
-                        "mRender": function (data, type, full) {
-                            return '<a  href="#">删除</a>';
+                            return '<a  href="#static" data-toggle="modal" onclick="modify(' + data + ')">修改</a>';
                         }
                     }
                 ]
             });
 
+            var devices;
+
+            function ownerFormatResult(device) {
+                return "<option value='" + device["id"] + "'>" + device["no"] + "&nbsp&nbsp&nbsp&nbsp" + device["type"] + "</option>";
+            }
+
+            function ownerFormatSelection(device) {
+                return "<option value='" + device["id"] + "'>" + device["no"] + "&nbsp&nbsp&nbsp&nbsp" + device["type"] + "</option>";
+            }
+
+            $("#device").on("change", function (e) {
+                var i;
+                for (i = 0; i < devices.length; i++) {
+                    if (devices[i]["id"] = e.val) {
+                        $("#lastValue").val(devices[i]["currentValue"]);
+                        $("#deviceId").val(e.val);
+                        break;
+                    }
+                }
+            });
+
+            $("#device").select2({
+                placeholder: "请输入设备号",
+                minimumInputLength: 2,
+                ajax: {
+                    url: "/deviceSearch.do",
+                    dataType: 'json',
+                    data: function (term, page) {
+                        return {
+                            term: term
+                        };
+                    },
+                    results: function (data, page) {
+                        devices = data["devices"];
+                        return {
+                            results: data["devices"]
+                        };
+                    }
+                },
+                formatResult: ownerFormatResult,
+                formatSelection: ownerFormatSelection,
+                dropdownCssClass: "bigdrop",
+                escapeMarkup: function (m) {
+                    return m;
+                }
+            });
+
         }
     };
 }();
-function check(obj) {
-    $.getJSON("/deviceValue.do?deviceNo=" + $(obj).val(), function (data) {
-        if (data["lastValue"] != undefined) {
-            $("#lastValue").val(data["lastValue"]);
-            alert(data["type"]);
-            if (data["type"] == "电表") {
-                $(".unit").text("度");
-            } else if (data["type"] == "水表") {
-                $(".unit").text("m³");
-            }
-            $("#record").enable();
-        } else {
-            $("#lastValue").val("");
-            $(".unit").text("");
-            $("#record").disable();
-        }
-    })
+
+function modify(deviceId) {
+    $("#modifyId").val(deviceId);
+}
+
+function calculate() {
+    alert("sdfa");
+    $.post("calculate.do");
 }

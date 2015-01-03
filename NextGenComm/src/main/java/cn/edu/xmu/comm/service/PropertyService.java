@@ -5,7 +5,6 @@ import cn.edu.xmu.comm.commons.persistence.Page;
 import cn.edu.xmu.comm.entity.*;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -118,7 +117,7 @@ public interface PropertyService {
      * @return 添加的设备
      */
     @Transactional(readOnly = false)
-    Device addDevice(String no, Property property, BigDecimal value, Device.DeviceType type);
+    Device addDevice(String no, Property property, Double value, Device.DeviceType type);
 
     /**
      * 添加公摊设备
@@ -131,7 +130,7 @@ public interface PropertyService {
      * @return 添加的设备
      */
     @Transactional(readOnly = false)
-    Device addDevice(String no, Property property, BigDecimal value, Device.DeviceType type, String shareType);
+    Device addDevice(String no, Property property, Double value, Device.DeviceType type, String shareType);
 
     /**
      * 小区及下级各处各添加一个水表一个电表
@@ -337,9 +336,4 @@ public interface PropertyService {
 
     List<String[]> getNonVacantRoomNos(Integer floorId);
 
-    void delAllOwner(Community community);
-
-    void delAllRoom(Community community);
-
-    void delAllStaff(Community community);
 }

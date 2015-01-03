@@ -92,36 +92,36 @@ public interface FinanceService {
      * 添加设备的读数
      *
      * @param device 指定设备
-     * @param value 设备读数
+     * @param value  设备读数
      */
     @Transactional(readOnly = false)
-    public void addDeviceValue(Device device, BigDecimal value);
+    public void addDeviceValue(Device device, Double value);
+
+    @Transactional(readOnly = false)
+    public void updateDeviceValue(Integer id, Double value);
 
     /**
      * 添加设备的读数
      *
      * @param deviceId 指定设备编号
-     * @param date 日期
-     * @param value 设备读数
+     * @param date     日期
+     * @param value    设备读数
      */
     @Transactional(readOnly = false)
-    public void addDeviceValue(Integer deviceId, Date date, BigDecimal value);
+    public void addDeviceValue(Integer deviceId, Date date, Double value);
 
     /**
      * 添加设备的读数
      *
      * @param device 指定设备
-     * @param date 日期
-     * @param value 设备读数
+     * @param date   日期
+     * @param value  设备读数
      */
     @Transactional(readOnly = false)
-    public void addDeviceValue(Device device, Date date, BigDecimal value);
+    public void addDeviceValue(Device device, Date date, Double value);
 
     @Transactional(readOnly = false)
     public void delDeviceValue(Integer id);
-
-    @Transactional(readOnly = false)
-    public void updateDeviceValue(Integer id, Date date, BigDecimal value);
 
     /**
      * 返回设备的所有读数
@@ -129,7 +129,7 @@ public interface FinanceService {
      * @param device 设备
      * @return 设备的所有读数
      */
-    public SortedMap<Date, BigDecimal> getDeviceValue(Device device);
+    public SortedMap<Date, Double> getDeviceValue(Device device);
 
     /**
      * 依据设备编号返回设备的所有读数
@@ -137,10 +137,11 @@ public interface FinanceService {
      * @param deviceId 设备编号
      * @return 设备的所有读数
      */
-    public SortedMap<Date, BigDecimal> getDeviceValue(Integer deviceId);
+    public SortedMap<Date, Double> getDeviceValue(Integer deviceId);
 
     /**
      * 获取业主所有的未缴费账单
+     *
      * @param owner 业主
      * @return 未缴费账单列表
      */
@@ -148,6 +149,7 @@ public interface FinanceService {
 
     /**
      * 获取业主所有的未缴费账单
+     *
      * @param ownerId 业主编号
      * @return 未缴费账单列表
      */
@@ -155,6 +157,7 @@ public interface FinanceService {
 
     /**
      * 获取业主所有的未缴费账单
+     *
      * @param phoneNumber 电话号码
      * @return 未缴费账单列表
      */
@@ -162,6 +165,7 @@ public interface FinanceService {
 
     /**
      * 获取业主所有的未缴费账单
+     *
      * @param room 房间
      * @return 未缴费账单列表
      */
@@ -169,6 +173,7 @@ public interface FinanceService {
 
     /**
      * 获取业主所有的未缴费账单
+     *
      * @param roomId 房间编号
      * @return 未缴费账单列表
      */
@@ -177,7 +182,7 @@ public interface FinanceService {
     /**
      * 支付账单
      *
-     * @param paidBy 付款人
+     * @param paidBy    付款人
      * @param receiveBy 收款人
      * @param billItems 账单(账单项列表)
      * @return payment 支付记录
@@ -202,11 +207,9 @@ public interface FinanceService {
      */
     public void sendOverDueMail(Owner owner, MailUtils mailUtils) throws MailException;
 
-    @Transactional(readOnly = false)
-    public void addBillItem();
-
     /**
      * 获取已录入的设备
+     *
      * @param community 社区
      * @return 设备列表
      */
@@ -214,4 +217,9 @@ public interface FinanceService {
 
     Device getDeviceByNo(Community community, String deviceNo);
 
+    List<String[]> searchDevice(String term, Community community);
+
+    Long getInputDeviceCount(Community community);
+
+    Long getDeviceCount(Community community);
 }

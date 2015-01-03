@@ -2,6 +2,7 @@ package cn.edu.xmu.comm.dao;
 
 import cn.edu.xmu.comm.commons.persistence.BaseDAO;
 import cn.edu.xmu.comm.commons.persistence.Parameter;
+import cn.edu.xmu.comm.commons.utils.CastUtils;
 import cn.edu.xmu.comm.entity.Community;
 import cn.edu.xmu.comm.entity.Device;
 import cn.edu.xmu.comm.entity.Gradient;
@@ -52,5 +53,22 @@ public class DeviceDAO extends BaseDAO<Device, Integer> {
     public Device getByNo(Community community, String deviceNo) {
         String ql = "select d from Device d where d.community = :p1 and d.deviceNo = :p2 and d.isCalculated = :p3";
         return getByQL(ql, new Parameter(community, deviceNo, true));
+    }
+
+    public List<String[]> buzzSearch(String term, Community community) {
+        String ql = "select d.id, d.no, d.type, d.currentValue from Device d " +
+                "where d.community = :p1 and d.no like :p2 and d.isCalculated = :p3";
+        List list = getAttrsByQL(ql, new Parameter(community, '%' + term + '%', Boolean.TRUE));
+        return CastUtils.castToListStringArray(list);
+    }
+
+    public Long getInputCount(Community community) {
+        String ql = "from Device d where d.community = :p1 and d.isCalculated = :p2";
+        return count(ql, new Parameter(community, Boolean.FALSE));
+    }
+
+    public Long getCount(Community community) {
+        String ql = "from Device d where d.community = :p1";
+        return count(ql, new Parameter(community));
     }
 }
