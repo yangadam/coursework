@@ -108,12 +108,26 @@
                                         </div>
                                     </div>
                                 </s:iterator>
-                                <div class="form-actions">
-                                    <span>总额：<s:property value="total"/> </span>
-                                    <button type="submit" class="btn blue big-btn pull-right"><i class="icon-arrow"></i>
-                                        去缴费
-                                    </button>
+                                <div class="row-fluid">
+                                    <div class="span8">
+                                    </div>
+                                    <div class="span4 ">
+                                        <div class="control-group" style="margin-bottom: 20px">
+                                            <label class="control-label" style="font-size: larger">总额：</label>
+
+                                            <div class="controls">
+                                                    <span class="text bold" style="font-size: larger"><s:property
+                                                            value="total"/></span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
+                                <s:form action="makePayment">
+                                    <div class="form-actions">
+                                        <s:submit cssClass="btn blue big-btn pull-right" value="网上缴费">
+                                        </s:submit>
+                                    </div>
+                                </s:form>
                             </div>
                         </div>
                     </div>

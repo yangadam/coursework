@@ -56,4 +56,5 @@ public class ParkBillDAO extends BaseDAO<ParkBill, Integer> {
     public List<ParkBill> getAllFinishParkBill(Community community) {
         return searchByQL("from ParkBill where community = :p1 and endTime is not null", new Parameter(community));
     }
+
 }

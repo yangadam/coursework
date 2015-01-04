@@ -40,7 +40,7 @@
                             <i class="icon-angle-right"></i>
                         </li>
                         <li>
-                            <a href="/clerk/share.do">车位租用</a>
+                            <a href="/clerk/carRent.do">车位租用</a>
                         </li>
                     </ul>
                 </div>
@@ -82,6 +82,45 @@
                                     <tbody>
                                     </tbody>
                                 </table>
+                            </div>
+                        </div>
+                        <div id="add-contract" class="portlet box blue ">
+                            <div class="portlet-title">
+                                <div class="caption"><i class="icon-reorder"></i>上传租车合同</div>
+                                <div class="tools">
+                                    <a href="javascript:" class="collapse"></a>
+                                </div>
+                            </div>
+                            <div class="portlet-body form">
+                                <s:form action="upload" enctype="multipart/form-data" class="form-horizontal">
+                                    <div class="control-group">
+                                        <label class="control-label">车牌号：</label>
+
+                                        <div class="controls">
+                                            <s:textfield name="license" value="" class="span6 m-wrap"/>
+                                            <span class="help-inline"></span>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">文件名：</label>
+
+                                        <div class="controls">
+                                            <s:textfield name="title" value="" class="span6 m-wrap"/>
+                                            <span class="help-inline"></span>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">选择文件：</label>
+
+                                        <div class="controls">
+                                            <s:file name="upload" cssClass="m-wrap"/>
+                                            <span class="help-inline"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-actions">
+                                        <s:submit class="btn blue" value="上传"/>
+                                    </div>
+                                </s:form>
                             </div>
                         </div>
                     </div>

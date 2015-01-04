@@ -123,6 +123,7 @@
                                                         <th>挂名业主</th>
                                                         <th>进入时间</th>
                                                         <th>离开时间</th>
+                                                        <th>费用</th>
                                                         <th>缴费</th>
                                                     </tr>
                                                     </thead>
@@ -178,6 +179,8 @@
         jQuery(document).ready(function () {
             App.init();
             $(".page-sidebar-menu .title:contains('停车管理')").closest(
+                    "li").addClass("active");
+            $(".page-sidebar-menu .sub-menu a:contains('停车列表')").closest(
                     "li").addClass("active");
             FinishedParkBillTale.init();
             UnfinishedParkBillTale.init();

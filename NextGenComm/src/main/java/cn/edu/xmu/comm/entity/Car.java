@@ -21,10 +21,13 @@ public class Car extends DataEntity {
      */
     public static final String NAME = "车位管理费";
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
     /**
      * 车牌号
      */
-    @Id
     private String license;
     //endregion
 
@@ -38,7 +41,7 @@ public class Car extends DataEntity {
 
     /**
      * 车辆状态
-     *
+     * <p/>
      * CarStatus.NO   没有车位
      * CarStatus.RENT 租用的车位
      * CarStatus.BUY  购买的车位
@@ -62,9 +65,9 @@ public class Car extends DataEntity {
     /**
      * 汽车构造函数
      *
-     * @param license 车牌
-     * @param owner 业主
-     * @param status 状态: 租用车位 购买车位
+     * @param license   车牌
+     * @param owner     业主
+     * @param status    状态: 租用车位 购买车位
      * @param parkPlace 停车位
      */
     public Car(String license, Owner owner, CarStatus status, ParkPlace parkPlace) {
@@ -89,6 +92,15 @@ public class Car extends DataEntity {
     }
 
     //region Getters and Setters
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public String getLicense() {
         return license;
     }

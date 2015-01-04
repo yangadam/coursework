@@ -363,8 +363,8 @@ public class CarServiceImpl implements CarService {
     /**
      * 获取可租用的停车位
      *
-     * @return 可租用的停车位列表
      * @param community
+     * @return 可租用的停车位列表
      */
     public List<ParkPlace> getFreeParkPlaceRent(Community community) {
         return getParkPlaceRent(getRentParkingLotInSession(), ParkPlace.ParkPlaceStatus.FREE);
@@ -523,15 +523,23 @@ public class CarServiceImpl implements CarService {
         return parkBillDAO.getAllFinishParkBill(getCommunityFromActionContext());
     }
 
+
     /**
      * 依据id获取停车单
      *
      * @param id 编号
      * @return 停车单
      */
-    public ParkBill getParkBillById(Integer id) {
+    @Override
+    public ParkBill getParkBill(Integer id) {
         return parkBillDAO.get(id);
     }
+
+    @Override
+    public List<Car> getAllCar(Community community) {
+        return carDAO.getAll(community);
+    }
+
 
     /**
      * 获取社区中所有的车位

@@ -335,7 +335,6 @@ var FormComponents = function () {
             if (!state.id) return state.text; // optgroup
             return "<img class='flag' src='assets/img/flags/" + state.id.toLowerCase() + ".png'/>&nbsp;&nbsp;" + state.text;
         }
-
         $("#select2_sample4").select2({
             allowClear: true,
             formatResult: format,

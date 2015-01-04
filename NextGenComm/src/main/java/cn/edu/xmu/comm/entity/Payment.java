@@ -4,6 +4,7 @@ import cn.edu.xmu.comm.commons.persistence.DataEntity;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -42,7 +43,7 @@ public class Payment extends DataEntity {
      * 账单列表
      */
     @OneToMany(mappedBy = "payment", targetEntity = BillItem.class)
-    private List<BillItem> billItemList;
+    private List<BillItem> billItemList = new ArrayList<BillItem>();
 
     /**
      * 总费用
@@ -74,8 +75,9 @@ public class Payment extends DataEntity {
         BigDecimal tempTotal = BigDecimal.ZERO;
         this.paidBy = paidBy;
         this.receiveBy = receiveBy;
-        this.billItemList = billItemList;
+        this.billItemList.addAll(billItemList);
         for (BillItem billItem : billItemList) {
+            billItem.setPayment(this);
             tempTotal = tempTotal.add(billItem.getAmount()).add(billItem.getOverDueFee());
         }
         this.total = tempTotal;
