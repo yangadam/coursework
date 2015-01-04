@@ -10,15 +10,15 @@ var UnfinishedParkBillTale = function () {
         init: function () {
 
             var oTable = $('#sample_editable_1').dataTable({
-                // set the initial value
+                "aLengthMenu": [
+                    [5, 10, 15, -1],
+                    [5, 10, 15, "全部"]
+                ],
                 "iDisplayLength": 5,
                 "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
                 "sPaginationType": "bootstrap",
                 /*"bServerSide" : true,*/
-                "bPaginate": true,
                 "bProcessing": true,
-                "bFilter": false,
-                "bLengthChange": false,
                 "sAjaxSource": "/unchargedParkBill.do",
                 "oLanguage": {
                     "sSearch": "搜索",

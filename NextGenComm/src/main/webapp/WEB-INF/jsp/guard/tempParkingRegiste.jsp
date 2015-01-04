@@ -173,7 +173,6 @@
     <script type="text/javascript" src="../../../global/js/DT_bootstrap.js"></script>
     <!-- END PAGE LEVEL PLUGINS -->
     <!-- BEGIN PAGE LEVEL SCRIPTS -->
-    <script src="../../../custom/js/app.js"></script>
     <script src="../../../global/js/form-wizard.js"></script>
         <script src="../../../custom/js/tempParkingRegiste.js"></script>
         <script>

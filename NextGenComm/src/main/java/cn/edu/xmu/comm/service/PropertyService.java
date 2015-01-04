@@ -107,7 +107,6 @@ public interface PropertyService {
     @Transactional(readOnly = false)
     void addOwnerToRoom(Integer owner, Integer room) throws DifferentCommunityException;
 
-
     /**
      * 添加私有设备
      *
@@ -130,6 +129,7 @@ public interface PropertyService {
      * @param shareType 设备公摊类型
      * @return 添加的设备
      */
+
     @Transactional(readOnly = false)
     Device addDevice(String no, Property property, Double value, Device.DeviceType type, String shareType);
 

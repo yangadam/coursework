@@ -330,11 +330,12 @@ public class FinanceServiceImpl implements FinanceService {
     /**
      * 发送欠缴费邮件
      *
-     * @param owner     业主
+     * @param ownerId   业主id
      * @param mailUtils 邮件工具
      * @throws MailException
      */
-    public void sendOverDueMail(Owner owner, MailUtils mailUtils) throws MailException {
+    public void sendOverDueMail(Integer ownerId, MailUtils mailUtils) throws MailException {
+        Owner owner = ownerDAO.get(ownerId);
         String email = owner.getEmail();
         if (email == null) {
             throw new MailException("没有邮件地址", owner);
@@ -428,12 +429,13 @@ public class FinanceServiceImpl implements FinanceService {
     }
 
     @Override
+    @Transactional(readOnly = false)
     public void makePayment(Integer id) {
         Owner owner = ownerDAO.get(id);
         Payment payment = owner.makePayment(null);
-        paymentDAO.persist(payment);
-        ownerDAO.flush();
-        ownerDAO.clear();
+        if (payment != null) {
+            paymentDAO.persist(payment);
+        }
     }
 
 }

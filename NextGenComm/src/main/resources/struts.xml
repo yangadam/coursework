@@ -67,16 +67,6 @@
             <result>/WEB-INF/jsp/owner/home.jsp</result>
         </action>
 
-        <action name="test" class="testAction">
-            <result>/WEB-INF/jsp/test/test.jsp</result>
-        </action>
-
-        <!-- Configure File Action -->
-        <action name="uploadPro" class="cn.edu.xmu.comm.action.UploadAction">
-            <param name="filesPath">/uploadFiles</param>
-            <result>/WEB-INF/jsp/test/Success.jsp</result>
-        </action>
-
     </package>
 
     <package name="admin" namespace="/admin" extends="default">
@@ -145,14 +135,14 @@
             <result name="input">staff.do</result>
         </action>
 
-        <action name="parkingLot" class="directAction" method="director">
+
         <!--临时的打印停车费的界面，先填在Director目录下-->
-        <action name="tempParkingPaying" class="tempParkingPaying">
+        <action name="tempParkingPaying" class="tempParkingPay">
             <result type="redirect">tempParkingPaying.do</result>
             <result name="input">tempParkingPaying.do</result>
         </action>
 
-        <action name="parkingLot">
+        <action name="parkingLot" class="directAction" method="director">
             <result>/WEB-INF/jsp/director/parkingLot.jsp</result>
         </action>
 
@@ -241,6 +231,32 @@
             <result>/WEB-INF/jsp/clerk/rent.jsp</result>
         </action>
 
+        <!-- Configure File Action -->
+        <action name="upload" class="uploadAction">
+            <param name="savePath">/uploadFiles</param>
+            <result type="redirect">/clerk/carRent.do</result>
+            <result name="input">/clerk/carRent.do</result>
+        </action>
+        <!--Car-->
+        <action name="car">
+            <result>/WEB-INF/jsp/clerk/car.jsp</result>
+        </action>
+
+        <action name="addCar" class="carAddAction">
+            <result type="redirect">car.do</result>
+            <result name="input">car.do</result>
+        </action>
+
+        <action name="feeReminder" class="arrearageListAction">
+            <result>/WEB-INF/jsp/clerk/feeReminder.jsp</result>
+        </action>
+
+        <action name="doFeeReminder" class="remindAction">
+            <result type="redirect">feeReminder.do</result>
+            <result name="input">feeReminder.do</result>
+        </action>
+
+
     </package>
 
     <package name="guard" namespace="/guard" extends="default">
@@ -255,7 +271,7 @@
         </action>
 
         <action name="tempParkingRegiste" class="tempParkingRegisteAction">
-            <result name="rent">/WEB-INF/jsp/test/test.jsp</result>
+            <!--<result name="rent">/WEB-INF/jsp/test/test.jsp</result>-->
             <result name="temp">/WEB-INF/jsp/guard/tempParkingRegiste.jsp</result>
         </action>
 
@@ -263,14 +279,9 @@
             <result>/WEB-INF/jsp/guard/tempParkingRegiste.jsp</result>
         </action>
 
-    </package>
-
-    <package name="guard" namespace="/guard" extends="default">
-
-        <global-results>
-            <result name="login" type="redirect">/rememberMeLogin.do</result>
-            <result name="unauthorized" type="redirect">/rememberMeLogin.do</result>
-        </global-results>
+        <action name="tempParkingPaying" class="tempParkingPay">
+            <result>/WEB-INF/jsp/guard/tempParkingPaying.jsp</result>
+        </action>
 
     </package>
 
@@ -285,7 +296,7 @@
         </action>
 
         <action name="makePayment" class="makePaymentAction">
-            <result type="redirect">billlist.do</result>
+            <result>/WEB-INF/jsp/owner/paySuccess.jsp</result>
         </action>
 
     </package>
@@ -330,6 +341,9 @@
         <action name="listParkPlace" class="parkPlaceListAction"/>
         <action name="listPark" class="parkListAction"/>
         <action name="vacantPark" class="vacantParkAction"/>
+        <action name="listCar" class="carListAction"/>
+        <action name="listArrearage" class="arrearageListAction"/>
+
     </package>
 
 </struts>

@@ -130,6 +130,9 @@ public class Owner extends User {
      * @return 支付记录
      */
     public Payment makePayment(Staff receiveBy, List<BillItem> billItems) {
+        if (billItems == null || billItems.size() == 0) {
+            return null;
+        }
         unpaidBills.removeAll(billItems);
         for (BillItem billItem : billItems) {
             billItem.setOwner(null);

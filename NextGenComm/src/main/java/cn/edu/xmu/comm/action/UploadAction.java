@@ -1,13 +1,13 @@
 package cn.edu.xmu.comm.action;
 
 import cn.edu.xmu.comm.commons.annotation.Required;
-import cn.edu.xmu.comm.commons.utils.FilesUtil;
+import cn.edu.xmu.comm.service.CarService;
 import com.opensymphony.xwork2.ActionSupport;
-import org.apache.struts2.util.ServletContextAware;
+import org.apache.struts2.ServletActionContext;
+import org.springframework.stereotype.Controller;
 
-import javax.servlet.ServletContext;
-import java.io.File;
-import java.io.IOException;
+import javax.annotation.Resource;
+import java.io.*;
 
 /**
  * 上传文件
@@ -15,63 +15,90 @@ import java.io.IOException;
  * @author Yaojie Lu
  * @version 12/28/2014
  */
-public class UploadAction extends ActionSupport implements ServletContextAware{
+@Controller
+public class UploadAction extends ActionSupport {
 
-    private File file;
-    private String fileContentType;
-    private String fileFileName;
-    private String filesPath;
-    private ServletContext context;
+    @Resource
+    private CarService carService;
+
+    private String title;
+    private File upload;
+    private String uploadContentType;
+    private String uploadFileName;
+    private String savePath;
+
+    private String license;
 
     @Override
     @Required(name = "director,clerk")
-    public String execute(){
+    public String execute() {
 
-        FilesUtil filesUtil = new FilesUtil();
-        System.out.println("File Name is:"+getFileFileName());
-        System.out.println("File ContentType is:"+getFileContentType());
-        System.out.println("Files Directory is:"+filesPath);
         try {
-            filesUtil.saveFile(getFile(), getFileFileName(), context.getRealPath("") + File.separator + filesPath);
+            FileOutputStream fos = new FileOutputStream(getSavePath() + File.separator + getUploadFileName());
+            FileInputStream fis = new FileInputStream(getUpload());
+            byte[] buffer = new byte[1024];
+            int len = 0;
+            while ((len = fis.read(buffer)) > 0) {
+                fos.write(buffer, 0, len);
+            }
+            fis.close();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return INPUT;
         } catch (IOException e) {
             e.printStackTrace();
             return INPUT;
         }
+        carService.confirmCarRentParkPlace(license);
         return SUCCESS;
-
     }
 
-    public File getFile() {
-        return file;
+    public String getSavePath() {
+        return ServletActionContext.getServletContext().getRealPath(savePath);
     }
 
-    public void setFile(File file) {
-        this.file = file;
+    public void setSavePath(String savePath) {
+        this.savePath = savePath;
     }
 
-    public String getFileContentType() {
-        return fileContentType;
+    public String getTitle() {
+        return title;
     }
 
-    public void setFileContentType(String fileContentType) {
-        this.fileContentType = fileContentType;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getFileFileName() {
-        return fileFileName;
+    public File getUpload() {
+        return upload;
     }
 
-    public void setFileFileName(String fileFileName) {
-        this.fileFileName = fileFileName;
+    public void setUpload(File upload) {
+        this.upload = upload;
     }
 
-    public void setFilesPath(String filesPath) {
-        this.filesPath = filesPath;
+    public String getUploadContentType() {
+        return uploadContentType;
     }
 
-    @Override
-    public void setServletContext(ServletContext ctx) {
-        this.context=ctx;
+    public void setUploadContentType(String uploadContentType) {
+        this.uploadContentType = uploadContentType;
     }
 
+    public String getUploadFileName() {
+        return uploadFileName;
+    }
+
+    public void setUploadFileName(String uploadFileName) {
+        this.uploadFileName = uploadFileName;
+    }
+
+    public String getLicense() {
+        return license;
+    }
+
+    public void setLicense(String license) {
+        this.license = license;
+    }
 }

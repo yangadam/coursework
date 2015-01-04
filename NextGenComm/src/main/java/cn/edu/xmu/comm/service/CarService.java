@@ -339,4 +339,8 @@ public interface CarService {
     List<ParkPlace> getAllParkPlace(Community community);
 
 
+    ParkBill getParkBill(Integer parkBillId);
+
+    List<Car> getAllCar(Community community);
+
 }

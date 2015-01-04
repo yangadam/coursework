@@ -21,11 +21,29 @@
         </li>
 
         <li class="">
+
+
+        </li>
+
+        <li class="">
             <a href="/guard/tempParkingList.do">
                 <i class="icon-home"></i>
                 <span class="title">停车管理</span>
             </a>
-
+            <ul class="sub-menu">
+                <li class="">
+                    <a href="/guard/tempParkingList.do">
+                        <i class="icon-list-ul"></i>
+                        停车列表
+                    </a>
+                </li>
+                <li class="">
+                    <a href="">
+                        <i class="icon-list-ul"></i>
+                        停车缴费
+                    </a>
+                </li>
+            </ul>
         </li>
     </ul>
 </div>

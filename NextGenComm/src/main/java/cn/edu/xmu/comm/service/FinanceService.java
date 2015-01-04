@@ -201,11 +201,11 @@ public interface FinanceService {
     /**
      * 发送欠缴费邮件
      *
-     * @param owner     业主
+     * @param ownerId     业主id
      * @param mailUtils 邮件工具
      * @throws cn.edu.xmu.comm.commons.exception.MailException
      */
-    public void sendOverDueMail(Owner owner, MailUtils mailUtils) throws MailException;
+    public void sendOverDueMail(Integer ownerId, MailUtils mailUtils) throws MailException;
 
     /**
      * 获取已录入的设备
@@ -225,5 +225,7 @@ public interface FinanceService {
 
     List<Gradient> getGradients(Community community);
 
-    void makePayment(Integer id);
+    void makePayment(Integer ownerId);
+
+    public List<Owner> getOwnerWithOverDue(Community community);
 }

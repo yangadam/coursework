@@ -4,7 +4,6 @@ import cn.edu.xmu.comm.commons.utils.Constants;
 import cn.edu.xmu.comm.entity.Community;
 import cn.edu.xmu.comm.entity.ParkBill;
 import cn.edu.xmu.comm.service.CarService;
-import cn.edu.xmu.comm.service.PropertyService;
 import com.alibaba.fastjson.JSONArray;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
@@ -20,9 +19,6 @@ public class TempParkingUnchargedListAction extends ActionSupport {
 
     @Resource
     private CarService carService;
-
-    @Resource
-    private PropertyService propertyService;
 
     private Map<String, Object> data;
 

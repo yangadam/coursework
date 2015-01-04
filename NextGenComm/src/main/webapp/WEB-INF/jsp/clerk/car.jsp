@@ -7,7 +7,7 @@
 <html>
 <head>
     <meta charset="utf-8"/>
-    <title>楼宇管理 | 物业管理系统</title>
+    <title>车辆管理 | 物业管理系统</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <meta content="" name="description"/>
     <meta content="PumpKing" name="author"/>
@@ -27,7 +27,7 @@
             <div class="row-fluid">
                 <div class="span12">
                     <h3 class="page-title">
-                        房间管理
+                        车辆管理
                     </h3>
                     <ul class="breadcrumb">
                         <li>
@@ -36,42 +36,20 @@
                             <i class="icon-angle-right"></i>
                         </li>
                         <li>
-                            <span>物业管理</span>
+                            <span>车辆管理</span>
                             <i class="icon-angle-right"></i>
                         </li>
                         <li>
-                            <a href="/clerk/room.do">房间管理</a>
+                            <a href="/clerk/owner.do">车辆列表</a>
                         </li>
                     </ul>
-                </div>
-            </div>
-            <div class="row-fluid">
-                <div class="span6 ">
-                    <div class="control-group">
-                        <label class="control-label">楼宇号</label>
-
-                        <div class="controls">
-                            <s:select id="build" name="buildNo" class="m-wrap span12"
-                                      data-placeholder="请选择楼宇" tabindex="1" list="{'请选择',''}"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="span6 ">
-                    <div class="control-group">
-                        <label class="control-label">楼层号</label>
-
-                        <div class="controls">
-                            <s:select id="floor" name="floorNo" class="m-wrap span12"
-                                      data-placeholder="请选择楼层" tabindex="1" list="{'请选择',''}"/>
-                        </div>
-                    </div>
                 </div>
             </div>
             <div class="row-fluid">
                 <div class="span12">
                     <div class="portlet box blue">
                         <div class="portlet-title">
-                            <div class="caption"><i class="icon-edit"></i>房间列表</div>
+                            <div class="caption"><i class="icon-edit"></i>车辆列表</div>
                             <div class="tools">
                                 <a href="javascript:" class="reload"></a>
                                 <a href="javascript:" class="collapse"></a>
@@ -82,7 +60,7 @@
                                 <div class="control-group">
                                     <div class="btn-group">
                                         <button id="sample_editable_1_new" class="btn green">
-                                            添加房间 <i class="icon-plus"></i>
+                                            车辆登记 <i class="icon-plus"></i>
                                         </button>
                                     </div>
                                     <div class="btn-group pull-right">
@@ -99,9 +77,9 @@
                                 <table class="table table-hover table-bordered" id="sample_editable_1">
                                     <thead>
                                     <tr>
-                                        <th>房间号</th>
-                                        <th>面积</th>
-                                        <th>业主</th>
+                                        <th>序号</th>
+                                        <th>车牌号</th>
+                                        <th>业主名</th>
                                         <th>编辑</th>
                                         <th>删除</th>
                                     </tr>
@@ -123,37 +101,55 @@
                         </div>
                     </div>
                 </div>
-                <div id="add-room" class="portlet box blue hide">
+                <div id="add-owner" class="portlet box blue hide">
                     <div class="portlet-title">
-                        <div class="caption"><i class="icon-reorder"></i>添加房间</div>
+                        <div class="caption"><i class="icon-reorder"></i>车辆登记</div>
                         <div class="tools">
                             <a href="javascript:" class="collapse"></a>
                         </div>
                     </div>
                     <div class="portlet-body form">
-                        <s:form action="addRoom" class="form-horizontal">
+                        <s:form action="addCar" class="form-horizontal">
                             <div class="control-group">
-                                <label class="control-label">房间号</label>
+                                <label class="control-label" for="owner">业主</label>
 
                                 <div class="controls">
-                                    <s:textfield name="roomNo" value="" class="span6 m-wrap"/>
+                                        <%--<select id="owner" class="span6 m-wrap" name="category">--%>
+                                        <%--</select>--%>
+                                    <input type="hidden" id="owner" class="span6 select2">
+                                </div>
+                            </div>
+
+                            <div class="control-group">
+                                <label class="control-label">车牌号</label>
+
+                                <div class="controls">
+                                    <s:textfield name="license" value="" class="span6 m-wrap"/>
+                                    <span class="help-inline"></span>
+                                </div>
+                            </div>
+
+                            <div class="control-group">
+                                <label class="control-label">文件名：</label>
+
+                                <div class="controls">
+                                    <s:textfield name="title" value="" class="span6 m-wrap"/>
                                     <span class="help-inline"></span>
                                 </div>
                             </div>
                             <div class="control-group">
-                                <label class="control-label">面积</label>
+                                <label class="control-label">选择文件：</label>
 
                                 <div class="controls">
-                                    <s:textfield name="houseArea" value="" class="span6 m-wrap"/>
+                                    <s:file name="file1" cssClass="m-wrap"/>
                                     <span class="help-inline"></span>
                                 </div>
                             </div>
-                            <s:textfield cssStyle="display: none" name="floorId" id="floorId"/>
                             <div class="form-actions">
-                                <s:submit class="btn blue" value="保存"/>
-                                <button type="button" class="btn">重置</button>
+                                <s:submit class="btn blue" value="上传"/>
                             </div>
                         </s:form>
+
                     </div>
                 </div>
             </div>
@@ -166,12 +162,12 @@
     <script type="text/javascript" src="../../../global/js/ui-modals.js"></script>
     <script type="text/javascript" src="../../../global/js/bootstrap-modal.js"></script>
     <script type="text/javascript" src="../../../global/js/bootstrap-modalmanager.js"></script>
-    <script src="../../../custom/js/room.js" type="text/javascript"></script>
+        <script src="../../../custom/js/car.js" type="text/javascript"></script>
     <script>
         jQuery(document).ready(function () {
             App.init();
-            $(".page-sidebar-menu .title:contains('物业管理')").closest("li").addClass("active");
-            $(".page-sidebar-menu .sub-menu a:contains('房间管理')").closest("li").addClass("active");
+            $(".page-sidebar-menu .title:contains('车辆管理')").closest("li").addClass("active");
+            $(".page-sidebar-menu .sub-menu a:contains('车辆列表')").closest("li").addClass("active");
             TableEditable.init();
             UIModals.init();
         });

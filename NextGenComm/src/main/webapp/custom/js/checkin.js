@@ -31,7 +31,7 @@ var CheckIn = function () {
             $("#checkin").click(function () {
                 var message = "";
                 if (roomId == undefined || roomId == -1) {
-                    message += "请选择房间。";
+                    message += "请选择房间";
                 }
                 if (ownerId == undefined || ownerId == -1) {
                     message += "\n请选择业主";
@@ -109,7 +109,7 @@ var CheckIn = function () {
 
             $("#owner").select2({
                 placeholder: "请指定业主",
-                minimumInputLength: 1,
+                minimumInputLength: 2,
                 ajax: {
                     url: "/ownerSearch.do",
                     dataType: 'json',

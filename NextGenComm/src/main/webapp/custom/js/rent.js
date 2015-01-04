@@ -33,5 +33,5 @@ var TableEditable = function () {
 }();
 
 function rent(id) {
-
+    $("#add-contract").removeClass("hide");
 }

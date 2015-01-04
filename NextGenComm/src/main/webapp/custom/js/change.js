@@ -25,6 +25,12 @@ var Change = function () {
                 getRoomInfo();
             });
 
+            $("#owner").on("change", function (e) {
+                ownerId = e.val;
+                if (ownerId == undefined) {
+                    ownerId = -1;
+                }
+            });
 
             $("#change").click(function () {
                 var message = "";
@@ -35,7 +41,6 @@ var Change = function () {
                     message += "\n请选择业主";
                 }
                 if (message == "") {
-                    alert(message);
                     $.post("doCheckIn.do?roomId=" + roomId + "&ownerId=" + ownerId);
                 } else {
                     alert(message);
