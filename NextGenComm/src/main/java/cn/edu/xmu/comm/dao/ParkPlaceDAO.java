@@ -30,7 +30,7 @@ public class ParkPlaceDAO extends BaseDAO<ParkPlace, Integer> {
     }
 
     public List<ParkPlace> getRentParkPlace(ParkingLot parkingLot, ParkPlace.ParkPlaceStatus parkPlaceStatus) {
-        return searchByQL("from ParkPlace where parkingLot = :p1 and status = :p2", new Parameter(parkingLot, parkPlaceStatus));
+        return searchByQL("from ParkPlace where parkingLot = :p1 and parkPlaceStatus = :p2", new Parameter(parkingLot, parkPlaceStatus));
     }
 
 

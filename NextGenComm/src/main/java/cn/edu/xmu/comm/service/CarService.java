@@ -224,8 +224,9 @@ public interface CarService {
      * 获取可租用的停车位
      *
      * @return 可租用的停车位列表
+     * @param community
      */
-    List<ParkPlace> getFreeParkPlaceRent();
+    List<ParkPlace> getFreeParkPlaceRent(Community community);
 
     /**
      * 获取已租用的停车位

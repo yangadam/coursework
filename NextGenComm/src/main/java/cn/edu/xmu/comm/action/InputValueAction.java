@@ -1,5 +1,6 @@
 package cn.edu.xmu.comm.action;
 
+import cn.edu.xmu.comm.commons.annotation.Required;
 import cn.edu.xmu.comm.service.FinanceService;
 import com.opensymphony.xwork2.ActionSupport;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,7 @@ public class InputValueAction extends ActionSupport {
     private Double curValue;
 
     @Override
+    @Required(name = "director,clerk")
     public String execute() {
         financeService.addDeviceValue(deviceId, new Date(), curValue);
         return SUCCESS;

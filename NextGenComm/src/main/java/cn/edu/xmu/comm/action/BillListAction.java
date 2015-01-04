@@ -1,5 +1,6 @@
 package cn.edu.xmu.comm.action;
 
+import cn.edu.xmu.comm.commons.annotation.Required;
 import cn.edu.xmu.comm.commons.utils.Constants;
 import cn.edu.xmu.comm.entity.BillItem;
 import cn.edu.xmu.comm.entity.Owner;
@@ -30,6 +31,7 @@ public class BillListAction extends ActionSupport {
     private BigDecimal total;
 
     @Override
+    @Required(name = "owner")
     public String execute() {
         User user = (User) ActionContext.getContext().getSession().get(Constants.USER);
         Owner owner = propertyService.loadOwner(user);

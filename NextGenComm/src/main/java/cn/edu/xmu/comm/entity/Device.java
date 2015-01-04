@@ -111,6 +111,13 @@ public class Device extends DataEntity {
     Device() {
     }
 
+    public Device(Integer id, Double currentValue, Double lastValue, DeviceType type) {
+        this.id = id;
+        this.currentValue = currentValue;
+        this.lastValue = lastValue;
+        this.type = type;
+    }
+
     /**
      * 构造函数（私有表）
      *

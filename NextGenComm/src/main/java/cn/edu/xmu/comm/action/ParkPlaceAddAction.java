@@ -1,5 +1,6 @@
 package cn.edu.xmu.comm.action;
 
+import cn.edu.xmu.comm.commons.annotation.Required;
 import cn.edu.xmu.comm.commons.utils.Constants;
 import cn.edu.xmu.comm.entity.Community;
 import cn.edu.xmu.comm.entity.ParkingLot;
@@ -24,6 +25,7 @@ public class ParkPlaceAddAction extends ActionSupport {
     private String type;
 
     @Override
+    @Required(name = "director,clerk")
     public String execute() {
         ParkingLot parkingLot;
         Community community = (Community) ActionContext.getContext().getSession().get(Constants.COMMUNITY);

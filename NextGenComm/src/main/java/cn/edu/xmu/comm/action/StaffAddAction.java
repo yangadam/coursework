@@ -1,5 +1,6 @@
 package cn.edu.xmu.comm.action;
 
+import cn.edu.xmu.comm.commons.annotation.Required;
 import cn.edu.xmu.comm.commons.utils.Constants;
 import cn.edu.xmu.comm.entity.Community;
 import cn.edu.xmu.comm.service.StaffService;
@@ -24,6 +25,7 @@ public class StaffAddAction extends ActionSupport {
     private String position;
 
     @Override
+    @Required(name = "director")
     public String execute() {
         Community community = (Community) ActionContext.getContext()
                 .getSession().get(Constants.COMMUNITY);

@@ -1,5 +1,6 @@
 package cn.edu.xmu.comm.action;
 
+import cn.edu.xmu.comm.commons.annotation.Required;
 import cn.edu.xmu.comm.entity.ParkBill;
 import cn.edu.xmu.comm.service.CarService;
 import com.opensymphony.xwork2.ActionSupport;
@@ -9,7 +10,6 @@ import javax.annotation.Resource;
 
 /**
  * Created by Yiu-Wah WONG on 2014/12/31.
- *
  */
 @Controller
 public class TempParkBillDeleteAction extends ActionSupport {
@@ -21,6 +21,8 @@ public class TempParkBillDeleteAction extends ActionSupport {
 
     private ParkBill parkBill;
 
+    @Override
+    @Required(name = "guard")
     public String execute() {
         carService.finishParkBill(parkBillId);
         return SUCCESS;

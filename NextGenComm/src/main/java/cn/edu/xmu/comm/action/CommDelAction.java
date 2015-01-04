@@ -1,5 +1,6 @@
 package cn.edu.xmu.comm.action;
 
+import cn.edu.xmu.comm.commons.annotation.Required;
 import cn.edu.xmu.comm.service.PropertyService;
 import com.opensymphony.xwork2.ActionSupport;
 import org.springframework.stereotype.Controller;
@@ -21,11 +22,8 @@ public class CommDelAction extends ActionSupport {
     private Integer commId;
 
     @Override
+    @Required(name = "admin")
     public String execute() {
-//        Community community =propertyService.getCommunity(commId);
-//        propertyService.delAllRoom(community);
-//        propertyService.delAllOwner(community);
-//        propertyService.delAllStaff(community);
         propertyService.delCommunity(commId);
         return SUCCESS;
     }
