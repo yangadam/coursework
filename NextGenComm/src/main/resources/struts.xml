@@ -226,6 +226,14 @@
             <result>/WEB-INF/jsp/clerk/share.jsp</result>
         </action>
 
+        <action name="parkplace" class="directAction" method="clerk">
+            <result>/WEB-INF/jsp/clerk/parkplace.jsp</result>
+        </action>
+
+        <action name="carRent" class="directAction" method="clerk">
+            <result>/WEB-INF/jsp/clerk/rent.jsp</result>
+        </action>
+
     </package>
 
     <package name="guard" namespace="/guard" extends="default">
@@ -298,11 +306,14 @@
         <action name="unchargedParkBill" class="tempParkingUnchargedListAction"/>
         <action name="deviceList" class="deviceListAction"/>
         <action name="count" class="deviceCountAction"/>
+        <action name="shareList" class="shareListAction"/>
         <action name="chargedParkBill" class="tempParkingChargedListAction"/>
         <action name="tempRegister" class="tempParkingRegisteAction"/>
         <action name="ownerByRoom" class="ownerByRoomAction"/>
         <action name="tempParkBillAdd" class="tempParkBillAddAction"/>
         <action name="listParkPlace" class="parkPlaceListAction"/>
+        <action name="listPark" class="parkListAction"/>
+        <action name="vacantPark" class="vacantParkAction"/>
     </package>
 
 </struts>

@@ -72,14 +72,14 @@
         <li class="">
             <a href="">
                 <i class="icon-home"></i>
-                <span class="title">车辆管理</span>
+                <span class="title">车位管理</span>
                 <span class="arrow "></span>
             </a>
             <ul class="sub-menu">
                 <li class="">
                     <a href="/clerk/parkplace.do">
                         <i class="icon-list-ul"></i>
-                        车位管理
+                        车位列表
                     </a>
                 </li>
                 <li>

@@ -13,7 +13,6 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * description
@@ -67,7 +66,7 @@ public class ShareListAction extends ActionSupport {
         StringBuilder deviceList = new StringBuilder();
         boolean isFirst = true;
         for (Room room : rooms) {
-            Set<Device> devices = room.getDeviceList();
+            List<Device> devices = room.getSharedDevice();
             for (Device device : devices) {
                 if (!isFirst) {
                     deviceList.append("<br/>");
@@ -77,7 +76,7 @@ public class ShareListAction extends ActionSupport {
                 deviceList.append(device.getNo());
             }
         }
-        row.add(deviceList);
+        row.add(deviceList.toString());
     }
 
     public Map<String, Object> getData() {

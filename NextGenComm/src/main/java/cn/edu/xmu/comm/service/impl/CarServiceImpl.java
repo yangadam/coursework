@@ -364,8 +364,9 @@ public class CarServiceImpl implements CarService {
      * 获取可租用的停车位
      *
      * @return 可租用的停车位列表
+     * @param community
      */
-    public List<ParkPlace> getFreeParkPlaceRent() {
+    public List<ParkPlace> getFreeParkPlaceRent(Community community) {
         return getParkPlaceRent(getRentParkingLotInSession(), ParkPlace.ParkPlaceStatus.FREE);
     }
 
