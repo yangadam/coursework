@@ -1,11 +1,8 @@
 package cn.edu.xmu.comm.action.json;
 
-import cn.edu.xmu.comm.commons.utils.Constants;
-import cn.edu.xmu.comm.entity.Community;
 import cn.edu.xmu.comm.entity.Device;
 import cn.edu.xmu.comm.service.FinanceService;
 import com.alibaba.fastjson.JSONArray;
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import org.springframework.stereotype.Controller;
 
@@ -30,9 +27,7 @@ public class DeviceListAction extends ActionSupport {
 
     @Override
     public String execute() throws Exception {
-        Community community = (Community) ActionContext.getContext()
-                .getSession().get(Constants.COMMUNITY);
-        List<Device> devices = financeService.getCanCalculateDevice(community);
+        List<Device> devices = financeService.getInputedDevice();
         JSONArray aaData = new JSONArray();
         for (Device device : devices) {
             JSONArray row = new JSONArray();
@@ -44,8 +39,6 @@ public class DeviceListAction extends ActionSupport {
             aaData.add(row);
         }
         data = new HashMap<String, Object>();
-        data.put("iTotalRecords", devices.size());
-        data.put("iTotalDisplayRecords", devices.size());
         data.put("aaData", aaData);
         return SUCCESS;
     }

@@ -17,7 +17,7 @@ import java.util.Map;
  * @version 12/31/2014 0031
  */
 @Controller
-public class CommNameAction extends ActionSupport {
+public class CommNamesAction extends ActionSupport {
 
     @Resource
     private PropertyService propertyService;

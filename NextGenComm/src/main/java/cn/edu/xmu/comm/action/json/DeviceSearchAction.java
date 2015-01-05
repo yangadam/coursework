@@ -1,11 +1,7 @@
 package cn.edu.xmu.comm.action.json;
 
-import cn.edu.xmu.comm.commons.utils.Constants;
-import cn.edu.xmu.comm.entity.Community;
 import cn.edu.xmu.comm.service.FinanceService;
-import cn.edu.xmu.comm.service.PropertyService;
 import com.alibaba.fastjson.JSONArray;
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import org.springframework.stereotype.Controller;
 
@@ -26,18 +22,13 @@ public class DeviceSearchAction extends ActionSupport {
     @Resource
     private FinanceService financeService;
 
-    @Resource
-    private PropertyService propertyService;
-
     private Map<String, Object> data;
 
     private String term;
 
     @Override
     public String execute() {
-        Community community = (Community) ActionContext.getContext()
-                .getSession().get(Constants.COMMUNITY);
-        List<String[]> list = financeService.searchDevice(term.toUpperCase(), community);
+        List<String[]> list = financeService.searchDevice(term.toUpperCase());
         JSONArray devices = new JSONArray();
         for (String[] aList : list) {
             Map<String, Object> row = new HashMap<String, Object>();

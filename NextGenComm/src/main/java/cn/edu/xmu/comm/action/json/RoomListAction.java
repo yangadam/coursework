@@ -41,7 +41,6 @@ public class RoomListAction extends ActionSupport {
             }
             row.add(room.getId());
             row.add(room.getId());
-
             aaData.add(row);
         }
         data = new HashMap<String, Object>();

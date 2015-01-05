@@ -11,10 +11,9 @@ import java.util.List;
  * description
  *
  * @author Mengmeng Yang
- * @version 12/31/2014 0031
+ * @version 1/5/2015 0005
  */
 public interface StaffService {
-
     /**
      * 添加物业主任
      *
@@ -25,7 +24,7 @@ public interface StaffService {
      * @return 物业主任
      */
     @Transactional(readOnly = false)
-    public Director addDirector(String username, String password, String name, Community community);
+    Director addDirector(String username, String password, String name, Community community);
 
     /**
      * 获得所有物业主任
@@ -37,6 +36,6 @@ public interface StaffService {
     @Transactional(readOnly = false)
     Staff addStaff(String username, String password, String name, Community community, String type);
 
-    List<Staff> getAll(Community community);
+    List<Staff> getAllStaff();
 
 }

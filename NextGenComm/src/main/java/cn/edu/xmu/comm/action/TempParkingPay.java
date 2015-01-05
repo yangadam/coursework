@@ -1,7 +1,7 @@
 package cn.edu.xmu.comm.action;
 
-import cn.edu.xmu.comm.entity.ParkBill;
-import cn.edu.xmu.comm.service.CarService;
+import cn.edu.xmu.comm.entity.ParkingBill;
+import cn.edu.xmu.comm.service.ParkingService;
 import com.opensymphony.xwork2.ActionSupport;
 import org.springframework.stereotype.Controller;
 
@@ -11,14 +11,13 @@ import java.util.Date;
 
 /**
  * Created by Yiu-Wah WONG on 2015/1/3.
+ * @
  */
 @Controller
 public class TempParkingPay extends ActionSupport {
 
     @Resource
-    private CarService carService;
-
-    private ParkBill parkBill;
+    private ParkingService parkingService;
 
     private Integer parkBillId;
     private String ownerName;
@@ -30,13 +29,13 @@ public class TempParkingPay extends ActionSupport {
 
     public String execute() {
 
-        parkBill = carService.getParkBill(parkBillId);
-        ownerName = parkBill.getOwner().getName();
-        ownerPhone = parkBill.getOwner().getPhoneNumber();
-        carInTime = parkBill.getStartTime();
-        carOutTime = parkBill.getEndTime();
-        license = parkBill.getLicense();
-        fee = parkBill.getFee();
+        ParkingBill parkingBill = parkingService.getParkBill(parkBillId);
+        ownerName = parkingBill.getOwner().getName();
+        ownerPhone = parkingBill.getOwner().getPhoneNumber();
+        carInTime = parkingBill.getStartTime();
+        carOutTime = parkingBill.getEndTime();
+        license = parkingBill.getLicense();
+        fee = parkingBill.getFee();
 
         return SUCCESS;
     }

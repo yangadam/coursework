@@ -45,4 +45,5 @@ public class InputValueAction extends ActionSupport {
     public void setCurValue(Double curValue) {
         this.curValue = curValue;
     }
+
 }

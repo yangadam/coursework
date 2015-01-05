@@ -1,12 +1,9 @@
 package cn.edu.xmu.comm.action.json;
 
-import cn.edu.xmu.comm.commons.utils.Constants;
-import cn.edu.xmu.comm.entity.Community;
-import cn.edu.xmu.comm.entity.ParkPlace;
 import cn.edu.xmu.comm.entity.ParkingLot;
-import cn.edu.xmu.comm.service.CarService;
+import cn.edu.xmu.comm.entity.ParkingPlace;
+import cn.edu.xmu.comm.service.ParkingService;
 import com.alibaba.fastjson.JSONArray;
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import org.springframework.stereotype.Controller;
 
@@ -21,10 +18,10 @@ import java.util.Map;
  * @version 1/4/2015 0004
  */
 @Controller
-public class ParkListAction extends ActionSupport {
+public class ParkingListAction extends ActionSupport {
 
     @Resource
-    private CarService carService;
+    private ParkingService parkingService;
 
     private Map<String, Object> data;
 
@@ -32,25 +29,21 @@ public class ParkListAction extends ActionSupport {
 
     @Override
     public String execute() {
-        Community community = (Community) ActionContext.getContext()
-                .getSession().get(Constants.COMMUNITY);
         ParkingLot parkingLot;
         if (type.equals("RENT")) {
-            parkingLot = carService.getRentParkingLot(community);
+            parkingLot = parkingService.getRentParkingLot();
         } else {
-            parkingLot = carService.getTempParkingLot(community);
+            parkingLot = parkingService.getTempParkingLot();
         }
         JSONArray aaData = new JSONArray();
-        for (ParkPlace parkPlace : parkingLot.getParkPlaces()) {
+        for (ParkingPlace parkingPlace : parkingLot.getParkingPlaces()) {
             JSONArray row = new JSONArray();
-            row.add(parkPlace.getId());
-            row.add(parkPlace.getPosition());
-            row.add(parkPlace.getParkPlaceStatus());
+            row.add(parkingPlace.getId());
+            row.add(parkingPlace.getPosition());
+            row.add(parkingPlace.getParkPlaceStatus());
             aaData.add(row);
         }
         data = new HashMap<String, Object>();
-        data.put("iTotalRecords", parkingLot.getParkPlaces().size());
-        data.put("iTotalDisplayRecords", parkingLot.getParkPlaces().size());
         data.put("aaData", aaData);
         return SUCCESS;
     }

@@ -1,13 +1,13 @@
 package cn.edu.xmu.comm.service.impl;
 
 import cn.edu.xmu.comm.commons.utils.SecurityUtils;
+import cn.edu.xmu.comm.commons.utils.SessionUtils;
 import cn.edu.xmu.comm.dao.CommunityDAO;
 import cn.edu.xmu.comm.dao.DirectorDAO;
 import cn.edu.xmu.comm.dao.StaffDAO;
 import cn.edu.xmu.comm.entity.Community;
 import cn.edu.xmu.comm.entity.Director;
 import cn.edu.xmu.comm.entity.Staff;
-import cn.edu.xmu.comm.service.StaffService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,16 +22,16 @@ import java.util.List;
  */
 @Service
 @Transactional(readOnly = true)
-public class StaffServiceImpl implements StaffService {
+public class StaffServiceImpl implements cn.edu.xmu.comm.service.StaffService {
 
+    //region DAO
     @Resource
     private DirectorDAO directorDAO;
-
     @Resource
     private StaffDAO staffDAO;
-
     @Resource
     private CommunityDAO communityDAO;
+    //endregion
 
     /**
      * 添加物业主任
@@ -74,7 +74,8 @@ public class StaffServiceImpl implements StaffService {
     }
 
     @Override
-    public List<Staff> getAll(Community community) {
+    public List<Staff> getAllStaff() {
+        Community community = SessionUtils.getCommunity();
         return staffDAO.getAll(community);
     }
 

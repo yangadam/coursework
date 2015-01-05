@@ -279,6 +279,10 @@
             <result>/WEB-INF/jsp/guard/tempParkingRegiste.jsp</result>
         </action>
 
+        <action name="tempParkingPaying" class="tempParkingPayingAction">
+            <result>/WEB-INF/jsp/guard/tempParkingPaying.jsp</result>
+        </action>
+
         <action name="tempParkingPaying" class="tempParkingPay">
             <result>/WEB-INF/jsp/guard/tempParkingPaying.jsp</result>
         </action>
@@ -319,12 +323,11 @@
         <action name="listBuild" class="buildListAction"/>
         <action name="listDir" class="directorListAction"/>
         <action name="listOwner" class="ownerListAction"/>
-        <action name="commNames" class="commNameAction"/>
+        <action name="commNames" class="commNamesAction"/>
         <action name="buildNo" class="buildNoAction"/>
         <action name="floorNo" class="floorNoAction"/>
         <action name="listRoom" class="roomListAction"/>
         <action name="listStaff" class="staffListAction"/>
-        <action name="deviceValue" class="deviceValueAction"/>
         <action name="vacantRoomNo" class="roomNoAction" method="vacant"/>
         <action name="nonVacantRoomNo" class="roomNoAction" method="noneVacant"/>
         <action name="ownerSearch" class="ownerSearchAction"/>
@@ -339,7 +342,7 @@
         <action name="ownerByRoom" class="ownerByRoomAction"/>
         <action name="tempParkBillAdd" class="tempParkBillAddAction"/>
         <action name="listParkPlace" class="parkPlaceListAction"/>
-        <action name="listPark" class="parkListAction"/>
+        <action name="listPark" class="parkingListAction"/>
         <action name="vacantPark" class="vacantParkAction"/>
         <action name="listCar" class="carListAction"/>
         <action name="listArrearage" class="arrearageListAction"/>

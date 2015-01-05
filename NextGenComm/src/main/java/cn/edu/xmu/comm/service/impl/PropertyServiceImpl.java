@@ -4,9 +4,10 @@ import cn.edu.xmu.comm.commons.calc.impl.AreaShareCalculator;
 import cn.edu.xmu.comm.commons.calc.impl.CountShareCalculator;
 import cn.edu.xmu.comm.commons.calc.impl.FloorShareCalculator;
 import cn.edu.xmu.comm.commons.exception.DifferentCommunityException;
-import cn.edu.xmu.comm.commons.persistence.Page;
 import cn.edu.xmu.comm.commons.utils.SecurityUtils;
+import cn.edu.xmu.comm.commons.utils.SessionUtils;
 import cn.edu.xmu.comm.dao.*;
+import cn.edu.xmu.comm.dao.impl.DeviceDaoImpl;
 import cn.edu.xmu.comm.entity.*;
 import cn.edu.xmu.comm.service.PropertyService;
 import org.springframework.stereotype.Service;
@@ -14,8 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.SortedMap;
 
 /**
  * 物业管理模块Service
@@ -29,31 +31,45 @@ public class PropertyServiceImpl implements PropertyService {
 
     //region DAO
     @Resource
-    private CommunityDAO communityDAO;
-
-    @Resource
     private BuildingDAO buildingDAO;
-
+    @Resource
+    private CommunityDAO communityDAO;
+    @Resource
+    private DeviceDaoImpl deviceDAO;
     @Resource
     private FloorDAO floorDAO;
-
-    @Resource
-    private RoomDAO roomDAO;
-
     @Resource
     private OwnerDAO ownerDAO;
-
-    @Resource
-    private DeviceDAO deviceDAO;
-
-    @Resource
-    private StaffDAO staffDAO;
-
     @Resource
     private ParkingLotDAO parkingLotDAO;
+    @Resource
+    private StaffDAO staffDAO;
+    @Resource
+    private RoomDAO roomDAO;
     //endregion
 
-    //region Add Operations
+    //region Building Service
+
+    /**
+     * 添加楼宇
+     *
+     * @param no         楼宇号
+     * @param floorCount 楼层数
+     * @param community  所属小区
+     * @return 添加的楼宇
+     */
+    @Override
+    @Transactional(readOnly = false)
+    public Building addBuilding(Integer no, Integer floorCount, Community community) {
+        community = communityDAO.get(community.getId());
+        Building building = new Building(no, floorCount);
+        community.addBuilding(building);
+        buildingDAO.persist(building);
+        return building;
+    }
+    //endregion
+
+    //region Community Service
 
     /**
      * 添加小区
@@ -73,180 +89,9 @@ public class PropertyServiceImpl implements PropertyService {
         communityDAO.merge(community);
         return community;
     }
+    //endregion
 
-    /**
-     * 新建临时停车场
-     *
-     * @param community 社区
-     * @return 临时停车场
-     */
-    @Transactional(readOnly = false)
-    public ParkingLot newTempParkingLot(Community community) {
-        ParkingLot tempParkingLot = new ParkingLot();
-        tempParkingLot.setType(ParkingLot.ParkingLotStatus.TEMP);
-        tempParkingLot.setFeeType("GradientParkingCalculator");
-        tempParkingLot.setCommunity(community);
-        tempParkingLot.getGradient().put(30, BigDecimal.valueOf(5));
-        tempParkingLot.getGradient().put(90, BigDecimal.valueOf(10));
-        tempParkingLot.getGradient().put(150, BigDecimal.valueOf(15));
-        tempParkingLot.getGradient().put(210, BigDecimal.valueOf(20));
-        tempParkingLot.setName(community.getName() + "临时停车场");
-        parkingLotDAO.persist(tempParkingLot);
-        return tempParkingLot;
-    }
-
-    /**
-     * 新建租用停车场
-     *
-     * @param community 社区
-     * @return 租用停车场
-     */
-    @Transactional(readOnly = false)
-    public ParkingLot newRentParkingLot(Community community) {
-        ParkingLot rentParkingLot = new ParkingLot();
-        rentParkingLot.setType(ParkingLot.ParkingLotStatus.RENT);
-        rentParkingLot.setCommunity(community);
-        rentParkingLot.setName(community.getName() + "租用停车场");
-        parkingLotDAO.persist(rentParkingLot);
-        return rentParkingLot;
-    }
-
-    /**
-     * 添加楼宇
-     *
-     * @param no         楼宇号
-     * @param floorCount 楼层数
-     * @param community  所属小区
-     * @return 添加的楼宇
-     */
-    @Override
-    @Transactional(readOnly = false)
-    public Building addBuilding(Integer no, Integer floorCount, Community community) {
-        community = communityDAO.get(community.getId());
-        Building building = new Building(no, floorCount);
-        community.addBuilding(building);
-        buildingDAO.persist(building);
-        return building;
-    }
-
-    /**
-     * 批量添加楼宇
-     *
-     * @param startNo    起始编号
-     * @param length     结束编号
-     * @param floorCount 楼层数
-     * @param community  所属小区
-     * @return 添加的小区列表
-     */
-    @Override
-    @Transactional(readOnly = false)
-    public List<Building> addBuilding(Integer startNo, Integer length, Integer floorCount, Community community) {
-        List<Building> buildings = new ArrayList<Building>();
-        for (Integer currentNo = startNo; currentNo < startNo + length; currentNo++) {
-            buildings.add(new Building(currentNo, floorCount));
-        }
-        community.addBuildings(buildings);
-        buildingDAO.persist(buildings);
-        return buildings;
-    }
-
-    /**
-     * 添加房间
-     *
-     * @param no    房间号
-     * @param area  房间面积
-     * @param floor 所属楼层
-     * @return 添加的房间
-     */
-    @Override
-    @Transactional(readOnly = false)
-    public Room addRoom(String no, Double area, Floor floor) {
-        Room room = new Room(no, area);
-        floor.addRoom(room);
-        roomDAO.persist(room);
-        floorDAO.merge(floor);
-        return room;
-    }
-
-    /**
-     * 批量添加房间（面积必须相同）
-     *
-     * @param startNo 起始编号
-     * @param length  房间数
-     * @param area    面积
-     * @param floor   所属楼层
-     * @return 添加的房间列表
-     */
-    @Override
-    @Transactional(readOnly = false)
-    public List<Room> addRoomBatch(Integer startNo, Integer length, Double area, Floor floor) {
-        List<Room> rooms = new ArrayList<Room>();
-        for (Integer currentNo = startNo; currentNo <= startNo + length; currentNo++) {
-            rooms.add(new Room(String.valueOf(currentNo), area));
-        }
-        floor.addRooms(rooms);
-        roomDAO.persist(rooms);
-        floorDAO.merge(floor);
-        return rooms;
-    }
-
-    /**
-     * 添加业主,并指定小区
-     *
-     * @param username  用户名
-     * @param password  密码
-     * @param name      姓名
-     * @param community 所属小区
-     * @return 添加的业主
-     */
-    @Override
-    @Transactional(readOnly = false)
-    public Owner addOwner(String username, String password, String name, Community community) {
-        Owner owner = new Owner(username, password, name, community);
-        SecurityUtils.encryptUser(owner);
-        ownerDAO.persist(owner);
-        return owner;
-    }
-
-    /**
-     * 添加业主，并指定房间
-     *
-     * @param username 用户名
-     * @param password 密码
-     * @param name     姓名
-     * @param room     房间
-     * @return 添加的业主
-     * @throws DifferentCommunityException 小区不同异常
-     * @see DifferentCommunityException
-     */
-    @Override
-    @Transactional(readOnly = false)
-    public Owner addOwner(String username, String password, String name, Room room)
-            throws DifferentCommunityException {
-        Owner owner = new Owner(username, password, name, room);
-        SecurityUtils.encryptUser(owner);
-        ownerDAO.persist(owner);
-        roomDAO.merge(room);
-        return owner;
-    }
-
-    /**
-     * 将业主添加到房间
-     *
-     * @param ownerId 业主
-     * @param roomId  房间
-     * @throws DifferentCommunityException 小区不同异常
-     * @see DifferentCommunityException
-     */
-    @Override
-    @Transactional(readOnly = false)
-    public void addOwnerToRoom(Integer ownerId, Integer roomId) throws DifferentCommunityException {
-        Owner owner = ownerDAO.get(ownerId);
-        Room room = roomDAO.get(roomId);
-        owner.addRoom(room);
-        roomDAO.merge(room);
-        ownerDAO.merge(owner);
-    }
+    //region Device Service
 
     /**
      * 添加私有设备
@@ -357,6 +202,139 @@ public class PropertyServiceImpl implements PropertyService {
     }
     //endregion
 
+    @Override
+    public Floor getFloor(Integer floorId) {
+        return floorDAO.get(floorId);
+    }
+
+    //region Owner Service
+
+    /**
+     * 添加业主,并指定小区
+     *
+     * @param username  用户名
+     * @param password  密码
+     * @param name      姓名
+     * @param community 所属小区
+     * @return 添加的业主
+     */
+    @Override
+    @Transactional(readOnly = false)
+    public Owner addOwner(String username, String password, String name, Community community) {
+        Owner owner = new Owner(username, password, name, community);
+        SecurityUtils.encryptUser(owner);
+        ownerDAO.persist(owner);
+        return owner;
+    }
+
+    /**
+     * 添加业主，并指定房间
+     *
+     * @param username 用户名
+     * @param password 密码
+     * @param name     姓名
+     * @param room     房间
+     * @return 添加的业主
+     * @throws DifferentCommunityException 小区不同异常
+     * @see DifferentCommunityException
+     */
+    @Override
+    @Transactional(readOnly = false)
+    public Owner addOwner(String username, String password, String name, Room room)
+            throws DifferentCommunityException {
+        Owner owner = new Owner(username, password, name, room);
+        SecurityUtils.encryptUser(owner);
+        ownerDAO.persist(owner);
+        roomDAO.merge(room);
+        return owner;
+    }
+
+    /**
+     * 将业主添加到房间
+     *
+     * @param ownerId 业主
+     * @param roomId  房间
+     * @throws DifferentCommunityException 小区不同异常
+     * @see DifferentCommunityException
+     */
+    @Override
+    @Transactional(readOnly = false)
+    public void addOwnerToRoom(Integer ownerId, Integer roomId) throws DifferentCommunityException {
+        Owner owner = ownerDAO.get(ownerId);
+        Room room = roomDAO.get(roomId);
+        owner.addRoom(room);
+        roomDAO.merge(room);
+        ownerDAO.merge(owner);
+    }
+
+    @Override
+    public Boolean hasOwner(Integer ownerId) {
+        Community community = SessionUtils.getCommunity();
+        Owner owner = ownerDAO.get(ownerId);
+        return owner != null && community.getId().equals(owner.getCommunity().getId());
+    }
+    //endregion
+
+    //region Room Service
+
+    /**
+     * 添加房间
+     *
+     * @param no    房间号
+     * @param area  房间面积
+     * @param floor 所属楼层
+     * @return 添加的房间
+     */
+    @Override
+    @Transactional(readOnly = false)
+    public Room addRoom(String no, Double area, Floor floor) {
+        Room room = new Room(no, area);
+        floor.addRoom(room);
+        roomDAO.persist(room);
+        floorDAO.merge(floor);
+        return room;
+    }
+    //endregion
+
+    /**
+     * 新建临时停车场
+     *
+     * @param community 社区
+     * @return 临时停车场
+     */
+    @Override
+    @Transactional(readOnly = false)
+    public ParkingLot newTempParkingLot(Community community) {
+        ParkingLot tempParkingLot = new ParkingLot();
+        tempParkingLot.setType(ParkingLot.ParkingLotStatus.TEMP);
+        tempParkingLot.setFeeType("GradientParkingCalculator");
+        tempParkingLot.setCommunity(community);
+        tempParkingLot.getGradient().put(30, BigDecimal.valueOf(5));
+        tempParkingLot.getGradient().put(90, BigDecimal.valueOf(10));
+        tempParkingLot.getGradient().put(150, BigDecimal.valueOf(15));
+        tempParkingLot.getGradient().put(210, BigDecimal.valueOf(20));
+        tempParkingLot.setName(community.getName() + "临时停车场");
+        parkingLotDAO.persist(tempParkingLot);
+        return tempParkingLot;
+    }
+
+    /**
+     * 新建租用停车场
+     *
+     * @param community 社区
+     * @return 租用停车场
+     */
+    @Override
+    @Transactional(readOnly = false)
+    public ParkingLot newRentParkingLot(Community community) {
+        ParkingLot rentParkingLot = new ParkingLot();
+        rentParkingLot.setType(ParkingLot.ParkingLotStatus.RENT);
+        rentParkingLot.setCommunity(community);
+        rentParkingLot.setName(community.getName() + "租用停车场");
+        parkingLotDAO.persist(rentParkingLot);
+        return rentParkingLot;
+    }
+
     //region Update Operations
 
     /**
@@ -461,129 +439,65 @@ public class PropertyServiceImpl implements PropertyService {
         building.preDelete();
         buildingDAO.delete(building);
     }
+
+    @Override
+    public List<Community> getAllCommunities() {
+        return communityDAO.getAll();
+    }
     //endregion
 
     //region Get Operations
 
     /**
-     * 通过id获得小区
+     * 获取所有小区的名字列表
      *
-     * @param id 小区id
-     * @return 小区
+     * @return 小区的名字列表
      */
-    @Override
-    public Community getCommunity(Integer id) {
-        return communityDAO.load(id);
-    }
-
-    @Override
-    public Building getBuilding(Integer id) {
-        return buildingDAO.load(id);
-    }
-
-    /**
-     * 通过名字获得小区
-     *
-     * @param name 小区名字
-     * @return 小区
-     */
-    @Override
-    public Community getCommunity(String name) {
-        return communityDAO.getByName(name);
-    }
-
-    /**
-     * 获取所有小区
-     *
-     * @return 小区列表
-     */
-    @Override
-    public List<Community> getAllCommunities() {
-        return communityDAO.getAll();
-    }
-
-    /**
-     * 获取所有小区（分页）
-     *
-     * @param page 分页对象
-     * @return 分页对象
-     */
-    @Override
-    public Page<Community> getAllCommunities(Page<Community> page) {
-        return communityDAO.getAll(page);
-    }
-
     @Override
     public List<String> getCommunityNames() {
         return communityDAO.getNames();
     }
 
     @Override
-    public List<Building> getAllBuildings(Community community) {
+    public List<Building> getAllBuildings() {
+        Community community = SessionUtils.getCommunity();
         return buildingDAO.getAll(community);
     }
 
-    /**
-     * 通过楼宇号获取某小区的楼宇
-     *
-     * @param no        楼宇号
-     * @param community 所属小区
-     * @return 楼宇
-     */
-    @Override
-    public Building getBuildingByNo(Integer no, Community community) {
-        return buildingDAO.getByNo(no, community);
-    }
 
     /**
-     * 通过楼层号获取某楼宇的楼层
+     * 获得某小区的楼宇id和楼宇号列表
      *
-     * @param no       楼层号
-     * @param building 所属楼宇
-     * @return 楼层
+     * @return 楼宇id和楼宇号列表
      */
     @Override
-    public Floor getFloorByNo(Integer no, Building building) {
-        return floorDAO.getByNo(no, building);
-    }
-
-    /**
-     * 通过房间号获取某楼层的房间
-     *
-     * @param no    房间号
-     * @param floor 楼层
-     * @return 房间
-     */
-    @Override
-    public Room getRoomByNo(String no, Floor floor) {
-        return roomDAO.getByNo(no, floor);
-    }
-
-    /**
-     * 获取小区所有房间
-     *
-     * @param community 小区
-     * @return 房间列表
-     */
-    @Override
-    public List<Room> getAllRooms(Community community) {
-        return roomDAO.getAll(community);
-    }
-
-    @Override
-    public Owner getOwner(String name) {
-        return ownerDAO.get(name);
-    }
-
-    @Override
-    public List<String[]> getBuildingNos(Community community) {
+    public List<String[]> getBuildNos() {
+        Community community = SessionUtils.getCommunity();
         return buildingDAO.getIdsAndNos(community);
     }
 
+    /**
+     * 获得某楼宇的楼层id和楼层号列表
+     *
+     * @param buildId 楼宇id
+     * @return 楼层id和楼层号列表
+     */
     @Override
     public List<String[]> getFloorNos(Integer buildId) {
         return floorDAO.getIdsAndNos(buildId);
     }
+
+    /**
+     * 获得某楼宇的房间id和房间号列表
+     *
+     * @param floorId 楼层id
+     * @return 房间id和房间号列表
+     */
+    @Override
+    public List<String[]> getRoomNos(Integer floorId) {
+        return floorDAO.getIdsAndNos(floorId);
+    }
+
 
     @Override
     public List<Room> getAllRooms(Integer floorId) {
@@ -591,10 +505,6 @@ public class PropertyServiceImpl implements PropertyService {
         return floor.getRoomList();
     }
 
-    @Override
-    public Floor getFloor(Integer floorId) {
-        return floorDAO.get(floorId);
-    }
 
     @Override
     public List<String[]> getVacantRoomNos(Integer floorId) {
@@ -602,17 +512,8 @@ public class PropertyServiceImpl implements PropertyService {
     }
 
     @Override
-    public Room getRoom(Integer roomId) {
-        return roomDAO.get(roomId);
-    }
-
-    @Override
-    public List<Owner> getAllOwners(Community community) {
-        return ownerDAO.getAll(community);
-    }
-
-    @Override
-    public List<String[]> searchOwner(String term, Community community) {
+    public List<String[]> searchOwner(String term) {
+        Community community = SessionUtils.getCommunity();
         return ownerDAO.buzzSearch(term, community);
     }
 
@@ -621,10 +522,16 @@ public class PropertyServiceImpl implements PropertyService {
         return roomDAO.getNonVacantRoomNos(floorId);
     }
 
+
     @Override
-    public Boolean hasOwner(Community community, Integer ownerId) {
-        Owner owner = ownerDAO.get(ownerId);
-        return community.getId() == owner.getCommunity().getId();
+    @Transactional(readOnly = false)
+    public void updateDeviceLastKey(Device device, Date date) {
+        SortedMap<Date, Double> sortedMap = device.getValues();
+        Date end = sortedMap.lastKey();
+        sortedMap.remove(end);
+        sortedMap.put(date, 0.0);
+        device.setValues(sortedMap);
+        deviceDAO.merge(device);
     }
 
     @Override
@@ -632,8 +539,153 @@ public class PropertyServiceImpl implements PropertyService {
         return ownerDAO.get(user.getId());
     }
 
+    @Override
+    public Room getRoom(Integer roomId) {
+        return roomDAO.get(roomId);
+    }
+
+    @Override
+    public List<Owner> getAllOwners() {
+        Community community = SessionUtils.getCommunity();
+        return ownerDAO.getAll(community);
+    }
+
+    @Override
+    public Community getCommunity(String commName) {
+        return communityDAO.getByName(commName);
+    }
 
 
+    //endregion
+
+    //region Unused
+//    /**
+//     * 通过楼宇号获取某小区的楼宇
+//     *
+//     * @param no        楼宇号
+//     * @param community 所属小区
+//     * @return 楼宇
+//     */
+//    public Building getBuildingByNo(Integer no, Community community) {
+//        return buildingDAO.getByNo(no, community);
+//    }
+//
+//    /**
+//     * 通过楼层号获取某楼宇的楼层
+//     *
+//     * @param no       楼层号
+//     * @param building 所属楼宇
+//     * @return 楼层
+//     */
+//    public Floor getFloorByNo(Integer no, Building building) {
+//        return floorDAO.getByNo(no, building);
+//    }
+//
+//    /**
+//     * 通过房间号获取某楼层的房间
+//     *
+//     * @param no    房间号
+//     * @param floor 楼层
+//     * @return 房间
+//     */
+//    public Room getRoomByNo(String no, Floor floor) {
+//        return roomDAO.getByNo(no, floor);
+//    }
+//    public Owner getOwner(String name) {
+//        return ownerDAO.get(name);
+//    }
+    //    public Room getRoom(Integer roomId) {
+//        return roomDAO.get(roomId);
+//    }
+
+
+//    public List<Owner> getAllOwners(Community community) {
+//        return ownerDAO.getAll(community);
+//    }
+//
+//    /**
+//     * 获取小区所有房间
+//     *
+//     * @param community 小区
+//     * @return 房间列表
+//     */
+//    public List<Room> getAllRooms(Community community) {
+//        return roomDAO.getAll(community);
+//    }
+//    /**
+//     * 获取所有小区（分页）
+//     *
+//     * @param page 分页对象
+//     * @return 分页对象
+//     */
+//    public Page<Community> getAllCommunities(Page<Community> page) {
+//        return communityDAO.getAll(page);
+//    }
+
+    //    /**
+//     * 批量添加楼宇
+//     *
+//     * @param startNo    起始编号
+//     * @param length     结束编号
+//     * @param floorCount 楼层数
+//     * @param community  所属小区
+//     * @return 添加的小区列表
+//     */
+//    @Transactional(readOnly = false)
+//    public List<Building> addBuilding(Integer startNo, Integer length, Integer floorCount, Community community) {
+//        List<Building> buildings = new ArrayList<Building>();
+//        for (Integer currentNo = startNo; currentNo < startNo + length; currentNo++) {
+//            buildings.add(new Building(currentNo, floorCount));
+//        }
+//        community.addBuildings(buildings);
+//        buildingDAO.persist(buildings);
+//        return buildings;
+//    }
+
+//    /**
+//     * 批量添加房间（面积必须相同）
+//     *
+//     * @param startNo 起始编号
+//     * @param length  房间数
+//     * @param area    面积
+//     * @param floor   所属楼层
+//     * @return 添加的房间列表
+//     */
+//    @Transactional(readOnly = false)
+//    public List<Room> addRoomBatch(Integer startNo, Integer length, Double area, Floor floor) {
+//        List<Room> rooms = new ArrayList<Room>();
+//        for (Integer currentNo = startNo; currentNo <= startNo + length; currentNo++) {
+//            rooms.add(new Room(String.valueOf(currentNo), area));
+//        }
+//        floor.addRooms(rooms);
+//        roomDAO.persist(rooms);
+//        floorDAO.merge(floor);
+//        return rooms;
+//    }
+
+//    /**
+//     * 通过id获得小区
+//     *
+//     * @param id 小区id
+//     * @return 小区
+//     */
+//    public Community getCommunity(Integer id) {
+//        return communityDAO.load(id);
+//    }
+//
+//    public Building getBuilding(Integer id) {
+//        return buildingDAO.load(id);
+//    }
+//
+//    /**
+//     * 通过名字获得小区
+//     *
+//     * @param name 小区名字
+//     * @return 小区
+//     */
+//    public Community getCommunity(String name) {
+//        return communityDAO.getByName(name);
+//    }
     //endregion
 
 }

@@ -1,24 +1,18 @@
 package cn.edu.xmu.comm.dao;
 
 import cn.edu.xmu.comm.commons.persistence.BaseDAO;
-import cn.edu.xmu.comm.commons.persistence.Parameter;
-import cn.edu.xmu.comm.commons.utils.CastUtils;
 import cn.edu.xmu.comm.entity.Building;
 import cn.edu.xmu.comm.entity.Community;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 /**
- * 楼宇DAO
- * Created by Roger on 2014/12/9 0009.
+ * description
  *
  * @author Mengmeng Yang
- * @version 2014-12-22
+ * @version 1/5/2015 0005
  */
-@Repository
-public class BuildingDAO extends BaseDAO<Building, Integer> {
-
+public interface BuildingDAO extends BaseDAO<Building, Integer> {
     /**
      * 通过楼宇号获取某小区楼宇
      *
@@ -26,24 +20,14 @@ public class BuildingDAO extends BaseDAO<Building, Integer> {
      * @param community 小区
      * @return 楼宇
      */
-    public Building getByNo(Integer no, Community community) {
-        String ql = "select b from Building b where b.community = :p1 and b.no = :p2";
-        return getByQL(ql, new Parameter(community, no));
-    }
+    Building getByNo(Integer no, Community community);
 
     /**
-     * @param community
-     * @return
+     * @param community 小区
+     * @return 楼宇
      */
-    public List<Building> getAll(Community community) {
-        String ql = "select b from Building b where b.community = :p1";
-        return searchByQL(ql, new Parameter(community));
-    }
+    List<Building> getAll(Community community);
 
     @SuppressWarnings("unchecked")
-    public List<String[]> getIdsAndNos(Community community) {
-        String ql = "select b.id, b.no from Building b where b.community = :p1";
-        List list = getAttrsByQL(ql, new Parameter(community));
-        return CastUtils.castToListStringArray(list);
-    }
+    List<String[]> getIdsAndNos(Community community);
 }

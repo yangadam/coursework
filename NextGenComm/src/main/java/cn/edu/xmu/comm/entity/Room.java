@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 房间实体
@@ -103,7 +104,7 @@ public class Room extends Property {
      *
      * @param billItems 未支付账单
      */
-    public void generateRoom(List<BillItem> billItems) throws DeviceException {
+    public void generateRoom(Set<BillItem> billItems) throws DeviceException {
         generateEnergy(billItems);
         generateShare(billItems);
         generateManageFee(billItems);
@@ -116,7 +117,7 @@ public class Room extends Property {
      *
      * @param billItems 未支付账单
      */
-    public void generateEnergy(List<BillItem> billItems) throws DeviceException {
+    public void generateEnergy(Set<BillItem> billItems) throws DeviceException {
         for (Device device : getDeviceList()) {
             BillItem billItem = new BillItem();
             billItem.setName(device.getType().getFeeType());
@@ -133,7 +134,7 @@ public class Room extends Property {
      *
      * @param billItems 未支付账单
      */
-    public void generateShare(List<BillItem> billItems) throws DeviceException {
+    public void generateShare(Set<BillItem> billItems) throws DeviceException {
         BigDecimal totalAmount = BigDecimal.ZERO;
         for (Device device : getSharedDevice()) {
             String type = device.getShareType();
@@ -155,7 +156,7 @@ public class Room extends Property {
      *
      * @param billItems 未支付账单
      */
-    public void generateManageFee(List<BillItem> billItems) {
+    public void generateManageFee(Set<BillItem> billItems) {
         Community community = getCommunity();
         String type = community.getManageFeeType();
         IManageFeeCalculator calculator = CalculatorFactory.getCalculator(type);
@@ -173,7 +174,7 @@ public class Room extends Property {
      *
      * @param billItems 未支付账单
      */
-    public void generateGarbageFee(List<BillItem> billItems) {
+    public void generateGarbageFee(Set<BillItem> billItems) {
         Community community = getCommunity();
         String type = community.getGarbageFeeType();
         IGarbageFeeCalculator calculator = CalculatorFactory.getCalculator(type);
@@ -191,7 +192,7 @@ public class Room extends Property {
      *
      * @param billItems 未支付账单
      */
-    public void generatePublicFund(List<BillItem> billItems) {
+    public void generatePublicFund(Set<BillItem> billItems) {
         Community community = getCommunity();
         PublicFund publicFund = community.getPublicFund();
         if (publicFund.isNeeded()) {

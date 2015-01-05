@@ -2,16 +2,16 @@ package cn.edu.xmu.comm.dao;
 
 import cn.edu.xmu.comm.commons.persistence.BaseDAO;
 import cn.edu.xmu.comm.entity.BillItem;
-import org.springframework.stereotype.Repository;
+import cn.edu.xmu.comm.entity.Owner;
+
+import java.util.List;
 
 /**
- * 账单项DAO
- * Created by Roger on 2014/12/9 0009.
+ * description
  *
  * @author Mengmeng Yang
- * @version 2014-12-9
+ * @version 1/5/2015 0005
  */
-@Repository
-public class BillItemDAO extends BaseDAO<BillItem, Integer> {
-
+public interface BillItemDAO extends BaseDAO<BillItem, Integer> {
+    List<BillItem> getUnpaidBillItems(Owner owner);
 }

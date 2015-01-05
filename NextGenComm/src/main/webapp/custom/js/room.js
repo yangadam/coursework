@@ -99,6 +99,9 @@ var TableEditable = function () {
 
             $("#floor").change(function () {
                 floorId = $(this).children('option:selected').val();
+                if (floorId == undefined) {
+                    floorId = -1;
+                }
                 $("#floorId").val(floorId);
                 $.ajax({
                     url: "/listRoom.do?floorId=" + floorId,

@@ -111,8 +111,9 @@ public class Device extends DataEntity {
     Device() {
     }
 
-    public Device(Integer id, Double currentValue, Double lastValue, DeviceType type) {
+    public Device(Integer id, String no, Double currentValue, Double lastValue, DeviceType type) {
         this.id = id;
+        this.no = no;
         this.currentValue = currentValue;
         this.lastValue = lastValue;
         this.type = type;
@@ -169,10 +170,11 @@ public class Device extends DataEntity {
      * @return 费用
      */
     public BigDecimal calculate() throws DeviceException {
-        if (isCalculated)
-            throw new DeviceException("未录入本月的读数");
+//        if (isCalculated)
+//            return BigDecimal.ZERO;
+        //throw new DeviceException("未录入本月的读数");
         BigDecimal totalAmount = BigDecimal.ZERO;
-        BigDecimal amount;
+        BigDecimal amount = BigDecimal.ZERO;
         Double lastValue = 0.0;
         Double curValue;
         for (Object o : getGradientMap().entrySet()) {
@@ -181,8 +183,13 @@ public class Device extends DataEntity {
                 curValue = (Double) entry.getKey() - lastValue;
                 amount = ((BigDecimal) entry.getValue()).multiply(BigDecimal.valueOf(curValue));
                 totalAmount.add(amount);
-            } else {
+            } else if (getUsage().compareTo((Double) entry.getKey()) == -1) {
                 curValue = getUsage() - lastValue;
+                amount = ((BigDecimal) entry.getValue()).multiply(BigDecimal.valueOf(curValue));
+                totalAmount = totalAmount.add(amount);
+                break;
+            } else if (getUsage().compareTo((Double) entry.getKey()) == 1) {
+                curValue = (Double) entry.getKey() - lastValue;
                 amount = ((BigDecimal) entry.getValue()).multiply(BigDecimal.valueOf(curValue));
                 totalAmount = totalAmount.add(amount);
             }
@@ -422,7 +429,7 @@ public class Device extends DataEntity {
      * @param values 读数表
      *               保护当前读数和上月读数只能通过添加值和删除值实现
      */
-    private void setValues(SortedMap<Date, Double> values) {
+    public void setValues(SortedMap<Date, Double> values) {
         this.values = values;
     }
 

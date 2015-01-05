@@ -1,25 +1,19 @@
 package cn.edu.xmu.comm.dao;
 
 import cn.edu.xmu.comm.commons.persistence.BaseDAO;
-import cn.edu.xmu.comm.commons.persistence.Parameter;
-import cn.edu.xmu.comm.commons.utils.CastUtils;
 import cn.edu.xmu.comm.entity.Community;
 import cn.edu.xmu.comm.entity.Floor;
 import cn.edu.xmu.comm.entity.Room;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 /**
- * 房间DAO
- * Created by Roger on 2014/12/7 0007.
+ * description
  *
  * @author Mengmeng Yang
- * @version 2014-12-22
+ * @version 1/5/2015 0005
  */
-@Repository
-public class RoomDAO extends BaseDAO<Room, Integer> {
-
+public interface RoomDAO extends BaseDAO<Room, Integer> {
     /**
      * 通过房间号号获取某楼层的房间
      *
@@ -27,10 +21,7 @@ public class RoomDAO extends BaseDAO<Room, Integer> {
      * @param floor 楼层
      * @return 房间
      */
-    public Room getByNo(String no, Floor floor) {
-        String ql = "select r from Room r where r.floor = :p1 and r.no = :p2";
-        return getByQL(ql, new Parameter(floor, no));
-    }
+    Room getByNo(String no, Floor floor);
 
     /**
      * 获取某个小区所有房间
@@ -38,28 +29,11 @@ public class RoomDAO extends BaseDAO<Room, Integer> {
      * @param community 小区
      * @return 房间列表
      */
-    public List<Room> getAll(Community community) {
-        String ql = "select r from Room r where r.floor.building.community = :p1";
-        return searchByQL(ql, new Parameter(community));
-    }
+    List<Room> getAll(Community community);
 
-    public List<String[]> getVacantRoomNos(Integer floorId) {
-        String ql = "select r.id, r.no from Room r where r.floor.id = :p1 and r.owner is null";
-        List list = getAttrsByQL(ql, new Parameter(floorId));
-        return CastUtils.castToListStringArray(list);
-    }
+    List<String[]> getVacantRoomNos(Integer floorId);
 
-    public List<String[]> getNonVacantRoomNos(Integer floorId) {
-        String ql = "select r.id, r.no from Room r where r.floor.id = :p1 and r.owner is not null";
-        List list = getAttrsByQL(ql, new Parameter(floorId));
-        return CastUtils.castToListStringArray(list);
-    }
+    List<String[]> getNonVacantRoomNos(Integer floorId);
 
-    public void delete(Community community) {
-        String ql = "select r from Room r where r.floor.building.community = :p1";
-        List<Room> list = searchByQL(ql, new Parameter(community));
-        for (Room room : list) {
-            delete(room);
-        }
-    }
+    void delete(Community community);
 }

@@ -8,7 +8,7 @@ import java.math.BigDecimal;
  *
  */
 @Entity
-public class ParkPlace {
+public class ParkingPlace {
 
     //region Instance Variables
     /**
@@ -44,18 +44,18 @@ public class ParkPlace {
     private ParkPlaceStatus parkPlaceStatus;
     //endregion
 
-    public ParkPlace() {
+    public ParkingPlace() {
 
     }
 
-    public ParkPlace(String position, ParkingLot parkingLot, BigDecimal monthlyFee) {
+    public ParkingPlace(String position, ParkingLot parkingLot, BigDecimal monthlyFee) {
         this.position = position;
         this.parkingLot = parkingLot;
         this.parkPlaceStatus = ParkPlaceStatus.FREE;
         this.monthlyFee = monthlyFee;
     }
 
-    public ParkPlace(String position, ParkingLot parkingLot) {
+    public ParkingPlace(String position, ParkingLot parkingLot) {
         this.position = position;
         this.parkingLot = parkingLot;
         this.parkPlaceStatus = ParkPlaceStatus.FREE;

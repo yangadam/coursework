@@ -1,11 +1,8 @@
 package cn.edu.xmu.comm.action.json;
 
-import cn.edu.xmu.comm.commons.utils.Constants;
-import cn.edu.xmu.comm.entity.Community;
 import cn.edu.xmu.comm.entity.Staff;
 import cn.edu.xmu.comm.service.StaffService;
 import com.alibaba.fastjson.JSONArray;
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import org.springframework.stereotype.Controller;
 
@@ -16,6 +13,8 @@ import java.util.Map;
 
 /**
  * Created by Yiu-Wah WONG on 2015/1/1.
+ *
+ * @
  */
 @Controller
 public class StaffListAction extends ActionSupport {
@@ -27,9 +26,7 @@ public class StaffListAction extends ActionSupport {
 
     @Override
     public String execute() {
-        Community community = (Community) ActionContext.getContext()
-                .getSession().get(Constants.COMMUNITY);
-        List<Staff> staffs = staffService.getAll(community);
+        List<Staff> staffs = staffService.getAllStaff();
         JSONArray aaData = new JSONArray();
         int i = 1;
         for (Staff staff : staffs) {
@@ -41,8 +38,6 @@ public class StaffListAction extends ActionSupport {
             aaData.add(row);
         }
         data = new HashMap<String, Object>();
-        data.put("iTotalRecords", staffs.size());
-        data.put("iTotalDisplayRecords", staffs.size());
         data.put("aaData", aaData);
         return SUCCESS;
     }

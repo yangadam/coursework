@@ -6,8 +6,6 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * 用户
@@ -57,17 +55,6 @@ public class User extends DataEntity {
      */
     @Column(nullable = false)
     private Boolean locked = Boolean.FALSE;
-
-    /**
-     * 角色集合
-     */
-    @ManyToMany(targetEntity = Role.class)
-    @JoinTable(
-            name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    private Set<Role> roles = new HashSet<Role>();
 
     /**
      * 姓名
@@ -178,14 +165,6 @@ public class User extends DataEntity {
 
     public void setLocked(Boolean locked) {
         this.locked = locked;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
     }
 
     public String getName() {

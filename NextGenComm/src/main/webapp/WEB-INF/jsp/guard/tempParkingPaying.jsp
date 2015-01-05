@@ -79,128 +79,131 @@
                             <div class="form-horizontal form-view">
                                 <h3> 停车缴费单 </h3>
                                 <%--<h3 class="form-section">车辆信息</h3>--%>
+                                <div class="row-fluid">
+                                    <div class="span6 ">
+                                        <div class="control-group">
+                                            <label class="control-label">车牌号：</label>
 
-                                <div class="control-group">
-                                    <label class="control-label">车牌号：</label>
+                                            <div class="controls">
+                                                <span class="text"><s:property value="license"/></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="span6 ">
+                                        <div class="control-group">
+                                            <label class="control-label">缴费单号：</label>
 
-                                    <div class="controls">
-                                        <span class="text">${license}</span>
+                                            <div class="controls">
+                                                <span class="text">#<s:property value="parkBillId"/></span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="span6 ">
-                                <div class="control-group">
-                                    <label class="control-label">缴费单号：</label>
+                                <!--/row-->
+                                <div class="row-fluid">
+                                    <div class="span6 ">
+                                        <div class="control-group">
+                                            <label class="control-label">挂名业主：</label>
 
-                                    <div class="controls">
-                                        <span class="text">#${parkBillId}</span>
+                                            <div class="controls">
+                                                <span class="text bold"><s:property value="ownerName"/></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--/span-->
+                                    <div class="span6 ">
+                                        <div class="control-group">
+                                            <label class="control-label">业主电话：</label>
+
+                                            <div class="controls">
+                                                <span class="text bold"><s:property value="ownerPhone"/></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--/span-->
+                                </div>
+                                <!--/row-->
+                                <div class="row-fluid">
+                                    <div class="span6 ">
+                                        <div class="control-group">
+                                            <label class="control-label">进入时间：</label>
+
+                                            <div class="controls">
+                                                <span class="text bold"><s:date name="carInTime" format="hh:mm"/></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--/span-->
+                                    <div class="span6 ">
+                                        <div class="control-group">
+                                            <label class="control-label">离开时间：</label>
+
+                                            <div class="controls">
+                                                <span class="text bold"><s:date name="carOutTime"
+                                                                                format="hh:mm"/></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--/span-->
+                                </div>
+                                <!--/row-->
+                                <hr/>
+                                <div class="row-fluid">
+                                    <div class="span8">
+                                    </div>
+
+                                    <div class="span4 ">
+                                        <div class="control-group" style="margin-bottom: 20px">
+                                            <label class="control-label" style="font-size: larger">应缴费用：</label>
+
+                                            <div class="controls">
+                                                <span class="text bold" style="font-size: larger"><s:property
+                                                        value="fee"/>元</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <!--/row-->
-                        <div class="row-fluid">
-                            <div class="span6 ">
-                                <div class="control-group">
-                                    <label class="control-label">挂名业主：</label>
-
-                                    <div class="controls">
-                                        <span class="text bold">${ownerName}</span>
-                                    </div>
+                                <div class="form-actions">
+                                    <button type="button" class="btn blue" onclick="printParkBill()"><i
+                                            class="icon-pencil"></i>打印
+                                    </button>
+                                    <button type="button" class="btn" onclick="history.back(-1)">返回</button>
                                 </div>
                             </div>
-                            <!--/span-->
-                            <div class="span6 ">
-                                <div class="control-group">
-                                    <label class="control-label">业主电话：</label>
-
-                                    <div class="controls">
-                                        <span class="text bold">${ownerPhone}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--/span-->
-                        </div>
-                        <!--/row-->
-                        <div class="row-fluid">
-                            <div class="span6 ">
-                                <div class="control-group">
-                                    <label class="control-label">进入时间：</label>
-
-                                    <div class="controls">
-                                        <span class="text bold">${carInTime}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--/span-->
-                            <div class="span6 ">
-                                <div class="control-group">
-                                    <label class="control-label">离开时间：</label>
-
-                                    <div class="controls">
-                                        <span class="text bold">${carOutTime}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--/span-->
-                        </div>
-                        <!--/row-->
-                        <hr/>
-                        <div class="row-fluid">
-                            <div class="span8">
-                            </div>
-
-                            <div class="span4 ">
-                                <div class="control-group" style="margin-bottom: 20px">
-                                    <label class="control-label" style="font-size: larger">应缴费用：</label>
-
-                                    <div class="controls">
-                                        <span class="text bold" style="font-size: larger">${fee}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-actions">
-                            <button type="button" class="btn blue" onclick="printParkBill()"><i
-                                    class="icon-pencil"></i>打印
-                            </button>
-                            <button type="button" class="btn" onclick="history.back(-1)">返回</button>
+                            <!-- END FORM-->
                         </div>
                     </div>
-                    <!-- END FORM-->
                 </div>
             </div>
         </div>
+        <!-- END PAGE -->
     </div>
-</div>
-<!-- END PAGE -->
-</div>
-<!-- END CONTAINER -->
-<!-- BEGIN FOOTER -->
-<%@include file="globalFooter.jsp" %>
-<!-- END FOOTER -->
-<%@include file="globalJS.jsp" %>
-<!-- BEGIN PAGE LEVEL PLUGINS -->
-<script type="text/javascript" src="../../../global/js/select2.min.js"></script>
-<script type="text/javascript" src="../../../global/js/jquery.dataTables.js"></script>
-<script type="text/javascript" src="../../../global/js/DT_bootstrap.js"></script>
-<script language="javascript" src="../../../global/js/jquery.jqprint-0.3.js"></script>
-<!-- END PAGE LEVEL PLUGINS -->
-<!-- BEGIN PAGE LEVEL SCRIPTS -->
-<script src="../../../custom/js/app.js"></script>
-<script>
-    App.init();
-    $(".page-sidebar-menu .title:contains('停车管理')").closest(
-            "li").addClass("active");
-    $(".page-sidebar-menu .sub-menu a:contains('停车缴费')").closest(
-            "li").addClass("active");
-</script>
-<script>
-    function printParkBill() {
-        $("#parkBill").jqprint();
-    }
-</script>
-<!-- END JAVASCRIPTS -->
+        <!-- END CONTAINER -->
+        <!-- BEGIN FOOTER -->
+        <%@include file="globalFooter.jsp" %>
+        <!-- END FOOTER -->
+        <%@include file="globalJS.jsp" %>
+        <!-- BEGIN PAGE LEVEL PLUGINS -->
+        <script type="text/javascript" src="../../../global/js/select2.min.js"></script>
+        <script type="text/javascript" src="../../../global/js/jquery.dataTables.js"></script>
+        <script type="text/javascript" src="../../../global/js/DT_bootstrap.js"></script>
+        <script language="javascript" src="../../../global/js/jquery.jqprint-0.3.js"></script>
+        <!-- END PAGE LEVEL PLUGINS -->
+        <!-- BEGIN PAGE LEVEL SCRIPTS -->
+        <script src="../../../custom/js/app.js"></script>
+        <script>
+            App.init();
+            $(".page-sidebar-menu .title:contains('停车管理')").closest(
+                    "li").addClass("active");
+            $(".page-sidebar-menu .sub-menu a:contains('停车缴费')").closest(
+                    "li").addClass("active");
+        </script>
+        <script>
+            function printParkBill() {
+                $("#parkBill").jqprint();
+            }
+        </script>
+        <!-- END JAVASCRIPTS -->
 </body>
 <!-- END BODY -->
 </html>

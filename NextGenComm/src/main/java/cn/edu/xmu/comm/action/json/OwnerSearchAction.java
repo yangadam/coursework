@@ -1,10 +1,7 @@
 package cn.edu.xmu.comm.action.json;
 
-import cn.edu.xmu.comm.commons.utils.Constants;
-import cn.edu.xmu.comm.entity.Community;
 import cn.edu.xmu.comm.service.PropertyService;
 import com.alibaba.fastjson.JSONArray;
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import org.springframework.stereotype.Controller;
 
@@ -38,10 +35,7 @@ public class OwnerSearchAction extends ActionSupport {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        Community community = (Community) ActionContext.getContext()
-                .getSession().get(Constants.COMMUNITY);
-
-        List<String[]> list = propertyService.searchOwner(term, community);
+        List<String[]> list = propertyService.searchOwner(term);
         JSONArray owners = new JSONArray();
         for (String[] aList : list) {
             Map<String, Object> row = new HashMap<String, Object>();

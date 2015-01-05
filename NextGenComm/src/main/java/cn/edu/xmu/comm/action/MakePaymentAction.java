@@ -1,10 +1,7 @@
 package cn.edu.xmu.comm.action;
 
 import cn.edu.xmu.comm.commons.annotation.Required;
-import cn.edu.xmu.comm.commons.utils.Constants;
-import cn.edu.xmu.comm.entity.Owner;
 import cn.edu.xmu.comm.service.FinanceService;
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import org.springframework.stereotype.Controller;
 
@@ -25,9 +22,7 @@ public class MakePaymentAction extends ActionSupport {
     @Override
     @Required(name = "owner")
     public String execute() {
-        Owner owner = (Owner) ActionContext.getContext()
-                .getSession().get(Constants.USER);
-        financeService.makePayment(owner.getId());
+        financeService.makePayment();
         return SUCCESS;
     }
 

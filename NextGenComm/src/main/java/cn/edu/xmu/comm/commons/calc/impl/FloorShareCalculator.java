@@ -23,7 +23,7 @@ public class FloorShareCalculator implements IShareCalculator {
         int floorCount = room.getBuilding().getChildCount();
         int floorNo = room.getFloor().getNo();
         int base = (1 + floorCount) * floorCount / 2;
-        return amount.multiply(BigDecimal.valueOf(floorNo)).divide(BigDecimal.valueOf(base));
+        return amount.multiply(BigDecimal.valueOf(floorNo)).divide(BigDecimal.valueOf(base), 3, BigDecimal.ROUND_HALF_EVEN);
     }
 
 }

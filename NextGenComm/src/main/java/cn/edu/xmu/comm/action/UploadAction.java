@@ -1,7 +1,7 @@
 package cn.edu.xmu.comm.action;
 
 import cn.edu.xmu.comm.commons.annotation.Required;
-import cn.edu.xmu.comm.service.CarService;
+import cn.edu.xmu.comm.service.ParkingService;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.stereotype.Controller;
@@ -19,7 +19,7 @@ import java.io.*;
 public class UploadAction extends ActionSupport {
 
     @Resource
-    private CarService carService;
+    private ParkingService parkingService;
 
     private String title;
     private File upload;
@@ -50,7 +50,7 @@ public class UploadAction extends ActionSupport {
             e.printStackTrace();
             return INPUT;
         }
-        carService.confirmCarRentParkPlace(license);
+        parkingService.confirmCarRentParkPlace(license);
         return SUCCESS;
     }
 

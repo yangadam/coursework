@@ -35,4 +35,5 @@ public class CommDelAction extends ActionSupport {
     public void setCommId(Integer commId) {
         this.commId = commId;
     }
+
 }

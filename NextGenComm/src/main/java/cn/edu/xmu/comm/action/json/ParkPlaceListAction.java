@@ -1,11 +1,8 @@
 package cn.edu.xmu.comm.action.json;
 
-import cn.edu.xmu.comm.commons.utils.Constants;
-import cn.edu.xmu.comm.entity.Community;
-import cn.edu.xmu.comm.entity.ParkPlace;
-import cn.edu.xmu.comm.service.CarService;
+import cn.edu.xmu.comm.entity.ParkingPlace;
+import cn.edu.xmu.comm.service.ParkingService;
 import com.alibaba.fastjson.JSONArray;
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import org.springframework.stereotype.Controller;
 
@@ -16,33 +13,29 @@ import java.util.Map;
 
 /**
  * Created by Roger on 2015/1/3 0003.
+ * @
  */
 @Controller
 public class ParkPlaceListAction extends ActionSupport {
 
     @Resource
-    private CarService carService;
+    private ParkingService parkingService;
 
     private Map<String, Object> data;
 
     @Override
     public String execute() {
-        Community community = (Community) ActionContext.getContext().getSession().get(Constants.COMMUNITY);
-        List<ParkPlace> parkPlaceList = carService.getAllParkPlace(community);
+        List<ParkingPlace> parkingPlaceList = parkingService.getAllParkingPlace();
         int i = 1;
         JSONArray aaData = new JSONArray();
-        for (ParkPlace parkPlace : parkPlaceList) {
+        for (ParkingPlace parkingPlace : parkingPlaceList) {
             JSONArray row = new JSONArray();
             row.add(i++);
-            row.add(parkPlace.getPosition());
-            if (parkPlace.getParkPlaceStatus().equals(ParkPlace.ParkPlaceStatus.FREE))
-                row.add("可用");
-            else if (parkPlace.getParkPlaceStatus().equals(ParkPlace.ParkPlaceStatus.LOCK))
-                row.add("锁定");
-            else if (parkPlace.getParkPlaceStatus().equals(ParkPlace.ParkPlaceStatus.RENT))
-                row.add("已租用");
-            row.add(parkPlace.getParkingLot().getName());
-            row.add(parkPlace.getId());
+            row.add(parkingPlace.getPosition());
+            row.add(parkingPlace.getParkPlaceStatus().toString());
+            row.add(parkingPlace.getParkingLot().getName());
+            row.add(parkingPlace.getId());
+            aaData.add(row);
         }
         data = new HashMap<String, Object>();
         data.put("aaData", aaData);

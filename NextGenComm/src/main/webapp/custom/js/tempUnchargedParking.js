@@ -41,7 +41,7 @@ var UnfinishedParkBillTale = function () {
                         "aTargets": [3],
                         "mRender": function (data, type,
                                              full) {
-                            return '<a href="tempParkBillDelete.do?parkBillId='
+                            return '<a href="tempParkingPaying.do?parkBillId='
                                 + data + '">离开</a>';
                         }
                     }

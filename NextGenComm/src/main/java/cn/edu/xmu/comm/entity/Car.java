@@ -3,7 +3,7 @@ package cn.edu.xmu.comm.entity;
 import cn.edu.xmu.comm.commons.persistence.DataEntity;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 /**
  * 车辆实体
@@ -51,9 +51,9 @@ public class Car extends DataEntity {
     /**
      * 拥有的车位
      */
-    @OneToOne(fetch = FetchType.EAGER, targetEntity = ParkPlace.class)
+    @OneToOne(fetch = FetchType.EAGER, targetEntity = ParkingPlace.class)
     @JoinColumn(name = "park_place_id", nullable = true)
-    private ParkPlace parkPlace;
+    private ParkingPlace parkingPlace;
     //endregion
 
     //region Constructors
@@ -61,20 +61,31 @@ public class Car extends DataEntity {
         this.status = CarStatus.NO;
     }
 
+    /**
+     * 汽车构造函数
+     *
+     * @param license 车牌
+     * @param owner   业主
+     */
+    public Car(String license, Owner owner) {
+        this.license = license;
+        this.owner = owner;
+        this.status = CarStatus.NO;
+    }
 
     /**
      * 汽车构造函数
      *
-     * @param license   车牌
-     * @param owner     业主
-     * @param status    状态: 租用车位 购买车位
-     * @param parkPlace 停车位
+     * @param license      车牌
+     * @param owner        业主
+     * @param status       状态: 租用车位 购买车位
+     * @param parkingPlace 停车位
      */
-    public Car(String license, Owner owner, CarStatus status, ParkPlace parkPlace) {
+    public Car(String license, Owner owner, CarStatus status, ParkingPlace parkingPlace) {
         this.license = license;
         this.owner = owner;
         this.status = status;
-        this.parkPlace = parkPlace;
+        this.parkingPlace = parkingPlace;
     }
 
     /**
@@ -82,11 +93,11 @@ public class Car extends DataEntity {
      *
      * @param billItems 未支付账单
      */
-    public void generateCar(List<BillItem> billItems) {
+    public void generateCar(Set<BillItem> billItems) {
         BillItem billItem = new BillItem();
         billItem.setName(NAME);
         billItem.setDescription(license);
-        billItem.setAmount(parkPlace.getMonthlyFee());
+        billItem.setAmount(parkingPlace.getMonthlyFee());
         billItem.setOwner(owner);
         billItems.add(billItem);
     }
@@ -128,12 +139,12 @@ public class Car extends DataEntity {
         this.status = status;
     }
 
-    public ParkPlace getParkPlace() {
-        return parkPlace;
+    public ParkingPlace getParkingPlace() {
+        return parkingPlace;
     }
 
-    public void setParkPlace(ParkPlace parkPlace) {
-        this.parkPlace = parkPlace;
+    public void setParkingPlace(ParkingPlace parkingPlace) {
+        this.parkingPlace = parkingPlace;
     }
     //endregion
 

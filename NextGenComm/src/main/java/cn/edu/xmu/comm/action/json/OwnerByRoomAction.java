@@ -12,6 +12,7 @@ import java.util.Map;
 
 /**
  * Created by Roger on 2015/1/3 0003.
+ * @
  */
 @Controller
 public class OwnerByRoomAction extends ActionSupport {
@@ -23,6 +24,7 @@ public class OwnerByRoomAction extends ActionSupport {
 
     private Integer roomId;
 
+    @Override
     public String execute() {
         Room room = propertyService.getRoom(roomId);
         Owner owner = room.getOwner();

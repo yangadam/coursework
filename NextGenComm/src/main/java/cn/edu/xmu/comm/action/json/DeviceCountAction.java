@@ -1,9 +1,6 @@
 package cn.edu.xmu.comm.action.json;
 
-import cn.edu.xmu.comm.commons.utils.Constants;
-import cn.edu.xmu.comm.entity.Community;
 import cn.edu.xmu.comm.service.FinanceService;
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import org.springframework.stereotype.Controller;
 
@@ -27,9 +24,8 @@ public class DeviceCountAction extends ActionSupport {
 
     @Override
     public String execute() {
-        Community community = (Community) ActionContext.getContext().getSession().get(Constants.COMMUNITY);
-        Long inputCount = financeService.getInputDeviceCount(community);
-        Long total = financeService.getDeviceCount(community);
+        Long inputCount = financeService.getInputedDeviceCount();
+        Long total = financeService.getDeviceCount();
         data = new HashMap<String, Object>();
         data.put("inputCount", inputCount);
         data.put("total", total);

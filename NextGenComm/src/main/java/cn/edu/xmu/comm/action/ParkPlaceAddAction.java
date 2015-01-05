@@ -4,7 +4,7 @@ import cn.edu.xmu.comm.commons.annotation.Required;
 import cn.edu.xmu.comm.commons.utils.Constants;
 import cn.edu.xmu.comm.entity.Community;
 import cn.edu.xmu.comm.entity.ParkingLot;
-import cn.edu.xmu.comm.service.CarService;
+import cn.edu.xmu.comm.service.ParkingService;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import org.springframework.stereotype.Controller;
@@ -13,12 +13,13 @@ import javax.annotation.Resource;
 
 /**
  * Created by Roger on 2015/1/3 0003.
+ * @
  */
 @Controller
 public class ParkPlaceAddAction extends ActionSupport {
 
     @Resource
-    private CarService carService;
+    private ParkingService parkingService;
 
     private String position;
 
@@ -30,10 +31,10 @@ public class ParkPlaceAddAction extends ActionSupport {
         ParkingLot parkingLot;
         Community community = (Community) ActionContext.getContext().getSession().get(Constants.COMMUNITY);
         if (type.equals(Constants.RENT))
-            parkingLot = carService.getRentParkingLot(community);
+            parkingLot = parkingService.getRentParkingLot();
         else
-            parkingLot = carService.getTempParkingLot(community);
-        carService.addParkPlace(parkingLot.getId(), position);
+            parkingLot = parkingService.getTempParkingLot();
+        parkingService.addParkingPlace(parkingLot.getId(), position);
         return SUCCESS;
     }
 

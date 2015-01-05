@@ -1,10 +1,11 @@
 package cn.edu.xmu.comm.action.json;
 
-import cn.edu.xmu.comm.commons.utils.Constants;
-import cn.edu.xmu.comm.entity.*;
+import cn.edu.xmu.comm.entity.BillItem;
+import cn.edu.xmu.comm.entity.Device;
+import cn.edu.xmu.comm.entity.Owner;
+import cn.edu.xmu.comm.entity.Room;
 import cn.edu.xmu.comm.service.PropertyService;
 import com.alibaba.fastjson.JSONArray;
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import org.springframework.stereotype.Controller;
 
@@ -13,6 +14,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * description
@@ -30,21 +32,19 @@ public class ShareListAction extends ActionSupport {
 
     @Override
     public String execute() {
-        Community community = (Community) ActionContext.getContext().
-                getSession().get(Constants.COMMUNITY);
-        List<Owner> owners = propertyService.getAllOwners(community);
+        List<Owner> owners = propertyService.getAllOwners();
         JSONArray aaData = new JSONArray();
         for (Owner owner : owners) {
             JSONArray row = new JSONArray();
             row.add(owner.getName());
             row.add(owner.getUsername());
-            if (owner.getRoomList() == null) {
+            if (owner.getRooms() == null) {
                 row.add(0);
                 row.add(0.0);
                 row.add("");
             } else {
-                row.add(owner.getRoomList().size());
-                buildRow(owner.getUnpaidBills(), owner.getRoomList(), row);
+                row.add(owner.getRooms().size());
+                buildRow(owner.getUnpaidBills(), owner.getRooms(), row);
             }
             aaData.add(row);
         }
@@ -55,7 +55,7 @@ public class ShareListAction extends ActionSupport {
         return SUCCESS;
     }
 
-    private void buildRow(List<BillItem> unpaidBills, List<Room> rooms, JSONArray row) {
+    private void buildRow(Set<BillItem> unpaidBills, Set<Room> rooms, JSONArray row) {
         BigDecimal amount = BigDecimal.ZERO;
         for (BillItem billItem : unpaidBills) {
             if (billItem.getName().equals(Room.SHARE)) {

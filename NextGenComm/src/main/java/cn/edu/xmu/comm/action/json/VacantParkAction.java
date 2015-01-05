@@ -1,11 +1,8 @@
 package cn.edu.xmu.comm.action.json;
 
-import cn.edu.xmu.comm.commons.utils.Constants;
-import cn.edu.xmu.comm.entity.Community;
-import cn.edu.xmu.comm.entity.ParkPlace;
-import cn.edu.xmu.comm.service.CarService;
+import cn.edu.xmu.comm.entity.ParkingPlace;
+import cn.edu.xmu.comm.service.ParkingService;
 import com.alibaba.fastjson.JSONArray;
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import org.springframework.stereotype.Controller;
 
@@ -24,27 +21,23 @@ import java.util.Map;
 public class VacantParkAction extends ActionSupport {
 
     @Resource
-    private CarService carService;
+    private ParkingService parkingService;
 
     private Map<String, Object> data;
 
     @Override
     public String execute() {
-        Community community = (Community) ActionContext.getContext()
-                .getSession().get(Constants.COMMUNITY);
-        List<ParkPlace> parkPlaces = carService.getFreeParkPlaceRent(community);
+        List<ParkingPlace> parkingPlaces = parkingService.getFreeParkPlaceRent();
         JSONArray aaData = new JSONArray();
-        for (ParkPlace parkPlace : parkPlaces) {
+        for (ParkingPlace parkingPlace : parkingPlaces) {
             JSONArray row = new JSONArray();
-            row.add(parkPlace.getId());
-            row.add(parkPlace.getPosition());
-            row.add(parkPlace.getParkPlaceStatus());
-            row.add(parkPlace.getId());
+            row.add(parkingPlace.getId());
+            row.add(parkingPlace.getPosition());
+            row.add(parkingPlace.getParkPlaceStatus());
+            row.add(parkingPlace.getId());
             aaData.add(row);
         }
         data = new HashMap<String, Object>();
-        data.put("iTotalRecords", parkPlaces.size());
-        data.put("iTotalDisplayRecords", parkPlaces.size());
         data.put("aaData", aaData);
         return SUCCESS;
     }

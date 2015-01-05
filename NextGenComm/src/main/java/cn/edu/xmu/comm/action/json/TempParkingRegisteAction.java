@@ -1,6 +1,6 @@
 package cn.edu.xmu.comm.action.json;
 
-import cn.edu.xmu.comm.service.CarService;
+import cn.edu.xmu.comm.service.ParkingService;
 import com.opensymphony.xwork2.ActionSupport;
 import org.springframework.stereotype.Controller;
 
@@ -12,12 +12,14 @@ import java.util.Map;
 
 /**
  * Created by Roger on 2014/12/30 0030.
+ *
+ * @
  */
 @Controller
 public class TempParkingRegisteAction extends ActionSupport {
 
     @Resource
-    CarService carService;
+    private ParkingService parkingService;
 
     private Map<String, Object> data;
 
@@ -31,7 +33,7 @@ public class TempParkingRegisteAction extends ActionSupport {
             e.printStackTrace();
         }
         data = new HashMap<String, Object>();
-        if (carService.isRentCar(license))
+        if (parkingService.isRentCar(license))
             data.put("TYPE", "RENT");
         else
             data.put("TYPE", "TEMP");

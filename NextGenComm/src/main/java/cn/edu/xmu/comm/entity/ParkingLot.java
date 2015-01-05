@@ -23,8 +23,8 @@ public class ParkingLot {
     /**
      * 包含的停车位
      */
-    @OneToMany(mappedBy = "parkingLot", targetEntity = ParkPlace.class, cascade = CascadeType.ALL)
-    private List<ParkPlace> parkPlaces = new ArrayList<ParkPlace>();
+    @OneToMany(mappedBy = "parkingLot", targetEntity = ParkingPlace.class, cascade = CascadeType.ALL)
+    private List<ParkingPlace> parkingPlaces = new ArrayList<ParkingPlace>();
     /**
      * 所属小区
      */
@@ -63,8 +63,8 @@ public class ParkingLot {
      *
      * @return 可用大小
      */
-    public Integer getParkingLotSize() {
-        return parkPlaces.size();
+    public Integer getSize() {
+        return parkingPlaces.size();
     }
 
     /**
@@ -108,12 +108,12 @@ public class ParkingLot {
         this.name = name;
     }
 
-    public List<ParkPlace> getParkPlaces() {
-        return parkPlaces;
+    public List<ParkingPlace> getParkingPlaces() {
+        return parkingPlaces;
     }
 
-    public void setParkPlaces(List<ParkPlace> parkPlaces) {
-        this.parkPlaces = parkPlaces;
+    public void setParkingPlaces(List<ParkingPlace> parkingPlaces) {
+        this.parkingPlaces = parkingPlaces;
     }
 
     public Community getCommunity() {

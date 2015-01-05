@@ -86,6 +86,5 @@ function modify(deviceId) {
 }
 
 function calculate() {
-    alert("sdfa");
     $.post("calculate.do");
 }

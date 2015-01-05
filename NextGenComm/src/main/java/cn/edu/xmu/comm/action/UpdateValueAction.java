@@ -45,4 +45,5 @@ public class UpdateValueAction extends ActionSupport {
     public void setNewValue(Double newValue) {
         this.newValue = newValue;
     }
+
 }

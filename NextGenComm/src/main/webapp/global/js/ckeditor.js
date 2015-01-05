@@ -4592,7 +4592,7 @@
             }
         };
         if (CKEDITOR.env.ie)r.attributes.style = function (a) {
-            return a.replace(/(^|;)([^\:]+)/g, function (a) {
+            return a.replace(/(^|;)([^:]+)/g, function (a) {
                 return a.toLowerCase()
             })
         };

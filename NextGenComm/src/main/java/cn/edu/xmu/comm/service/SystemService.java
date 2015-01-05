@@ -9,10 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
  * description
  *
  * @author Mengmeng Yang
- * @version 12/31/2014 0031
+ * @version 1/5/2015 0005
  */
 public interface SystemService {
-
     /**
      * 记住我登陆
      *
@@ -37,7 +36,7 @@ public interface SystemService {
             throws UserNotFoundException, PasswordIncorrectException;
 
     /**
-     * 为用户生成用于记住我的临时密码，存入Cookie，Key="NextGenComm",value=返回值
+     * 为用户生成用于记住我的临时密码，存入Cookie，Key="COMM",value=返回值
      *
      * @param user 用户
      * @return 临时密码
@@ -52,5 +51,4 @@ public interface SystemService {
      */
     @Transactional(readOnly = false)
     void logout(User user);
-
 }

@@ -1,28 +1,19 @@
 package cn.edu.xmu.comm.service;
 
 import cn.edu.xmu.comm.commons.exception.DifferentCommunityException;
-import cn.edu.xmu.comm.commons.persistence.Page;
 import cn.edu.xmu.comm.entity.*;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
  * description
  *
  * @author Mengmeng Yang
- * @version 12/31/2014 0031
+ * @version 1/5/2015 0005
  */
 public interface PropertyService {
-    /**
-     * 添加小区
-     *
-     * @param name 小区名
-     * @return 添加的小区
-     */
-    @Transactional(readOnly = false)
-    Community addCommunity(String name);
-
     /**
      * 添加楼宇
      *
@@ -35,77 +26,13 @@ public interface PropertyService {
     Building addBuilding(Integer no, Integer floorCount, Community community);
 
     /**
-     * 批量添加楼宇
+     * 添加小区
      *
-     * @param startNo    起始编号
-     * @param length     结束编号
-     * @param floorCount 楼层数
-     * @param community  所属小区
-     * @return 添加的小区列表
+     * @param name 小区名
+     * @return 添加的小区
      */
     @Transactional(readOnly = false)
-    List<Building> addBuilding(Integer startNo, Integer length, Integer floorCount, Community community);
-
-    /**
-     * 添加房间
-     *
-     * @param no    房间号
-     * @param area  房间面积
-     * @param floor 所属楼层
-     * @return 添加的房间
-     */
-    @Transactional(readOnly = false)
-    Room addRoom(String no, Double area, Floor floor);
-
-    /**
-     * 批量添加房间（面积必须相同）
-     *
-     * @param startNo 起始编号
-     * @param length  房间数
-     * @param area    面积
-     * @param floor   所属楼层
-     * @return 添加的房间列表
-     */
-    @Transactional(readOnly = false)
-    List<Room> addRoomBatch(Integer startNo, Integer length, Double area, Floor floor);
-
-    /**
-     * 添加业主,并指定小区
-     *
-     * @param username  用户名
-     * @param password  密码
-     * @param name      姓名
-     * @param community 所属小区
-     * @return 添加的业主
-     */
-    @Transactional(readOnly = false)
-    Owner addOwner(String username, String password, String name, Community community);
-
-    /**
-     * 添加业主，并指定房间
-     *
-     * @param username 用户名
-     * @param password 密码
-     * @param name     姓名
-     * @param room     房间
-     * @return 添加的业主
-     * @throws cn.edu.xmu.comm.commons.exception.DifferentCommunityException 小区不同异常
-     * @see cn.edu.xmu.comm.commons.exception.DifferentCommunityException
-     */
-    @Transactional(readOnly = false)
-    Owner addOwner(String username, String password, String name, Room room)
-            throws DifferentCommunityException;
-
-    /**
-     * 将业主添加到房间
-     *
-     * @param owner 业主
-     * @param room  房间
-     * @throws cn.edu.xmu.comm.commons.exception.DifferentCommunityException 小区不同异常
-     * @see cn.edu.xmu.comm.commons.exception.DifferentCommunityException
-     */
-    @Transactional(readOnly = false)
-    void addOwnerToRoom(Integer owner, Integer room) throws DifferentCommunityException;
+    Community addCommunity(String name);
 
     /**
      * 添加私有设备
@@ -129,7 +56,6 @@ public interface PropertyService {
      * @param shareType 设备公摊类型
      * @return 添加的设备
      */
-
     @Transactional(readOnly = false)
     Device addDevice(String no, Property property, Double value, Device.DeviceType type, String shareType);
 
@@ -167,6 +93,77 @@ public interface PropertyService {
      */
     @Transactional(readOnly = false)
     void initialDefaultDevice(Room room);
+
+    Floor getFloor(Integer floorId);
+
+    /**
+     * 添加业主,并指定小区
+     *
+     * @param username  用户名
+     * @param password  密码
+     * @param name      姓名
+     * @param community 所属小区
+     * @return 添加的业主
+     */
+    @Transactional(readOnly = false)
+    Owner addOwner(String username, String password, String name, Community community);
+
+    /**
+     * 添加业主，并指定房间
+     *
+     * @param username 用户名
+     * @param password 密码
+     * @param name     姓名
+     * @param room     房间
+     * @return 添加的业主
+     * @throws cn.edu.xmu.comm.commons.exception.DifferentCommunityException 小区不同异常
+     * @see cn.edu.xmu.comm.commons.exception.DifferentCommunityException
+     */
+    @Transactional(readOnly = false)
+    Owner addOwner(String username, String password, String name, Room room)
+            throws DifferentCommunityException;
+
+    /**
+     * 将业主添加到房间
+     *
+     * @param ownerId 业主
+     * @param roomId  房间
+     * @throws cn.edu.xmu.comm.commons.exception.DifferentCommunityException 小区不同异常
+     * @see cn.edu.xmu.comm.commons.exception.DifferentCommunityException
+     */
+    @Transactional(readOnly = false)
+    void addOwnerToRoom(Integer ownerId, Integer roomId) throws DifferentCommunityException;
+
+    Boolean hasOwner(Integer ownerId);
+
+    /**
+     * 添加房间
+     *
+     * @param no    房间号
+     * @param area  房间面积
+     * @param floor 所属楼层
+     * @return 添加的房间
+     */
+    @Transactional(readOnly = false)
+    Room addRoom(String no, Double area, Floor floor);
+
+    /**
+     * 新建临时停车场
+     *
+     * @param community 社区
+     * @return 临时停车场
+     */
+    @Transactional(readOnly = false)
+    ParkingLot newTempParkingLot(Community community);
+
+    /**
+     * 新建租用停车场
+     *
+     * @param community 社区
+     * @return 租用停车场
+     */
+    @Transactional(readOnly = false)
+    ParkingLot newRentParkingLot(Community community);
 
     /**
      * 更新小区
@@ -225,7 +222,7 @@ public interface PropertyService {
     void delCommunity(Community community);
 
     @Transactional(readOnly = false)
-    void delCommunity(Integer community);
+    void delCommunity(Integer id);
 
     /**
      * 删除楼宇
@@ -236,24 +233,6 @@ public interface PropertyService {
     void delBuilding(Building building);
 
     /**
-     * 通过id获得小区
-     *
-     * @param id 小区id
-     * @return 小区
-     */
-    Community getCommunity(Integer id);
-
-    Building getBuilding(Integer id);
-
-    /**
-     * 通过名字获得小区
-     *
-     * @param name 小区名字
-     * @return 小区
-     */
-    Community getCommunity(String name);
-
-    /**
      * 获取所有小区
      *
      * @return 小区列表
@@ -261,85 +240,53 @@ public interface PropertyService {
     List<Community> getAllCommunities();
 
     /**
-     * 获取所有小区（分页）
+     * 获取所有小区的名字列表
      *
-     * @param page 分页对象
-     * @return 分页对象
+     * @return 小区的名字列表
      */
-    Page<Community> getAllCommunities(Page<Community> page);
-
     List<String> getCommunityNames();
 
-    List<Building> getAllBuildings(Community community);
+    List<Building> getAllBuildings();
 
     /**
-     * 通过楼宇号获取某小区的楼宇
+     * 获得某小区的楼宇id和楼宇号列表
      *
-     * @param no        楼宇号
-     * @param community 所属小区
-     * @return 楼宇
+     * @return 楼宇id和楼宇号列表
      */
-    Building getBuildingByNo(Integer no, Community community);
+    List<String[]> getBuildNos();
 
     /**
-     * 通过楼层号获取某楼宇的楼层
+     * 获得某楼宇的楼层id和楼层号列表
      *
-     * @param no       楼层号
-     * @param building 所属楼宇
-     * @return 楼层
-     */
-    Floor getFloorByNo(Integer no, Building building);
-
-    /**
-     * 通过房间号获取某楼层的房间
-     *
-     * @param no    房间号
-     * @param floor 楼层
-     * @return 房间
-     */
-    Room getRoomByNo(String no, Floor floor);
-
-    /**
-     * 获取小区所有房间
-     *
-     * @param community 小区
-     * @return 房间列表
-     */
-    List<Room> getAllRooms(Community community);
-
-    Owner getOwner(String name);
-
-    /**
-     * 获取某小区楼宇号列表
-     *
-     * @param community 小区
-     * @return 楼宇号列表
-     */
-    List<String[]> getBuildingNos(Community community);
-
-    /**
-     * @param buildId
-     * @return
+     * @param buildId 楼宇id
+     * @return 楼层id和楼层号列表
      */
     List<String[]> getFloorNos(Integer buildId);
 
-    List<Room> getAllRooms(Integer floorId);
+    /**
+     * 获得某楼宇的房间id和房间号列表
+     *
+     * @param floorId 楼层id
+     * @return 房间id和房间号列表
+     */
+    List<String[]> getRoomNos(Integer floorId);
 
-    Floor getFloor(Integer floorId);
+    List<Room> getAllRooms(Integer floorId);
 
     List<String[]> getVacantRoomNos(Integer floorId);
 
-    Room getRoom(Integer roomId);
-
-    List<Owner> getAllOwners(Community community);
-
-    List<String[]> searchOwner(String term, Community community);
+    List<String[]> searchOwner(String term);
 
     List<String[]> getNonVacantRoomNos(Integer floorId);
 
-    Boolean hasOwner(Community community, Integer ownerId);
+    @Transactional(readOnly = false)
+    void updateDeviceLastKey(Device device, Date date);
 
     Owner loadOwner(User user);
 
+    Room getRoom(Integer roomId);
 
+    List<Owner> getAllOwners();
+
+    Community getCommunity(String commName);
 }

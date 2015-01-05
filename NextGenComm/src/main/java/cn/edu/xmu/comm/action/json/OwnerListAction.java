@@ -1,12 +1,9 @@
 package cn.edu.xmu.comm.action.json;
 
-import cn.edu.xmu.comm.commons.utils.Constants;
-import cn.edu.xmu.comm.entity.Community;
 import cn.edu.xmu.comm.entity.Owner;
 import cn.edu.xmu.comm.entity.Room;
 import cn.edu.xmu.comm.service.PropertyService;
 import com.alibaba.fastjson.JSONArray;
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import org.springframework.stereotype.Controller;
 
@@ -14,6 +11,7 @@ import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * description
@@ -31,9 +29,7 @@ public class OwnerListAction extends ActionSupport {
 
     @Override
     public String execute() {
-        Community community = (Community) ActionContext
-                .getContext().getSession().get(Constants.COMMUNITY);
-        List<Owner> owners = propertyService.getAllOwners(community);
+        List<Owner> owners = propertyService.getAllOwners();
         int i = 1;
         JSONArray aaData = new JSONArray();
         for (Owner owner : owners) {
@@ -41,24 +37,34 @@ public class OwnerListAction extends ActionSupport {
             row.add(i++);
             row.add(owner.getUsername());
             row.add(owner.getName());
-            if (owner.getRoomList().size() == 0) {
+            if (owner.getRooms().size() == 0) {
                 row.add("未入住");
             } else {
-                StringBuilder sb = new StringBuilder();
-                List<Room> rooms = owner.getRoomList();
-                for (int j = 0; j < rooms.size(); j++) {
-                    sb.append(rooms.get(j).getFullName());
-                    if (j != rooms.size() - 1) {
-                        sb.append("<br/>");
-                    }
-                }
-                row.add(sb.toString());
+                String roomsStr = parseRoomList(owner.getRooms());
+                row.add(roomsStr);
             }
             aaData.add(row);
         }
         data = new HashMap<String, Object>();
         data.put("aaData", aaData);
         return SUCCESS;
+    }
+
+    /**
+     * 将房间列表转化成字符串
+     */
+    private String parseRoomList(Set<Room> rooms) {
+        StringBuilder sb = new StringBuilder();
+        boolean isFirst = true;
+        for (Room room : rooms) {
+            if (isFirst) {
+                isFirst = false;
+            } else {
+                sb.append("<br/>");
+            }
+            sb.append(room.getFullName());
+        }
+        return sb.toString();
     }
 
     public Map<String, Object> getData() {

@@ -11,7 +11,7 @@ import java.util.Date;
  * Created by Roger on 2014/12/23 0023.
  */
 @Entity
-public class ParkBill {
+public class ParkingBill {
 
     //region Instance Variables
     /**
@@ -58,10 +58,10 @@ public class ParkBill {
     private Community community;
     //endregion
 
-    ParkBill() {
+    ParkingBill() {
     }
 
-    public ParkBill(String license, Community community, Owner owner, Date startTime) {
+    public ParkingBill(String license, Community community, Owner owner, Date startTime) {
         super();
         this.license = license;
         this.community = community;

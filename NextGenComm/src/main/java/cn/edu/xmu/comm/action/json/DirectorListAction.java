@@ -41,8 +41,6 @@ public class DirectorListAction extends ActionSupport {
             aaData.add(row);
         }
         data = new HashMap<String, Object>();
-        data.put("iTotalRecords", directors.size());
-        data.put("iTotalDisplayRecords", directors.size());
         data.put("aaData", aaData);
         return SUCCESS;
     }

@@ -104,5 +104,4 @@ public class SystemServiceImpl implements SystemService {
         return tokenDAO.deleteByUid(uid);
     }
 
-
 }

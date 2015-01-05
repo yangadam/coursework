@@ -1,8 +1,8 @@
 package cn.edu.xmu.comm.action;
 
 import cn.edu.xmu.comm.commons.annotation.Required;
-import cn.edu.xmu.comm.entity.ParkBill;
-import cn.edu.xmu.comm.service.CarService;
+import cn.edu.xmu.comm.entity.ParkingBill;
+import cn.edu.xmu.comm.service.ParkingService;
 import com.opensymphony.xwork2.ActionSupport;
 import org.springframework.stereotype.Controller;
 
@@ -15,16 +15,16 @@ import javax.annotation.Resource;
 public class TempParkBillDeleteAction extends ActionSupport {
 
     @Resource
-    private CarService carService;
+    private ParkingService parkingService;
 
     private Integer parkBillId;
 
-    private ParkBill parkBill;
+    private ParkingBill parkingBill;
 
     @Override
     @Required(name = "guard")
     public String execute() {
-        carService.finishParkBill(parkBillId);
+        parkingService.finishParkBill(parkBillId);
         return SUCCESS;
     }
 
@@ -36,11 +36,12 @@ public class TempParkBillDeleteAction extends ActionSupport {
         this.parkBillId = parkBillId;
     }
 
-    public ParkBill getParkBill() {
-        return parkBill;
+    public ParkingBill getParkingBill() {
+        return parkingBill;
     }
 
-    public void setParkBill(ParkBill parkBill) {
-        this.parkBill = parkBill;
+    public void setParkingBill(ParkingBill parkingBill) {
+        this.parkingBill = parkingBill;
     }
+
 }

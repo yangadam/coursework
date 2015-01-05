@@ -7,7 +7,6 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -37,23 +36,26 @@ public class Owner extends User {
      */
     @OneToMany(targetEntity = Room.class, mappedBy = "owner",
             cascade = {CascadeType.MERGE})
-    private List<Room> roomList = new ArrayList<Room>();
+    private Set<Room> rooms = new HashSet<Room>();
 
     /**
      * 拥有的车辆列表
      */
     @OneToMany(targetEntity = Car.class, mappedBy = "owner", cascade = CascadeType.ALL)
-    private Set<Car> carList = new HashSet<Car>();
+    private Set<Car> cars = new HashSet<Car>();
 
     /**
      * 未支付的账单项列表
      * （注意：公维金是单独交的，但是一起算，交到不同的账户。）
      */
     @OneToMany(targetEntity = BillItem.class, mappedBy = "owner", cascade = CascadeType.ALL)
-    private List<BillItem> unpaidBills = new ArrayList<BillItem>();
+    private Set<BillItem> unpaidBills = new HashSet<BillItem>();
 
+    /**
+     * 支付
+     */
     @OneToMany(targetEntity = Payment.class, mappedBy = "paidBy", cascade = CascadeType.ALL)
-    private List<Payment> paymentList = new ArrayList<Payment>();
+    private Set<Payment> payments = new HashSet<Payment>();
 
     //endregion
 
@@ -86,7 +88,7 @@ public class Owner extends User {
         }
         community = room.getCommunity();
         room.setOwner(this);
-        roomList.add(room);
+        rooms.add(room);
     }
 
     /**
@@ -104,7 +106,7 @@ public class Owner extends User {
             community = room.getCommunity();
             room.setOwner(this);
         }
-        roomList.addAll(rooms);
+        this.rooms.addAll(rooms);
     }
 
     /**
@@ -112,11 +114,11 @@ public class Owner extends User {
      */
     public void generateBill() throws DeviceException {
 
-        for (Room room : this.roomList) {
+        for (Room room : this.rooms) {
             room.generateRoom(this.unpaidBills);
         }
 
-        for (Car car : this.carList) {
+        for (Car car : this.cars) {
             car.generateCar(this.unpaidBills);
         }
 
@@ -129,14 +131,14 @@ public class Owner extends User {
      * @param billItems 账单
      * @return 支付记录
      */
-    public Payment makePayment(Staff receiveBy, List<BillItem> billItems) {
+    public Payment makePayment(Staff receiveBy, Set<BillItem> billItems) {
         if (billItems == null || billItems.size() == 0) {
             return null;
         }
         unpaidBills.removeAll(billItems);
         for (BillItem billItem : billItems) {
             billItem.setOwner(null);
-            billItem.setBillItemStatus(BillItem.BillItemStatus.PAID);
+            billItem.setStatus(BillItem.BillItemStatus.PAID);
         }
         return new Payment(this, receiveBy, billItems);
     }
@@ -146,8 +148,8 @@ public class Owner extends User {
      *
      * @return 清单列表
      */
-    public List<BillItem> getOverDueBillItems() {
-        List<BillItem> resultBillItems = new ArrayList<BillItem>();
+    public Set<BillItem> getOverDueBillItems() {
+        Set<BillItem> resultBillItems = new HashSet<BillItem>();
         for (BillItem billItem : unpaidBills) {
             if (billItem.isOverDue()) {
                 billItem.updateOverDueFee();
@@ -168,39 +170,35 @@ public class Owner extends User {
         this.community = community;
     }
 
-    public List<Room> getRoomList() {
-        return roomList;
+    public Set<Room> getRooms() {
+        return rooms;
     }
 
-    public void setRoomList(List<Room> roomList) {
-        this.roomList = roomList;
+    public void setRooms(Set<Room> rooms) {
+        this.rooms = rooms;
     }
 
-    public Set<Car> getCarList() {
-        return carList;
+    public Set<Car> getCars() {
+        return cars;
     }
 
-    public void setCarList(Set<Car> carList) {
-        this.carList = carList;
+    public void setCars(Set<Car> cars) {
+        this.cars = cars;
     }
 
-    public List<BillItem> getUnpaidBills() {
+    public Set<BillItem> getUnpaidBills() {
         for (BillItem billItem : unpaidBills) {
             billItem.updateOverDueFee();
         }
         return unpaidBills;
     }
 
-    public void setUnpaidBills(List<BillItem> unpaidBills) {
-        this.unpaidBills = unpaidBills;
+    public Set<Payment> getPayments() {
+        return payments;
     }
 
-    public List<Payment> getPaymentList() {
-        return paymentList;
-    }
-
-    public void setPaymentList(List<Payment> paymentList) {
-        this.paymentList = paymentList;
+    public void setPayments(Set<Payment> payments) {
+        this.payments = payments;
     }
 
     public BigDecimal getTotal() {

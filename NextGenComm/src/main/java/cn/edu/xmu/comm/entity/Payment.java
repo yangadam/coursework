@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 支付实体
@@ -66,12 +67,11 @@ public class Payment extends DataEntity {
 
     /**
      * 构造函数
-     *
-     * @param paidBy       支付人
+     *  @param paidBy       支付人
      * @param receiveBy    接收人
      * @param billItemList 账单项列表
      */
-    Payment(Owner paidBy, Staff receiveBy, List<BillItem> billItemList) {
+    public Payment(Owner paidBy, Staff receiveBy, Set<BillItem> billItemList) {
         BigDecimal tempTotal = BigDecimal.ZERO;
         this.paidBy = paidBy;
         this.receiveBy = receiveBy;

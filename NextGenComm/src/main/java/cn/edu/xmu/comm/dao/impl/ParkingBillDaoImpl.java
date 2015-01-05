@@ -1,9 +1,10 @@
-package cn.edu.xmu.comm.dao;
+package cn.edu.xmu.comm.dao.impl;
 
-import cn.edu.xmu.comm.commons.persistence.BaseDAO;
+import cn.edu.xmu.comm.commons.persistence.BaseDaoImpl;
 import cn.edu.xmu.comm.commons.persistence.Parameter;
+import cn.edu.xmu.comm.dao.ParkingBillDAO;
 import cn.edu.xmu.comm.entity.Community;
-import cn.edu.xmu.comm.entity.ParkBill;
+import cn.edu.xmu.comm.entity.ParkingBill;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
  * Created by Roger on 2014/12/23 0023.
  */
 @Repository
-public class ParkBillDAO extends BaseDAO<ParkBill, Integer> {
+public class ParkingBillDaoImpl extends BaseDaoImpl<ParkingBill, Integer> implements ParkingBillDAO {
 
     /**
      * 查询社区中临时停车的数量
@@ -20,6 +21,7 @@ public class ParkBillDAO extends BaseDAO<ParkBill, Integer> {
      * @param community 指定社区
      * @return 该社区中未完成的停车单，即临时停车数量
      */
+    @Override
     public Integer getSizeOfUnfinishedBill(Community community) {
         String hql = "from ParkBill where community = :p1 and endTime is null";
         return count(hql, new Parameter(community)).intValue();
@@ -32,7 +34,8 @@ public class ParkBillDAO extends BaseDAO<ParkBill, Integer> {
      * @param license   车牌
      * @return 指定的停车单
      */
-    public ParkBill getUnfinishedParkBill(Community community, String license) {
+    @Override
+    public ParkingBill getUnfinishedParkBill(Community community, String license) {
         String hql = "from ParkBill where community = :p1 and license = :p2 and endTime is null";
         return getByQL(hql, new Parameter(community, license));
     }
@@ -44,16 +47,19 @@ public class ParkBillDAO extends BaseDAO<ParkBill, Integer> {
      * @param license   车牌
      * @return true 有 false 无
      */
+    @Override
     public boolean carHasUnfinishBill(Community community, String license) {
         String hql = "from ParkBill where community = :p1 and license = :p2 and endTime is null";
         return count(hql, new Parameter(community, license)) > 0;
     }
 
-    public List<ParkBill> getAllUnfinishParkBill(Community community) {
+    @Override
+    public List<ParkingBill> getAllUnfinishParkBill(Community community) {
         return searchByQL("from ParkBill where community = :p1 and endTime is null", new Parameter(community));
     }
 
-    public List<ParkBill> getAllFinishParkBill(Community community) {
+    @Override
+    public List<ParkingBill> getAllFinishParkBill(Community community) {
         return searchByQL("from ParkBill where community = :p1 and endTime is not null", new Parameter(community));
     }
 

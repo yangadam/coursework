@@ -7,6 +7,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Map;
+import java.util.SortedMap;
 import java.util.TreeMap;
 
 /**
@@ -43,8 +44,9 @@ public class Gradient extends DataEntity {
             name = "gradient_def",
             joinColumns = @JoinColumn(name = "gradient_id")
     )
+    @OrderBy
     @Column(name = "gradient_VALUE")
-    private Map<Double, BigDecimal> gradient = new TreeMap<Double, BigDecimal>();
+    private SortedMap<Double, BigDecimal> gradient = new TreeMap<Double, BigDecimal>();
     //endregion
 
     Gradient() {
@@ -95,7 +97,7 @@ public class Gradient extends DataEntity {
         return gradient;
     }
 
-    public void setGradient(Map<Double, BigDecimal> gradient) {
+    public void setGradient(SortedMap<Double, BigDecimal> gradient) {
         this.gradient = gradient;
     }
     //endregion

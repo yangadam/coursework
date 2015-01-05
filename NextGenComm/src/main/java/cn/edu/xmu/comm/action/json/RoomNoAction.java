@@ -24,7 +24,6 @@ public class RoomNoAction extends ActionSupport {
 
     private Map<String, Object> data;
 
-    private Integer buildId;
     private Integer floorId;
 
     public String vacant() {
@@ -61,14 +60,6 @@ public class RoomNoAction extends ActionSupport {
 
     public void setData(Map<String, Object> data) {
         this.data = data;
-    }
-
-    public Integer getBuildId() {
-        return buildId;
-    }
-
-    public void setBuildId(Integer buildId) {
-        this.buildId = buildId;
     }
 
     public Integer getFloorId() {

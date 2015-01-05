@@ -32,7 +32,7 @@ public class CountShareCalculator implements IShareCalculator {
     public BigDecimal calculateShare(Room room, Device device, BigDecimal amount) {
         Property property = device.getProperty();
         Integer count = property.getUsedHouseCount();
-        return amount.divide(BigDecimal.valueOf(count));
+        return amount.divide(BigDecimal.valueOf(count), 3, BigDecimal.ROUND_HALF_EVEN);
     }
 
 }

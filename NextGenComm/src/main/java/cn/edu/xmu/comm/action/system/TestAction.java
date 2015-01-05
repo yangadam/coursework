@@ -1,8 +1,5 @@
 package cn.edu.xmu.comm.action.system;
 
-import cn.edu.xmu.comm.entity.Community;
-import cn.edu.xmu.comm.entity.ParkPlace;
-import cn.edu.xmu.comm.service.CarService;
 import cn.edu.xmu.comm.service.FinanceService;
 import cn.edu.xmu.comm.service.PropertyService;
 import com.opensymphony.xwork2.ActionSupport;
@@ -25,15 +22,13 @@ public class TestAction extends ActionSupport {
     @Resource
     private FinanceService financeService;
 
-    @Resource
-    private CarService carService;
 
-    @Override
-    public String execute() {
-        Community community = propertyService.getCommunity(1);
-        ParkPlace parkPlace = new ParkPlace();
-        return SUCCESS;
-    }
+//    @Override
+//    public String execute() {
+//        Community community = propertyService.getCommunity(1);
+//        ParkingPlace parkingPlace = new ParkingPlace();
+//        return SUCCESS;
+//    }
 //    @Override
 //    public String execute() {
 //        Community community = propertyService.getCommunity(1);

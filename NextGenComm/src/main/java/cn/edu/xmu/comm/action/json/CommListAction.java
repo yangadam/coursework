@@ -40,8 +40,6 @@ public class CommListAction extends ActionSupport {
             aaData.add(row);
         }
         data = new HashMap<String, Object>();
-        data.put("iTotalRecords", communities.size());
-        data.put("iTotalDisplayRecords", communities.size());
         data.put("aaData", aaData);
         return SUCCESS;
     }

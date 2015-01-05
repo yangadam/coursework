@@ -2,9 +2,9 @@ package cn.edu.xmu.comm.action.system;
 
 import cn.edu.xmu.comm.commons.utils.Constants;
 import cn.edu.xmu.comm.commons.utils.CookieUtils;
+import cn.edu.xmu.comm.commons.utils.SessionUtils;
 import cn.edu.xmu.comm.entity.User;
 import cn.edu.xmu.comm.service.SystemService;
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.stereotype.Controller;
@@ -40,8 +40,8 @@ public class RemLoginAction extends ActionSupport {
             return LOGIN;
         }
 
-        ActionContext.getContext().getSession().put(Constants.USER, user);
-        ActionContext.getContext().getSession().put(Constants.COMMUNITY, user.getCommunity());
+        SessionUtils.putUser(user);
+        SessionUtils.putCommunity(user.getCommunity());
         return user.getType();
     }
 
