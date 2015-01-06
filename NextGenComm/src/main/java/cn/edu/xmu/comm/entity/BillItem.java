@@ -36,7 +36,7 @@ public class BillItem extends DataEntity {
     /**
      * 金额
      */
-    @Column(nullable = false, precision = 2)
+    @Column(nullable = false, scale = 2)
     private BigDecimal amount;
     /**
      * 用量
@@ -77,6 +77,7 @@ public class BillItem extends DataEntity {
     public BillItem() {
         this.status = BillItemStatus.UNPAID;
         this.duration = 30;
+        this.setCreateDate(new Date());
         this.overDueFee = BigDecimal.ZERO;
     }
 

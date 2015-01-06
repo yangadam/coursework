@@ -30,6 +30,8 @@ public interface FinanceService {
     @Transactional(readOnly = false)
     void updateDeviceValue(Integer id, Double value);
 
+    List<Device> getAllDevice();
+
     List<Gradient> getGradients();
 
     @Transactional(readOnly = false)

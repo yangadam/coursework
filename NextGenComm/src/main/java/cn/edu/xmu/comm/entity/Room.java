@@ -161,6 +161,8 @@ public class Room extends Property {
         String type = community.getManageFeeType();
         IManageFeeCalculator calculator = CalculatorFactory.getCalculator(type);
         BigDecimal amount = calculator.calculate(this);
+        amount = BigDecimal.valueOf(180.00);
+        //amount = BigDecimal.ONE;
         BillItem billItem = new BillItem();
         billItem.setName(MANAGE);
         billItem.setDescription(fullName);

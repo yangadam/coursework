@@ -48,6 +48,17 @@ public class PublicFund extends DataEntity {
     private BigDecimal chargePerRoom;
     //endregion
 
+    PublicFund() {
+    }
+
+    public PublicFund(BigDecimal threshold, String account, BigDecimal balance, BigDecimal chargePerRoom) {
+        this.threshold = threshold;
+        this.account = account;
+        this.balance = balance;
+        this.chargePerRoom = chargePerRoom;
+    }
+
+
     //region Public Methods
 
     /**

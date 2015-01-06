@@ -1,4 +1,4 @@
-package cn.edu.xmu.comm.action.json;
+package cn.edu.xmu.comm.action;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.springframework.stereotype.Controller;

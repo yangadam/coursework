@@ -84,7 +84,7 @@
                                 </table>
                             </div>
                         </div>
-                        <div id="add-contract" class="portlet box blue ">
+                        <div id="add-contract" class="portlet box blue hide">
                             <div class="portlet-title">
                                 <div class="caption"><i class="icon-reorder"></i>上传租车合同</div>
                                 <div class="tools">
@@ -93,6 +93,7 @@
                             </div>
                             <div class="portlet-body form">
                                 <s:form action="upload" enctype="multipart/form-data" class="form-horizontal">
+                                    <s:hidden name="parkPlaceId" id="pp_id" value="" class="span6 m-wrap"/>
                                     <div class="control-group">
                                         <label class="control-label">车牌号：</label>
 

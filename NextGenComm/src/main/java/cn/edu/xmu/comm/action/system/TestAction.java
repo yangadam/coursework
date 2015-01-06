@@ -1,5 +1,9 @@
 package cn.edu.xmu.comm.action.system;
 
+import cn.edu.xmu.comm.commons.calc.impl.AreaManageFeeCalculator;
+import cn.edu.xmu.comm.commons.calc.impl.DateOverdueFineCalculator;
+import cn.edu.xmu.comm.commons.calc.impl.FixGarbageFeeCalculator;
+import cn.edu.xmu.comm.commons.exception.DeviceException;
 import cn.edu.xmu.comm.commons.exception.DifferentCommunityException;
 import cn.edu.xmu.comm.entity.*;
 import cn.edu.xmu.comm.service.FinanceService;
@@ -11,7 +15,11 @@ import org.springframework.stereotype.Controller;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 /**
@@ -34,6 +42,57 @@ public class TestAction extends ActionSupport {
 
     @Resource
     private ParkingService parkingService;
+
+    public String makePament() {
+//        Community community = propertyService.getCommunity("五缘公寓");
+//        community.setGarbageFee(BigDecimal.valueOf(4));
+//        community.setGarbageFeeType(FixGarbageFeeCalculator.class.getSimpleName());
+//        community.setManageFee(BigDecimal.valueOf(2));
+//        community.setManageFeeType(AreaManageFeeCalculator.class.getSimpleName());
+//        community.setOverDueFeeRate(BigDecimal.valueOf(0.5));
+//        community.setOverDueFeeType(DateOverdueFineCalculator.class.getSimpleName());
+//        PublicFund publicFund = new PublicFund(BigDecimal.valueOf(1000), "", BigDecimal.ZERO, BigDecimal.valueOf(40));
+//        community.setPublicFund(publicFund);
+//        propertyService.updateCommunity(community);
+        try {
+            financeService.generateAllBill();
+        } catch (DeviceException e) {
+            e.printStackTrace();
+        }
+        return SUCCESS;
+    }
+
+    public String generateValue() {
+        Random rand = new Random();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date dt = null;
+        try {
+            dt = sdf.parse("2014-12-6");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        List<Device> devices = financeService.getAllDevice();
+        for (Device device : devices) {
+            Integer base;
+            if (device.getType().toString().equals("水表")) {
+                base = 20;
+            } else {
+                base = 100;
+            }
+            Property property = device.getProperty();
+            if (property instanceof Community) {
+                base *= 16;
+            } else if (property instanceof Building) {
+                base *= 8;
+            } else if (property instanceof Floor) {
+                base *= 4;
+            }
+            Integer value = device.getCurrentValue().intValue();
+
+            financeService.addDeviceValue(device.getId(), dt, (double) (value + rand.nextInt(base) + base / 2));
+        }
+        return SUCCESS;
+    }
 
     public String addParkPlace() {
         for (int i = 1; i <= 30; i++) {

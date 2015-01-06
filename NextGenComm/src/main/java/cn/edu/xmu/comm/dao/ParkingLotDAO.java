@@ -20,25 +20,27 @@ public class ParkingLotDAO extends BaseDaoImpl<ParkingLot, Integer> implements c
      */
     @Override
     public ParkingLot getTempParkingLot(Community community) {
-        return getParkingLot(community, ParkingLot.ParkingLotStatus.TEMP);
+        String ql = "select p from ParkingLot p where p.community = :p1 and p.type = :p2";
+        return getByQL(ql, new Parameter(community, ParkingLot.ParkingLotStatus.TEMP));
     }
 
     /**
-     * 依据社区查询临时租用车位
+     * 依据社区查询租用车位
      *
      * @param community 社区
      * @return ParkingLot rentParkingLot
      */
     @Override
     public ParkingLot getRentParkingLot(Community community) {
-        return getParkingLot(community, ParkingLot.ParkingLotStatus.RENT);
+        String ql = "select p from ParkingLot p where p.community = :p1 and p.type = :p2";
+        return getByQL(ql, new Parameter(community, ParkingLot.ParkingLotStatus.RENT));
     }
 
     /**
      * 依据社区查询临时租用车位
      *
-     * @param community         社区
-     * @param parkingLotStatus  停车场状态
+     * @param community        社区
+     * @param parkingLotStatus 停车场状态
      * @return ParkingLot ParkingLot
      */
     @Override

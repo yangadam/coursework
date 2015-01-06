@@ -29,8 +29,6 @@ public class FinanceServiceImpl implements cn.edu.xmu.comm.service.FinanceServic
 
     //region DAO
     @Resource
-    private BillItemDAO billItemDAO;
-    @Resource
     private CommunityDAO communityDAO;
     @Resource
     private DeviceDAO deviceDAO;
@@ -40,8 +38,6 @@ public class FinanceServiceImpl implements cn.edu.xmu.comm.service.FinanceServic
     private OwnerDAO ownerDAO;
     @Resource
     private PaymentDAO paymentDAO;
-    @Resource
-    private RoomDAO roomDAO;
     //endregion
 
     //region BillItem Service
@@ -53,11 +49,13 @@ public class FinanceServiceImpl implements cn.edu.xmu.comm.service.FinanceServic
     @Transactional(readOnly = false)
     public void generateAllBill() throws DeviceException {
         Community community = SessionUtils.getCommunity();
+        System.out.print(new Date());
         List<Owner> allOwner = ownerDAO.getAll(community);
         for (Owner owner : allOwner) {
             owner.generateBill();
             ownerDAO.flush();
         }
+        System.out.print(new Date());
     }
     //endregion
 
@@ -140,6 +138,12 @@ public class FinanceServiceImpl implements cn.edu.xmu.comm.service.FinanceServic
         Device device = deviceDAO.get(id);
         device.updateLastValue(value);
         deviceDAO.merge(device);
+    }
+
+    @Override
+    public List<Device> getAllDevice() {
+        Community community = SessionUtils.getCommunity();
+        return deviceDAO.getAll(community);
     }
 
 //

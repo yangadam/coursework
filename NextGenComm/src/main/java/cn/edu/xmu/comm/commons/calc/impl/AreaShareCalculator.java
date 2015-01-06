@@ -22,9 +22,13 @@ public class AreaShareCalculator implements IShareCalculator {
     @Override
     public BigDecimal calculateShare(Room room, Device device, BigDecimal amount) {
         Property property = device.getProperty();
+        /*
         Double area1 = property.getUsedHouseArea();
         Double area2 = room.getUsedHouseArea();
-        return amount.multiply(BigDecimal.valueOf(area2 / area1));
+        */
+        BigDecimal area1 = BigDecimal.valueOf(property.getUsedHouseArea());
+        BigDecimal area2 = BigDecimal.valueOf(room.getUsedHouseArea());
+        return amount.multiply(area2.divide(area1, 3, BigDecimal.ROUND_HALF_EVEN));
     }
 
 }

@@ -41,7 +41,6 @@
         <action name="tempRegister" class="tempParkingRegisteAction"/>
         <action name="ownerByRoom" class="ownerByRoomAction"/>
         <action name="tempParkBillAdd" class="tempParkBillAddAction"/>
-        <action name="listParkPlace" class="parkPlaceListAction"/>
         <action name="listPark" class="parkingListAction"/>
         <action name="vacantPark" class="vacantParkAction"/>
         <action name="listCar" class="carListAction"/>

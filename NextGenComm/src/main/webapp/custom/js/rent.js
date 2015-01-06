@@ -10,7 +10,7 @@ var TableEditable = function () {
                 "oLanguage": {"sLengthMenu": "_MENU_ 条记录每页", "oPaginate": {"sPrevious": "Prev", "sNext": "Next"}},
                 "aoColumnDefs": [{
                     "bSortable": false, "aTargets": [3], "mRender": function (data, type, full) {
-                        return '<a  href="" onclick="rent(' + data + ')">租用</a>'
+                        return '<a onclick="rent(' + data + ')">租用</a>'
                     }
                 },]
             })
@@ -18,5 +18,6 @@ var TableEditable = function () {
     }
 }();
 function rent(id) {
-    $("#add-contract").removeClass("hide")
+    $("#add-contract").removeClass("hide");
+    $("#pp_id").val(id);
 };

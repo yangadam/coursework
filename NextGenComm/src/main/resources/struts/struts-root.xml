@@ -57,6 +57,14 @@
             <result type="redirect">director.do</result>
         </action>
 
+        <action name="generateValue" class="testAction" method="generateValue">
+            <result type="redirect">director.do</result>
+        </action>
+
+        <action name="makePayment" class="testAction" method="makePament">
+            <result type="redirect">director.do</result>
+        </action>
+
     </package>
 
 </struts>

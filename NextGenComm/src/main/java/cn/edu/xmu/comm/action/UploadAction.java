@@ -27,6 +27,7 @@ public class UploadAction extends ActionSupport {
     private String uploadFileName;
     private String savePath;
 
+    private Integer parkPlaceId;
     private String license;
 
     @Override
@@ -34,6 +35,10 @@ public class UploadAction extends ActionSupport {
     public String execute() {
 
         try {
+            String savePathDirName = getSavePath();
+            File savePathDir = new File(savePathDirName);
+            if (!savePathDir.exists() && !savePathDir.isDirectory())
+                savePathDir.mkdir();
             FileOutputStream fos = new FileOutputStream(getSavePath() + File.separator + getUploadFileName());
             FileInputStream fis = new FileInputStream(getUpload());
             byte[] buffer = new byte[1024];
@@ -101,4 +106,13 @@ public class UploadAction extends ActionSupport {
     public void setLicense(String license) {
         this.license = license;
     }
+
+    public Integer getParkPlaceId() {
+        return parkPlaceId;
+    }
+
+    public void setParkPlaceId(Integer parkPlaceId) {
+        this.parkPlaceId = parkPlaceId;
+    }
+
 }

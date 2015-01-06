@@ -73,7 +73,7 @@ public class Device extends DataEntity {
             joinColumns = @JoinColumn(name = "device_id")
     )
     @OrderBy
-    @Column(name = "device_values")
+    @Column(name = "device_values", precision = 2)
     private SortedMap<Date, Double> values = new TreeMap<Date, Double>();
 
     /**

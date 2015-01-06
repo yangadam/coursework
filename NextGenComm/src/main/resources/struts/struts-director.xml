@@ -40,14 +40,8 @@
             <result name="input">staff.do</result>
         </action>
 
-        <!--临时的打印停车费的界面，先填在Director目录下-->
-        <action name="tempParkingPaying" class="tempParkingPayAction">
-            <result type="redirect">tempParkingPaying.do</result>
-            <result name="input">tempParkingPaying.do</result>
-        </action>
-
         <action name="parkingLot" class="directAction" method="director">
-            <result>/WEB-INF/jsp/director/parkingLot.jsp</result>
+            <result>/WEB-INF/jsp/director/parkplace.jsp</result>
         </action>
 
         <action name="addParkPlace" class="parkPlaceAddAction">

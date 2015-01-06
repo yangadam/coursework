@@ -1,8 +1,6 @@
 package cn.edu.xmu.comm.service.impl;
 
-import cn.edu.xmu.comm.commons.calc.impl.AreaShareCalculator;
-import cn.edu.xmu.comm.commons.calc.impl.CountShareCalculator;
-import cn.edu.xmu.comm.commons.calc.impl.FloorShareCalculator;
+import cn.edu.xmu.comm.commons.calc.impl.*;
 import cn.edu.xmu.comm.commons.exception.DifferentCommunityException;
 import cn.edu.xmu.comm.commons.utils.SecurityUtils;
 import cn.edu.xmu.comm.commons.utils.SessionUtils;
@@ -81,6 +79,14 @@ public class PropertyServiceImpl implements PropertyService {
     @Transactional(readOnly = false)
     public Community addCommunity(String name) {
         Community community = new Community(name);
+        community.setGarbageFee(BigDecimal.valueOf(4));
+        community.setGarbageFeeType(FixGarbageFeeCalculator.class.getSimpleName());
+        community.setManageFee(BigDecimal.valueOf(2));
+        community.setManageFeeType(AreaManageFeeCalculator.class.getSimpleName());
+        community.setOverDueFeeRate(BigDecimal.valueOf(0.5));
+        community.setOverDueFeeType(DateOverdueFineCalculator.class.getSimpleName());
+        PublicFund publicFund = new PublicFund(BigDecimal.valueOf(1000), "", BigDecimal.ZERO, BigDecimal.valueOf(40));
+        community.setPublicFund(publicFund);
         communityDAO.persist(community);
         ParkingLot tempParkingLot = newTempParkingLot(community);
         ParkingLot rentParkingLot = newRentParkingLot(community);
