@@ -6,10 +6,12 @@ import cn.edu.xmu.comm.commons.utils.MailUtils;
 import cn.edu.xmu.comm.commons.utils.SessionUtils;
 import cn.edu.xmu.comm.dao.*;
 import cn.edu.xmu.comm.entity.*;
+import org.apache.commons.lang3.Validate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -234,85 +236,93 @@ public class FinanceServiceImpl implements cn.edu.xmu.comm.service.FinanceServic
 
     //region Gradient Service
 
-//    /**
-//     * 获得说有梯度
-//     *
-//     * @return 梯度列表
-//     */
-//    public List<Gradient> getGradients() {
-//        Community community = SessionUtils.getCommunity();
-//        return gradientDAO.getAll(community);
-//    }
-//
-//    /**
-//     * 添加梯度
-//     *
-//     * @param unitPrice 单价
-//     * @return 梯度对象
-//     */
-//    @Transactional(readOnly = false)
-//    public Gradient addGradient(BigDecimal unitPrice, Device.DeviceType type) {
-//        Community community = SessionUtils.getCommunity();
-//        Gradient gradient = new Gradient(unitPrice, type);
-//        community.getGradients().add(gradient);
-//        gradientDAO.persist(gradient);
-//        return gradient;
-//    }
-//
-//    /**
-//     * 添加梯度
-//     *
-//     * @param readings 读数
-//     * @param prices   价格
-//     * @return 梯度对象
-//     */
-//    @Transactional(readOnly = false)
-//    public Gradient addGradient(Double[] readings, BigDecimal[] prices, Device.DeviceType type) {
-//        Community community = SessionUtils.getCommunity();
-//        Validate.isTrue(readings.length + 1 == prices.length, "梯度数值数目有错误。");
-//        Gradient gradient = new Gradient(readings, prices, type);
-//        community.getGradients().add(gradient);
-//        gradientDAO.persist(gradient);
-//        communityDAO.merge(community);
-//        return gradient;
-//    }
-//
-//    /**
-//     * 将梯度应用到设备
-//     *
-//     * @param gradient 梯度
-//     * @param device   设备
-//     */
-//    @Transactional(readOnly = false)
-//    public void applyGradient(Gradient gradient, Device device) {
-//        Validate.isTrue(gradient.getType().equals(device.getType()), "梯度与设备不匹配");
-//        device.setGradient(gradient);
-//        deviceDAO.merge(device);
-//    }
-//
-//    /**
-//     * 将梯度应用到所有类型相同的私有表
-//     *
-//     * @param gradientId 梯度id
-//     */
-//    @Transactional(readOnly = false)
-//    public void applyPrivateGradient(Integer gradientId) {
-//        Community community = SessionUtils.getCommunity();
-//        Gradient gradient = gradientDAO.get(gradientId);
-//        deviceDAO.applyPrivateGradient(gradient, community);
-//    }
-//
-//    /**
-//     * 将梯度应用到所有类型相同的公摊表
-//     *
-//     * @param gradientId 梯度id
-//     */
-//    @Transactional(readOnly = false)
-//    public void applyShareGradient(Integer gradientId) {
-//        Community community = SessionUtils.getCommunity();
-//        Gradient gradient = gradientDAO.get(gradientId);
-//        deviceDAO.applyShareGradient(gradient, community);
-//    }
+    /**
+     * 获得说有梯度
+     *
+     * @return 梯度列表
+     */
+    @Override
+    public List<Gradient> getGradients() {
+        Community community = SessionUtils.getCommunity();
+        return gradientDAO.getAll(community);
+    }
+
+    /**
+     * 添加梯度
+     *
+     * @param unitPrice 单价
+     * @return 梯度对象
+     */
+    @Override
+    @Transactional(readOnly = false)
+    public Gradient addGradient(BigDecimal unitPrice, Device.DeviceType type) {
+        Community community = SessionUtils.getCommunity();
+        community = communityDAO.get(community.getId());
+        Gradient gradient = new Gradient(unitPrice, type);
+        community.getGradients().add(gradient);
+        gradientDAO.persist(gradient);
+        return gradient;
+    }
+
+    /**
+     * 添加梯度
+     *
+     * @param readings 读数
+     * @param prices   价格
+     * @return 梯度对象
+     */
+    @Override
+    @Transactional(readOnly = false)
+    public Gradient addGradient(Double[] readings, BigDecimal[] prices, Device.DeviceType type) {
+        Community community = SessionUtils.getCommunity();
+        community = communityDAO.get(community.getId());
+        Validate.isTrue(readings.length + 1 == prices.length, "梯度数值数目有错误。");
+        Gradient gradient = new Gradient(readings, prices, type);
+        community.getGradients().add(gradient);
+        gradientDAO.persist(gradient);
+        communityDAO.merge(community);
+        return gradient;
+    }
+
+    /**
+     * 将梯度应用到设备
+     *
+     * @param gradient 梯度
+     * @param device   设备
+     */
+    @Override
+    @Transactional(readOnly = false)
+    public void applyGradient(Gradient gradient, Device device) {
+        Validate.isTrue(gradient.getType().equals(device.getType()), "梯度与设备不匹配");
+        device.setGradient(gradient);
+        deviceDAO.merge(device);
+    }
+
+    /**
+     * 将梯度应用到所有类型相同的私有表
+     *
+     * @param gradientId 梯度id
+     */
+    @Override
+    @Transactional(readOnly = false)
+    public void applyPrivateGradient(Integer gradientId) {
+        Community community = SessionUtils.getCommunity();
+        Gradient gradient = gradientDAO.get(gradientId);
+        deviceDAO.applyPrivateGradient(gradient, community);
+    }
+
+    /**
+     * 将梯度应用到所有类型相同的公摊表
+     *
+     * @param gradientId 梯度id
+     */
+    @Override
+    @Transactional(readOnly = false)
+    public void applyShareGradient(Integer gradientId) {
+        Community community = SessionUtils.getCommunity();
+        Gradient gradient = gradientDAO.get(gradientId);
+        deviceDAO.applyShareGradient(gradient, community);
+    }
     //endregion
 
     //region Owner Service

@@ -26,8 +26,8 @@ public class Staff extends User {
     Staff() {
     }
 
-    public Staff(String username, String password, String name, Community community, String type) {
-        super(username, password, name);
+    public Staff(String username, String password, String name, String phoneNumber, String email, Community community, String type) {
+        super(username, password, name, phoneNumber, email);
         this.staffType = judgeType(type);
         this.community = community;
     }

@@ -1,7 +1,6 @@
 package cn.edu.xmu.comm.action.json;
 
 import cn.edu.xmu.comm.entity.BillItem;
-import cn.edu.xmu.comm.entity.Device;
 import cn.edu.xmu.comm.entity.Owner;
 import cn.edu.xmu.comm.entity.Room;
 import cn.edu.xmu.comm.service.PropertyService;
@@ -41,7 +40,6 @@ public class ShareListAction extends ActionSupport {
             if (owner.getRooms() == null) {
                 row.add(0);
                 row.add(0.0);
-                row.add("");
             } else {
                 row.add(owner.getRooms().size());
                 buildRow(owner.getUnpaidBills(), owner.getRooms(), row);
@@ -63,20 +61,6 @@ public class ShareListAction extends ActionSupport {
             }
         }
         row.add(amount);
-        StringBuilder deviceList = new StringBuilder();
-        boolean isFirst = true;
-        for (Room room : rooms) {
-            List<Device> devices = room.getSharedDevice();
-            for (Device device : devices) {
-                if (!isFirst) {
-                    deviceList.append("<br/>");
-                } else {
-                    isFirst = false;
-                }
-                deviceList.append(device.getNo());
-            }
-        }
-        row.add(deviceList.toString());
     }
 
     public Map<String, Object> getData() {

@@ -12,17 +12,17 @@
     <meta content="" name="description"/>
     <meta content="PumpKing" name="author"/>
 
-    <%@include file="globalCSS.jsp" %>
-    <link href="../../../global/css/jquery.gritter.css" rel="stylesheet" type="text/css"/>
-    <link href="../../../global/css/daterangepicker.css" rel="stylesheet" type="text/css"/>
-    <link href="../../../global/css/fullcalendar.css" rel="stylesheet" type="text/css"/>
-    <link href="../../../global/css/jqvmap.css" rel="stylesheet" type="text/css" pumpking="screen"/>
-    <link href="../../../global/css/jquery.easy-pie-chart.css" rel="stylesheet" type="text/css" pumpking="screen"/>
+    <%@include file="../global/globalCSS.jsp" %>
+    <link href="../../../global/css/jquery.gritter.min.css" rel="stylesheet" type="text/css"/>
+    <link href="../../../global/css/daterangepicker.min.css" rel="stylesheet" type="text/css"/>
+    <link href="../../../global/css/fullcalendar.min.css" rel="stylesheet" type="text/css"/>
+    <link href="../../../global/css/jqvmap.min.css" rel="stylesheet" type="text/css" pumpking="screen"/>
+    <link href="../../../global/css/jquery.easy-pie-chart.min.css" rel="stylesheet" type="text/css" pumpking="screen"/>
     <link rel="shortcut icon" href="../../../global/image/favicon.ico"/>
 </head>
 
 <body class="page-header-fixed">
-<%@include file="globalHeader.jsp" %>
+<%@include file="../global/globalHeader.jsp" %>
 <div class="page-container">
     <%@include file="globalSidebar.jsp" %>
     <div class="page-content">
@@ -71,8 +71,8 @@
             </div>
         </div>
     </div>
-    <%@include file="globalFooter.jsp" %>
-    <%@include file="globalJS.jsp" %>
+        <%@include file="../global/globalFooter.jsp" %>
+        <%@include file="../global/globalJS.jsp" %>
     <script src="../../../global/js/select2.min.js" type="text/javascript"></script>
     <script src="../../../custom/js/app.js" type="text/javascript"></script>
     <script>

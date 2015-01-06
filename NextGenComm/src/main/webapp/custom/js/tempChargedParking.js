@@ -1,20 +1,11 @@
 var FinishedParkBillTale = function () {
-
     return {
-
-        //main function to initiate the module
         init: function () {
-
-            var oTable = $('#sample_editable_2').dataTable({
-                // set the initial value
-                "aLengthMenu": [
-                    [5, 10, 15, -1],
-                    [5, 10, 15, "全部"]
-                ],
+            var oTable = $("#sample_editable_2").dataTable({
+                "aLengthMenu": [[5, 10, 15, -1], [5, 10, 15, "全部"]],
                 "iDisplayLength": 5,
                 "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
                 "sPaginationType": "bootstrap",
-                /*"bServerSide" : true,*/
                 "bProcessing": true,
                 "sAjaxSource": "/chargedParkBill.do",
                 "oLanguage": {
@@ -25,27 +16,14 @@ var FinishedParkBillTale = function () {
                     "sInfoFiltered": "(筛选自 _MAX_ 条数据)",
                     "sInfoEmtpy": "没有数据",
                     "sProcessing": "正在加载数据...",
-                    "oPaginate": {
-                        "sFirst": "首页",
-                        "sPrevious": "前一页",
-                        "sNext": "后一页",
-                        "sLast": "末页"
-                    }
+                    "oPaginate": {"sFirst": "首页", "sPrevious": "前一页", "sNext": "后一页", "sLast": "末页"}
                 },
-                "aoColumnDefs": [
-                    {
-                        'bSortable': false,
-                        "aTargets": [5],
-                        "mRender": function (data, type,
-                                             full) {
-                            return '<a href="tempParkingPaying.do?parkBillId='
-                                + data + '">缴费</a>';
-                        }
+                "aoColumnDefs": [{
+                    "bSortable": false, "aTargets": [5], "mRender": function (data, type, full) {
+                        return '<a href="tempParkingPaying.do?parkBillId=' + data + '">缴费</a>'
                     }
-                ]
-            });
+                }]
+            })
         }
-
-    };
-
+    }
 }();

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+    <package name="owner" namespace="/owner" extends="default">
+        <global-results>
+            <result name="login" type="redirect">/rememberMeLogin.do</result>
+            <result name="unauthorized" type="redirect">/rememberMeLogin.do</result>
+        </global-results>
+
+        <action name="billlist" class="billListAction">
+            <result>/WEB-INF/jsp/owner/billlist.jsp</result>
+        </action>
+
+        <action name="makePayment" class="makePaymentAction">
+            <result>/WEB-INF/jsp/owner/paySuccess.jsp</result>
+        </action>
+
+    </package>
+
+</struts>

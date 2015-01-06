@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+    <package name="guard" namespace="/guard" extends="default">
+
+        <global-results>
+            <result name="login" type="redirect">/rememberMeLogin.do</result>
+            <result name="unauthorized" type="redirect">/rememberMeLogin.do</result>
+        </global-results>
+
+        <action name="tempParkingList" class="directAction" method="guard">
+            <result>/WEB-INF/jsp/guard/tempParkingList.jsp</result>
+        </action>
+
+        <action name="tempParkingRegiste" class="tempParkingRegisteAction">
+            <!--<result name="rent">/WEB-INF/jsp/test/test.jsp</result>-->
+            <result name="temp">/WEB-INF/jsp/guard/tempParkingRegiste.jsp</result>
+        </action>
+
+        <action name="toTempParkingRegiste" class="toTempParkingRegisteAction">
+            <result>/WEB-INF/jsp/guard/tempParkingRegiste.jsp</result>
+        </action>
+
+        <action name="tempParkingPaying" class="tempParkingPayAction">
+            <result>/WEB-INF/jsp/guard/tempParkingPaying.jsp</result>
+        </action>
+
+    </package>
+
+</struts>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+    <package name="clerk" namespace="/clerk" extends="default">
+
+        <global-results>
+            <result name="login" type="redirect">/rememberMeLogin.do</result>
+            <result name="unauthorized" type="redirect">/rememberMeLogin.do</result>
+        </global-results>
+
+        <action name="building" class="directAction" method="clerk">
+            <result>/WEB-INF/jsp/clerk/build.jsp</result>
+        </action>
+
+        <action name="addBuild" class="buildAddAction">
+            <result type="redirect">building.do</result>
+            <result name="input">building.do</result>
+        </action>
+
+        <action name="room" class="directAction" method="clerk">
+            <result>/WEB-INF/jsp/clerk/room.jsp</result>
+        </action>
+
+        <action name="addRoom" class="roomAddAction">
+            <result type="redirect">room.do</result>
+            <result name="input">room.do</result>
+        </action>
+
+        <action name="checkin" class="directAction" method="clerk">
+            <result>/WEB-INF/jsp/clerk/checkin.jsp</result>
+        </action>
+
+        <action name="doCheckIn" class="checkInAction">
+            <result name="input">checkin.do</result>
+            <result type="redirect">checkin.do</result>
+        </action>
+
+        <action name="change" class="directAction" method="clerk">
+            <result>/WEB-INF/jsp/clerk/change.jsp</result>
+        </action>
+
+        <action name="input" class="directAction" method="clerk">
+            <result>/WEB-INF/jsp/clerk/inputDevice.jsp</result>
+        </action>
+
+        <action name="inputValue" class="inputValueAction">
+            <result name="input">input.do</result>
+            <result type="redirect">input.do</result>
+        </action>
+
+        <action name="updateValue" class="updateValueAction">
+            <result name="input">input.do</result>
+            <result type="redirect">input.do</result>
+        </action>
+
+        <action name="owner" class="directAction" method="clerk">
+            <result>/WEB-INF/jsp/clerk/owner.jsp</result>
+        </action>
+
+        <action name="addOwner" class="ownerAddAction">
+            <result type="redirect">owner.do</result>
+            <result name="input">owner.do</result>
+        </action>
+
+        <action name="calculate" class="calculateAction">
+            <result name="input">input.do</result>
+            <result type="redirect">input.do</result>
+        </action>
+
+        <action name="share" class="directAction" method="clerk">
+            <result>/WEB-INF/jsp/clerk/share.jsp</result>
+        </action>
+
+        <action name="parkplace" class="directAction" method="clerk">
+            <result>/WEB-INF/jsp/clerk/parkplace.jsp</result>
+        </action>
+
+        <action name="carRent" class="directAction" method="clerk">
+            <result>/WEB-INF/jsp/clerk/rent.jsp</result>
+        </action>
+
+        <!-- Configure File Action -->
+        <action name="upload" class="uploadAction">
+            <param name="savePath">/uploadFiles</param>
+            <result type="redirect">/clerk/carRent.do</result>
+            <result name="input">/clerk/carRent.do</result>
+        </action>
+        <!--Car-->
+        <action name="car">
+            <result>/WEB-INF/jsp/clerk/car.jsp</result>
+        </action>
+
+        <!--<action name="addCar" class="carAddAction">-->
+        <!--<result type="redirect">car.do</result>-->
+        <!--<result name="input">car.do</result>-->
+        <!--</action>-->
+
+        <action name="feeReminder" class="arrearageListAction">
+            <result>/WEB-INF/jsp/clerk/feeReminder.jsp</result>
+        </action>
+
+        <action name="doFeeReminder" class="remindAction">
+            <result type="redirect">feeReminder.do</result>
+            <result name="input">feeReminder.do</result>
+        </action>
+
+
+    </package>
+
+</struts>

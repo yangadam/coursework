@@ -12,14 +12,14 @@
     <meta content="" name="description"/>
     <meta content="PumpKing" name="author"/>
 
-    <%@include file="globalCSS.jsp" %>
-    <link rel="stylesheet" type="text/css" href="../../../global/css/select2_metro.css"/>
-    <link rel="stylesheet" href="../../../global/css/DT_bootstrap.css"/>
+    <%@include file="../global/globalCSS.jsp" %>
+    <link rel="stylesheet" type="text/css" href="../../../global/css/select2_metro.min.css"/>
+    <link rel="stylesheet" href="../../../global/css/DT_bootstrap.min.css"/>
     <link rel="shortcut icon" href="../../../global/image/favicon.ico"/>
 </head>
 
 <body class="page-header-fixed">
-<%@include file="globalHeader.jsp" %>
+<%@include file="../global/globalHeader.jsp" %>
 <div class="page-container">
     <%@include file="globalSidebar.jsp" %>
     <div class="page-content">
@@ -86,13 +86,13 @@
             </div>
         </div>
     </div>
-    <%@include file="globalFooter.jsp" %>
-    <%@include file="globalJS.jsp" %>
-    <script type="text/javascript" src="../../../global/js/jquery.dataTables.js"></script>
-    <script type="text/javascript" src="../../../global/js/DT_bootstrap.js"></script>
-    <script type="text/javascript" src="../../../global/js/ui-modals.js"></script>
-    <script type="text/javascript" src="../../../global/js/bootstrap-modal.js"></script>
-    <script type="text/javascript" src="../../../global/js/bootstrap-modalmanager.js"></script>
+        <%@include file="../global/globalFooter.jsp" %>
+        <%@include file="../global/globalJS.jsp" %>
+        <script type="text/javascript" src="../../../global/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="../../../global/js/DT_bootstrap.min.js"></script>
+        <script type="text/javascript" src="../../../global/js/ui-modals.min.js"></script>
+        <script type="text/javascript" src="../../../global/js/bootstrap-modal.min.js"></script>
+        <script type="text/javascript" src="../../../global/js/bootstrap-modalmanager.min.js"></script>
     <script src="../../../custom/js/feeReminder.js" type="text/javascript"></script>
     <script>
         jQuery(document).ready(function () {

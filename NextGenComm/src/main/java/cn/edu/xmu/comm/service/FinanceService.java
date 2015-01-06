@@ -4,9 +4,11 @@ import cn.edu.xmu.comm.commons.exception.DeviceException;
 import cn.edu.xmu.comm.commons.exception.MailException;
 import cn.edu.xmu.comm.commons.utils.MailUtils;
 import cn.edu.xmu.comm.entity.Device;
+import cn.edu.xmu.comm.entity.Gradient;
 import cn.edu.xmu.comm.entity.Owner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -27,6 +29,23 @@ public interface FinanceService {
 
     @Transactional(readOnly = false)
     void updateDeviceValue(Integer id, Double value);
+
+    List<Gradient> getGradients();
+
+    @Transactional(readOnly = false)
+    Gradient addGradient(BigDecimal unitPrice, Device.DeviceType type);
+
+    @Transactional(readOnly = false)
+    Gradient addGradient(Double[] readings, BigDecimal[] prices, Device.DeviceType type);
+
+    @Transactional(readOnly = false)
+    void applyGradient(Gradient gradient, Device device);
+
+    @Transactional(readOnly = false)
+    void applyPrivateGradient(Integer gradientId);
+
+    @Transactional(readOnly = false)
+    void applyShareGradient(Integer gradientId);
 
     /**
      * 获取欠缴费用户

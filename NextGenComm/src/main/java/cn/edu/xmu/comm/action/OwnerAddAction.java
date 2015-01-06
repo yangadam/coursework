@@ -25,13 +25,15 @@ public class OwnerAddAction extends ActionSupport {
     private String username;
     private String password;
     private String name;
+    private String phoneNumber;
+    private String email;
 
     @Override
     @Required(name = "director,clerk")
     public String execute() {
         Community community = (Community) ActionContext.getContext()
                 .getSession().get(Constants.COMMUNITY);
-        propertyService.addOwner(username, password, name, community);
+        propertyService.addOwner(username, password, name, phoneNumber, email, community);
         return SUCCESS;
     }
 
@@ -57,5 +59,21 @@ public class OwnerAddAction extends ActionSupport {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

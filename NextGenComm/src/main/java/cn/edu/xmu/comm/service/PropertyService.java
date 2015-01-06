@@ -99,14 +99,16 @@ public interface PropertyService {
     /**
      * 添加业主,并指定小区
      *
-     * @param username  用户名
-     * @param password  密码
-     * @param name      姓名
-     * @param community 所属小区
+     * @param username    用户名
+     * @param password    密码
+     * @param name        姓名
+     * @param phoneNumber 电话号码
+     * @param email       邮箱
+     * @param community   所属小区
      * @return 添加的业主
      */
     @Transactional(readOnly = false)
-    Owner addOwner(String username, String password, String name, Community community);
+    Owner addOwner(String username, String password, String name, String phoneNumber, String email, Community community);
 
     /**
      * 添加业主，并指定房间
@@ -116,11 +118,11 @@ public interface PropertyService {
      * @param name     姓名
      * @param room     房间
      * @return 添加的业主
-     * @throws cn.edu.xmu.comm.commons.exception.DifferentCommunityException 小区不同异常
-     * @see cn.edu.xmu.comm.commons.exception.DifferentCommunityException
+     * @throws DifferentCommunityException 小区不同异常
+     * @see DifferentCommunityException
      */
     @Transactional(readOnly = false)
-    Owner addOwner(String username, String password, String name, Room room)
+    public Owner addOwner(String username, String password, String name, String phoneNumber, String email, Room room)
             throws DifferentCommunityException;
 
     /**
@@ -146,6 +148,8 @@ public interface PropertyService {
      */
     @Transactional(readOnly = false)
     Room addRoom(String no, Double area, Floor floor);
+
+    List<Room> getAllRoom();
 
     /**
      * 新建临时停车场

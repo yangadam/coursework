@@ -22,6 +22,8 @@ public class StaffAddAction extends ActionSupport {
     private String username;
     private String name;
     private String password;
+    private String phoneNumber;
+    private String email;
     private String position;
 
     @Override
@@ -29,7 +31,7 @@ public class StaffAddAction extends ActionSupport {
     public String execute() {
         Community community = (Community) ActionContext.getContext()
                 .getSession().get(Constants.COMMUNITY);
-        staffService.addStaff(username, password, name, community, position);
+        staffService.addStaff(username, password, name, phoneNumber, email, community, position);
         return SUCCESS;
     }
 
@@ -55,6 +57,22 @@ public class StaffAddAction extends ActionSupport {
 
     public void setPosition(String position) {
         this.position = position;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getUsername() {

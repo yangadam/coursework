@@ -12,14 +12,14 @@
     <meta content="" name="description"/>
     <meta content="PumpKing" name="author"/>
 
-    <%@include file="globalCSS.jsp" %>
-    <link href="../../../global/css/select2_metro.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="../../../global/css/DT_bootstrap.css"/>
+    <%@include file="../global/globalCSS.jsp" %>
+    <link href="../../../global/css/select2_metro.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="../../../global/css/DT_bootstrap.min.css"/>
     <link rel="shortcut icon" href="../../../global/image/favicon.ico"/>
 </head>
 
 <body class="page-header-fixed">
-<%@include file="globalHeader.jsp" %>
+<%@include file="../global/globalHeader.jsp" %>
 <div class="page-container">
     <%@include file="globalSidebar.jsp" %>
     <div class="page-content">
@@ -158,11 +158,11 @@
         </div>
     </div>
 </div>
-<%@include file="globalFooter.jsp" %>
-<%@include file="globalJS.jsp" %>
+<%@include file="../global/globalFooter.jsp" %>
+<%@include file="../global/globalJS.jsp" %>
 <script src="../../../global/js/select2.min.js" type="text/javascript"></script>
 <script src="../../../global/js/jquery.dataTables.min.js" type="text/javascript"></script>
-<script src="../../../global/js/DT_bootstrap.js" type="text/javascript"></script>
+<script src="../../../global/js/DT_bootstrap.min.js" type="text/javascript"></script>
 <script src="../../../custom/js/inputDevice.js" type="text/javascript"></script>
 
 <script>

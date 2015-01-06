@@ -26,8 +26,8 @@ public class Director extends User {
     Director() {
     }
 
-    public Director(String username, String password, String name) {
-        super(username, password, name);
+    public Director(String username, String password, String name, String phoneNumber, String email) {
+        super(username, password, name, phoneNumber, email);
     }
 
     @Override

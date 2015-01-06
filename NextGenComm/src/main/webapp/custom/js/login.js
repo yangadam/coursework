@@ -1,88 +1,54 @@
 var Login = function () {
     return {
         init: function () {
-            $('.login-form').validate({
-                errorElement: 'label', //default input error message container
-                errorClass: 'help-inline', // default input error message class
-                focusInvalid: false, // do not focus the last invalid input
-                rules: {
-                    username: {
-                        required: true
-                    },
-                    password: {
-                        required: true
-                    },
-                    remember: {
-                        required: false
-                    }
+            $(".login-form").validate({
+                errorElement: "label",
+                errorClass: "help-inline",
+                focusInvalid: false,
+                rules: {username: {required: true}, password: {required: true}, remember: {required: false}},
+                messages: {username: {required: "请输入您的用户名"}, password: {required: "请输入您的密码"}},
+                invalidHandler: function (event, validator) {
+                    $(".alert-error", $(".login-form")).show()
                 },
-                messages: {
-                    username: {
-                        required: "请输入您的用户名"
-                    },
-                    password: {
-                        required: "请输入您的密码"
-                    }
-                },
-                invalidHandler: function (event, validator) { //display error alert on form submit
-                    $('.alert-error', $('.login-form')).show();
-                },
-                highlight: function (element) { // hightlight error inputs
-                    $(element)
-                        .closest('.control-group').addClass('error'); // set error class to the control group
+                highlight: function (element) {
+                    $(element).closest(".control-group").addClass("error")
                 },
                 success: function (label) {
-                    label.closest('.control-group').removeClass('error');
-                    label.remove();
+                    label.closest(".control-group").removeClass("error");
+                    label.remove()
                 },
                 errorPlacement: function (error, element) {
-                    error.addClass('help-small no-left-padding').insertAfter(element.closest('.input-icon'));
+                    error.addClass("help-small no-left-padding").insertAfter(element.closest(".input-icon"))
                 }
             });
-
-            $('.forget-form').validate({
-                errorElement: 'label', //default input error message container
-                errorClass: 'help-inline', // default input error message class
-                focusInvalid: false, // do not focus the last invalid input
+            $(".forget-form").validate({
+                errorElement: "label",
+                errorClass: "help-inline",
+                focusInvalid: false,
                 ignore: "",
-                rules: {
-                    email: {
-                        required: true,
-                        email: true
-                    }
+                rules: {email: {required: true, email: true}},
+                messages: {email: {required: "请输入您的邮箱"}},
+                invalidHandler: function (event, validator) {
                 },
-                messages: {
-                    email: {
-                        required: "请输入您的邮箱"
-                    }
-                },
-                invalidHandler: function (event, validator) { //display error alert on form submit
-
-                },
-                highlight: function (element) { // hightlight error inputs
-                    $(element)
-                        .closest('.control-group').addClass('error'); // set error class to the control group
+                highlight: function (element) {
+                    $(element).closest(".control-group").addClass("error")
                 },
                 success: function (label) {
-                    label.closest('.control-group').removeClass('error');
-                    label.remove();
+                    label.closest(".control-group").removeClass("error");
+                    label.remove()
                 },
                 errorPlacement: function (error, element) {
-                    error.addClass('help-small no-left-padding').insertAfter(element.closest('.input-icon'));
+                    error.addClass("help-small no-left-padding").insertAfter(element.closest(".input-icon"))
                 }
             });
-
-            jQuery('#forget-password').click(function () {
-                jQuery('.login-form').hide();
-                jQuery('.forget-form').show();
+            jQuery("#forget-password").click(function () {
+                jQuery(".login-form").hide();
+                jQuery(".forget-form").show()
             });
-
-            jQuery('#back-btn').click(function () {
-                jQuery('.login-form').show();
-                jQuery('.forget-form').hide();
-            });
+            jQuery("#back-btn").click(function () {
+                jQuery(".login-form").show();
+                jQuery(".forget-form").hide()
+            })
         }
     }
 };
-
-

@@ -10,10 +10,10 @@
     <meta content="" name="description"/>
     <meta content="PumpKing" name="author"/>
 
-    <%@include file="globalCSS.jsp" %>
+    <%@include file="../global/globalCSS.jsp" %>
     <!-- BEGIN PAGE LEVEL STYLES -->
-    <link rel="stylesheet" type="text/css" href="../../../global/css/select2_metro.css"/>
-    <link rel="stylesheet" href="../../../global/css/DT_bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../global/css/select2_metro.min.css"/>
+    <link rel="stylesheet" href="../../../global/css/DT_bootstrap.min.css"/>
     <!-- END PAGE LEVEL STYLES -->
     <link rel="shortcut icon" href="../../../global/image/favicon.ico"/>
 </head>
@@ -21,7 +21,7 @@
 <!-- BEGIN BODY -->
 <body class="page-header-fixed">
 <!-- BEGIN HEADER -->
-<%@include file="globalHeader.jsp" %>
+<%@include file="../global/globalHeader.jsp" %>
 <!-- END HEADER -->
 <!-- BEGIN CONTAINER -->
 <div class="page-container">
@@ -147,14 +147,14 @@
 
 
     <!-- BEGIN FOOTER -->
-    <%@include file="globalFooter.jsp" %>
+        <%@include file="../global/globalFooter.jsp" %>
     <!-- END FOOTER -->
 
-    <%@include file="globalJS.jsp" %>
+        <%@include file="../global/globalJS.jsp" %>
     <!-- BEGIN PAGE LEVEL PLUGINS -->
         <script type="text/javascript" src="../../../global/js/select2.min.js"></script>
-    <script type="text/javascript" src="../../../global/js/jquery.dataTables.js"></script>
-    <script type="text/javascript" src="../../../global/js/DT_bootstrap.js"></script>
+        <script type="text/javascript" src="../../../global/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="../../../global/js/DT_bootstrap.min.js"></script>
 
     <!-- END PAGE LEVEL PLUGINS -->
     <!-- BEGIN PAGE LEVEL SCRIPTS -->

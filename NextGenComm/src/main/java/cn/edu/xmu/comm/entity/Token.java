@@ -36,7 +36,7 @@ public class Token extends DataEntity {
 
     public Token(String token, Integer uid) {
         this.uid = uid;
-        this.token = token.concat("{").concat(String.valueOf(uid)).concat("}");
+        this.token = token;
     }
 
     public Integer getId() {

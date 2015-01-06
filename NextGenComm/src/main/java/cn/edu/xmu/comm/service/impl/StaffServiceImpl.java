@@ -8,6 +8,7 @@ import cn.edu.xmu.comm.dao.StaffDAO;
 import cn.edu.xmu.comm.entity.Community;
 import cn.edu.xmu.comm.entity.Director;
 import cn.edu.xmu.comm.entity.Staff;
+import cn.edu.xmu.comm.service.StaffService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +23,7 @@ import java.util.List;
  */
 @Service
 @Transactional(readOnly = true)
-public class StaffServiceImpl implements cn.edu.xmu.comm.service.StaffService {
+public class StaffServiceImpl implements StaffService {
 
     //region DAO
     @Resource
@@ -44,8 +45,8 @@ public class StaffServiceImpl implements cn.edu.xmu.comm.service.StaffService {
      */
     @Override
     @Transactional(readOnly = false)
-    public Director addDirector(String username, String password, String name, Community community) {
-        Director director = new Director(username, password, name);
+    public Director addDirector(String username, String password, String name, String phoneNumber, String email, Community community) {
+        Director director = new Director(username, password, name, phoneNumber, email);
         community.assignDirector(director);
         SecurityUtils.encryptUser(director);
         directorDAO.persist(director);
@@ -65,8 +66,8 @@ public class StaffServiceImpl implements cn.edu.xmu.comm.service.StaffService {
 
     @Override
     @Transactional(readOnly = false)
-    public Staff addStaff(String username, String password, String name, Community community, String type) {
-        Staff staff = new Staff(username, password, name, community, type);
+    public Staff addStaff(String username, String password, String name, String phoneNumber, String email, Community community, String type) {
+        Staff staff = new Staff(username, password, name, phoneNumber, email, community, type);
         SecurityUtils.encryptUser(staff);
         staffDAO.persist(staff);
         communityDAO.merge(community);

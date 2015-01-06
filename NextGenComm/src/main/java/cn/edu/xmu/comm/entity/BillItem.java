@@ -36,7 +36,7 @@ public class BillItem extends DataEntity {
     /**
      * 金额
      */
-    @Column(nullable = false)
+    @Column(nullable = false, precision = 2)
     private BigDecimal amount;
     /**
      * 用量

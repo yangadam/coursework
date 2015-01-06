@@ -62,14 +62,14 @@ public class Owner extends User {
     Owner() {
     }
 
-    public Owner(String username, String password, String name, Community community) {
-        super(username, password, name);
+    public Owner(String username, String password, String name, String phoneNumber, String email, Community community) {
+        super(username, password, name, phoneNumber, email);
         this.community = community;
     }
 
-    public Owner(String username, String password, String name, Room room)
+    public Owner(String username, String password, String name, String phoneNumber, String email, Room room)
             throws DifferentCommunityException {
-        super(username, password, name);
+        super(username, password, name, phoneNumber, email);
         addRoom(room);
     }
 

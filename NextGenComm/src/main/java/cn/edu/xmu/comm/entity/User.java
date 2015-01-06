@@ -67,24 +67,26 @@ public class User extends DataEntity {
     private String phoneNumber;
 
     /**
+     * 邮箱地址
+     */
+    private String email;
+
+    /**
      * 类型
      */
     @Transient
     private String classType;
-
-    /**
-     * 邮箱地址
-     */
-    private String email;
     //endregion
 
     User() {
     }
 
-    public User(String username, String password, String name) {
+    public User(String username, String password, String name, String phoneNumber, String email) {
         this.username = username;
         this.password = password;
         this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
     }
 
     /**

@@ -89,6 +89,42 @@ public class PropertyServiceImpl implements PropertyService {
         communityDAO.merge(community);
         return community;
     }
+
+    /**
+     * 更新小区
+     *
+     * @param community 小区
+     */
+    @Override
+    @Transactional(readOnly = false)
+    public void updateCommunity(Community community) {
+        communityDAO.merge(community);
+    }
+
+    /**
+     * 删除小区
+     *
+     * @param commId 小区id
+     */
+    @Override
+    @Transactional(readOnly = false)
+    public void delCommunity(Integer commId) {
+        Community community = communityDAO.get(commId);
+        roomDAO.delete(community);
+        ownerDAO.delete(community);
+        staffDAO.delete(community);
+        communityDAO.delete(community);
+    }
+
+    /**
+     * 获取所有小区的名字列表
+     *
+     * @return 小区的名字列表
+     */
+    @Override
+    public List<String> getCommunityNames() {
+        return communityDAO.getNames();
+    }
     //endregion
 
     //region Device Service
@@ -202,26 +238,30 @@ public class PropertyServiceImpl implements PropertyService {
     }
     //endregion
 
+    //region Floor Service
     @Override
     public Floor getFloor(Integer floorId) {
         return floorDAO.get(floorId);
     }
+    //endregion
 
     //region Owner Service
 
     /**
      * 添加业主,并指定小区
      *
-     * @param username  用户名
-     * @param password  密码
-     * @param name      姓名
-     * @param community 所属小区
+     * @param username    用户名
+     * @param password    密码
+     * @param name        姓名
+     * @param phoneNumber 电话号码
+     * @param email       邮箱
+     * @param community   所属小区
      * @return 添加的业主
      */
     @Override
     @Transactional(readOnly = false)
-    public Owner addOwner(String username, String password, String name, Community community) {
-        Owner owner = new Owner(username, password, name, community);
+    public Owner addOwner(String username, String password, String name, String phoneNumber, String email, Community community) {
+        Owner owner = new Owner(username, password, name, phoneNumber, email, community);
         SecurityUtils.encryptUser(owner);
         ownerDAO.persist(owner);
         return owner;
@@ -240,9 +280,9 @@ public class PropertyServiceImpl implements PropertyService {
      */
     @Override
     @Transactional(readOnly = false)
-    public Owner addOwner(String username, String password, String name, Room room)
+    public Owner addOwner(String username, String password, String name, String phoneNumber, String email, Room room)
             throws DifferentCommunityException {
-        Owner owner = new Owner(username, password, name, room);
+        Owner owner = new Owner(username, password, name, phoneNumber, email, room);
         SecurityUtils.encryptUser(owner);
         ownerDAO.persist(owner);
         roomDAO.merge(room);
@@ -294,6 +334,17 @@ public class PropertyServiceImpl implements PropertyService {
         floorDAO.merge(floor);
         return room;
     }
+
+    /**
+     * 获得所有房间
+     *
+     * @return 房间列表
+     */
+    @Override
+    public List<Room> getAllRoom() {
+        Community community = SessionUtils.getCommunity();
+        return roomDAO.getAll(community);
+    }
     //endregion
 
     /**
@@ -337,16 +388,6 @@ public class PropertyServiceImpl implements PropertyService {
 
     //region Update Operations
 
-    /**
-     * 更新小区
-     *
-     * @param community 小区
-     */
-    @Override
-    @Transactional(readOnly = false)
-    public void updateCommunity(Community community) {
-        communityDAO.merge(community);
-    }
 
     /**
      * 更新楼宇
@@ -418,15 +459,6 @@ public class PropertyServiceImpl implements PropertyService {
         communityDAO.delete(community);
     }
 
-    @Override
-    @Transactional(readOnly = false)
-    public void delCommunity(Integer id) {
-        Community community = communityDAO.get(id);
-        roomDAO.delete(community);
-        ownerDAO.delete(community);
-        staffDAO.delete(community);
-        communityDAO.delete(community);
-    }
 
     /**
      * 删除楼宇
@@ -448,15 +480,6 @@ public class PropertyServiceImpl implements PropertyService {
 
     //region Get Operations
 
-    /**
-     * 获取所有小区的名字列表
-     *
-     * @return 小区的名字列表
-     */
-    @Override
-    public List<String> getCommunityNames() {
-        return communityDAO.getNames();
-    }
 
     @Override
     public List<Building> getAllBuildings() {

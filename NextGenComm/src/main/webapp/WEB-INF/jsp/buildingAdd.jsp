@@ -13,15 +13,15 @@
     <link href="../../global/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
     <link href="../../global/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>
     <link href="../../global/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
-    <link href="../../global/css/style-metro.css" rel="stylesheet" type="text/css"/>
-    <link href="../../global/css/style.css" rel="stylesheet" type="text/css"/>
-    <link href="../../global/css/style-responsive.css" rel="stylesheet" type="text/css"/>
-    <link href="../../global/css/default.css" rel="stylesheet" type="text/css" id="style_color"/>
-    <link href="../../global/css/uniform.default.css" rel="stylesheet" type="text/css"/>
+    <link href="../../global/css/style-metro.min.css" rel="stylesheet" type="text/css"/>
+    <link href="../../global/css/style.min.css" rel="stylesheet" type="text/css"/>
+    <link href="../../global/css/style-responsive.min.css" rel="stylesheet" type="text/css"/>
+    <link href="../../global/css/default.min.css" rel="stylesheet" type="text/css" id="style_color"/>
+    <link href="../../global/css/uniform.default.min.css" rel="stylesheet" type="text/css"/>
     <!-- END GLOBAL MANDATORY STYLES -->
     <!-- BEGIN PAGE LEVEL STYLES -->
-    <link rel="stylesheet" type="text/css" href="../../global/css/select2_metro.css"/>
-    <link rel="stylesheet" href="../../global/css/DT_bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="../../global/css/select2_metro.min.css"/>
+    <link rel="stylesheet" href="../../global/css/DT_bootstrap.min.css"/>
     <!-- END PAGE LEVEL STYLES -->
     <link rel="shortcut icon" href="../../global/image/favicon.ico"/>
 </head>
@@ -554,8 +554,8 @@
 <!-- END CORE PLUGINS -->
 <!-- BEGIN PAGE LEVEL PLUGINS -->
 <script type="text/javascript" src="../../global/js/select2.min.js"></script>
-<script type="text/javascript" src="../../global/js/jquery.dataTables.js"></script>
-<script type="text/javascript" src="../../global/js/DT_bootstrap.js"></script>
+<script type="text/javascript" src="../../global/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="../../global/js/DT_bootstrap.min.js"></script>
 
 <!-- END PAGE LEVEL PLUGINS -->
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
