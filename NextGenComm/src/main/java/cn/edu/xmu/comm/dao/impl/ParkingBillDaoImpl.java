@@ -23,7 +23,7 @@ public class ParkingBillDaoImpl extends BaseDaoImpl<ParkingBill, Integer> implem
      */
     @Override
     public Integer getSizeOfUnfinishedBill(Community community) {
-        String hql = "from ParkBill where community = :p1 and endTime is null";
+        String hql = "from ParkingBill where community = :p1 and endTime is null";
         return count(hql, new Parameter(community)).intValue();
     }
 
@@ -36,7 +36,7 @@ public class ParkingBillDaoImpl extends BaseDaoImpl<ParkingBill, Integer> implem
      */
     @Override
     public ParkingBill getUnfinishedParkBill(Community community, String license) {
-        String hql = "from ParkBill where community = :p1 and license = :p2 and endTime is null";
+        String hql = "from ParkingBill where community = :p1 and license = :p2 and endTime is null";
         return getByQL(hql, new Parameter(community, license));
     }
 
@@ -49,18 +49,18 @@ public class ParkingBillDaoImpl extends BaseDaoImpl<ParkingBill, Integer> implem
      */
     @Override
     public boolean carHasUnfinishBill(Community community, String license) {
-        String hql = "from ParkBill where community = :p1 and license = :p2 and endTime is null";
+        String hql = "from ParkingBill where community = :p1 and license = :p2 and endTime is null";
         return count(hql, new Parameter(community, license)) > 0;
     }
 
     @Override
     public List<ParkingBill> getAllUnfinishParkBill(Community community) {
-        return searchByQL("from ParkBill where community = :p1 and endTime is null", new Parameter(community));
+        return searchByQL("from ParkingBill where community = :p1 and endTime is null", new Parameter(community));
     }
 
     @Override
     public List<ParkingBill> getAllFinishParkBill(Community community) {
-        return searchByQL("from ParkBill where community = :p1 and endTime is not null", new Parameter(community));
+        return searchByQL("from ParkingBill where community = :p1 and endTime is not null", new Parameter(community));
     }
 
 }

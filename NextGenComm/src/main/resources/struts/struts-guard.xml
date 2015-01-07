@@ -17,11 +17,6 @@
             <result>/WEB-INF/jsp/guard/tempParkingList.jsp</result>
         </action>
 
-        <action name="tempParkingRegiste" class="tempParkingRegisteAction">
-            <!--<result name="rent">/WEB-INF/jsp/test/test.jsp</result>-->
-            <result name="temp">/WEB-INF/jsp/guard/tempParkingRegiste.jsp</result>
-        </action>
-
         <action name="toTempParkingRegiste" class="toTempParkingRegisteAction">
             <result>/WEB-INF/jsp/guard/tempParkingRegiste.jsp</result>
         </action>

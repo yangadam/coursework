@@ -16,7 +16,7 @@ import java.io.*;
  * @version 12/28/2014
  */
 @Controller
-public class UploadAction extends ActionSupport {
+public class RentParkPlaceAction extends ActionSupport {
 
     @Resource
     private ParkingService parkingService;
@@ -27,6 +27,7 @@ public class UploadAction extends ActionSupport {
     private String uploadFileName;
     private String savePath;
 
+    private Integer ownerId;
     private Integer parkPlaceId;
     private String license;
 
@@ -39,7 +40,8 @@ public class UploadAction extends ActionSupport {
             File savePathDir = new File(savePathDirName);
             if (!savePathDir.exists() && !savePathDir.isDirectory())
                 savePathDir.mkdir();
-            FileOutputStream fos = new FileOutputStream(getSavePath() + File.separator + getUploadFileName());
+            String saveFileName = license;
+            FileOutputStream fos = new FileOutputStream(getSavePath() + File.separator + saveFileName);
             FileInputStream fis = new FileInputStream(getUpload());
             byte[] buffer = new byte[1024];
             int len = 0;
@@ -55,7 +57,7 @@ public class UploadAction extends ActionSupport {
             e.printStackTrace();
             return INPUT;
         }
-        parkingService.confirmCarRentParkPlace(license);
+        parkingService.confirmCarRentParkPlace(license, ownerId, parkPlaceId);
         return SUCCESS;
     }
 
@@ -115,4 +117,11 @@ public class UploadAction extends ActionSupport {
         this.parkPlaceId = parkPlaceId;
     }
 
+    public Integer getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(Integer ownerId) {
+        this.ownerId = ownerId;
+    }
 }

@@ -28,7 +28,7 @@ public interface ParkingService {
     List<ParkingPlace> getFreeParkPlaceRent();
 
     @Transactional(readOnly = false)
-    void confirmCarRentParkPlace(String license);
+    void confirmCarRentParkPlace(String license, Integer ownerId, Integer parkPlaceId);
 
     @Transactional(readOnly = false)
     void addParkingPlace(Integer parkingLotId, String position);
@@ -52,5 +52,6 @@ public interface ParkingService {
 
     Boolean hasFreeTempParkPlace();
 
-    void finishParkBill(Integer parkBillId);
+    ParkingBill finishParkBill(Integer parkBillId);
+
 }

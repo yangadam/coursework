@@ -102,11 +102,12 @@
             </div>
         </div>
     </div>
-        <%@include file="../global/globalFooter.jsp" %>
-        <%@include file="../global/globalJS.jsp" %>
-        <script type="text/javascript" src="../../../global/js/jquery.dataTables.min.js"></script>
-        <script type="text/javascript" src="../../../global/js/DT_bootstrap.min.js"></script>
-    <script src="../../../custom/js/parkplace.js" type="text/javascript"></script>
+    <%@include file="../global/globalFooter.jsp" %>
+    <%@include file="../global/globalJS.jsp" %>
+    <script type="text/javascript" src="../../../global/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="../../../global/js/DT_bootstrap.min.js"></script>
+    <script src="../../../custom/js/rentParkplace.js" type="text/javascript"></script>
+    <script src="../../../custom/js/tempParkPlace.js" type="text/javascript"></script>
     <script>
         jQuery(document).ready(function () {
             App.init();

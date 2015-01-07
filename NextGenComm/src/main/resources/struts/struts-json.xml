@@ -28,6 +28,7 @@
         <action name="floorNo" class="floorNoAction"/>
         <action name="listRoom" class="roomListAction"/>
         <action name="listStaff" class="staffListAction"/>
+        <action name="tempParkingRegiste" class="tempParkingRegisteAction"/>
         <action name="vacantRoomNo" class="roomNoAction" method="vacant"/>
         <action name="nonVacantRoomNo" class="roomNoAction" method="noneVacant"/>
         <action name="ownerSearch" class="ownerSearchAction"/>
@@ -45,7 +46,6 @@
         <action name="vacantPark" class="vacantParkAction"/>
         <action name="listCar" class="carListAction"/>
         <action name="listArrearage" class="arrearageListAction"/>
-
     </package>
 
 </struts>

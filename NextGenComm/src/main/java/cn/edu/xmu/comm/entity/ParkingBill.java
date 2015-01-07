@@ -9,6 +9,7 @@ import java.util.Date;
 
 /**
  * Created by Roger on 2014/12/23 0023.
+ *
  */
 @Entity
 public class ParkingBill {

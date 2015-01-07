@@ -93,21 +93,6 @@
         <li class="">
             <a href="">
                 <i class="icon-home"></i>
-                <span class="title">车辆管理</span>
-                <span class="arrow "></span>
-            </a>
-            <ul class="sub-menu">
-                <li class="">
-                    <a href="/clerk/car.do">
-                        <i class="icon-list-ul"></i>
-                        车辆列表
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <li class="">
-            <a href="">
-                <i class="icon-home"></i>
                 <span class="title">费用管理</span>
                 <span class="arrow "></span>
             </a>

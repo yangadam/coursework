@@ -182,16 +182,12 @@ public class Device extends DataEntity {
             if (getUsage().compareTo((Double) entry.getKey()) == 1) {
                 curValue = (Double) entry.getKey() - lastValue;
                 amount = ((BigDecimal) entry.getValue()).multiply(BigDecimal.valueOf(curValue));
-                totalAmount.add(amount);
-            } else if (getUsage().compareTo((Double) entry.getKey()) == -1) {
+                totalAmount = totalAmount.add(amount);
+            } else if (getUsage().compareTo((Double) entry.getKey()) < 1) {
                 curValue = getUsage() - lastValue;
                 amount = ((BigDecimal) entry.getValue()).multiply(BigDecimal.valueOf(curValue));
                 totalAmount = totalAmount.add(amount);
                 break;
-            } else if (getUsage().compareTo((Double) entry.getKey()) == 1) {
-                curValue = (Double) entry.getKey() - lastValue;
-                amount = ((BigDecimal) entry.getValue()).multiply(BigDecimal.valueOf(curValue));
-                totalAmount = totalAmount.add(amount);
             }
             lastValue = (Double) entry.getKey();
         }

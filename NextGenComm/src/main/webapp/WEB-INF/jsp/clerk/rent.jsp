@@ -14,6 +14,7 @@
 
     <%@include file="../global/globalCSS.jsp" %>
     <link rel="stylesheet" href="../../../global/css/DT_bootstrap.min.css"/>
+    <link href="../../../global/css/select2_metro.min.css" rel="stylesheet" type="text/css"/>
     <link rel="shortcut icon" href="../../../global/image/favicon.ico"/>
 
 </head>
@@ -92,21 +93,21 @@
                                 </div>
                             </div>
                             <div class="portlet-body form">
-                                <s:form action="upload" enctype="multipart/form-data" class="form-horizontal">
+                                <s:form action="rentParkPlace" enctype="multipart/form-data" class="form-horizontal">
                                     <s:hidden name="parkPlaceId" id="pp_id" value="" class="span6 m-wrap"/>
+                                    <s:hidden name="ownerId" id="ownerId" value="" class="span6 m-wrap"/>
+                                    <div class="control-group">
+                                        <label class="control-label" for="owner">租车业主</label>
+
+                                        <div class="controls">
+                                            <input type="hidden" id="owner" class="span6 select2">
+                                        </div>
+                                    </div>
                                     <div class="control-group">
                                         <label class="control-label">车牌号：</label>
 
                                         <div class="controls">
                                             <s:textfield name="license" value="" class="span6 m-wrap"/>
-                                            <span class="help-inline"></span>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label">文件名：</label>
-
-                                        <div class="controls">
-                                            <s:textfield name="title" value="" class="span6 m-wrap"/>
                                             <span class="help-inline"></span>
                                         </div>
                                     </div>
@@ -135,7 +136,6 @@
 <script src="../../../global/js/select2.min.js" type="text/javascript"></script>
 <script src="../../../global/js/jquery.dataTables.min.js" type="text/javascript"></script>
 <script src="../../../global/js/DT_bootstrap.min.js" type="text/javascript"></script>
-<script src="../../../custom/js/app.js" type="text/javascript"></script>
 <script src="../../../custom/js/rent.js" type="text/javascript"></script>
 <script>
     jQuery(document).ready(function () {

@@ -85,7 +85,7 @@
         </action>
 
         <!-- Configure File Action -->
-        <action name="upload" class="uploadAction">
+        <action name="rentParkPlace" class="rentParkPlaceAction">
             <param name="savePath">/uploadFiles</param>
             <result type="redirect">/clerk/carRent.do</result>
             <result name="input">/clerk/carRent.do</result>
