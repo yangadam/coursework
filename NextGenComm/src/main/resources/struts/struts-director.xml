@@ -13,12 +13,12 @@
             <result name="unauthorized" type="redirect">/rememberMeLogin.do</result>
         </global-results>
 
-        <action name="community" class="directAction" method="director">
+        <action name="community" class="commInfoAction">
             <result>/WEB-INF/jsp/director/comm.jsp</result>
         </action>
 
-        <action name="commInfo" class="commInfoAction">
-            <result type="redirect">commInfo.do</result>
+        <action name="commInfoUpdate" class="commInfoUpdateAction">
+            <result type="redirect">community.do</result>
         </action>
 
 

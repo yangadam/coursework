@@ -60,7 +60,8 @@ var TableEditable = function () {
                         $.ajax({
                             url: "/listRoom.do?floorId=" + floorId, dataType: "json", success: function (data) {
                                 oTable.fnClearTable();
-                                oTable.fnAddData(data["aaData"], true)
+                                oTable.fnAddData(data["aaData"], true);
+                                $("#total").text(data["total"]);
                             }
                         })
                     }

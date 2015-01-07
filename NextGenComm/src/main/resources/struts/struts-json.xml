@@ -45,6 +45,8 @@
         <action name="vacantPark" class="vacantParkAction"/>
         <action name="listCar" class="carListAction"/>
         <action name="listArrearage" class="arrearageListAction"/>
+        <action name="ownerBill" class="ownerBillAction"/>
+
 
     </package>
 

@@ -293,4 +293,6 @@ public interface PropertyService {
     List<Owner> getAllOwners();
 
     Community getCommunity(String commName);
+
+    Owner getOwner(Integer ownerId);
 }

@@ -37,6 +37,10 @@
             <result>/WEB-INF/jsp/guard/home.jsp</result>
         </action>
 
+        <action name="cashier" class="directAction" method="cashier">
+            <result>/WEB-INF/jsp/cashier/home.jsp</result>
+        </action>
+
         <action name="owner" class="directAction" method="owner">
             <result>/WEB-INF/jsp/owner/home.jsp</result>
         </action>

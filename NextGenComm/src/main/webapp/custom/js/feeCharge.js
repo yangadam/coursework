@@ -3,8 +3,6 @@ var FeeCharge = function () {
     return {
         init: function () {
 
-            var ownerId;
-
             function ownerFormatResult(owner) {
                 return "<option value='" + owner["id"] + "'>" + owner["name"] + "&nbsp;&nbsp;" +
                     "&nbsp;&nbsp;&lt;" + owner["username"] + "&gt;" + "</option>";
@@ -16,7 +14,13 @@ var FeeCharge = function () {
             }
 
             $("#owner").on("change", function (e) {
-                ownerId = e.val;
+                var ownerId = e.val;
+                $.getJSON("/ownerBill.do?ownerId=" + ownerId, function (data) {
+                    oTable.fnClearTable();
+                    oTable.fnAddData(data["aaData"], true)
+
+                });
+
             });
 
             $("#owner").select2({
@@ -44,10 +48,10 @@ var FeeCharge = function () {
                 }
             });
 
-            $('#billItems').dataTable({
-                "bPaginate":false,
-                "bFilter":false,
-                "bSort":false,
+            var oTable = $('#billItems').dataTable({
+                "bPaginate": false,
+                "bFilter": false,
+                "bSort": false,
                 "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
                 /*"sAjaxSource": "/.do",*/
                 "oLanguage": {
@@ -71,6 +75,7 @@ var FeeCharge = function () {
                 }
                 ]
             });
+
 
         }
     };

@@ -25,9 +25,10 @@
             <file>file://$MODULE_DIR$/src/main/resources/struts/struts-owner.xml</file>
             <file>file://$MODULE_DIR$/src/main/resources/struts/struts-root.xml</file>
             <file>file://$MODULE_DIR$/src/main/resources/struts.xml</file>
-            <file>jar://$MAVEN_REPOSITORY$/org/apache/struts/struts2-spring-plugin/2.3.20/struts2-spring-plugin-2.3.20.jar!/struts-plugin.xml</file>
-            <file>jar://$MAVEN_REPOSITORY$/org/apache/struts/struts2-core/2.3.20/struts2-core-2.3.20.jar!/struts-default.xml</file>
-            <file>jar://$MAVEN_REPOSITORY$/org/apache/struts/struts2-json-plugin/2.3.20/struts2-json-plugin-2.3.20.jar!/struts-plugin.xml</file>
+            <file>jar://$M2_REPO$/org/apache/struts/struts2-spring-plugin/2.3.20/struts2-spring-plugin-2.3.20.jar!/struts-plugin.xml</file>
+            <file>jar://$M2_REPO$/org/apache/struts/struts2-core/2.3.20/struts2-core-2.3.20.jar!/struts-default.xml</file>
+            <file>jar://$M2_REPO$/org/apache/struts/struts2-json-plugin/2.3.20/struts2-json-plugin-2.3.20.jar!/struts-plugin.xml</file>
+            <file>file://$MODULE_DIR$/src/main/resources/struts/struts-cashier.xml</file>
           </fileset>
           <propertiesKeys disabled="false" />
         </configuration>

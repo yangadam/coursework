@@ -1,10 +1,16 @@
 package cn.edu.xmu.comm.action;
 
-/**
- * description
- *
- * @author Mengmeng Yang
- * @version 1/7/2015 0007
- */
-public class FeeChargeAction {
+
+import com.opensymphony.xwork2.ActionSupport;
+import org.springframework.stereotype.Controller;
+
+@Controller
+public class FeeChargeAction extends ActionSupport {
+
+
+    @Override
+    public String execute() {
+
+        return SUCCESS;
+    }
 }

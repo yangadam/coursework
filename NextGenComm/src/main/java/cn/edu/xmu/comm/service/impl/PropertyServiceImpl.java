@@ -584,6 +584,11 @@ public class PropertyServiceImpl implements PropertyService {
         return communityDAO.getByName(commName);
     }
 
+    @Override
+    public Owner getOwner(Integer ownerId) {
+        return ownerDAO.get(ownerId);
+    }
+
 
     //endregion
 

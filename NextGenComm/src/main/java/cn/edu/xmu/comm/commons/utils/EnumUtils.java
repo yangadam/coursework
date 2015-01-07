@@ -16,4 +16,16 @@ public class EnumUtils {
         return strings;
     }
 
+    public String[] getGarbageFeeType() {
+        return new String[]{"固定(元)"};
+    }
+
+    public String[] getManageFeeType() {
+        return new String[]{"按面积(元/平方米)"};
+    }
+
+    public String[] getOverDueFeeType() {
+        return new String[]{"按滞纳天数(元)"};
+    }
+
 }

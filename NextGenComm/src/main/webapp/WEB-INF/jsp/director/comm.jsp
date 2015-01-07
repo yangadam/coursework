@@ -50,22 +50,23 @@
                         <div class="portlet-title">
                             <div class="caption"><i class="icon-reorder"></i>小区设置</div>
                             <div class="tools">
-                                <a href="javascript:;" class="collapse"></a>
+                                <a href="javascript:" class="collapse"></a>
                             </div>
                         </div>
                         <div class="portlet-body form">
                             <!-- BEGIN FORM-->
-                            <s:form action="commInfo.do" class="form-horizontal">
+                            <s:form action="commInfoUpdate" class="form-horizontal">
                                 <h3 class="form-section">小区信息</h3>
 
                                 <div class="row-fluid" >
                                     <div class="span1"></div>
-                                    <div class="span11 ">
-                                        <div class="control-group span6">
+                                    <div class="span5 ">
+                                        <div class="control-group">
                                             <label class="control-label">小区名称：</label>
 
-                                            <div class="controls">
-                                                <s:label name="commName" cssClass="m-wrap span12" value=""/>
+                                            <div class="controls span6">
+                                                <s:textfield name="commName" cssClass="m-wrap span12"
+                                                             value="%{commName}" readonly="true"/>
                                             </div>
                                         </div>
                                     </div>
@@ -75,26 +76,24 @@
                                     <div class="span1"></div>
                                      <div class="span5 ">
                                         <div class="control-group">
-                                            <label class="control-label">垃圾费标准：</label>
+                                            <label class="control-label">垃圾费(元)：</label>
                                             <div class="controls span6">
-                                                <s:textfield name="garbageFee" cssClass="m-wrap span12" placeholder="请输入垃圾费"/>
+                                                <s:textfield name="garbageFee" cssClass="m-wrap span12"
+                                                             value="%{garbageFee}" placeholder="请输入垃圾费"/>
                                             </div>
                                         </div>
                                     </div>
                                     <!--/span-->
                                     <div class="span5 ">
                                         <div class="control-group">
-                                            <label class="control-label">收费类型：</label>
+                                            <label class="control-label">收费方式：</label>
 
                                             <div class="controls">
-                                                <select class="span6 select2_category"
-                                                        data-placeholder="选择收费类型" tabindex="1">
-                                                    <option value=""></option>
-                                                    <option value="Category 1">Category 1</option>
-                                                    <option value="Category 2">Category 2</option>
-                                                    <option value="Category 3">Category 5</option>
-                                                    <option value="Category 4">Category 4</option>
-                                                </select>
+                                                <s:bean name="cn.edu.xmu.comm.commons.utils.EnumUtils" id="stu"/>
+                                                <s:select name="garbageFeeType" class="span6 select2_category"
+                                                          data-placeholder="请选择收费方式"
+                                                          tabindex="1" list="%{#stu.garbageFeeType}">
+                                                </s:select>
                                             </div>
                                         </div>
                                     </div>
@@ -105,9 +104,10 @@
                                     <div class="span1"></div>
                                     <div class="span5 ">
                                         <div class="control-group">
-                                            <label class="control-label">管理费标准：</label>
+                                            <label class="control-label">管理费(元)：</label>
                                             <div class="controls span6">
-                                                <s:textfield name="manageFee" cssClass="m-wrap span12" placeholder="请输入管理费"/>
+                                                <s:textfield name="manageFee" cssClass="m-wrap span12"
+                                                             value="%{manageFee}" placeholder="请输入管理费"/>
                                             </div>
                                         </div>
                                     </div>
@@ -117,14 +117,11 @@
                                             <label class="control-label">收费类型：</label>
 
                                             <div class="controls">
-                                                <select class="span6 select2_category"
-                                                        data-placeholder="选择收费类型" tabindex="1">
-                                                    <option value=""></option>
-                                                    <option value="Category 1">Category 1</option>
-                                                    <option value="Category 2">Category 2</option>
-                                                    <option value="Category 3">Category 5</option>
-                                                    <option value="Category 4">Category 4</option>
-                                                </select>
+                                                <s:bean name="cn.edu.xmu.comm.commons.utils.EnumUtils" id="stu"/>
+                                                <s:select name="manageFeeType" class="span6 select2_category"
+                                                          data-placeholder="请选择收费方式"
+                                                          tabindex="1" list="%{#stu.manageFeeType}">
+                                                </s:select>
                                             </div>
                                         </div>
                                     </div>
@@ -137,7 +134,8 @@
                                         <div class="control-group">
                                             <label class="control-label">滞纳金利率：</label>
                                             <div class="controls span6">
-                                                <s:textfield name="overDueFeeRate" cssClass="m-wrap span12" placeholder="请输入滞纳金利率"/>
+                                                <s:textfield name="overDueFeeRate" cssClass="m-wrap span12"
+                                                             value="%{overDueFeeRate}" placeholder="请输入滞纳金利率"/>
                                             </div>
                                         </div>
                                     </div>
@@ -147,14 +145,11 @@
                                             <label class="control-label">收费类型：</label>
 
                                             <div class="controls">
-                                                <select class="span6 select2_category"
-                                                        data-placeholder="选择收费类型" tabindex="1">
-                                                    <option value=""></option>
-                                                    <option value="Category 1">Category 1</option>
-                                                    <option value="Category 2">Category 2</option>
-                                                    <option value="Category 3">Category 5</option>
-                                                    <option value="Category 4">Category 4</option>
-                                                </select>
+                                                <s:bean name="cn.edu.xmu.comm.commons.utils.EnumUtils" id="stu"/>
+                                                <s:select name="overDueFeeType" class="span6 select2_category"
+                                                          data-placeholder="请选择收费方式"
+                                                          tabindex="1" list="%{#stu.overDueFeeType}">
+                                                </s:select>
                                             </div>
                                         </div>
                                     </div>
@@ -185,6 +180,7 @@
     jQuery(document).ready(function () {
         App.init();
         $(".page-sidebar-menu .title:contains('物业管理')").closest("li").addClass("active");
+        $(".page-sidebar-menu .title:contains('物业管理')").parent().find(".arrow").addClass("open");
         $(".page-sidebar-menu .sub-menu a:contains('小区管理')").closest("li").addClass("active");
         TableEditable.init();
         UIModals.init();
