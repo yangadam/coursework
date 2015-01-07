@@ -8,7 +8,14 @@
 
     <package name="data" extends="json-default">
 
-        <default-interceptor-ref name="basicStack"/>
+        <interceptors>
+            <interceptor name="permission" class="cn.edu.xmu.comm.interceptor.AuthorizationInterceptor"/>
+            <interceptor-stack name="permissionStack">
+                <interceptor-ref name="permission">
+                    <param name="permission">clerk,director</param>
+                </interceptor-ref>
+            </interceptor-stack>
+        </interceptors>
 
         <global-results>
             <result type="json">
@@ -19,31 +26,98 @@
             <result name="unauthorized" type="redirect">/rememberMeLogin.do</result>
         </global-results>
 
-        <action name="listComm" class="commListAction"/>
+        <action name="listComm" class="commListAction">
+            <interceptor-ref name="permission">
+                <param name="permission">admin</param>
+            </interceptor-ref>
+            <interceptor-ref name="basicStack"/>
+        </action>
         <action name="listBuild" class="buildListAction"/>
-        <action name="listDir" class="directorListAction"/>
+        <action name="listDir" class="directorListAction">
+            <interceptor-ref name="permission">
+                <param name="permission">admin</param>
+            </interceptor-ref>
+            <interceptor-ref name="basicStack"/>
+        </action>
         <action name="listOwner" class="ownerListAction"/>
-        <action name="commNames" class="commNamesAction"/>
-        <action name="buildNo" class="buildNoAction"/>
-        <action name="floorNo" class="floorNoAction"/>
-        <action name="listRoom" class="roomListAction"/>
-        <action name="listStaff" class="staffListAction"/>
+        <action name="commNames" class="commNamesAction">
+            <interceptor-ref name="permission">
+                <param name="permission">admin</param>
+            </interceptor-ref>
+            <interceptor-ref name="basicStack"/>
+        </action>
+        <action name="buildNo" class="buildNoAction">
+            <interceptor-ref name="permission"/>
+            <interceptor-ref name="basicStack"/>
+        </action>
+        <action name="floorNo" class="floorNoAction">
+            <interceptor-ref name="permission"/>
+            <interceptor-ref name="basicStack"/>
+        </action>
+        <action name="listRoom" class="roomListAction">
+            <interceptor-ref name="permission"/>
+            <interceptor-ref name="basicStack"/>
+        </action>
+        <action name="listStaff" class="staffListAction">
+            <interceptor-ref name="permission">
+                <param name="permission">director</param>
+            </interceptor-ref>
+            <interceptor-ref name="basicStack"/>
+        </action>
         <action name="vacantRoomNo" class="roomNoAction" method="vacant"/>
         <action name="nonVacantRoomNo" class="roomNoAction" method="noneVacant"/>
-        <action name="ownerSearch" class="ownerSearchAction"/>
+        <action name="ownerSearch" class="ownerSearchAction">
+            <interceptor-ref name="permission"/>
+            <interceptor-ref name="basicStack"/>
+        </action>
         <action name="deviceSearch" class="deviceSearchAction"/>
-        <action name="roomInfo" class="roomInfoAction"/>
-        <action name="unchargedParkBill" class="tempParkingUnchargedListAction"/>
+        <action name="roomInfo" class="roomInfoAction">
+            <interceptor-ref name="permission"/>
+            <interceptor-ref name="basicStack"/>
+        </action>
+        <action name="unchargedParkBill" class="tempParkingUnchargedListAction">
+            <interceptor-ref name="permission">
+                <param name="permission">guard</param>
+            </interceptor-ref>
+            <interceptor-ref name="basicStack"/>
+        </action>
         <action name="deviceList" class="deviceListAction"/>
         <action name="count" class="deviceCountAction"/>
         <action name="shareList" class="shareListAction"/>
-        <action name="chargedParkBill" class="tempParkingChargedListAction"/>
-        <action name="tempRegister" class="tempParkingRegisteAction"/>
-        <action name="ownerByRoom" class="ownerByRoomAction"/>
-        <action name="tempParkBillAdd" class="tempParkBillAddAction"/>
-        <action name="listPark" class="parkingListAction"/>
-        <action name="vacantPark" class="vacantParkAction"/>
-        <action name="listCar" class="carListAction"/>
+        <action name="chargedParkBill" class="tempParkingChargedListAction">
+            <interceptor-ref name="permission">
+                <param name="permission">guard</param>
+            </interceptor-ref>
+            <interceptor-ref name="basicStack"/>
+        </action>
+        <action name="tempRegister" class="tempParkingRegisteAction">
+            <interceptor-ref name="permission">
+                <param name="permission">guard</param>
+            </interceptor-ref>
+            <interceptor-ref name="basicStack"/>
+        </action>
+        <action name="ownerByRoom" class="ownerByRoomAction">
+            <interceptor-ref name="permission"/>
+            <interceptor-ref name="basicStack"/>
+        </action>
+        <action name="tempParkBillAdd" class="tempParkBillAddAction">
+            <interceptor-ref name="permission">
+                <param name="permission">guard</param>
+            </interceptor-ref>
+            <interceptor-ref name="basicStack"/>
+        </action>
+        <action name="listPark" class="parkingListAction">
+            <interceptor-ref name="permission"/>
+            <interceptor-ref name="basicStack"/>
+        </action>
+        <action name="vacantPark" class="vacantParkAction">
+            <interceptor-ref name="permission"/>
+            <interceptor-ref name="basicStack"/>
+        </action>
+        <action name="listCar" class="carListAction">
+            <interceptor-ref name="permission"/>
+            <interceptor-ref name="basicStack"/>
+        </action>
         <action name="listArrearage" class="arrearageListAction"/>
 
     </package>

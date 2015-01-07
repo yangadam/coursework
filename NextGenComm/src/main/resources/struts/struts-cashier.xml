@@ -6,12 +6,11 @@
 
 <struts>
 
-    <package name="owner" namespace="/owner" extends="default">
-
+    <package name="cashier" namespace="/cashier" extends="default">
         <interceptors>
             <interceptor-stack name="permissionStack">
                 <interceptor-ref name="permission">
-                    <param name="permission">owner</param>
+                    <param name="permission">cashier</param>
                 </interceptor-ref>
                 <interceptor-ref name="defaultStack"/>
             </interceptor-stack>
@@ -23,14 +22,6 @@
             <result name="login" type="redirect">/rememberMeLogin.do</result>
             <result name="unauthorized" type="redirect">/rememberMeLogin.do</result>
         </global-results>
-
-        <action name="billlist" class="billListAction">
-            <result>/WEB-INF/jsp/owner/billlist.jsp</result>
-        </action>
-
-        <action name="makePayment" class="makePaymentAction">
-            <result>/WEB-INF/jsp/owner/paySuccess.jsp</result>
-        </action>
 
     </package>
 
