@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -28,6 +29,8 @@ import java.util.Set;
 public class FinanceServiceImpl implements cn.edu.xmu.comm.service.FinanceService {
 
     //region DAO
+    @Resource
+    private BillItemDAO billItemDAO;
     @Resource
     private CommunityDAO communityDAO;
     @Resource
@@ -48,6 +51,7 @@ public class FinanceServiceImpl implements cn.edu.xmu.comm.service.FinanceServic
     @Override
     @Transactional(readOnly = false)
     public void generateAllBill() throws DeviceException {
+        long startMili = System.currentTimeMillis();
         Community community = SessionUtils.getCommunity();
         System.out.print(new Date());
         List<Owner> allOwner = ownerDAO.getAll(community);
@@ -55,7 +59,8 @@ public class FinanceServiceImpl implements cn.edu.xmu.comm.service.FinanceServic
             owner.generateBill();
             ownerDAO.flush();
         }
-        System.out.print(new Date());
+        long endMili = System.currentTimeMillis();
+        System.out.println("生成账单公用时" + ((endMili - startMili) / 1000) + "秒");
     }
     //endregion
 
@@ -351,11 +356,30 @@ public class FinanceServiceImpl implements cn.edu.xmu.comm.service.FinanceServic
     @Override
     @Transactional(readOnly = false)
     public void makePayment() {
-        Owner owner = (Owner) SessionUtils.getUser();
+        Owner owner = ownerDAO.get(SessionUtils.getUser().getId());
+        List<BillItem> billItems = owner.getUnpaidBills();
         Payment payment = owner.makePayment(null);
         if (payment != null) {
             paymentDAO.persist(payment);
         }
+        billItemDAO.merge(billItems);
+        ownerDAO.merge(owner);
+    }
+
+    /**
+     * 业主进行网上缴费
+     */
+    @Override
+    @Transactional(readOnly = false)
+    public void makePayment(Integer ownerId) {
+        Owner owner = ownerDAO.get(ownerId);
+        List<BillItem> billItems = owner.getUnpaidBills();
+        Payment payment = owner.makePayment(null);
+        if (payment != null) {
+            paymentDAO.persist(payment);
+        }
+        billItemDAO.merge(billItems);
+        ownerDAO.merge(owner);
     }
     //endregion
 
@@ -402,9 +426,9 @@ public class FinanceServiceImpl implements cn.edu.xmu.comm.service.FinanceServic
         String head = "亲爱的" + owner.getName() + "先生/女士:" +
                 "<div>&nbsp; &nbsp; &nbsp; 您好！您在" + owner.getCommunity().getName() +
                 "尚有以下条目未缴费，请尽快缴费，谢谢！</div>";
-        Set<BillItem> unpaidBillitem = owner.getUnpaidBills();
-        Set<BillItem> overDueBills = owner.getOverDueBillItems();
-        String body = "<div><table border=\"0.5\">";
+        List<BillItem> unpaidBillitem = owner.getUnpaidBills();
+        List<BillItem> overDueBills = owner.getOverDueBillItems();
+        String body = "<div><table border=\"1\">";
         body += "<tr>" +
                 "<td>条目名</td>" +
                 "<td>用量</td>" +

@@ -57,18 +57,6 @@
                         </div>
                         <div class="portlet-body">
                             <div class="clearfix">
-                                <div class="control-group">
-                                    <div class="btn-group pull-right">
-                                        <button class="btn dropdown-toggle" data-toggle="dropdown">工具 <i
-                                                class="icon-angle-down"></i>
-                                        </button>
-                                        <ul class="dropdown-menu pull-right">
-                                            <li><a href="#">打印</a></li>
-                                            <li><a href="#">保存为PDF</a></li>
-                                            <li><a href="#">导出Excel表格</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
                                 <table class="table table-striped table-hover table-bordered"
                                        id="sample_editable_1">
                                     <thead>
@@ -84,45 +72,44 @@
                                 </table>
                             </div>
                         </div>
-                        <div id="add-contract" class="portlet box blue hide">
-                            <div class="portlet-title">
-                                <div class="caption"><i class="icon-reorder"></i>上传租车合同</div>
-                                <div class="tools">
-                                    <a href="javascript:" class="collapse"></a>
+                    </div>
+                    <div id="add-contract" class="portlet box blue ">
+                        <div class="portlet-title">
+                            <div class="caption"><i class="icon-reorder"></i>上传租车合同</div>
+                            <div class="tools">
+                                <a href="javascript:" class="collapse"></a>
+                            </div>
+                        </div>
+                        <div class="portlet-body form">
+                            <s:form action="upload" enctype="multipart/form-data" class="form-horizontal">
+                                <div class="control-group">
+                                    <label class="control-label">车牌号：</label>
+
+                                    <div class="controls">
+                                        <s:textfield name="license" value="" class="span6 m-wrap"/>
+                                        <span class="help-inline"></span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="portlet-body form">
-                                <s:form action="upload" enctype="multipart/form-data" class="form-horizontal">
-                                    <s:hidden name="parkPlaceId" id="pp_id" value="" class="span6 m-wrap"/>
-                                    <div class="control-group">
-                                        <label class="control-label">车牌号：</label>
+                                <div class="control-group">
+                                    <label class="control-label">文件名：</label>
 
-                                        <div class="controls">
-                                            <s:textfield name="license" value="" class="span6 m-wrap"/>
-                                            <span class="help-inline"></span>
-                                        </div>
+                                    <div class="controls">
+                                        <s:textfield name="title" value="" class="span6 m-wrap"/>
+                                        <span class="help-inline"></span>
                                     </div>
-                                    <div class="control-group">
-                                        <label class="control-label">文件名：</label>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">选择文件：</label>
 
-                                        <div class="controls">
-                                            <s:textfield name="title" value="" class="span6 m-wrap"/>
-                                            <span class="help-inline"></span>
-                                        </div>
+                                    <div class="controls">
+                                        <s:file name="upload" cssClass="m-wrap"/>
+                                        <span class="help-inline"></span>
                                     </div>
-                                    <div class="control-group">
-                                        <label class="control-label">选择文件：</label>
-
-                                        <div class="controls">
-                                            <s:file name="upload" cssClass="m-wrap"/>
-                                            <span class="help-inline"></span>
-                                        </div>
-                                    </div>
-                                    <div class="form-actions">
-                                        <s:submit class="btn blue" value="上传"/>
-                                    </div>
-                                </s:form>
-                            </div>
+                                </div>
+                                <div class="form-actions">
+                                    <s:submit class="btn blue" value="上传"/>
+                                </div>
+                            </s:form>
                         </div>
                     </div>
                 </div>

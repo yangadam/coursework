@@ -95,7 +95,7 @@ public class OwnerDaoImpl extends BaseDaoImpl<Owner, Integer> implements OwnerDA
 
     @Override
     public Owner getOwnerByRoom(Integer roomId) {
-        String ql = "selsect r.owner from Room r where r.id = :p1";
+        String ql = "select r.owner from Room r where r.id = :p1";
         return getByQL(ql, new Parameter(roomId));
     }
 }

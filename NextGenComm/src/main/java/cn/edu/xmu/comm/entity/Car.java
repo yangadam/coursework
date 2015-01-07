@@ -1,8 +1,11 @@
 package cn.edu.xmu.comm.entity;
 
 import cn.edu.xmu.comm.commons.persistence.DataEntity;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -13,6 +16,8 @@ import java.util.Set;
  * @version 2014-12-8
  */
 @Entity
+@DynamicInsert
+@DynamicUpdate
 public class Car extends DataEntity {
 
     //region Instance Variables
@@ -93,7 +98,7 @@ public class Car extends DataEntity {
      *
      * @param billItems 未支付账单
      */
-    public void generateCar(Set<BillItem> billItems) {
+    public void generateCar(List<BillItem> billItems) {
         BillItem billItem = new BillItem();
         billItem.setName(NAME);
         billItem.setDescription(license);

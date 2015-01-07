@@ -61,7 +61,11 @@
             <result type="redirect">director.do</result>
         </action>
 
-        <action name="makePayment" class="testAction" method="makePament">
+        <action name="makePayment" class="testAction" method="makePayment">
+            <result type="redirect">director.do</result>
+        </action>
+
+        <action name="ownerPayment" class="testAction" method="ownerPayment">
             <result type="redirect">director.do</result>
         </action>
 

@@ -69,16 +69,6 @@
                                     <tbody>
                                     </tbody>
                                 </table>
-                                <div id="static" class="modal hide fade" tabindex="-1" data-backdrop="static"
-                                     data-keyboard="false">
-                                    <div class="modal-body">
-                                        <p>确定要删除此项吗？</p>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" data-dismiss="modal" class="btn">取消</button>
-                                        <button type="button" data-dismiss="modal" class="btn green">确认</button>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -86,13 +76,13 @@
             </div>
         </div>
     </div>
-        <%@include file="../global/globalFooter.jsp" %>
-        <%@include file="../global/globalJS.jsp" %>
-        <script type="text/javascript" src="../../../global/js/jquery.dataTables.min.js"></script>
-        <script type="text/javascript" src="../../../global/js/DT_bootstrap.min.js"></script>
-        <script type="text/javascript" src="../../../global/js/ui-modals.min.js"></script>
-        <script type="text/javascript" src="../../../global/js/bootstrap-modal.min.js"></script>
-        <script type="text/javascript" src="../../../global/js/bootstrap-modalmanager.min.js"></script>
+    <%@include file="../global/globalFooter.jsp" %>
+    <%@include file="../global/globalJS.jsp" %>
+    <script type="text/javascript" src="../../../global/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="../../../global/js/DT_bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../../global/js/ui-modals.min.js"></script>
+    <script type="text/javascript" src="../../../global/js/bootstrap-modal.min.js"></script>
+    <script type="text/javascript" src="../../../global/js/bootstrap-modalmanager.min.js"></script>
     <script src="../../../custom/js/feeReminder.js" type="text/javascript"></script>
     <script>
         jQuery(document).ready(function () {

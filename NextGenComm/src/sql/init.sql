@@ -3,7 +3,6 @@ CREATE DATABASE comm
   DEFAULT CHARACTER SET utf8
   COLLATE utf8_general_ci;
 USE comm;
-
 INSERT
 INTO
   user (username, password, salt, name, locked)

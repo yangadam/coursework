@@ -1,8 +1,10 @@
 package cn.edu.xmu.comm.entity;
 
 import cn.edu.xmu.comm.commons.persistence.DataEntity;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +18,8 @@ import java.util.Set;
  * @version 2014-12-8
  */
 @Entity
+@DynamicInsert
+@DynamicUpdate
 public class Payment extends DataEntity {
 
     //region Instance Variables
@@ -61,24 +65,27 @@ public class Payment extends DataEntity {
      * @param paidBy    支付人
      * @param receiveBy 接收人
      */
-    Payment(Owner paidBy, Staff receiveBy) {
+    public Payment(Owner paidBy, Staff receiveBy) {
         this(paidBy, receiveBy, paidBy.getUnpaidBills());
     }
 
     /**
      * 构造函数
-     *  @param paidBy       支付人
+     *
+     * @param paidBy       支付人
      * @param receiveBy    接收人
      * @param billItemList 账单项列表
      */
-    public Payment(Owner paidBy, Staff receiveBy, Set<BillItem> billItemList) {
+    public Payment(Owner paidBy, Staff receiveBy, List<BillItem> billItemList) {
         BigDecimal tempTotal = BigDecimal.ZERO;
         this.paidBy = paidBy;
         this.receiveBy = receiveBy;
         this.billItemList.addAll(billItemList);
         for (BillItem billItem : billItemList) {
+            billItem.setStatus(BillItem.BillItemStatus.PAID);
             billItem.setPayment(this);
             tempTotal = tempTotal.add(billItem.getAmount()).add(billItem.getOverDueFee());
+            billItem.setOwner(null);
         }
         this.total = tempTotal;
     }

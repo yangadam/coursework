@@ -78,6 +78,9 @@ public interface FinanceService {
     @Transactional(readOnly = false)
     void makePayment();
 
+    @Transactional(readOnly = false)
+    void makePayment(Integer ownerId);
+
     /**
      * 发送欠缴费邮件
      *

@@ -28,6 +28,7 @@
             <result name="clerk" type="redirect">clerk.do</result>
             <result name="guard" type="redirect">guard.do</result>
             <result name="owner" type="redirect">owner.do</result>
+            <result name="cashier" type="redirect">cashier.do</result>
         </global-results>
     </package>
 

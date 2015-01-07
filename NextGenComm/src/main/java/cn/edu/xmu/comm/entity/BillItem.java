@@ -3,8 +3,11 @@ package cn.edu.xmu.comm.entity;
 import cn.edu.xmu.comm.commons.calc.CalculatorFactory;
 import cn.edu.xmu.comm.commons.calc.IOverdueFineCalculator;
 import cn.edu.xmu.comm.commons.persistence.DataEntity;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cache;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -12,6 +15,8 @@ import java.util.Date;
  * Created by Roger on 2014/12/5 0005.
  */
 @Entity
+@DynamicInsert
+@DynamicUpdate
 public class BillItem extends DataEntity {
 
     //region Instance variables

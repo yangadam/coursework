@@ -1,8 +1,11 @@
 package cn.edu.xmu.comm.entity;
 
-import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.OrderBy;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -11,6 +14,7 @@ import java.util.*;
  */
 @Entity
 @DynamicInsert
+@DynamicUpdate
 public class ParkingLot {
     //region Instance Variables
     @Id
