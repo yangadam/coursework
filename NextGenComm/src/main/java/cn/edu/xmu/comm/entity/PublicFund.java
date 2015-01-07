@@ -1,6 +1,10 @@
 package cn.edu.xmu.comm.entity;
 
 import cn.edu.xmu.comm.commons.persistence.DataEntity;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,6 +20,8 @@ import java.math.BigDecimal;
  * @version 2014-12-8
  */
 @Entity
+@DynamicInsert
+@DynamicUpdate
 public class PublicFund extends DataEntity {
 
     //region Instance Variables

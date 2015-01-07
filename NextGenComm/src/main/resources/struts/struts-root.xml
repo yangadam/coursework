@@ -23,46 +23,50 @@
 
         <action name="admin" class="directAction" method="admin">
             <result>/WEB-INF/jsp/admin/home.jsp</result>
+            <interceptor-ref name="permission">
+                <param name="permission">admin</param>
+            </interceptor-ref>
+            <interceptor-ref name="defaultStack"/>
         </action>
 
         <action name="director" class="directAction" method="director">
             <result>/WEB-INF/jsp/director/home.jsp</result>
+            <interceptor-ref name="permission">
+                <param name="permission">director</param>
+            </interceptor-ref>
+            <interceptor-ref name="defaultStack"/>
         </action>
 
         <action name="clerk" class="directAction" method="clerk">
             <result>/WEB-INF/jsp/clerk/home.jsp</result>
+            <interceptor-ref name="permission">
+                <param name="permission">clerk</param>
+            </interceptor-ref>
+            <interceptor-ref name="defaultStack"/>
         </action>
 
         <action name="guard" class="directAction" method="guard">
             <result>/WEB-INF/jsp/guard/home.jsp</result>
+            <interceptor-ref name="permission">
+                <param name="permission">guard</param>
+            </interceptor-ref>
+            <interceptor-ref name="defaultStack"/>
+        </action>
+
+        <action name="cashier">
+            <result>/WEB-INF/jsp/guard/home.jsp</result>
+            <interceptor-ref name="permission">
+                <param name="permission">cashier</param>
+            </interceptor-ref>
+            <interceptor-ref name="defaultStack"/>
         </action>
 
         <action name="owner" class="directAction" method="owner">
             <result>/WEB-INF/jsp/owner/home.jsp</result>
-        </action>
-
-        <action name="testBuildComm" class="testAction" method="testBuildComm">
-            <result type="redirect">director.do</result>
-        </action>
-
-        <action name="testApllyGradients" class="testAction" method="testApllyGradients">
-            <result type="redirect">director.do</result>
-        </action>
-
-        <action name="testAddOwner" class="testAction" method="addOwner">
-            <result type="redirect">director.do</result>
-        </action>
-
-        <action name="testAddPark" class="testAction" method="addParkPlace">
-            <result type="redirect">director.do</result>
-        </action>
-
-        <action name="generateValue" class="testAction" method="generateValue">
-            <result type="redirect">director.do</result>
-        </action>
-
-        <action name="makePayment" class="testAction" method="makePament">
-            <result type="redirect">director.do</result>
+            <interceptor-ref name="permission">
+                <param name="permission">owner</param>
+            </interceptor-ref>
+            <interceptor-ref name="defaultStack"/>
         </action>
 
     </package>

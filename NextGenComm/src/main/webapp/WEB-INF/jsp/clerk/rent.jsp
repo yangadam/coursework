@@ -136,6 +136,7 @@
 <script src="../../../global/js/select2.min.js" type="text/javascript"></script>
 <script src="../../../global/js/jquery.dataTables.min.js" type="text/javascript"></script>
 <script src="../../../global/js/DT_bootstrap.min.js" type="text/javascript"></script>
+<script src="../../../custom/js/app.js" type="text/javascript"></script>
 <script src="../../../custom/js/rent.js" type="text/javascript"></script>
 <script>
     jQuery(document).ready(function () {

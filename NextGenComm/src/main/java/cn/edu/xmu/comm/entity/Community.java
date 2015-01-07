@@ -22,7 +22,6 @@ import java.util.Set;
 @Entity
 @DynamicInsert
 @DynamicUpdate
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = {"name"})

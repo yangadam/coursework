@@ -57,18 +57,6 @@
                         </div>
                         <div class="portlet-body">
                             <div class="clearfix">
-                                <div class="control-group">
-                                    <div class="btn-group pull-right">
-                                        <button class="btn dropdown-toggle" data-toggle="dropdown">工具 <i
-                                                class="icon-angle-down"></i>
-                                        </button>
-                                        <ul class="dropdown-menu pull-right">
-                                            <li><a href="#">打印</a></li>
-                                            <li><a href="#">保存为PDF</a></li>
-                                            <li><a href="#">导出Excel表格</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
                                 <table class="table table-hover table-bordered" id="sample_editable_1">
                                     <thead>
                                     <tr>

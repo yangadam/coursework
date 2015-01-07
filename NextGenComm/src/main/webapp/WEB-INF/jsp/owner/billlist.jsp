@@ -124,8 +124,15 @@
                                 </div>
                                 <s:form action="makePayment">
                                     <div class="form-actions">
-                                        <s:submit cssClass="btn blue big-btn pull-right" value="网上缴费">
-                                        </s:submit>
+                                        <s:if test="billItems==null ||billItems.size()<1">
+                                            <s:submit cssClass="btn blue big-btn pull-right" value="网上缴费"
+                                                      disabled="true">
+                                            </s:submit>
+                                        </s:if>
+                                        <s:else>
+                                            <s:submit cssClass="btn blue big-btn pull-right" value="网上缴费">
+                                            </s:submit>
+                                        </s:else>
                                     </div>
                                 </s:form>
                             </div>
@@ -135,8 +142,8 @@
             </div>
         </div>
     </div>
-        <%@include file="../global/globalFooter.jsp" %>
-        <%@include file="../global/globalJS.jsp" %>
+    <%@include file="../global/globalFooter.jsp" %>
+    <%@include file="../global/globalJS.jsp" %>
     <script src="../../../global/js/select2.min.js" type="text/javascript"></script>
     <script src="../../../custom/js/app.js" type="text/javascript"></script>
     <script>

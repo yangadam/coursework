@@ -52,7 +52,6 @@
                             <form action="#" id="form_sample_1" class="form-horizontal">
                                 <div class="control-group">
                                     <label class="control-label" for="build">楼宇号</label>
-
                                     <div class="controls">
                                         <select id="build" class="span6 m-wrap" name="category">
                                         </select>

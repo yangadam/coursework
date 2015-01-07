@@ -3,6 +3,7 @@ package cn.edu.xmu.comm.entity;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.Cache;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -18,7 +19,6 @@ import java.util.List;
 @Entity
 @DynamicInsert
 @DynamicUpdate
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Floor extends Property {
 
     //region Instance Variables

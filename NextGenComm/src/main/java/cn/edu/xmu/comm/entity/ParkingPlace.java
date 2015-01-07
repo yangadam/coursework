@@ -1,6 +1,9 @@
 package cn.edu.xmu.comm.entity;
 
+import org.hibernate.annotations.*;
+
 import javax.persistence.*;
+import javax.persistence.Entity;
 import java.math.BigDecimal;
 
 /**
@@ -8,6 +11,8 @@ import java.math.BigDecimal;
  *
  */
 @Entity
+@DynamicInsert
+@DynamicUpdate
 public class ParkingPlace {
 
     //region Instance Variables

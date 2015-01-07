@@ -17,17 +17,18 @@
       <facet type="Struts2" name="Struts 2">
         <configuration>
           <fileset id="s2fileset" name="My Fileset " removed="false">
-            <file>file://$MODULE_DIR$/src/main/resources/struts.xml</file>
-            <file>file://$MODULE_DIR$/src/main/resources/struts/struts-root.xml</file>
             <file>file://$MODULE_DIR$/src/main/resources/struts/struts-admin.xml</file>
-            <file>file://$MODULE_DIR$/src/main/resources/struts/struts-director.xml</file>
             <file>file://$MODULE_DIR$/src/main/resources/struts/struts-clerk.xml</file>
+            <file>file://$MODULE_DIR$/src/main/resources/struts/struts-director.xml</file>
             <file>file://$MODULE_DIR$/src/main/resources/struts/struts-guard.xml</file>
-            <file>file://$MODULE_DIR$/src/main/resources/struts/struts-owner.xml</file>
             <file>file://$MODULE_DIR$/src/main/resources/struts/struts-json.xml</file>
+            <file>file://$MODULE_DIR$/src/main/resources/struts/struts-owner.xml</file>
+            <file>file://$MODULE_DIR$/src/main/resources/struts/struts-root.xml</file>
+            <file>file://$MODULE_DIR$/src/main/resources/struts.xml</file>
             <file>jar://$MAVEN_REPOSITORY$/org/apache/struts/struts2-spring-plugin/2.3.20/struts2-spring-plugin-2.3.20.jar!/struts-plugin.xml</file>
-            <file>jar://$MAVEN_REPOSITORY$/org/apache/struts/struts2-json-plugin/2.3.20/struts2-json-plugin-2.3.20.jar!/struts-plugin.xml</file>
             <file>jar://$MAVEN_REPOSITORY$/org/apache/struts/struts2-core/2.3.20/struts2-core-2.3.20.jar!/struts-default.xml</file>
+            <file>jar://$MAVEN_REPOSITORY$/org/apache/struts/struts2-json-plugin/2.3.20/struts2-json-plugin-2.3.20.jar!/struts-plugin.xml</file>
+            <file>file://$MODULE_DIR$/src/main/resources/struts/struts-cashier.xml</file>
           </fileset>
           <propertiesKeys disabled="false" />
         </configuration>
@@ -52,12 +53,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: javax.mail:mail:1.4.7" level="project" />
-    <orderEntry type="library" name="Maven: javax.activation:activation:1.1.1" level="project" />
-    <orderEntry type="library" name="Maven: javax.mail:mail:1.4.7" level="project" />
-    <orderEntry type="library" name="Maven: javax.activation:activation:1.1.1" level="project" />
-    <orderEntry type="library" name="Maven: javax.mail:mail:1.4.7" level="project" />
-    <orderEntry type="library" name="Maven: javax.activation:activation:1.1.1" level="project" />
     <orderEntry type="library" name="Maven: mysql:mysql-connector-java:5.1.34" level="project" />
     <orderEntry type="library" name="Maven: org.apache.struts:struts2-core:2.3.20" level="project" />
     <orderEntry type="library" name="Maven: org.apache.struts.xwork:xwork-core:2.3.20" level="project" />

@@ -7,6 +7,18 @@
 <struts>
 
     <package name="owner" namespace="/owner" extends="default">
+
+        <interceptors>
+            <interceptor-stack name="permissionStack">
+                <interceptor-ref name="permission">
+                    <param name="permission">owner</param>
+                </interceptor-ref>
+                <interceptor-ref name="defaultStack"/>
+            </interceptor-stack>
+        </interceptors>
+
+        <default-interceptor-ref name="permissionStack"/>
+
         <global-results>
             <result name="login" type="redirect">/rememberMeLogin.do</result>
             <result name="unauthorized" type="redirect">/rememberMeLogin.do</result>

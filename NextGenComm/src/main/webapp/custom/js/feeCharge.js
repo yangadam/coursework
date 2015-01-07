@@ -1,85 +1,78 @@
-var TableEditable = function () {
+var FeeCharge = function () {
+
     return {
         init: function () {
-            var buildId;
-            var floorId;
-            var roomId;
-            var oTable;
-            $("#build").empty();
-            $.ajax({
-                url: "/buildNo.do", dataType: "json", success: function (data) {
-                    var i;
-                    for (i = 0; i < data["no"].length; i++) {
-                        $("<option value='" + data["id"][i] + "'>" + data["no"][i] + "</option>").appendTo("#build")
+
+            var ownerId;
+
+            function ownerFormatResult(owner) {
+                return "<option value='" + owner["id"] + "'>" + owner["name"] + "&nbsp;&nbsp;" +
+                    "&nbsp;&nbsp;&lt;" + owner["username"] + "&gt;" + "</option>";
+            }
+
+            function ownerFormatSelection(owner) {
+                return "<option value='" + owner["id"] + "'>" + owner["name"] + "&nbsp;&nbsp;" +
+                    "&nbsp;&nbsp;&lt;" + owner["username"] + "&gt;" + "</option>";
+            }
+
+            $("#owner").on("change", function (e) {
+                ownerId = e.val;
+            });
+
+            $("#owner").select2({
+                placeholder: "请指定业主",
+                minimumInputLength: 2,
+                ajax: {
+                    url: "/ownerSearch.do",
+                    dataType: 'json',
+                    data: function (term, page) {
+                        return {
+                            term: term
+                        };
+                    },
+                    results: function (data, page) {
+                        return {
+                            results: data["owners"]
+                        };
                     }
-                    buildId = $("#build").children("option:selected").val();
-                    $("#floor").empty();
-                    $.ajax({
-                        url: "/floorNo.do?buildId=" + buildId, dataType: "json", success: function (data) {
-                            var i;
-                            for (i = 0; i < data["no"].length; i++) {
-                                $("<option value='" + data["id"][i] + "'>" + data["no"][i] + "</option>").appendTo("#floor")
-                            }
-                            floorId = $("#floor").children("option:selected").val();
-                            $("#floorId").val(floorId);
-                            oTable = jQuery("#sample_editable_1").dataTable({
-                                "bPaginate": true,
-                                "sAjaxSource": "/listRoom.do?floorId=" + floorId,
-                                "aLengthMenu": [[5, 15, 20, -1], [5, 15, 20, "All"]],
-                                "iDisplayLength": 5,
-                                "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
-                                "sPaginationType": "bootstrap",
-                                "oLanguage": {
-                                    "sLengthMenu": "_MENU_ 条记录每页",
-                                    "oPaginate": {"sPrevious": "Prev", "sNext": "Next"}
-                                },
-                                "aoColumnDefs": [{
-                                    "bSortable": false, "aTargets": [3], "mRender": function (data, type, full) {
-                                        return '<a  href="/">编辑</a>'
-                                    }
-                                }, {
-                                    "bSortable": false, "aTargets": [4], "mRender": function (data, type, full) {
-                                        return '<a  href="#">删除</a>'
-                                    }
-                                }, {sDefaultContent: "", aTargets: ["_all"]}]
-                            })
-                        }
-                    })
+                },
+                formatResult: ownerFormatResult,
+                formatSelection: ownerFormatSelection,
+                dropdownCssClass: "bigdrop",
+                escapeMarkup: function (m) {
+                    return m;
                 }
             });
-            $("#build").change(function () {
-                buildId = $(this).children("option:selected").val();
-                $("#floor").empty();
-                $.ajax({
-                    url: "/floorNo.do?buildId=" + buildId, dataType: "json", success: function (data) {
-                        var i;
-                        for (i = 0; i < data["no"].length; i++) {
-                            $("<option value='" + data["id"][i] + "'>" + data["no"][i] + "</option>").appendTo("#floor")
-                        }
-                        floorId = $("#floor").children("option:selected").val();
-                        $("#floorId").val(floorId);
-                        $.ajax({
-                            url: "/listRoom.do?floorId=" + floorId, dataType: "json", success: function (data) {
-                                oTable.fnClearTable();
-                                oTable.fnAddData(data["aaData"], true)
-                            }
-                        })
+
+            $('#billItems').dataTable({
+                "bPaginate":false,
+                "bFilter":false,
+                "bSort":false,
+                "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+                /*"sAjaxSource": "/.do",*/
+                "oLanguage": {
+                    "sLengthMenu": "每页显示 _MENU_条",
+                    "sZeroRecords": "没有找到符合条件的数据",
+                    "sProcessing": "&lt;img src=’./loading.gif’ /&gt;",
+                    "sInfo": "显示 _START_ 到 _END_ 条　共计 _TOTAL_ 条",
+                    "sInfoEmpty": "",
+                    "sInfoFiltered": "(从 _MAX_ 条记录中过滤)",
+                    "sSearch": "搜索：",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "前一页",
+                        "sNext": "后一页",
+                        "sLast": "尾页"
                     }
-                })
+                },
+                "aoColumnDefs": [{
+                    'bSortable': false,
+                    'aTargets': [0]
+                }
+                ]
             });
-            $("#floor").change(function () {
-                floorId = $(this).children("option:selected").val();
-                $("#floorId").val(floorId);
-                $.ajax({
-                    url: "/listRoom.do?floorId=" + floorId, dataType: "json", success: function (data) {
-                        oTable.fnClearTable();
-                        oTable.fnAddData(data["aaData"], true)
-                    }
-                })
-            });
-            $("#sample_editable_1_new").click(function (e) {
-                $("#add-room").removeClass("hide")
-            })
+
         }
-    }
+    };
 }();
+

@@ -43,7 +43,14 @@ public class TestAction extends ActionSupport {
     @Resource
     private ParkingService parkingService;
 
-    public String makePament() {
+    public String ownerPayment() {
+        for (int i = 4; i <= 760; i++) {
+            financeService.makePayment(i);
+        }
+        return SUCCESS;
+    }
+
+    public String makePayment() {
 //        Community community = propertyService.getCommunity("五缘公寓");
 //        community.setGarbageFee(BigDecimal.valueOf(4));
 //        community.setGarbageFeeType(FixGarbageFeeCalculator.class.getSimpleName());
@@ -67,7 +74,7 @@ public class TestAction extends ActionSupport {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date dt = null;
         try {
-            dt = sdf.parse("2014-12-6");
+            dt = sdf.parse("2015-1-6");
         } catch (ParseException e) {
             e.printStackTrace();
         }

@@ -19,7 +19,6 @@ import java.util.List;
 @Entity
 @DynamicInsert
 @DynamicUpdate
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Building extends Property {
 
     //region Instance Variables

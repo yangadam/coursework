@@ -6,33 +6,15 @@
 
     <!-- 默认缓冲策略 -->
     <defaultCache
-            maxElementsInMemory="10000"
+            maxElementsInMemory="10"
             eternal="false"
             overflowToDisk="false"
             timeToIdleSeconds="120"
             timeToLiveSeconds="120"/>
 
     <!-- 集成Hibernate二级缓存：缓存模型对象 -->
-    <cache name="cn.edu.xmu.comm.entity.Community"
-           maxElementsInMemory="10"
-           eternal="false"
-           overflowToDisk="false"
-           timeToIdleSeconds="300"
-           timeToLiveSeconds="600"/>
-    <cache name="cn.edu.xmu.comm.entity.Building"
-           maxElementsInMemory="50"
-           eternal="false"
-           overflowToDisk="false"
-           timeToIdleSeconds="300"
-           timeToLiveSeconds="600"/>
-    <cache name="cn.edu.xmu.comm.entity.Floor"
-           maxElementsInMemory="250"
-           eternal="false"
-           overflowToDisk="false"
-           timeToIdleSeconds="300"
-           timeToLiveSeconds="600"/>
-    <cache name="cn.edu.xmu.comm.entity.Room"
-           maxElementsInMemory="750"
+    <cache name="cn.edu.xmu.comm.entity.Device"
+           maxElementsInMemory="700"
            eternal="false"
            overflowToDisk="false"
            timeToIdleSeconds="300"

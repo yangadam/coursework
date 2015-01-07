@@ -2,8 +2,10 @@ package cn.edu.xmu.comm.entity;
 
 import cn.edu.xmu.comm.commons.calc.IParkingCalculator;
 import cn.edu.xmu.comm.commons.calc.impl.GradientParkingCalculator;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -12,6 +14,8 @@ import java.util.Date;
  *
  */
 @Entity
+@DynamicInsert
+@DynamicUpdate
 public class ParkingBill {
 
     //region Instance Variables

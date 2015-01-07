@@ -60,5 +60,7 @@ function modify(deviceId) {
     $("#modifyId").val(deviceId)
 }
 function calculate() {
-    $.post("calculate.do")
-};
+    $.post("calculate.do", function () {
+        location.reload();
+    });
+}

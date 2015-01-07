@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -26,7 +27,7 @@ public class BillListAction extends ActionSupport {
     @Resource
     private PropertyService propertyService;
 
-    private Set<BillItem> billItems;
+    private List<BillItem> billItems;
 
     private BigDecimal total;
 
@@ -40,11 +41,11 @@ public class BillListAction extends ActionSupport {
         return SUCCESS;
     }
 
-    public Set<BillItem> getBillItems() {
+    public List<BillItem> getBillItems() {
         return billItems;
     }
 
-    public void setBillItems(Set<BillItem> billItems) {
+    public void setBillItems(List<BillItem> billItems) {
         this.billItems = billItems;
     }
 

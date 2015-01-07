@@ -53,7 +53,7 @@ public class ShareListAction extends ActionSupport {
         return SUCCESS;
     }
 
-    private void buildRow(Set<BillItem> unpaidBills, Set<Room> rooms, JSONArray row) {
+    private void buildRow(List<BillItem> unpaidBills, Set<Room> rooms, JSONArray row) {
         BigDecimal amount = BigDecimal.ZERO;
         for (BillItem billItem : unpaidBills) {
             if (billItem.getName().equals(Room.SHARE)) {

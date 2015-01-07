@@ -6,12 +6,11 @@
 
 <struts>
 
-    <package name="guard" namespace="/guard" extends="default">
-
+    <package name="cashier" namespace="/cashier" extends="default">
         <interceptors>
             <interceptor-stack name="permissionStack">
                 <interceptor-ref name="permission">
-                    <param name="permission">guard</param>
+                    <param name="permission">cashier</param>
                 </interceptor-ref>
                 <interceptor-ref name="defaultStack"/>
             </interceptor-stack>
@@ -23,18 +22,6 @@
             <result name="login" type="redirect">/rememberMeLogin.do</result>
             <result name="unauthorized" type="redirect">/rememberMeLogin.do</result>
         </global-results>
-
-        <action name="tempParkingList" class="directAction" method="guard">
-            <result>/WEB-INF/jsp/guard/tempParkingList.jsp</result>
-        </action>
-
-        <action name="toTempParkingRegiste" class="toTempParkingRegisteAction">
-            <result>/WEB-INF/jsp/guard/tempParkingRegiste.jsp</result>
-        </action>
-
-        <action name="tempParkingPaying" class="tempParkingPayAction">
-            <result>/WEB-INF/jsp/guard/tempParkingPaying.jsp</result>
-        </action>
 
     </package>
 

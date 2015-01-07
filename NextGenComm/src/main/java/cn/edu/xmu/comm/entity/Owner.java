@@ -2,11 +2,13 @@ package cn.edu.xmu.comm.entity;
 
 import cn.edu.xmu.comm.commons.exception.DeviceException;
 import cn.edu.xmu.comm.commons.exception.DifferentCommunityException;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -49,13 +51,13 @@ public class Owner extends User {
      * （注意：公维金是单独交的，但是一起算，交到不同的账户。）
      */
     @OneToMany(targetEntity = BillItem.class, mappedBy = "owner", cascade = CascadeType.ALL)
-    private Set<BillItem> unpaidBills = new HashSet<BillItem>();
+    private List<BillItem> unpaidBills = new ArrayList<BillItem>();
 
     /**
      * 支付
      */
     @OneToMany(targetEntity = Payment.class, mappedBy = "paidBy", cascade = CascadeType.ALL)
-    private Set<Payment> payments = new HashSet<Payment>();
+    private List<Payment> payments = new ArrayList<Payment>();
 
     //endregion
 
@@ -131,7 +133,7 @@ public class Owner extends User {
      * @param billItems 账单
      * @return 支付记录
      */
-    public Payment makePayment(Staff receiveBy, Set<BillItem> billItems) {
+    public Payment makePayment(Staff receiveBy, List<BillItem> billItems) {
         if (billItems == null || billItems.size() == 0) {
             return null;
         }
@@ -148,8 +150,8 @@ public class Owner extends User {
      *
      * @return 清单列表
      */
-    public Set<BillItem> getOverDueBillItems() {
-        Set<BillItem> resultBillItems = new HashSet<BillItem>();
+    public List<BillItem> getOverDueBillItems() {
+        List<BillItem> resultBillItems = new ArrayList<BillItem>();
         for (BillItem billItem : unpaidBills) {
             if (billItem.isOverDue()) {
                 billItem.updateOverDueFee();
@@ -186,18 +188,18 @@ public class Owner extends User {
         this.cars = cars;
     }
 
-    public Set<BillItem> getUnpaidBills() {
+    public List<BillItem> getUnpaidBills() {
         for (BillItem billItem : unpaidBills) {
             billItem.updateOverDueFee();
         }
         return unpaidBills;
     }
 
-    public Set<Payment> getPayments() {
+    public List<Payment> getPayments() {
         return payments;
     }
 
-    public void setPayments(Set<Payment> payments) {
+    public void setPayments(List<Payment> payments) {
         this.payments = payments;
     }
 
@@ -211,7 +213,9 @@ public class Owner extends User {
     }
 
     public Payment makePayment(Staff recieveBy) {
-        return makePayment(recieveBy, unpaidBills);
+        Payment payment = new Payment(this, recieveBy);
+        this.payments.add(payment);
+        return payment;
     }
 
     //endregion
