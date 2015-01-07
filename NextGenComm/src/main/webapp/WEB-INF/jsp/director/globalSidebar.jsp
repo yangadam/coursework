@@ -28,7 +28,7 @@
             </a>
             <ul class="sub-menu">
                 <li class="">
-                    <a href="">
+                    <a href="/director/community.do">
                         <i class="icon-list-ul"></i>
                         小区管理
                     </a>

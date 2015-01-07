@@ -76,7 +76,7 @@ public class Device extends DataEntity {
             joinColumns = @JoinColumn(name = "device_id")
     )
     @OrderBy
-    @Column(name = "device_values", precision = 2)
+    @Column(name = "device_values")
     private SortedMap<Date, Double> values = new TreeMap<Date, Double>();
 
     /**
@@ -177,7 +177,7 @@ public class Device extends DataEntity {
 //            return BigDecimal.ZERO;
         //throw new DeviceException("未录入本月的读数");
         BigDecimal totalAmount = BigDecimal.ZERO;
-        BigDecimal amount = BigDecimal.ZERO;
+        BigDecimal amount;
         Double lastValue = 0.0;
         Double curValue;
         for (Object o : getGradientMap().entrySet()) {
