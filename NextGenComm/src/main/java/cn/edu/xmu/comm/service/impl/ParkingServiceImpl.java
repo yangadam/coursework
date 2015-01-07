@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -112,8 +113,12 @@ public class ParkingServiceImpl implements ParkingService {
     }
 
     @Override
-    public void finishParkBill(Integer parkBillId) {
-
+    @Transactional(readOnly = false)
+    public ParkingBill finishParkBill(Integer parkBillId) {
+        ParkingBill parkBill = parkingBillDAO.get(parkBillId);
+        generateParkBill(parkBill);
+        parkingBillDAO.merge(parkBill);
+        return parkBill;
     }
 
     /**
@@ -139,17 +144,20 @@ public class ParkingServiceImpl implements ParkingService {
 //    }
 //
 
+
     /**
-     * 依据车牌确认汽车租用停车位
-     *
-     * @param license 车牌号
+     * @param license     车牌号
+     * @param ownerId     业主编号
+     * @param parkPlaceId 停车场编号
      */
     @Override
     @Transactional(readOnly = false)
-    public void confirmCarRentParkPlace(String license) {
-        Car car = carDAO.get(license);
-        ParkingPlace parkingPlace = car.getParkingPlace();
+    public void confirmCarRentParkPlace(String license, Integer ownerId, Integer parkPlaceId) {
+        Owner owner = ownerDAO.get(ownerId);
+        ParkingPlace parkingPlace = parkingPlaceDAO.get(parkPlaceId);
+        Car car = new Car(license, owner, Car.CarStatus.RENT, parkingPlace);
         parkingPlace.rentParkPlace();
+        carDAO.persist(car);
         parkingPlaceDAO.merge(parkingPlace);
     }
 
@@ -356,18 +364,17 @@ public class ParkingServiceImpl implements ParkingService {
 //        return parkingBillDAO.getUnfinishedParkBill(community, license);
 //    }
 //
-//    /**
-//     * 根据临时停车单生成停车单
-//     *
-//     * @param parkingBill 未完成账单
-//     */
-//    @Transactional(readOnly = false)
-//    public ParkingBill generateParkBill(ParkingBill parkingBill) {
-//        parkingBill.setEndTime(new Date(System.currentTimeMillis()));
-//        parkingBill.generateParkBill();
-//        parkingBillDAO.merge(parkingBill);
-//        return parkingBill;
-//    }
+    /**
+     * 根据临时停车单生成停车单
+     *
+     * @param parkingBill 未完成账单
+     */
+    @Transactional(readOnly = false)
+    public ParkingBill generateParkBill(ParkingBill parkingBill) {
+        parkingBill.setEndTime(new Timestamp(System.currentTimeMillis()));
+        parkingBill.generateParkBill();
+        return parkingBill;
+    }
 //
 //    /**
 //     * 完成临时停车单

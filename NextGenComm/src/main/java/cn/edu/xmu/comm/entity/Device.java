@@ -5,9 +5,6 @@ import cn.edu.xmu.comm.commons.persistence.DataEntity;
 import org.hibernate.annotations.*;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
@@ -186,7 +183,7 @@ public class Device extends DataEntity {
                 curValue = (Double) entry.getKey() - lastValue;
                 amount = ((BigDecimal) entry.getValue()).multiply(BigDecimal.valueOf(curValue));
                 totalAmount = totalAmount.add(amount);
-            } else if (getUsage().compareTo((Double) entry.getKey()) < 0) {
+            } else if (getUsage().compareTo((Double) entry.getKey()) < 1) {
                 curValue = getUsage() - lastValue;
                 amount = ((BigDecimal) entry.getValue()).multiply(BigDecimal.valueOf(curValue));
                 totalAmount = totalAmount.add(amount);

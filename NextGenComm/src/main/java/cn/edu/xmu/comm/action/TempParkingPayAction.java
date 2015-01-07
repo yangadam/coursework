@@ -28,15 +28,13 @@ public class TempParkingPayAction extends ActionSupport {
     private String license;
 
     public String execute() {
-
-        ParkingBill parkingBill = parkingService.getParkBill(parkBillId);
+        ParkingBill parkingBill = parkingService.finishParkBill(parkBillId);
         ownerName = parkingBill.getOwner().getName();
         ownerPhone = parkingBill.getOwner().getPhoneNumber();
         carInTime = parkingBill.getStartTime();
         carOutTime = parkingBill.getEndTime();
         license = parkingBill.getLicense();
         fee = parkingBill.getFee();
-
         return SUCCESS;
     }
 

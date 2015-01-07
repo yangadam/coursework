@@ -8,6 +8,17 @@
 
     <package name="guard" namespace="/guard" extends="default">
 
+        <interceptors>
+            <interceptor-stack name="permissionStack">
+                <interceptor-ref name="permission">
+                    <param name="permission">guard</param>
+                </interceptor-ref>
+                <interceptor-ref name="defaultStack"/>
+            </interceptor-stack>
+        </interceptors>
+
+        <default-interceptor-ref name="permissionStack"/>
+
         <global-results>
             <result name="login" type="redirect">/rememberMeLogin.do</result>
             <result name="unauthorized" type="redirect">/rememberMeLogin.do</result>
@@ -15,11 +26,6 @@
 
         <action name="tempParkingList" class="directAction" method="guard">
             <result>/WEB-INF/jsp/guard/tempParkingList.jsp</result>
-        </action>
-
-        <action name="tempParkingRegiste" class="tempParkingRegisteAction">
-            <!--<result name="rent">/WEB-INF/jsp/test/test.jsp</result>-->
-            <result name="temp">/WEB-INF/jsp/guard/tempParkingRegiste.jsp</result>
         </action>
 
         <action name="toTempParkingRegiste" class="toTempParkingRegisteAction">

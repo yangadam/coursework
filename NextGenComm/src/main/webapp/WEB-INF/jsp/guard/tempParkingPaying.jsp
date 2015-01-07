@@ -129,7 +129,7 @@
                                             <label class="control-label">进入时间：</label>
 
                                             <div class="controls">
-                                                <span class="text bold"><s:date name="carInTime" format="hh:mm"/></span>
+                                                <span class="text bold"><s:date name="carInTime" format="HH:mm"/></span>
                                             </div>
                                         </div>
                                     </div>
@@ -140,7 +140,7 @@
 
                                             <div class="controls">
                                                 <span class="text bold"><s:date name="carOutTime"
-                                                                                format="hh:mm"/></span>
+                                                                                format="HH:mm"/></span>
                                             </div>
                                         </div>
                                     </div>

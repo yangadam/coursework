@@ -35,13 +35,13 @@ public class TempParkingChargedListAction extends ActionSupport {
             row.add(parkingBill.getEndTime());
             row.add(parkingBill.getFee());
             row.add(parkingBill.getId());
-
             aaData.add(row);
         }
         data = new HashMap<String, Object>();
         data.put("iTotalRecords", parkingBills.size());
         data.put("iTotalDisplayRecords", parkingBills.size());
         data.put("aaData", aaData);
+        System.out.println(data);
         return SUCCESS;
 
     }

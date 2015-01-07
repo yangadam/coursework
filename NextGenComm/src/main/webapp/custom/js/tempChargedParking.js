@@ -17,12 +17,12 @@ var FinishedParkBillTale = function () {
                     "sInfoEmtpy": "没有数据",
                     "sProcessing": "正在加载数据...",
                     "oPaginate": {"sFirst": "首页", "sPrevious": "前一页", "sNext": "后一页", "sLast": "末页"}
-                },
-                "aoColumnDefs": [{
-                    "bSortable": false, "aTargets": [5], "mRender": function (data, type, full) {
-                        return '<a href="tempParkingPaying.do?parkBillId=' + data + '">缴费</a>'
-                    }
-                }]
+                }
+                //"aoColumnDefs": [{
+                //    "bSortable": false, "aTargets": [5], "mRender": function (data, type, full) {
+                //        return '<a href="tempParkingPaying.do?parkBillId=' + data + '">缴费</a>'
+                //    }
+                //}]
             })
         }
     }

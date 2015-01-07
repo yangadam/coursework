@@ -8,6 +8,17 @@
 
     <package name="admin" namespace="/admin" extends="default">
 
+        <interceptors>
+            <interceptor-stack name="permissionStack">
+                <interceptor-ref name="permission">
+                    <param name="permission">admin</param>
+                </interceptor-ref>
+                <interceptor-ref name="defaultStack"/>
+            </interceptor-stack>
+        </interceptors>
+
+        <default-interceptor-ref name="permissionStack"/>
+
         <global-results>
             <result name="login" type="redirect">/rememberMeLogin.do</result>
             <result name="unauthorized" type="redirect">/rememberMeLogin.do</result>

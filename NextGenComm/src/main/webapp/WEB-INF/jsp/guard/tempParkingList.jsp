@@ -124,7 +124,6 @@
                                                         <th>进入时间</th>
                                                         <th>离开时间</th>
                                                         <th>费用</th>
-                                                        <th>缴费</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
@@ -191,7 +190,9 @@
             }
             license_u = $("#license").val();
             license_u = encodeURI(encodeURI(license_u));
-            $.getJSON("tempRegister.do?license=" + license_u, function (data) {
+            alert();
+            $.getJSON("tempParkingRegiste.do?license=" + license_u, function (data) {
+                alert();
                 if (data["TYPE"] == "RENT") {
                     $("#isTemp").text($("#license").val() + "为小区内车辆");
                     $("#license").val("");

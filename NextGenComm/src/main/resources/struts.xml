@@ -20,6 +20,10 @@
     <constant name="struts.action.extension" value="do"/>
 
     <package name="default" extends="struts-default">
+        <interceptors>
+            <interceptor name="permission" class="cn.edu.xmu.comm.interceptor.AuthorizationInterceptor"/>
+        </interceptors>
+
         <global-results>
             <result name="login" type="redirect">login.do</result>
             <result name="unauthorized" type="redirect">login.do</result>
