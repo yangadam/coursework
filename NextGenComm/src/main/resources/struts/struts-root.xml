@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+    <package name="root" namespace="/" extends="default">
+
+        <action name="rememberMeLogin" class="remLoginAction"/>
+
+        <action name="login">
+            <result>/WEB-INF/jsp/login.jsp</result>
+        </action>
+
+        <action name="doLogin" class="loginAction">
+            <result name="input">login.do</result>
+        </action>
+
+        <action name="logout" class="logoutAction">
+            <result>login.do</result>
+        </action>
+
+        <action name="admin">
+            <result>/WEB-INF/jsp/admin/home.jsp</result>
+            <interceptor-ref name="permission">
+                <param name="permission">admin</param>
+            </interceptor-ref>
+            <interceptor-ref name="defaultStack"/>
+        </action>
+
+        <action name="director">
+            <result>/WEB-INF/jsp/director/home.jsp</result>
+            <interceptor-ref name="permission">
+                <param name="permission">director</param>
+            </interceptor-ref>
+            <interceptor-ref name="defaultStack"/>
+        </action>
+
+        <action name="clerk">
+            <result>/WEB-INF/jsp/clerk/home.jsp</result>
+            <interceptor-ref name="permission">
+                <param name="permission">clerk</param>
+            </interceptor-ref>
+            <interceptor-ref name="defaultStack"/>
+        </action>
+
+        <action name="guard">
+            <result>/WEB-INF/jsp/guard/home.jsp</result>
+            <interceptor-ref name="permission">
+                <param name="permission">guard</param>
+            </interceptor-ref>
+            <interceptor-ref name="defaultStack"/>
+        </action>
+
+        <action name="cashier">
+            <result>/WEB-INF/jsp/cashier/home.jsp</result>
+            <interceptor-ref name="permission">
+                <param name="permission">cashier</param>
+            </interceptor-ref>
+            <interceptor-ref name="defaultStack"/>
+        </action>
+
+        <action name="owner">
+            <result>/WEB-INF/jsp/owner/home.jsp</result>
+            <interceptor-ref name="permission">
+                <param name="permission">owner</param>
+            </interceptor-ref>
+            <interceptor-ref name="defaultStack"/>
+        </action>
+
+    </package>
+
+</struts>

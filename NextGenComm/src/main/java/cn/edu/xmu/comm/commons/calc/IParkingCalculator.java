@@ -1,6 +1,6 @@
 package cn.edu.xmu.comm.commons.calc;
 
-import cn.edu.xmu.comm.entity.ParkBill;
+import cn.edu.xmu.comm.entity.ParkingBill;
 
 import java.math.BigDecimal;
 
@@ -12,8 +12,8 @@ public interface IParkingCalculator {
     /**
      * 计算停车费用
      *
-     * @param parkBill 停车账单
+     * @param parkingBill 停车账单
      * @return 停车费用
      */
-    public BigDecimal calculate(ParkBill parkBill);
+    public BigDecimal calculate(ParkingBill parkingBill);
 }

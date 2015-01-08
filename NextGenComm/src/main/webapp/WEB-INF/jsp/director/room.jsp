@@ -12,14 +12,14 @@
     <meta content="" name="description"/>
     <meta content="PumpKing" name="author"/>
 
-    <%@include file="globalCSS.jsp" %>
-    <link rel="stylesheet" type="text/css" href="../../../global/css/select2_metro.css"/>
-    <link rel="stylesheet" href="../../../global/css/DT_bootstrap.css"/>
+    <%@include file="../global/globalCSS.jsp" %>
+    <link rel="stylesheet" type="text/css" href="../../../global/css/select2_metro.min.css"/>
+    <link rel="stylesheet" href="../../../global/css/DT_bootstrap.min.css"/>
     <link rel="shortcut icon" href="../../../global/image/favicon.ico"/>
 </head>
 
 <body class="page-header-fixed">
-<%@include file="globalHeader.jsp" %>
+<%@include file="../global/globalHeader.jsp" %>
 <div class="page-container">
     <%@include file="globalSidebar.jsp" %>
     <div class="page-content">
@@ -45,13 +45,27 @@
                     </ul>
                 </div>
             </div>
-            <div class="controls input-append">
-                <s:select id="build" name="commName" class="span3 m-wrap"
-                          data-placeholder="请选择楼宇" tabindex="1" list="{'请选择',''}"/>
-                <label class="">栋</label>
-                <s:select id="floor" name="commName" class="span3 m-wrap"
-                          data-placeholder="请选择楼层" tabindex="1" list="{'请选择',''}"/>
-                <label class="">层</label>
+            <div class="row-fluid">
+                <div class="span6 ">
+                    <div class="control-group">
+                        <label class="control-label">楼宇号</label>
+
+                        <div class="controls">
+                            <s:select id="build" name="buildNo" class="m-wrap span12"
+                                      data-placeholder="请选择楼宇" tabindex="1" list="{'请选择',''}"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="span6 ">
+                    <div class="control-group">
+                        <label class="control-label">楼层号</label>
+
+                        <div class="controls">
+                            <s:select id="floor" name="floorNo" class="m-wrap span12"
+                                      data-placeholder="请选择楼层" tabindex="1" list="{'请选择',''}"/>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="row-fluid">
                 <div class="span12">
@@ -87,7 +101,7 @@
                                     <tr>
                                         <th>房间号</th>
                                         <th>面积</th>
-                                        <th>户主</th>
+                                        <th>业主</th>
                                         <th>编辑</th>
                                         <th>删除</th>
                                     </tr>
@@ -109,7 +123,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="add-build" class="portlet box blue hide">
+                <div id="add-room" class="portlet box blue hide">
                     <div class="portlet-title">
                         <div class="caption"><i class="icon-reorder"></i>添加房间</div>
                         <div class="tools">
@@ -117,23 +131,24 @@
                         </div>
                     </div>
                     <div class="portlet-body form">
-                        <s:form action="" class="form-horizontal">
+                        <s:form action="addRoom" class="form-horizontal">
                             <div class="control-group">
                                 <label class="control-label">房间号</label>
 
                                 <div class="controls">
-                                    <s:textfield name="buildNo" value="" class="span6 m-wrap"/>
+                                    <s:textfield name="roomNo" value="" class="span6 m-wrap"/>
                                     <span class="help-inline"></span>
                                 </div>
                             </div>
                             <div class="control-group">
-                                <label class="control-label">楼层数</label>
+                                <label class="control-label">面积</label>
 
                                 <div class="controls">
-                                    <s:textfield name="floorCount" value="" class="span6 m-wrap"/>
+                                    <s:textfield name="houseArea" value="" class="span6 m-wrap"/>
                                     <span class="help-inline"></span>
                                 </div>
                             </div>
+                            <s:textfield cssStyle="display: none" name="floorId" id="floorId"/>
                             <div class="form-actions">
                                 <s:submit class="btn blue" value="保存"/>
                                 <button type="button" class="btn">重置</button>
@@ -144,13 +159,13 @@
             </div>
         </div>
     </div>
-    <%@include file="globalFooter.jsp" %>
-    <%@include file="globalJS.jsp" %>
-    <script type="text/javascript" src="../../../global/js/jquery.dataTables.js"></script>
-    <script type="text/javascript" src="../../../global/js/DT_bootstrap.js"></script>
-    <script type="text/javascript" src="../../../global/js/ui-modals.js"></script>
-    <script type="text/javascript" src="../../../global/js/bootstrap-modal.js"></script>
-    <script type="text/javascript" src="../../../global/js/bootstrap-modalmanager.js"></script>
+        <%@include file="../global/globalFooter.jsp" %>
+        <%@include file="../global/globalJS.jsp" %>
+        <script type="text/javascript" src="../../../global/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="../../../global/js/DT_bootstrap.min.js"></script>
+        <script type="text/javascript" src="../../../global/js/ui-modals.min.js"></script>
+        <script type="text/javascript" src="../../../global/js/bootstrap-modal.min.js"></script>
+        <script type="text/javascript" src="../../../global/js/bootstrap-modalmanager.min.js"></script>
     <script src="../../../custom/js/room.js" type="text/javascript"></script>
     <script>
         jQuery(document).ready(function () {

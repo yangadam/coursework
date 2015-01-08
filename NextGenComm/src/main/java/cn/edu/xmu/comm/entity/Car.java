@@ -1,6 +1,8 @@
 package cn.edu.xmu.comm.entity;
 
 import cn.edu.xmu.comm.commons.persistence.DataEntity;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.List;
@@ -13,65 +15,66 @@ import java.util.List;
  * @version 2014-12-8
  */
 @Entity
+@DynamicInsert
+@DynamicUpdate
+@Table(uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"license"})
+})
 public class Car extends DataEntity {
 
-    //region Instance Variables
+    //region Constants
     /**
      * 生成的账单项的名称
      */
     public static final String NAME = "车位管理费";
-
-    /**
-     * 车牌号
-     */
-    @Id
-    private String license;
     //endregion
 
-    //region Public Method
-    /**
-     * 拥有者
-     */
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Owner.class)
-    @JoinColumn(name = "owner_id", nullable = false)
-    private Owner owner;
-
-    /**
-     * 车辆状态
-     *
-     * CarStatus.NO   没有车位
-     * CarStatus.RENT 租用的车位
-     * CarStatus.BUY  购买的车位
-     */
-    private CarStatus status;
-
-    /**
-     * 拥有的车位
-     */
-    @OneToOne(fetch = FetchType.EAGER, targetEntity = ParkPlace.class)
-    @JoinColumn(name = "park_place_id", nullable = true)
-    private ParkPlace parkPlace;
+    //region Public Methods
+    //region Private Instance Variables
+    private Integer id;
     //endregion
 
     //region Constructors
+    private String license;
+    private Owner owner;
+    private CarStatus status;
+    //endregion
+
+    //region Getters
+    private ParkingPlace parkingPlace;
+
+    /**
+     * 无参构造函数
+     */
     public Car() {
         this.status = CarStatus.NO;
     }
 
-
     /**
-     * 汽车构造函数
+     * 构造函数
      *
      * @param license 车牌
-     * @param owner 业主
-     * @param status 状态: 租用车位 购买车位
-     * @param parkPlace 停车位
+     * @param owner   业主
      */
-    public Car(String license, Owner owner, CarStatus status, ParkPlace parkPlace) {
+    public Car(String license, Owner owner) {
+        this.license = license;
+        this.owner = owner;
+        this.status = CarStatus.NO;
+    }
+
+    /**
+     * 构造函数
+     *
+     * @param license      车牌
+     * @param owner        业主
+     * @param status       状态: 租用车位 购买车位
+     * @param parkingPlace 停车位
+     */
+    public Car(String license, Owner owner, CarStatus status, ParkingPlace parkingPlace) {
         this.license = license;
         this.owner = owner;
         this.status = status;
-        this.parkPlace = parkPlace;
+        this.parkingPlace = parkingPlace;
     }
 
     /**
@@ -83,12 +86,33 @@ public class Car extends DataEntity {
         BillItem billItem = new BillItem();
         billItem.setName(NAME);
         billItem.setDescription(license);
-        billItem.setAmount(parkPlace.getMonthlyFee());
+        billItem.setAmount(parkingPlace.getMonthlyFee());
         billItem.setOwner(owner);
         billItems.add(billItem);
     }
+    //endregion
 
-    //region Getters and Setters
+    /**
+     * 获得主键
+     *
+     * @return 主键
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Integer getId() {
+        return id;
+    }
+
+    //region Setters
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    /**
+     * 获得车牌号
+     *
+     * @return 车牌号
+     */
     public String getLicense() {
         return license;
     }
@@ -97,17 +121,31 @@ public class Car extends DataEntity {
         this.license = license;
     }
 
+    /**
+     * 获得业主
+     *
+     * @return 业主
+     */
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Owner.class)
+    @JoinColumn(name = "owner_id", nullable = false)
     public Owner getOwner() {
         return owner;
     }
+    //endregion
+
+    //region Inner Enum
 
     public void setOwner(Owner owner) {
         this.owner = owner;
     }
     //endregion
 
-    //region Constants
-
+    /**
+     * 获得车辆状态
+     *
+     * @return 车辆状态
+     * @see cn.edu.xmu.comm.entity.Car.CarStatus
+     */
     public CarStatus getStatus() {
         return status;
     }
@@ -116,15 +154,20 @@ public class Car extends DataEntity {
         this.status = status;
     }
 
-    public ParkPlace getParkPlace() {
-        return parkPlace;
+    /**
+     * 获得拥有的车位
+     *
+     * @return 拥有的车位
+     */
+    @OneToOne(fetch = FetchType.EAGER, targetEntity = ParkingPlace.class)
+    @JoinColumn(name = "park_place_id", nullable = true)
+    public ParkingPlace getParkingPlace() {
+        return parkingPlace;
     }
 
-    public void setParkPlace(ParkPlace parkPlace) {
-        this.parkPlace = parkPlace;
+    public void setParkingPlace(ParkingPlace parkingPlace) {
+        this.parkingPlace = parkingPlace;
     }
-    //endregion
-
     /**
      * 车位状态
      */
@@ -142,5 +185,6 @@ public class Car extends DataEntity {
             return typeName;
         }
     }
+    //endregion
 
 }

@@ -1,7 +1,5 @@
 package cn.edu.xmu.comm.entity;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -19,53 +17,54 @@ import java.util.List;
 @Entity
 @DynamicInsert
 @DynamicUpdate
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Building extends Property {
 
-    //region Instance Variables
-    /**
-     * 楼宇号
-     */
-    @Column(nullable = false)
+    //region Public Methods
+
+    //region Private Instance Variables
     private Integer no;
-
-    /**
-     * 所属小区
-     */
-    @ManyToOne(targetEntity = Community.class, cascade = {CascadeType.MERGE})
-    @JoinColumn(name = "community_id", nullable = false)
     private Community community;
+    private List<Floor> floorList = new ArrayList<Floor>();
 
     /**
-     * 包含的楼层列表
+     * 无参构造函数
      */
-    @OneToMany(targetEntity = Floor.class, mappedBy = "building",
-            cascade = CascadeType.ALL)
-    private List<Floor> floorList = new ArrayList<Floor>();
+    Building() {
+    }
     //endregion
 
     //region Constructors
-    Building() {
-    }
 
     /**
      * 构造函数
      *
-     * @param no 楼宇号
+     * @param no         楼宇号
+     * @param floorCount 楼层数
      */
     public Building(Integer no, Integer floorCount) {
         this.no = no;
-        this.childCount = floorCount;
+        this.unityCode = "B" + no;
         initFloors(floorCount);
     }
-    //endregion
 
-
+    /**
+     * 获取祖先
+     *
+     * @return 祖先列表
+     */
     @Override
     public Property[] getParents() {
         return new Property[]{getCommunity()};
     }
+    //endregion
 
+    //region Getters
+
+    /**
+     * 获取祖先（包括自己）
+     *
+     * @return 祖先列表
+     */
     @Override
     public Property[] getThisAndParents() {
         return new Property[]{this, getCommunity()};
@@ -94,40 +93,47 @@ public class Building extends Property {
         floorList.add(floor);
         childCount++;
     }
+    //endregion
 
     /**
-     * 通过楼层号获取楼层
+     * 获得楼宇号
      *
-     * @param no 楼层号
-     * @return 楼层（未找到为空）
+     * @return 楼宇号
      */
-    public Floor getFloor(Integer no) {
-        for (Floor floor : floorList) {
-            if (floor.getNo().equals(no)) {
-                return floor;
-            }
-        }
-        return null;
-    }
-
-    //region Getters and Setters
+    @Column(nullable = false)
     public Integer getNo() {
         return no;
     }
 
+    //region Setters
     public void setNo(Integer no) {
         this.no = no;
     }
 
+    /**
+     * 获得所属小区
+     *
+     * @return 所属小区
+     */
     @Override
+    @ManyToOne(targetEntity = Community.class, cascade = {CascadeType.MERGE})
+    @JoinColumn(name = "community_id", nullable = false)
     public Community getCommunity() {
         return community;
     }
+    //endregion
 
     public void setCommunity(Community community) {
         this.community = community;
     }
 
+    /**
+     * 获得包含的楼层列表
+     *
+     * @return 包含的楼层列表
+     */
+    @OneToMany(targetEntity = Floor.class, mappedBy = "building",
+            cascade = CascadeType.ALL)
     public List<Floor> getFloorList() {
         return floorList;
     }

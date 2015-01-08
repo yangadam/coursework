@@ -1,7 +1,6 @@
 package cn.edu.xmu.comm.action;
 
-import cn.edu.xmu.comm.entity.Community;
-import cn.edu.xmu.comm.service.PropertyService;
+import cn.edu.xmu.comm.commons.annotation.Required;
 import cn.edu.xmu.comm.service.StaffService;
 import com.opensymphony.xwork2.ActionSupport;
 import org.springframework.stereotype.Controller;
@@ -20,18 +19,17 @@ public class DirectorAddAction extends ActionSupport {
     @Resource
     private StaffService staffService;
 
-    @Resource
-    private PropertyService propertyService;
-
     private String username;
     private String password;
     private String name;
+    private String phoneNumber;
+    private String email;
     private String commName;
 
     @Override
+    @Required(name = "admin")
     public String execute() {
-        Community community = propertyService.getCommunity(commName);
-        staffService.addDirector(username, password, name, community);
+        staffService.addDirector(username, password, name, phoneNumber, email, commName);
         return SUCCESS;
     }
 
@@ -57,6 +55,22 @@ public class DirectorAddAction extends ActionSupport {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getCommName() {

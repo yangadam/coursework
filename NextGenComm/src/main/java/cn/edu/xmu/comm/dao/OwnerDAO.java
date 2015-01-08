@@ -1,33 +1,26 @@
 package cn.edu.xmu.comm.dao;
 
 import cn.edu.xmu.comm.commons.persistence.BaseDAO;
-import cn.edu.xmu.comm.commons.persistence.Parameter;
 import cn.edu.xmu.comm.entity.Community;
 import cn.edu.xmu.comm.entity.Owner;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 /**
- * 业主DAO
- * Created by Roger on 2014/12/8 0009.
+ * description
  *
  * @author Mengmeng Yang
- * @version 2014-12-8
+ * @version 1/8/2015 0008
  */
-@Repository
-public class OwnerDAO extends BaseDAO<Owner, Integer> {
-
+public interface OwnerDAO extends BaseDAO<Owner, Integer> {
     /**
      * 获得某小区的所有业主
      *
      * @param community 所属小区
      * @return 业主列表
      */
-    public List<Owner> getAll(Community community) {
-        String ql = "select o from Owner o where o.community = :p1";
-        return searchByQL(ql, new Parameter(community));
-    }
+    @SuppressWarnings("unchecked")
+    List<Integer> getAllId(Community community);
 
     /**
      * 依据姓名获得某业主
@@ -35,9 +28,7 @@ public class OwnerDAO extends BaseDAO<Owner, Integer> {
      * @param name 业主姓名
      * @return 单个业主
      */
-    public Owner get(String name) {
-        return getByQL("from Owner where name = :p1", new Parameter(name));
-    }
+    Owner get(String name);
 
     /**
      * 依据姓名获得某业主
@@ -46,7 +37,54 @@ public class OwnerDAO extends BaseDAO<Owner, Integer> {
      * @param name      业主姓名
      * @return 业主列表
      */
-    public List<Owner> getByName(Community community, String name) {
-        return searchByQL("from Owner where name = :p1 and community = :p2", new Parameter(name, community));
-    }
+    List<Owner> getByName(Community community, String name);
+
+    /**
+     * 依据电话获取业主
+     *
+     * @param phoneNumber 电话号码
+     * @return 单个业主
+     */
+    Owner getByPhoneNumber(String phoneNumber);
+
+    /**
+     * 删除小区
+     *
+     * @param community 小区
+     */
+    void delete(Community community);
+
+    /**
+     * 搜索业主
+     *
+     * @param term      关键字
+     * @param community 小区
+     * @return 业主
+     */
+    @SuppressWarnings("unchecked")
+    List<String[]> buzzSearch(String term, Community community);
+
+    /**
+     * 获取欠费用户
+     *
+     * @param community 小区
+     * @return 欠费用户列表
+     */
+    List<Owner> ArrearageOwner(Community community);
+
+    /**
+     * 通过房间获取业主
+     *
+     * @param roomId 房间id
+     * @return 业主
+     */
+    Owner getOwnerByRoom(Integer roomId);
+
+    /**
+     * 获取所有业主
+     *
+     * @param community 小区
+     * @return 业主列表
+     */
+    List<Owner> getAll(Community community);
 }

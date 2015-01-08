@@ -1,144 +1,88 @@
 var TableEditable = function () {
     return {
         init: function () {
-            var oTable = jQuery('#sample_editable_1').dataTable({
-                "bPaginate": true,
-                "sAjaxSource": "/listRoom.do",
-                "aLengthMenu": [
-                    [5, 15, 20, -1],
-                    [5, 15, 20, "All"] // change per page values here
-                ],
-                // set the initial value
-                "iDisplayLength": 5,
-                "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
-                "sPaginationType": "bootstrap",
-                "oLanguage": {
-                    "sLengthMenu": "_MENU_ 条记录每页",
-                    "oPaginate": {
-                        "sPrevious": "Prev",
-                        "sNext": "Next"
+            var buildId;
+            var floorId;
+            var oTable;
+            $("#build").empty();
+            $.ajax({
+                url: "/buildNo.do", dataType: "json", success: function (data) {
+                    var i;
+                    for (i = 0; i < data["no"].length; i++) {
+                        $("<option value='" + data["id"][i] + "'>" + data["no"][i] + "</option>").appendTo("#build")
                     }
-                },
-                "aoColumnDefs": [
-                    {
-                        'bSortable': false,
-                        "aTargets": [2],
-                        "mRender": function (data, type, full) {
-                            return '<a  href="/">编辑</a>';
+                    buildId = $("#build").children("option:selected").val();
+                    $("#floor").empty();
+                    $.ajax({
+                        url: "/floorNo.do?buildId=" + buildId, dataType: "json", success: function (data) {
+                            var i;
+                            for (i = 0; i < data["no"].length; i++) {
+                                $("<option value='" + data["id"][i] + "'>" + data["no"][i] + "</option>").appendTo("#floor")
+                            }
+                            floorId = $("#floor").children("option:selected").val();
+                            $("#floorId").val(floorId);
+                            oTable = jQuery("#sample_editable_1").dataTable({
+                                "bPaginate": true,
+                                "sAjaxSource": "/listRoom.do?floorId=" + floorId,
+                                "aLengthMenu": [[5, 15, 20, -1], [5, 15, 20, "All"]],
+                                "iDisplayLength": 5,
+                                "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+                                "sPaginationType": "bootstrap",
+                                "oLanguage": {
+                                    "sLengthMenu": "_MENU_ 条记录每页",
+                                    "oPaginate": {"sPrevious": "Prev", "sNext": "Next"}
+                                },
+                                "aoColumnDefs": [{
+                                    "bSortable": false, "aTargets": [3], "mRender": function (data, type, full) {
+                                        return '<a  href="/">编辑</a>'
+                                    }
+                                }, {
+                                    "bSortable": false, "aTargets": [4], "mRender": function (data, type, full) {
+                                        return '<a  href="#">删除</a>'
+                                    }
+                                }, {sDefaultContent: "", aTargets: ["_all"]}]
+                            })
                         }
-                    },
-                    {
-                        'bSortable': false,
-                        "aTargets": [3],
-                        "mRender": function (data, type, full) {
-                            return '<a  href="#">删除</a>';
+                    })
+                }
+            });
+            $("#build").change(function () {
+                buildId = $(this).children("option:selected").val();
+                $("#floor").empty();
+                $.ajax({
+                    url: "/floorNo.do?buildId=" + buildId, dataType: "json", success: function (data) {
+                        var i;
+                        for (i = 0; i < data["no"].length; i++) {
+                            $("<option value='" + data["id"][i] + "'>" + data["no"][i] + "</option>").appendTo("#floor")
                         }
+                        floorId = $("#floor").children("option:selected").val();
+                        $("#floorId").val(floorId);
+                        $.ajax({
+                            url: "/listRoom.do?floorId=" + floorId, dataType: "json", success: function (data) {
+                                oTable.fnClearTable();
+                                oTable.fnAddData(data["aaData"], true);
+                                $("#total").text(data["total"]);
+                            }
+                        })
                     }
-                ]
+                })
             });
-
-            $('#sample_editable_1_new').click(function (e) {
-                $("#add-build").removeClass("hide");
-            });
-
-            function restoreRow(oTable, nRow) {
-                var aData = oTable.fnGetData(nRow);
-                var jqTds = $('>td', nRow);
-
-                for (var i = 0, iLen = jqTds.length; i < iLen; i++) {
-                    oTable.fnUpdate(aData[i], nRow, i, false);
+            $("#floor").change(function () {
+                floorId = $(this).children("option:selected").val();
+                if (floorId == undefined) {
+                    floorId = -1
                 }
-
-                oTable.fnDraw();
-            }
-
-            function editRow(oTable, nRow) {
-                var aData = oTable.fnGetData(nRow);
-                var jqTds = $('>td', nRow);
-                jqTds[0].innerHTML = '<input type="text" class="m-wrap small" value="' + aData[0] + '">';
-                jqTds[1].innerHTML = '<input type="text" class="m-wrap small" value="' + aData[1] + '">';
-                jqTds[2].innerHTML = '<input type="text" class="m-wrap small" value="' + aData[2] + '">';
-                jqTds[3].innerHTML = '<input type="text" class="m-wrap small" value="' + aData[3] + '">';
-                jqTds[4].innerHTML = '<a class="edit" href="">Save</a>';
-                jqTds[5].innerHTML = '<a class="cancel" href="">Cancel</a>';
-            }
-
-            function saveRow(oTable, nRow) {
-                var jqInputs = $('input', nRow);
-                oTable.fnUpdate(jqInputs[0].value, nRow, 0, false);
-                oTable.fnUpdate(jqInputs[1].value, nRow, 1, false);
-                oTable.fnUpdate(jqInputs[2].value, nRow, 2, false);
-                oTable.fnUpdate(jqInputs[3].value, nRow, 3, false);
-                oTable.fnUpdate('<a class="edit" href="">Edit</a>', nRow, 4, false);
-                oTable.fnUpdate('<a class="delete" href="">Delete</a>', nRow, 5, false);
-                oTable.fnDraw();
-            }
-
-            function cancelEditRow(oTable, nRow) {
-                var jqInputs = $('input', nRow);
-                oTable.fnUpdate(jqInputs[0].value, nRow, 0, false);
-                oTable.fnUpdate(jqInputs[1].value, nRow, 1, false);
-                oTable.fnUpdate(jqInputs[2].value, nRow, 2, false);
-                oTable.fnUpdate(jqInputs[3].value, nRow, 3, false);
-                oTable.fnUpdate('<a class="edit" href="">Edit</a>', nRow, 4, false);
-                oTable.fnDraw();
-            }
-
-            var ele = jQuery('#sample_editable_1_wrapper');
-            ele.find('.dataTables_filter input').addClass("m-wrap medium"); // modify table search input
-            ele.find('.dataTables_length select').addClass("m-wrap small"); // modify table per page dropdown
-            ele.find('.dataTables_length select').select2({
-                showSearchInput: false //hide search box with special css class
-            }); // initialzie select2 dropdown
-
-            var nEditing = null;
-
-
-            $('#sample_editable_1').find('a.delete').live('click', function (e) {
-                e.preventDefault();
-
-                if (confirm("Are you sure to delete this row ?") == false) {
-                    return;
-                }
-
-                var nRow = $(this).parents('tr')[0];
-                oTable.fnDeleteRow(nRow);
-                alert("Deleted! Do not forget to do some ajax to sync with backend :)");
+                $("#floorId").val(floorId);
+                $.ajax({
+                    url: "/listRoom.do?floorId=" + floorId, dataType: "json", success: function (data) {
+                        oTable.fnClearTable();
+                        oTable.fnAddData(data["aaData"], true)
+                    }
+                })
             });
-
-            $('#sample_editable_1').find('a.cancel').live('click', function (e) {
-                e.preventDefault();
-                if ($(this).attr("data-mode") == "new") {
-                    var nRow = $(this).parents('tr')[0];
-                    oTable.fnDeleteRow(nRow);
-                } else {
-                    restoreRow(oTable, nEditing);
-                    nEditing = null;
-                }
-            });
-
-            $('#sample_editable_1').find('a.edit').live('click', function (e) {
-                e.preventDefault();
-
-                /* Get the row as a parent of the link that was clicked on */
-                var nRow = $(this).parents('tr')[0];
-
-                if (nEditing !== null && nEditing != nRow) {
-                    /* Currently editing - but not this row - restore the old before continuing to edit mode */
-                    restoreRow(oTable, nEditing);
-                    editRow(oTable, nRow);
-                    nEditing = nRow;
-                } else if (nEditing == nRow && this.innerHTML == "Save") {
-                    /* Editing this row and want to save it */
-                    saveRow(oTable, nEditing);
-                    nEditing = null;
-                    alert("Updated! Do not forget to do some ajax to sync with backend :)");
-                } else {
-                    /* No edit in progress - let's start one */
-                    editRow(oTable, nRow);
-                    nEditing = nRow;
-                }
-            });
+            $("#sample_editable_1_new").click(function (e) {
+                $("#add-room").removeClass("hide")
+            })
         }
-    };
+    }
 }();

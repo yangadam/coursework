@@ -1,9 +1,9 @@
 package cn.edu.xmu.comm.action;
 
-import cn.edu.xmu.comm.commons.utils.Constants;
+import cn.edu.xmu.comm.commons.annotation.Required;
+import cn.edu.xmu.comm.commons.utils.SessionUtils;
 import cn.edu.xmu.comm.entity.Community;
 import cn.edu.xmu.comm.service.PropertyService;
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import org.springframework.stereotype.Controller;
 
@@ -26,8 +26,9 @@ public class BuildAddAction extends ActionSupport {
 
 
     @Override
+    @Required(name = "director,clerk")
     public String execute() {
-        Community community = (Community) ActionContext.getContext().getSession().get(Constants.COMMUNITY);
+        Community community = SessionUtils.getCommunity();
         propertyService.addBuilding(buildNo, floorCount, community);
         return SUCCESS;
     }

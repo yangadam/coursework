@@ -1,7 +1,8 @@
 package cn.edu.xmu.comm.entity;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
+import cn.edu.xmu.comm.commons.calc.impl.AreaManageFeeCalculator;
+import cn.edu.xmu.comm.commons.calc.impl.DateOverdueFineCalculator;
+import cn.edu.xmu.comm.commons.calc.impl.FixGarbageFeeCalculator;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -22,103 +23,86 @@ import java.util.Set;
 @Entity
 @DynamicInsert
 @DynamicUpdate
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@Table(
-        uniqueConstraints = {
-                @UniqueConstraint(columnNames = {"name"})
-        }
-)
+@Table(uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"name"})
+})
 public class Community extends Property {
 
+    //region Public Methods
+
     //region Instance Variables
-    /**
-     * 小区名称
-     */
-    @Column(nullable = false)
     private String name;
-
-    /**
-     * 物业主任
-     */
-    @OneToOne(targetEntity = Director.class)
-    @JoinColumn(name = "deirector_id")
     private Director director;
-
-    /**
-     * 包含的楼宇列表
-     */
-    @OneToMany(mappedBy = "community", targetEntity = Building.class,
-            cascade = CascadeType.ALL)
     private List<Building> buildingList = new ArrayList<Building>();
-
-    /**
-     * 包含的停车场
-     */
-    @OneToMany(mappedBy = "community", targetEntity = ParkingLot.class, cascade = CascadeType.ALL)
     private List<ParkingLot> parkingLotList = new ArrayList<ParkingLot>();
-
-    /**
-     * 管理的公维金
-     */
-    @OneToOne(targetEntity = PublicFund.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "public_fund_id")
     private PublicFund publicFund;
-
-    /**
-     * 计算费用的梯度
-     */
-    @OneToMany(targetEntity = Gradient.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "community_id", nullable = false)
     private Set<Gradient> gradients = new HashSet<Gradient>();
-
-    /**
-     * 物业管理费的计算方式，可能的方式，固定，按面积。。。
-     */
-    private String manageFeeType;
-
-    /**
-     * 物业管理费金额
-     */
-    private BigDecimal manageFee;
-
-    /**
-     * 垃圾处理费的计算方式，可能的方式，固定，按面积。。。
-     */
-    private String garbageFeeType;
-
-    /**
-     * 垃圾处理费金额
-     */
-    private BigDecimal garbageFee;
     //endregion
 
+    //region Constructors
+    private String manageFeeType;
+    private BigDecimal manageFee;
+    //endregion
+
+    //region Getters
+    private String garbageFeeType;
+    private BigDecimal garbageFee;
+    private String overDueFeeType;
+    private BigDecimal overDueFeeRate;
+
+    /**
+     * 无参构造函数
+     */
     Community() {
         super();
     }
 
+    /**
+     * 构造函数
+     *
+     * @param name 小区名
+     */
     public Community(String name) {
         super();
         this.name = name;
         this.unityCode = "";
+        this.garbageFee = BigDecimal.valueOf(4);
+        this.garbageFeeType = FixGarbageFeeCalculator.class.getSimpleName();
+        this.manageFee = BigDecimal.valueOf(2);
+        this.manageFeeType = AreaManageFeeCalculator.class.getSimpleName();
+        this.overDueFeeRate = BigDecimal.valueOf(0.5);
+        this.overDueFeeType = DateOverdueFineCalculator.class.getSimpleName();
     }
 
+    /**
+     * 获取祖先
+     *
+     * @return 祖先列表
+     */
     @Override
     public Property[] getParents() {
         return new Property[0];
     }
 
+    /**
+     * 获取祖先（包括自己）
+     *
+     * @return 祖先列表
+     */
     @Override
     public Property[] getThisAndParents() {
         return new Property[]{this};
     }
 
+    /**
+     * 获取小区
+     *
+     * @return 小区（this）
+     */
     @Override
     public Community getCommunity() {
         return this;
     }
-
-
-    //region Public Methods
 
     /**
      * 添加楼宇
@@ -132,43 +116,21 @@ public class Community extends Property {
         childCount++;
     }
 
+    /**
+     * 指定管理员
+     *
+     * @param director 管理员
+     */
     public void assignDirector(Director director) {
         this.director = director;
         director.setCommunity(this);
     }
 
     /**
-     * 批量添加楼宇
-     *
-     * @param buildings 楼宇列表
-     */
-    public void addBuildings(List<Building> buildings) {
-        for (Building building : buildings) {
-            building.setCommunity(this);
-        }
-        this.buildingList.addAll(buildings);
-    }
-
-    /**
-     * 通过楼宇号获取楼宇
-     *
-     * @param no 楼宇号
-     * @return 楼宇（未找到为空）
-     */
-    public Building getBuilding(Integer no) {
-        for (Building building : buildingList) {
-            if (building.getNo().equals(no)) {
-                return building;
-            }
-        }
-        return null;
-    }
-
-    /**
      * 通过停车场类型获取停车场
      *
      * @param type 停车场类型
-     * @return parkingLot
+     * @return 停车场
      */
     public ParkingLot getParkingLot(ParkingLot.ParkingLotStatus type) {
         for (ParkingLot parkingLot : parkingLotList) {
@@ -180,15 +142,28 @@ public class Community extends Property {
     }
     //endregion
 
-    //region Getters and Setters
+    /**
+     * 获得小区名称
+     *
+     * @return 小区名称
+     */
+    @Column(nullable = false)
     public String getName() {
         return name;
     }
 
+    //region Setters
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * 获得物业主任
+     *
+     * @return 物业主任
+     */
+    @OneToOne(targetEntity = Director.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "deirector_id")
     public Director getDirector() {
         return director;
     }
@@ -197,6 +172,13 @@ public class Community extends Property {
         this.director = director;
     }
 
+    /**
+     * 获得包含的楼宇列表
+     *
+     * @return 包含的楼宇列表
+     */
+    @OneToMany(mappedBy = "community", targetEntity = Building.class,
+            cascade = CascadeType.ALL)
     public List<Building> getBuildingList() {
         return buildingList;
     }
@@ -205,6 +187,12 @@ public class Community extends Property {
         this.buildingList = buildingList;
     }
 
+    /**
+     * 获得包含的停车场
+     *
+     * @return 包含的停车场
+     */
+    @OneToMany(mappedBy = "community", targetEntity = ParkingLot.class, cascade = CascadeType.ALL)
     public List<ParkingLot> getParkingLotList() {
         return parkingLotList;
     }
@@ -213,6 +201,13 @@ public class Community extends Property {
         this.parkingLotList = parkingLotList;
     }
 
+    /**
+     * 获得管理的公维金
+     *
+     * @return 管理的公维金
+     */
+    @OneToOne(targetEntity = PublicFund.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "public_fund_id")
     public PublicFund getPublicFund() {
         return publicFund;
     }
@@ -221,6 +216,13 @@ public class Community extends Property {
         this.publicFund = publicFund;
     }
 
+    /**
+     * 获得计算费用的梯度
+     *
+     * @return 计算费用的梯度
+     */
+    @OneToMany(targetEntity = Gradient.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "community_id", nullable = false)
     public Set<Gradient> getGradients() {
         return gradients;
     }
@@ -228,7 +230,13 @@ public class Community extends Property {
     public void setGradients(Set<Gradient> gradients) {
         this.gradients = gradients;
     }
+    //endregion
 
+    /**
+     * 获得物业管理费的计算方式
+     *
+     * @return 物业管理费的计算方式
+     */
     public String getManageFeeType() {
         return manageFeeType;
     }
@@ -237,6 +245,11 @@ public class Community extends Property {
         this.manageFeeType = manageFeeType;
     }
 
+    /**
+     * 获得物业管理费金额
+     *
+     * @return 物业管理费金额
+     */
     public BigDecimal getManageFee() {
         return manageFee;
     }
@@ -245,6 +258,11 @@ public class Community extends Property {
         this.manageFee = manageFee;
     }
 
+    /**
+     * 获得垃圾处理费的计算方式
+     *
+     * @return 垃圾处理费的计算方式
+     */
     public String getGarbageFeeType() {
         return garbageFeeType;
     }
@@ -253,6 +271,11 @@ public class Community extends Property {
         this.garbageFeeType = garbageFeeType;
     }
 
+    /**
+     * 获得垃圾处理费金额
+     *
+     * @return 垃圾处理费金额
+     */
     public BigDecimal getGarbageFee() {
         return garbageFee;
     }
@@ -260,18 +283,50 @@ public class Community extends Property {
     public void setGarbageFee(BigDecimal garbageFee) {
         this.garbageFee = garbageFee;
     }
+
+    /**
+     * 获得滞纳金的计算方式
+     *
+     * @return 滞纳金的计算方式
+     */
+    public String getOverDueFeeType() {
+        return overDueFeeType;
+    }
+
+    public void setOverDueFeeType(String overDueFeeType) {
+        this.overDueFeeType = overDueFeeType;
+    }
+
+    /**
+     * 获得滞纳金率
+     *
+     * @return 滞纳金率
+     */
+    public BigDecimal getOverDueFeeRate() {
+        return overDueFeeRate;
+    }
+
+    public void setOverDueFeeRate(BigDecimal overDueFeeRate) {
+        this.overDueFeeRate = overDueFeeRate;
+    }
     //endregion
 
+    //region Override Methods
 
+    /**
+     * 判断是否相等
+     *
+     * @param o 比较的对象
+     * @return 相等返回true
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Community)) return false;
-
         Community community = (Community) o;
-
-        if (name != null ? !name.equals(community.name) : community.name != null) return false;
-        return true;
+        return !(name != null ? !name.equals(community.name) : community.name != null);
     }
+    //endregion
+
 
 }

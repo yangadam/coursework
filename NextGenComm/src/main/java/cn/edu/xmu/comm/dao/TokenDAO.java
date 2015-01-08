@@ -1,28 +1,20 @@
 package cn.edu.xmu.comm.dao;
 
 import cn.edu.xmu.comm.commons.persistence.BaseDAO;
-import cn.edu.xmu.comm.commons.persistence.Parameter;
 import cn.edu.xmu.comm.entity.Token;
-import org.springframework.stereotype.Repository;
 
 /**
- * 临时密码DAO
+ * description
  *
  * @author Mengmeng Yang
- * @version 12/22/2014
+ * @version 1/8/2015 0008
  */
-@Repository
-public class TokenDAO extends BaseDAO<Token, String> {
-
+public interface TokenDAO extends BaseDAO<Token, String> {
     /**
      * 通过用户id删除token
      *
      * @param uid 用户id
-     * @return ？
+     * @return 受影响的记录数
      */
-    public int deleteByUid(Integer uid) {
-        String ql = "delete Token t where t.uid = :p1";
-        return createQuery(ql, new Parameter(uid)).executeUpdate();
-    }
-
+    int deleteByUid(Integer uid);
 }

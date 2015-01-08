@@ -20,6 +20,7 @@
         <slf4j.version>1.7.7</slf4j.version>
         <servlet.version>3.1.0</servlet.version>
         <fastjson.version>1.2.3</fastjson.version>
+        <javax.mail.version>1.4.7</javax.mail.version>
     </properties>
 
     <repositories>
@@ -193,6 +194,20 @@
             <version>2.2</version>
             <scope>provided</scope>
         </dependency>
+
+        <!--Java Mail-->
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>${javax.mail.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.activation</groupId>
+            <artifactId>activation</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+
 
     </dependencies>
 

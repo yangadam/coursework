@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+    <package name="director" namespace="/director" extends="default">
+
+        <interceptors>
+            <interceptor-stack name="permissionStack">
+                <interceptor-ref name="permission">
+                    <param name="permission">director</param>
+                </interceptor-ref>
+                <interceptor-ref name="defaultStack"/>
+            </interceptor-stack>
+        </interceptors>
+
+        <default-interceptor-ref name="permissionStack"/>
+
+        <global-results>
+            <result name="login" type="redirect">/rememberMeLogin.do</result>
+            <result name="unauthorized" type="redirect">/rememberMeLogin.do</result>
+        </global-results>
+
+        <action name="community" class="commInfoAction">
+            <result>/WEB-INF/jsp/director/comm.jsp</result>
+        </action>
+
+        <action name="commInfoUpdate" class="commInfoUpdateAction">
+            <result type="redirect">community.do</result>
+        </action>
+
+
+        <action name="building" class="directAction" method="director">
+            <result>/WEB-INF/jsp/director/build.jsp</result>
+        </action>
+
+        <action name="addBuild" class="buildAddAction">
+            <result type="redirect">building.do</result>
+            <result name="input">building.do</result>
+        </action>
+
+        <action name="room" class="directAction" method="director">
+            <result>/WEB-INF/jsp/director/room.jsp</result>
+        </action>
+
+        <action name="addRoom" class="roomAddAction">
+            <result type="redirect">room.do</result>
+            <result name="input">room.do</result>
+        </action>
+
+        <action name="staff" class="directAction" method="director">
+            <result>/WEB-INF/jsp/director/staff.jsp</result>
+        </action>
+
+        <action name="addStaff" class="staffAddAction">
+            <result type="redirect">staff.do</result>
+            <result name="input">staff.do</result>
+        </action>
+
+        <action name="parkingLot" class="directAction" method="director">
+            <result>/WEB-INF/jsp/director/parkplace.jsp</result>
+        </action>
+
+        <action name="addParkPlace" class="parkPlaceAddAction">
+            <result type="redirect">parkingLot.do</result>
+            <result name="input">parkingLot.do</result>
+        </action>
+
+    </package>
+
+</struts>

@@ -2,16 +2,30 @@ package cn.edu.xmu.comm.dao;
 
 import cn.edu.xmu.comm.commons.persistence.BaseDAO;
 import cn.edu.xmu.comm.entity.Car;
-import org.springframework.stereotype.Repository;
+import cn.edu.xmu.comm.entity.Community;
+
+import java.util.List;
 
 /**
- * 车辆DAO
- * Created by Roger on 2014/12/9 0009.
+ * description
  *
  * @author Mengmeng Yang
- * @version 2014-12-9
+ * @version 1/8/2015 0008
  */
-@Repository
-public class CarDAO extends BaseDAO<Car, String> {
+public interface CarDAO extends BaseDAO<Car, Integer> {
+    /**
+     * 获得所有车辆
+     *
+     * @param community 小区
+     * @return 车辆列表
+     */
+    List<Car> getAll(Community community);
 
+    /**
+     * 通过车牌号获取车辆
+     *
+     * @param license 车牌号
+     * @return 车辆
+     */
+    Car get(String license);
 }

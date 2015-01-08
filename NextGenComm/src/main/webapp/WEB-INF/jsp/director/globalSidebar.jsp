@@ -14,7 +14,7 @@
             </form>
         </li>
         <li class="start">
-            <a href="/manager.do">
+            <a href="/director.do">
                 <i class="icon-home"></i>
                 <span class="title">主页</span>
             </a>
@@ -28,6 +28,12 @@
             </a>
             <ul class="sub-menu">
                 <li class="">
+                    <a href="/director/community.do">
+                        <i class="icon-list-ul"></i>
+                        小区管理
+                    </a>
+                </li>
+                <li class="">
                     <a href="/director/building.do">
                         <i class="icon-list-ul"></i>
                         楼宇管理
@@ -39,11 +45,17 @@
                         房间管理
                     </a>
                 </li>
+                <li>
+                    <a href="/director/parkingLot.do">
+                        <i class="icon-list-ul"></i>
+                        停车场管理
+                    </a>
+                </li>
             </ul>
         </li>
 
         <li class="">
-            <a href="">
+            <a href="/director/staff.do">
                 <i class="icon-home"></i>
                 <span class="title">员工管理</span>
             </a>

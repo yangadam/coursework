@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+    <package name="cashier" namespace="/cashier" extends="default">
+        <interceptors>
+            <interceptor-stack name="permissionStack">
+                <interceptor-ref name="permission">
+                    <param name="permission">cashier</param>
+                </interceptor-ref>
+                <interceptor-ref name="defaultStack"/>
+            </interceptor-stack>
+        </interceptors>
+
+        <default-interceptor-ref name="permissionStack"/>
+
+        <global-results>
+            <result name="login" type="redirect">/rememberMeLogin.do</result>
+            <result name="unauthorized" type="redirect">/rememberMeLogin.do</result>
+        </global-results>
+
+        <action name="feeCharge">
+            <result>/WEB-INF/jsp/cashier/feeCharge.jsp</result>
+        </action>
+
+    </package>
+
+</struts>

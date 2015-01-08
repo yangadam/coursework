@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <!DOCTYPE html>
 <!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
@@ -15,11 +15,11 @@
     <link href="../../global/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
     <link href="../../global/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>
     <link href="../../global/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
-    <link href="../../global/css/style-metro.css" rel="stylesheet" type="text/css"/>
-    <link href="../../global/css/style.css" rel="stylesheet" type="text/css"/>
-    <link href="../../global/css/style-responsive.css" rel="stylesheet" type="text/css"/>
-    <link href="../../global/css/default.css" rel="stylesheet" type="text/css" id="style_color"/>
-    <link href="../../global/css/uniform.default.css" rel="stylesheet" type="text/css"/>
+    <link href="../../global/css/style-metro.min.css" rel="stylesheet" type="text/css"/>
+    <link href="../../global/css/style.min.css" rel="stylesheet" type="text/css"/>
+    <link href="../../global/css/style-responsive.min.css" rel="stylesheet" type="text/css"/>
+    <link href="../../global/css/default.min.css" rel="stylesheet" type="text/css" id="style_color"/>
+    <link href="../../global/css/uniform.default.min.css" rel="stylesheet" type="text/css"/>
 
     <link href="../../custom/css/login.css" rel="stylesheet" type="text/css"/>
     <link rel="shortcut icon" href="../../global/image/favicon.ico"/>

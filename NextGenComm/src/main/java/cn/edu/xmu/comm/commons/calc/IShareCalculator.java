@@ -7,13 +7,16 @@ import java.math.BigDecimal;
 
 /**
  * Created by Roger on 2014/12/8 0008.
+ *
+ * @author Mengmeng Yang
+ * @version 2014/12/8 0008
  */
 public interface IShareCalculator {
 
     /**
      * 计算公摊费用
      *
-     * @param room 房间
+     * @param room   房间
      * @param device 设备
      * @param amount 总费用
      * @return 分摊费用

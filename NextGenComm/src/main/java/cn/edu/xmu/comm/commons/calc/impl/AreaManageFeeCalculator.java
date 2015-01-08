@@ -29,7 +29,8 @@ public class AreaManageFeeCalculator implements IManageFeeCalculator {
     public BigDecimal calculate(Room room) {
         Community community = room.getCommunity();
         BigDecimal unitPrice = community.getManageFee();
-        return unitPrice.multiply(BigDecimal.valueOf(room.getHouseArea()));
+        BigDecimal result = unitPrice.multiply(BigDecimal.valueOf(room.getHouseArea()));
+        return result;
     }
 
 }

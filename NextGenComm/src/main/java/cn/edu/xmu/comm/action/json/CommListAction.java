@@ -28,9 +28,6 @@ public class CommListAction extends ActionSupport {
     @Override
     public String execute() throws Exception {
         List<Community> communities = propertyService.getAllCommunities();
-        data = new HashMap<String, Object>();
-        data.put("iTotalRecords", 1);
-        data.put("iTotalDisplayRecords", 1);
         JSONArray aaData = new JSONArray();
         int i = 1;
         for (Community community : communities) {
@@ -42,6 +39,7 @@ public class CommListAction extends ActionSupport {
             row.add(community.getId());
             aaData.add(row);
         }
+        data = new HashMap<String, Object>();
         data.put("aaData", aaData);
         return SUCCESS;
     }
@@ -53,4 +51,5 @@ public class CommListAction extends ActionSupport {
     public void setData(Map<String, Object> data) {
         this.data = data;
     }
+
 }

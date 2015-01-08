@@ -1,21 +1,18 @@
 package cn.edu.xmu.comm.dao;
 
 import cn.edu.xmu.comm.commons.persistence.BaseDAO;
-import cn.edu.xmu.comm.commons.persistence.Parameter;
 import cn.edu.xmu.comm.entity.Building;
 import cn.edu.xmu.comm.entity.Floor;
-import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
- * 楼层DAO
- * Created by Roger on 2014/12/9 0009.
+ * description
  *
  * @author Mengmeng Yang
- * @version 2014-12-22
+ * @version 1/8/2015 0008
  */
-@Repository
-public class FloorDAO extends BaseDAO<Floor, Integer> {
-
+public interface FloorDAO extends BaseDAO<Floor, Integer> {
     /**
      * 通过楼层号获取某小区楼宇
      *
@@ -23,9 +20,14 @@ public class FloorDAO extends BaseDAO<Floor, Integer> {
      * @param building 所属楼宇
      * @return 楼层
      */
-    public Floor getByNo(Integer no, Building building) {
-        String ql = "select f from Floor f where f.building = :p1 and f.no = :p2";
-        return getByQL(ql, new Parameter(building, no));
-    }
+    Floor getByNo(Integer no, Building building);
 
+    /**
+     * 通过楼宇id获得楼层
+     *
+     * @param buildId 楼宇id
+     * @return 楼层号列表
+     */
+    @SuppressWarnings("unchecked")
+    List<String[]> getIdsAndNos(Integer buildId);
 }
