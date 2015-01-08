@@ -2,7 +2,6 @@ package cn.edu.xmu.comm.dao.impl;
 
 import cn.edu.xmu.comm.commons.persistence.BaseDaoImpl;
 import cn.edu.xmu.comm.commons.persistence.Parameter;
-import cn.edu.xmu.comm.commons.utils.CastUtils;
 import cn.edu.xmu.comm.dao.DeviceDAO;
 import cn.edu.xmu.comm.entity.Community;
 import cn.edu.xmu.comm.entity.Device;
@@ -49,6 +48,12 @@ public class DeviceDaoImpl extends BaseDaoImpl<Device, Integer> implements Devic
         createQuery(ql, param).executeUpdate();
     }
 
+    /**
+     * 获取已录入设备
+     *
+     * @param community 小区
+     * @return 设备列表
+     */
     @Override
     public List<Device> getInputedDevice(Community community) {
         String ql = "select new Device(d.id, d.no, d.currentValue, d.lastValue, d.type) " +
@@ -56,35 +61,54 @@ public class DeviceDaoImpl extends BaseDaoImpl<Device, Integer> implements Devic
         return searchByQL(ql, new Parameter(community, false));
     }
 
+    /**
+     * 模糊搜索返回设备id，编号，类型，当前值
+     *
+     * @param term      关键字
+     * @param community 小区
+     * @return 设备id，编号，类型，当前值列表
+     */
     @Override
-    public Device get(Community community, String deviceNo) {
-        String ql = "select d from Device d where d.community = :p1 and d.deviceNo = :p2 and d.isCalculated = :p3";
-        return getByQL(ql, new Parameter(community, deviceNo, true));
-    }
-
-    @Override
+    @SuppressWarnings("unchecked")
     public List<String[]> buzzSearch(String term, Community community) {
         String ql = "select d.id, d.no, d.type, d.currentValue from Device d " +
                 "where d.community = :p1 and d.no like :p2 and d.isCalculated = :p3";
-        List list = getAttrsByQL(ql, new Parameter(community, '%' + term + '%', Boolean.TRUE));
-        return CastUtils.castToListStringArray(list);
+        return getAttrsByQL(ql, new Parameter(community, '%' + term + '%', Boolean.TRUE));
     }
 
+    /**
+     * 获取已录入设备数量
+     *
+     * @param community 小区
+     * @return 已录入设备数量
+     */
     @Override
     public Long getInputedCount(Community community) {
         String ql = "from Device d where d.community = :p1 and d.isCalculated = :p2";
         return count(ql, new Parameter(community, Boolean.FALSE));
     }
 
+    /**
+     * 获取未录入设备数量
+     *
+     * @param community 小区
+     * @return 未录入设备数量
+     */
     @Override
     public Long getCount(Community community) {
         String ql = "from Device d where d.community = :p1";
         return count(ql, new Parameter(community));
     }
 
+    /**
+     * 获得所有设备
+     *
+     * @param community 小区
+     * @return 设备列表
+     */
     @Override
     public List<Device> getAll(Community community) {
-        String ql = "from Device where community = :p1";
+        String ql = "select from Device d where d.community = :p1";
         return searchByQL(ql, new Parameter(community));
     }
 

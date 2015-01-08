@@ -10,7 +10,7 @@ import java.util.List;
  * description
  *
  * @author Mengmeng Yang
- * @version 1/5/2015 0005
+ * @version 1/8/2015 0008
  */
 public interface ParkingBillDAO extends BaseDAO<ParkingBill, Integer> {
     /**
@@ -39,7 +39,19 @@ public interface ParkingBillDAO extends BaseDAO<ParkingBill, Integer> {
      */
     boolean carHasUnfinishBill(Community community, String license);
 
-    List<ParkingBill> getAllUnfinishParkBill(Community community);
+    /**
+     * 获得所有未完成停车单
+     *
+     * @param community 小区
+     * @return 停车单列表
+     */
+    List<ParkingBill> getAllUnfinishedParkBill(Community community);
 
+    /**
+     * 获得所有已完成停车单
+     *
+     * @param community 小区
+     * @return 停车单列表
+     */
     List<ParkingBill> getAllFinishParkBill(Community community);
 }

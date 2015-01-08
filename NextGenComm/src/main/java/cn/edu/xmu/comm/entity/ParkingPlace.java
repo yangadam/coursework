@@ -1,104 +1,117 @@
 package cn.edu.xmu.comm.entity;
 
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
 import java.math.BigDecimal;
 
 /**
+ * 停车位实体
  * Created by Roger on 2014/12/7 0007.
  *
+ * @author Mengmeng Yang
+ * @version 2014-12-7
  */
 @Entity
 @DynamicInsert
 @DynamicUpdate
 public class ParkingPlace {
 
+    //region Update ParkPlace Status
+
     //region Instance Variables
-    /**
-     * 停车位主键
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    /**
-     * 所属停车场
-     */
-    @ManyToOne(fetch = FetchType.EAGER, targetEntity = ParkingLot.class)
-    @JoinColumn(name = "parkinglot_id", nullable = false)
     private ParkingLot parkingLot;
-
-    /**
-     * 停车位在小区位置
-     */
     private String position;
-
-    /**
-     * 每月管理费
-     */
-    private BigDecimal monthlyFee;
-
-    /**
-     * 车位状态，
-     * FREE:可用车位
-     * LOCK:已锁定车位
-     * RENT:已租用车位
-     */
-    private ParkPlaceStatus parkPlaceStatus;
     //endregion
 
+    //region Constructors
+    private BigDecimal monthlyFee;
+    private ParkingPlaceStatus status;
+
+    /**
+     * 无参构造函数
+     */
     public ParkingPlace() {
 
     }
+    //endregion
 
+    //region Getters and Setters
+
+    /**
+     * 构造函数
+     *
+     * @param position   位置
+     * @param parkingLot 停车场
+     * @param monthlyFee 每月费用
+     */
     public ParkingPlace(String position, ParkingLot parkingLot, BigDecimal monthlyFee) {
         this.position = position;
         this.parkingLot = parkingLot;
-        this.parkPlaceStatus = ParkPlaceStatus.FREE;
+        this.status = ParkingPlaceStatus.FREE;
         this.monthlyFee = monthlyFee;
     }
 
+    /**
+     * 构造函数
+     *
+     * @param position   位置
+     * @param parkingLot 停车场
+     */
     public ParkingPlace(String position, ParkingLot parkingLot) {
         this.position = position;
         this.parkingLot = parkingLot;
-        this.parkPlaceStatus = ParkPlaceStatus.FREE;
+        this.status = ParkingPlaceStatus.FREE;
         this.monthlyFee = BigDecimal.ZERO;
     }
 
-    //region Update ParkPlace Status
     /**
      * 锁定车位
      */
     public void lockParkPlace() {
-        setParkPlaceStatus(ParkPlaceStatus.LOCK);
+        setStatus(ParkingPlaceStatus.LOCK);
     }
 
     /**
      * 释放车位
      */
     public void freeParkPlace() {
-        setParkPlaceStatus(ParkPlaceStatus.FREE);
+        setStatus(ParkingPlaceStatus.FREE);
     }
 
     /**
      * 租用车位
      */
     public void rentParkPlace() {
-        setParkPlaceStatus(ParkPlaceStatus.RENT);
+        setStatus(ParkingPlaceStatus.RENT);
     }
     //endregion
 
-    //region Getters and Setters
+    /**
+     * 获得停车位主键
+     *
+     * @return 停车位主键
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer getId() {
         return id;
     }
 
+    //region Setters
     public void setId(Integer id) {
         this.id = id;
     }
 
+    /**
+     * 获得所属停车场
+     *
+     * @return 所属停车场
+     */
+    @ManyToOne(targetEntity = ParkingLot.class)
+    @JoinColumn(name = "parkinglot_id", nullable = false)
     public ParkingLot getParkingLot() {
         return parkingLot;
     }
@@ -107,14 +120,28 @@ public class ParkingPlace {
         this.parkingLot = parkingLot;
     }
 
+    /**
+     * 获得停车位在小区位置
+     *
+     * @return 停车位在小区位置
+     */
     public String getPosition() {
         return position;
     }
+    //endregion
+
+    //region InnerEnum
 
     public void setPosition(String position) {
         this.position = position;
     }
+    //endregion
 
+    /**
+     * 获得每月管理费
+     *
+     * @return 每月管理费
+     */
     public BigDecimal getMonthlyFee() {
         return monthlyFee;
     }
@@ -123,24 +150,28 @@ public class ParkingPlace {
         this.monthlyFee = monthlyFee;
     }
 
-    public ParkPlaceStatus getParkPlaceStatus() {
-        return parkPlaceStatus;
+    /**
+     * 获得车位状态
+     *
+     * @return 车位状态
+     * @see cn.edu.xmu.comm.entity.ParkingPlace.ParkingPlaceStatus
+     */
+    public ParkingPlaceStatus getStatus() {
+        return status;
     }
 
-    public void setParkPlaceStatus(ParkPlaceStatus parkPlaceStatus) {
-        this.parkPlaceStatus = parkPlaceStatus;
+    public void setStatus(ParkingPlaceStatus status) {
+        this.status = status;
     }
-//endregion
-
     /**
      * 车位状态
      */
-    public enum ParkPlaceStatus {
+    public enum ParkingPlaceStatus {
         FREE("可用车位"), LOCK("已锁定车位"), RENT("已租用车位");
 
         private String typeName;
 
-        private ParkPlaceStatus(String typeName) {
+        private ParkingPlaceStatus(String typeName) {
             this.typeName = typeName;
         }
 
@@ -149,4 +180,6 @@ public class ParkingPlace {
             return typeName;
         }
     }
+    //endregion
+
 }

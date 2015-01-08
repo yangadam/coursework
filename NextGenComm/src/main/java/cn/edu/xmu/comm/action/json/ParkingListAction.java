@@ -40,7 +40,7 @@ public class ParkingListAction extends ActionSupport {
             JSONArray row = new JSONArray();
             row.add(parkingPlace.getId());
             row.add(parkingPlace.getPosition());
-            row.add(parkingPlace.getParkPlaceStatus().toString());
+            row.add(parkingPlace.getStatus().toString());
             aaData.add(row);
         }
         data = new HashMap<String, Object>();

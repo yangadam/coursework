@@ -188,11 +188,9 @@
             if ($("#license").val() == "") {
                 return;
             }
-            license_u = $("#license").val();
+            var license_u = $("#license").val();
             license_u = encodeURI(encodeURI(license_u));
-            alert();
-            $.getJSON("tempParkingRegiste.do?license=" + license_u, function (data) {
-                alert();
+            $.getJSON("/tempParkingRegister.do?license=" + license_u, function (data) {
                 if (data["TYPE"] == "RENT") {
                     $("#isTemp").text($("#license").val() + "为小区内车辆");
                     $("#license").val("");

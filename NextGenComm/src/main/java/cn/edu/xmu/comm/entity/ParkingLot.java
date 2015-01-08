@@ -1,66 +1,35 @@
 package cn.edu.xmu.comm.entity;
 
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.OrderBy;
 import java.math.BigDecimal;
 import java.util.*;
 
 /**
+ * 停车场实体
  * Created by Roger on 2014/12/23 0023.
  */
 @Entity
 @DynamicInsert
 @DynamicUpdate
 public class ParkingLot {
-    //region Instance Variables
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    /**
-     * 停车场名称
-     */
-    private String name;
-    /**
-     * 包含的停车位
-     */
-    @OneToMany(mappedBy = "parkingLot", targetEntity = ParkingPlace.class, cascade = CascadeType.ALL)
-    private List<ParkingPlace> parkingPlaces = new ArrayList<ParkingPlace>();
-    /**
-     * 所属小区
-     */
-    @ManyToOne(targetEntity = Community.class, cascade = {CascadeType.MERGE})
-    @JoinColumn(name = "community_id", nullable = false)
-    private Community community;
-
-    /**
-     * 停车场类型，TEMP：临时车位停车场、RENT：租用车位停车场
-     */
-    private ParkingLotStatus type;
-    //endregion
 
     //region Public Methods
-    /**
-     * 停车场收费标准
-     */
-    private String feeType;
-    /**
-     * 梯度定义
-     */
-    @ElementCollection
-    @CollectionTable(
-            name = "parking_gradient",
-            joinColumns = @JoinColumn(name = "parklot_id")
-    )
-    @OrderBy
-    @Column(name = "gradient_value")
-    private SortedMap<Integer, BigDecimal> gradient = new TreeMap<Integer, BigDecimal>();
+
+    //region Private Instance Variables
+    private Integer id;
+    private String name;
+
     //endregion
 
-    //region Getters and Setters
+    //region Getters
+    private List<ParkingPlace> parkingPlaces = new ArrayList<ParkingPlace>();
+    private Community community;
+    private ParkingLotStatus type;
+    private String feeType;
+    private SortedMap<Integer, BigDecimal> gradient = new TreeMap<Integer, BigDecimal>();
 
     /**
      * 获取停车场的可用车位的大小
@@ -78,12 +47,9 @@ public class ParkingLot {
      * @return 停车费用
      */
     public BigDecimal calculateTempParkingFee(Integer parkingTime) {
-        //Iterator it = gradient.entrySet().iterator();
         BigDecimal parkingFee = BigDecimal.ZERO;
-
-        Iterator it = gradient.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry entry = (Map.Entry) it.next();
+        for (Object o : gradient.entrySet()) {
+            Map.Entry entry = (Map.Entry) o;
             if (parkingTime == entry.getKey()) {
                 parkingFee = (BigDecimal) entry.getValue();
                 break;
@@ -95,15 +61,29 @@ public class ParkingLot {
         }
         return parkingFee;
     }
+    //endregion
 
+    /**
+     * 获得停车场主键
+     *
+     * @return 停车场主键
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer getId() {
         return id;
     }
 
+    //region Setters
     public void setId(Integer id) {
         this.id = id;
     }
 
+    /**
+     * 获得停车场名称
+     *
+     * @return 停车场名称
+     */
     public String getName() {
         return name;
     }
@@ -112,6 +92,12 @@ public class ParkingLot {
         this.name = name;
     }
 
+    /**
+     * 获得包含的停车位
+     *
+     * @return 包含的停车位
+     */
+    @OneToMany(mappedBy = "parkingLot", targetEntity = ParkingPlace.class, cascade = CascadeType.ALL)
     public List<ParkingPlace> getParkingPlaces() {
         return parkingPlaces;
     }
@@ -120,14 +106,30 @@ public class ParkingLot {
         this.parkingPlaces = parkingPlaces;
     }
 
+    /**
+     * 获得所属小区
+     *
+     * @return 所属小区
+     */
+    @ManyToOne(targetEntity = Community.class, cascade = {CascadeType.MERGE})
+    @JoinColumn(name = "community_id", nullable = false)
     public Community getCommunity() {
         return community;
     }
+    //endregion
+
+    //region Inner Enum
 
     public void setCommunity(Community community) {
         this.community = community;
     }
+    //endregion
 
+    /**
+     * 获得停车场类型
+     *
+     * @return 停车场类型
+     */
     public ParkingLotStatus getType() {
         return type;
     }
@@ -136,6 +138,11 @@ public class ParkingLot {
         this.type = type;
     }
 
+    /**
+     * 获得停车场收费标准
+     *
+     * @return 停车场收费标准
+     */
     public String getFeeType() {
         return feeType;
     }
@@ -144,8 +151,18 @@ public class ParkingLot {
         this.feeType = feeType;
     }
 
-    //endregion
-
+    /**
+     * 获得梯度定义
+     *
+     * @return 梯度定义
+     */
+    @OrderBy
+    @Column(name = "gradient_value")
+    @ElementCollection
+    @CollectionTable(
+            name = "parking_gradient",
+            joinColumns = @JoinColumn(name = "parklot_id")
+    )
     public SortedMap<Integer, BigDecimal> getGradient() {
         return gradient;
     }
@@ -153,7 +170,6 @@ public class ParkingLot {
     public void setGradient(SortedMap<Integer, BigDecimal> gradient) {
         this.gradient = gradient;
     }
-
     /**
      * 停车场类型，TEMP：临时车位停车场、RENT：租用车位停车场
      */
@@ -171,4 +187,6 @@ public class ParkingLot {
             return typeName;
         }
     }
+    //endregion
+
 }

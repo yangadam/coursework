@@ -27,9 +27,15 @@ public class CommunityDaoImpl extends BaseDaoImpl<Community, Integer> implements
     @SuppressWarnings("unchecked")
     public List<String> getNames() {
         String ql = "select c.name from Community c where c.director is null";
-        return (List<String>) getAttrsByQL(ql, null);
+        return getAttrsByQL(ql, null);
     }
 
+    /**
+     * 通过名字查找小区
+     *
+     * @param commName 名字
+     * @return 小区
+     */
     @Override
     public Community getByName(String commName) {
         String ql = "select c from Community c where c.name = :p1";

@@ -29,7 +29,7 @@
             <interceptor-ref name="defaultStack"/>
         </action>
 
-        <action name="director" >
+        <action name="director">
             <result>/WEB-INF/jsp/director/home.jsp</result>
             <interceptor-ref name="permission">
                 <param name="permission">director</param>
@@ -37,7 +37,7 @@
             <interceptor-ref name="defaultStack"/>
         </action>
 
-        <action name="clerk" >
+        <action name="clerk">
             <result>/WEB-INF/jsp/clerk/home.jsp</result>
             <interceptor-ref name="permission">
                 <param name="permission">clerk</param>
@@ -45,7 +45,7 @@
             <interceptor-ref name="defaultStack"/>
         </action>
 
-        <action name="guard" >
+        <action name="guard">
             <result>/WEB-INF/jsp/guard/home.jsp</result>
             <interceptor-ref name="permission">
                 <param name="permission">guard</param>
@@ -54,7 +54,7 @@
         </action>
 
         <action name="cashier">
-            <result>/WEB-INF/jsp/guard/home.jsp</result>
+            <result>/WEB-INF/jsp/cashier/home.jsp</result>
             <interceptor-ref name="permission">
                 <param name="permission">cashier</param>
             </interceptor-ref>

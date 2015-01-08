@@ -2,10 +2,8 @@ package cn.edu.xmu.comm.action;
 
 import cn.edu.xmu.comm.commons.annotation.Required;
 import cn.edu.xmu.comm.commons.utils.Constants;
-import cn.edu.xmu.comm.entity.Community;
 import cn.edu.xmu.comm.entity.ParkingLot;
 import cn.edu.xmu.comm.service.ParkingService;
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import org.springframework.stereotype.Controller;
 
@@ -13,7 +11,8 @@ import javax.annotation.Resource;
 
 /**
  * Created by Roger on 2015/1/3 0003.
- * @
+ *
+ * @version 2015/1/3 0003
  */
 @Controller
 public class ParkPlaceAddAction extends ActionSupport {
@@ -29,7 +28,6 @@ public class ParkPlaceAddAction extends ActionSupport {
     @Required(name = "director,clerk")
     public String execute() {
         ParkingLot parkingLot;
-        Community community = (Community) ActionContext.getContext().getSession().get(Constants.COMMUNITY);
         if (type.equals(Constants.RENT))
             parkingLot = parkingService.getRentParkingLot();
         else

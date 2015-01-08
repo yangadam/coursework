@@ -43,6 +43,7 @@ public interface BaseDAO<T, I extends Serializable> {
      * 持久化实体对象列表，立即生成SQL语句
      *
      * @param entities 实体对象列表
+     * @return 实体的id列表
      */
     List<I> save(List<T> entities);
 

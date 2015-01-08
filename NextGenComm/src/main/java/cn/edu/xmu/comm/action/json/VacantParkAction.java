@@ -33,7 +33,7 @@ public class VacantParkAction extends ActionSupport {
             JSONArray row = new JSONArray();
             row.add(parkingPlace.getId());
             row.add(parkingPlace.getPosition());
-            row.add(parkingPlace.getParkPlaceStatus());
+            row.add(parkingPlace.getStatus());
             row.add(parkingPlace.getId());
             aaData.add(row);
         }

@@ -10,8 +10,14 @@ import java.util.List;
  * description
  *
  * @author Mengmeng Yang
- * @version 1/5/2015 0005
+ * @version 1/8/2015 0008
  */
 public interface GradientDAO extends BaseDAO<Gradient, Integer> {
+    /**
+     * 获取所有梯度
+     *
+     * @param community 小区
+     * @return 梯度列表
+     */
     List<Gradient> getAll(Community community);
 }

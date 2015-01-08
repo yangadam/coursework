@@ -12,7 +12,9 @@ public interface IOverdueFineCalculator {
 
     /**
      * 计算滞纳金
+     *
      * @param billItem 账单项
+     * @return 金额
      */
     BigDecimal calculate(BillItem billItem);
 }

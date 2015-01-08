@@ -90,7 +90,7 @@
             </interceptor-ref>
             <interceptor-ref name="basicStack"/>
         </action>
-        <action name="tempRegister" class="tempParkingRegisteAction">
+        <action name="tempParkingRegister" class="tempParkingRegisterAction">
             <interceptor-ref name="permission">
                 <param name="permission">guard</param>
             </interceptor-ref>
@@ -119,7 +119,18 @@
             <interceptor-ref name="basicStack"/>
         </action>
         <action name="listArrearage" class="arrearageListAction"/>
-        <action name="ownerBill" class="ownerBillAction"/>
+        <action name="ownerBill" class="ownerBillAction">
+            <interceptor-ref name="permission">
+                <param name="permission">cashier</param>
+            </interceptor-ref>
+            <interceptor-ref name="basicStack"/>
+        </action>
+        <action name="receiveMoney" class="receiveMoneyAction">
+            <interceptor-ref name="permission">
+                <param name="permission">cashier</param>
+            </interceptor-ref>
+            <interceptor-ref name="basicStack"/>
+        </action>
 
 
     </package>

@@ -1,8 +1,6 @@
 package cn.edu.xmu.comm.entity;
 
 import cn.edu.xmu.comm.commons.persistence.DataEntity;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -24,48 +22,32 @@ import java.math.BigDecimal;
 @DynamicUpdate
 public class PublicFund extends DataEntity {
 
-    //region Instance Variables
-    /**
-     * 公维金主键
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    /**
-     * 阈值
-     */
     private BigDecimal threshold;
-
-    /**
-     * 公维金账户
-     */
     private String account;
-
-    /**
-     * 余额
-     */
     private BigDecimal balance;
-    //公维金收入支出记录，定义一个类
+    private BigDecimal chargePerRoom;
 
     /**
-     * 每户需交费用
+     * 无参构造函数
      */
-    private BigDecimal chargePerRoom;
-    //endregion
-
     PublicFund() {
     }
 
+    /**
+     * 构造函数
+     *
+     * @param threshold     阈值
+     * @param account       账户
+     * @param balance       余额
+     * @param chargePerRoom 每户收费
+     */
     public PublicFund(BigDecimal threshold, String account, BigDecimal balance, BigDecimal chargePerRoom) {
         this.threshold = threshold;
         this.account = account;
         this.balance = balance;
         this.chargePerRoom = chargePerRoom;
     }
-
-
-    //region Public Methods
 
     /**
      * 是否需要交公维金
@@ -75,47 +57,72 @@ public class PublicFund extends DataEntity {
     public Boolean isNeeded() {
         return balance.compareTo(threshold) == -1;
     }
-    //endregion
 
-    //region Getters and Setters
+    /**
+     * 获得公维金主键
+     *
+     * @return 公维金主键
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer getId() {
         return id;
+    }
+
+    /**
+     * 获得阈值
+     *
+     * @return 阈值
+     */
+    public BigDecimal getThreshold() {
+        return threshold;
+    }
+
+    /**
+     * 获得公维金账户
+     *
+     * @return 公维金账户
+     */
+    public String getAccount() {
+        return account;
+    }
+
+    /**
+     * 获得余额
+     *
+     * @return 余额
+     */
+    public BigDecimal getBalance() {
+        return balance;
+    }
+
+    /**
+     * 获得每户需交费用
+     *
+     * @return 每户需交费用
+     */
+    public BigDecimal getChargePerRoom() {
+        return chargePerRoom;
     }
 
     public void setId(Integer id) {
         this.id = id;
     }
 
-    public BigDecimal getThreshold() {
-        return threshold;
-    }
-
     public void setThreshold(BigDecimal threshold) {
         this.threshold = threshold;
-    }
-
-    public String getAccount() {
-        return account;
     }
 
     public void setAccount(String account) {
         this.account = account;
     }
 
-    public BigDecimal getBalance() {
-        return balance;
-    }
-
     public void setBalance(BigDecimal balance) {
         this.balance = balance;
-    }
-
-    public BigDecimal getChargePerRoom() {
-        return chargePerRoom;
     }
 
     public void setChargePerRoom(BigDecimal chargePerRoom) {
         this.chargePerRoom = chargePerRoom;
     }
-    //endregion
+
 }

@@ -159,8 +159,10 @@
         $.getJSON("/count.do", function (data) {
             if (data["inputCount"] != data["total"]) {
                 $("#calc").attr({"disabled": "disabled"});
+                $("#inputValue").removeAttr("disabled");
             } else {
                 $("#calc").removeAttr("disabled");
+                $("#inputValue").attr({"disabled": "disabled"});
             }
             $("#count").text("  " + data["inputCount"] + "/" + data["total"]);
         });

@@ -11,6 +11,7 @@ import java.util.List;
 
 /**
  * Created by Roger on 2014/12/23 0023.
+ * @version 2014/12/23 0008
  */
 @Repository
 public class ParkingBillDaoImpl extends BaseDaoImpl<ParkingBill, Integer> implements ParkingBillDAO {
@@ -23,7 +24,7 @@ public class ParkingBillDaoImpl extends BaseDaoImpl<ParkingBill, Integer> implem
      */
     @Override
     public Integer getSizeOfUnfinishedBill(Community community) {
-        String hql = "from ParkingBill where community = :p1 and endTime is null";
+        String hql = "select p from ParkingBill p where p.community = :p1 and p.endTime is null";
         return count(hql, new Parameter(community)).intValue();
     }
 
@@ -36,7 +37,7 @@ public class ParkingBillDaoImpl extends BaseDaoImpl<ParkingBill, Integer> implem
      */
     @Override
     public ParkingBill getUnfinishedParkBill(Community community, String license) {
-        String hql = "from ParkingBill where community = :p1 and license = :p2 and endTime is null";
+        String hql = "select p from ParkingBill p where p.community = :p1 and p.license = :p2 and p.endTime is null";
         return getByQL(hql, new Parameter(community, license));
     }
 
@@ -49,18 +50,32 @@ public class ParkingBillDaoImpl extends BaseDaoImpl<ParkingBill, Integer> implem
      */
     @Override
     public boolean carHasUnfinishBill(Community community, String license) {
-        String hql = "from ParkingBill where community = :p1 and license = :p2 and endTime is null";
+        String hql = "select p from ParkingBill p where p.community = :p1 and p.license = :p2 and p.endTime is null";
         return count(hql, new Parameter(community, license)) > 0;
     }
 
+    /**
+     * 获得所有未完成停车单
+     *
+     * @param community 小区
+     * @return 停车单列表
+     */
     @Override
-    public List<ParkingBill> getAllUnfinishParkBill(Community community) {
-        return searchByQL("from ParkingBill where community = :p1 and endTime is null", new Parameter(community));
+    public List<ParkingBill> getAllUnfinishedParkBill(Community community) {
+        String ql = "select p from ParkingBill p where p.community = :p1 and p.endTime is null";
+        return searchByQL(ql, new Parameter(community));
     }
 
+    /**
+     * 获得所有已完成停车单
+     *
+     * @param community 小区
+     * @return 停车单列表
+     */
     @Override
     public List<ParkingBill> getAllFinishParkBill(Community community) {
-        return searchByQL("from ParkingBill where community = :p1 and endTime is not null", new Parameter(community));
+        String ql = "select p from ParkingBill p from where p.community = :p1 and p.endTime is not null";
+        return searchByQL(ql, new Parameter(community));
     }
 
 }

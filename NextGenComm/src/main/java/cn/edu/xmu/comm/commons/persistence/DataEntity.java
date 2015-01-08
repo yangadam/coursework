@@ -4,24 +4,20 @@ import javax.persistence.*;
 import java.util.Date;
 
 /**
- * Created by Roger on 2014/12/8 0008.
+ * 分页对象
+ *
+ * @author Mengmeng Yang
+ * @version 12/8/2014
  */
 @MappedSuperclass
 public class DataEntity {
 
     //region Instance Variables
-    /**
-     * 创建日期
-     */
-    @Temporal(TemporalType.DATE)
     private Date createDate;
-
-    /**
-     * 最后更新日期
-     */
-    @Temporal(TemporalType.DATE)
     private Date updateDate;
     //endregion
+
+    //region Getters
 
     //region Lifecircle Methods
     @PrePersist
@@ -36,15 +32,28 @@ public class DataEntity {
     }
     //endregion
 
-    //region Getters and Setters
+    /**
+     * 获得创建日期
+     *
+     * @return 创建日期
+     */
+    @Temporal(TemporalType.DATE)
     public Date getCreateDate() {
         return createDate;
     }
 
+    //region Setters
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
+    //endregion
 
+    /**
+     * 获得最后更新日期
+     *
+     * @return 最后更新日期
+     */
+    @Temporal(TemporalType.DATE)
     public Date getUpdateDate() {
         return updateDate;
     }

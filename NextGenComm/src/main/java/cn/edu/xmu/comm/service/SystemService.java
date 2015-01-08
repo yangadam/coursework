@@ -6,10 +6,10 @@ import cn.edu.xmu.comm.entity.User;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * description
+ * 系统模块Service接口
  *
  * @author Mengmeng Yang
- * @version 1/5/2015 0005
+ * @version 1/8/2015 0008
  */
 public interface SystemService {
     /**

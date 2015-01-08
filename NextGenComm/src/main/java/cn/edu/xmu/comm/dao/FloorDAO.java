@@ -10,7 +10,7 @@ import java.util.List;
  * description
  *
  * @author Mengmeng Yang
- * @version 1/5/2015 0005
+ * @version 1/8/2015 0008
  */
 public interface FloorDAO extends BaseDAO<Floor, Integer> {
     /**
@@ -23,8 +23,10 @@ public interface FloorDAO extends BaseDAO<Floor, Integer> {
     Floor getByNo(Integer no, Building building);
 
     /**
-     * @param buildId
-     * @return
+     * 通过楼宇id获得楼层
+     *
+     * @param buildId 楼宇id
+     * @return 楼层号列表
      */
     @SuppressWarnings("unchecked")
     List<String[]> getIdsAndNos(Integer buildId);

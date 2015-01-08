@@ -2,7 +2,10 @@ package cn.edu.xmu.comm.entity;
 
 import cn.edu.xmu.comm.commons.exception.DeviceException;
 import cn.edu.xmu.comm.commons.persistence.DataEntity;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -21,102 +24,37 @@ import java.util.TreeMap;
 @Entity
 @DynamicInsert
 @DynamicUpdate
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@Table(
-        uniqueConstraints = {
-                @UniqueConstraint(columnNames = {"no"})
-        }
-)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Table(uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"no"})
+})
 public class Device extends DataEntity {
 
-    //region Constants
-    /**
-     * 设备类型
-     */
-    public static final String WATER = "水费";
-    public static final String ELECTRICITY = "电费";
-    //endregion
+    //region Public Methods;
 
-    //region Instance Variables
-    /**
-     * 主键
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //region Private Instance Variables
     private Integer id;
-
-    /**
-     * 设备号
-     */
     private String no;
-
-    /**
-     * 所属小区
-     */
-    @ManyToOne(targetEntity = Community.class)
-    @JoinColumn(name = "community_id", nullable = false)
     private Community community;
-
-    /**
-     * 拥有该设备的房产
-     */
-    @ManyToOne(targetEntity = Property.class)
-    @JoinColumn(name = "property_id", nullable = false)
     private Property property;
-
-    /**
-     * 梯度定义
-     */
-    @ElementCollection
-    @CollectionTable(
-            name = "device_value",
-            joinColumns = @JoinColumn(name = "device_id")
-    )
-    @OrderBy
-    @Column(name = "device_values")
     private SortedMap<Date, Double> values = new TreeMap<Date, Double>();
-
-    /**
-     * 类型
-     *
-     * @see cn.edu.xmu.comm.entity.Device.DeviceType
-     */
-    private DeviceType type;
-
-    /**
-     * 梯度
-     */
-    @ManyToOne(targetEntity = Gradient.class)
-    @JoinColumn(name = "gradient_id")
-    private Gradient gradient = null;
-
-    /**
-     * 公摊类型
-     */
-    private String shareType;
-
-    /**
-     * 当前读数
-     */
-    private Double currentValue;
-
-    /**
-     * 上次读数
-     */
-    private Double lastValue;
-
-    private Boolean isCalculated;
     //endregion
 
-    Device() {
-    }
+    //region Constructors
+    private DeviceType type;
+    private Gradient gradient = null;
+    private String shareType;
+    //endregion
 
-    public Device(Integer id, String no, Double currentValue, Double lastValue, DeviceType type) {
-        this.id = id;
-        this.no = no;
-        this.currentValue = currentValue;
-        this.lastValue = lastValue;
-        this.type = type;
+    //region Getters
+    private Double currentValue;
+    private Double lastValue;
+    private Boolean isCalculated;
+
+    /**
+     * 无参构造函数
+     */
+    Device() {
     }
 
     /**
@@ -153,8 +91,6 @@ public class Device extends DataEntity {
         property.addDevice(this);
     }
 
-    //region Public Methods;
-
     /**
      * 获取本月用量
      *
@@ -168,16 +104,15 @@ public class Device extends DataEntity {
      * 计算本月费用
      *
      * @return 费用
+     * @throws DeviceException 设备异常
+     * @see cn.edu.xmu.comm.commons.exception.DeviceException
      */
     public BigDecimal calculate() throws DeviceException {
-//        if (isCalculated)
-//            return BigDecimal.ZERO;
-        //throw new DeviceException("未录入本月的读数");
         BigDecimal totalAmount = BigDecimal.ZERO;
         BigDecimal amount;
         Double lastValue = 0.0;
         Double curValue;
-        for (Object o : getGradientMap().entrySet()) {
+        for (Object o : gradient.getGradient().entrySet()) {
             Map.Entry entry = (Map.Entry) o;
             if (getUsage().compareTo((Double) entry.getKey()) == 1) {
                 curValue = (Double) entry.getKey() - lastValue;
@@ -191,15 +126,8 @@ public class Device extends DataEntity {
             }
             lastValue = (Double) entry.getKey();
         }
-        setIsCalculatedTrue();
+        isCalculated = Boolean.TRUE;
         return totalAmount;
-    }
-
-    /**
-     * 获取最后一次的录入时间
-     */
-    public Date getLastTime() {
-        return values.lastKey();
     }
 
     /**
@@ -207,6 +135,8 @@ public class Device extends DataEntity {
      *
      * @param date  日期
      * @param value 读数
+     * @throws DeviceException 设备异常
+     * @see cn.edu.xmu.comm.commons.exception.DeviceException
      */
     public void addValue(Date date, Double value) throws DeviceException {
         if (!isCalculated)
@@ -220,21 +150,7 @@ public class Device extends DataEntity {
         lastValue = currentValue;
         currentValue = value;
         getValues().put(date, value);
-        setIsCalculatedFalse();
-    }
-
-    /**
-     * 删除最后一次时间
-     */
-    public void delValue() throws DeviceException {
-        if (values.size() == 1)
-            throw new DeviceException("该表中已无数据");
-        currentValue = lastValue;
-        values.remove(values.lastKey());
-        if (values.size() == 1)
-            lastValue = values.get(values.lastKey());
-        else
-            lastValue = values.get(lastButOneKey(values));
+        isCalculated = Boolean.TRUE;
     }
 
     /**
@@ -242,7 +158,6 @@ public class Device extends DataEntity {
      *
      * @param date  日期
      * @param value 读数
-     * @throws DeviceException
      */
     public void updateValue(Date date, Double value) {
         // 若新值放入Map中仍date递增，value递增，视为有效插入
@@ -262,6 +177,183 @@ public class Device extends DataEntity {
         Date date = values.lastKey();
         updateValue(date, value);
     }
+    //endregion
+
+    /**
+     * 获得设备主键
+     *
+     * @return 设备主键
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Integer getId() {
+        return id;
+    }
+
+    //region Setters
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    /**
+     * 获得设备号
+     *
+     * @return 设备号
+     */
+    public String getNo() {
+        return no;
+    }
+
+    public void setNo(String no) {
+        this.no = no;
+    }
+
+    /**
+     * 获得所属小区
+     *
+     * @return 所属小区
+     */
+    @ManyToOne(targetEntity = Community.class)
+    @JoinColumn(name = "community_id", nullable = false)
+    public Community getCommunity() {
+        return community;
+    }
+
+    public void setCommunity(Community community) {
+        this.community = community;
+    }
+
+    /**
+     * 获得拥有该设备的房产
+     *
+     * @return 拥有该设备的房产
+     */
+    @ManyToOne(targetEntity = Property.class)
+    @JoinColumn(name = "property_id", nullable = false)
+    public Property getProperty() {
+        return property;
+    }
+
+    public void setProperty(Property property) {
+        this.property = property;
+    }
+
+    /**
+     * 获得设备读数
+     *
+     * @return 设备读数
+     */
+    @ElementCollection
+    @CollectionTable(
+            name = "device_value",
+            joinColumns = @JoinColumn(name = "device_id")
+    )
+    @OrderBy
+    @Column(name = "device_values")
+    public SortedMap<Date, Double> getValues() {
+        return values;
+    }
+
+    public void setValues(SortedMap<Date, Double> values) {
+        this.values = values;
+    }
+
+    /**
+     * 获得设备类型
+     *
+     * @return 设备类型
+     * @see cn.edu.xmu.comm.entity.Device.DeviceType
+     */
+    public DeviceType getType() {
+        return type;
+    }
+    //endregion
+
+    //region Inner Enum
+
+    public void setType(DeviceType type) {
+        this.type = type;
+    }
+    //endregion
+
+    /**
+     * 获得梯度
+     *
+     * @return 梯度
+     */
+    @ManyToOne(targetEntity = Gradient.class)
+    @JoinColumn(name = "gradient_id")
+    public Gradient getGradient() {
+        return gradient;
+    }
+
+    public void setGradient(Gradient gradient) {
+        this.gradient = gradient;
+    }
+
+    /**
+     * 获得公摊类型
+     *
+     * @return 公摊类型
+     */
+    public String getShareType() {
+        return shareType;
+    }
+
+    public void setShareType(String shareType) {
+        this.shareType = shareType;
+    }
+
+    /**
+     * 获得当前读数
+     *
+     * @return 当前读数
+     */
+    public Double getCurrentValue() {
+        return currentValue;
+    }
+
+    public void setCurrentValue(Double currentValue) {
+        this.currentValue = currentValue;
+    }
+
+    /**
+     * 获得上次读数
+     *
+     * @return 上次读数
+     */
+    public Double getLastValue() {
+        return lastValue;
+    }
+
+    public void setLastValue(Double lastValue) {
+        this.lastValue = lastValue;
+    }
+
+    /**
+     * 获得有无计算过
+     *
+     * @return 已经计算返回true
+     */
+    public Boolean getIsCalculated() {
+        return isCalculated;
+    }
+
+    public void setIsCalculated(Boolean isCalculated) {
+        this.isCalculated = isCalculated;
+    }
+
+    /**
+     * 获取最后一次的录入时间
+     *
+     * @return 最后一次的录入时间
+     */
+    private Date getLastTime() {
+        return values.lastKey();
+    }
+    //endregion
+
+    //region Private Methods
 
     /**
      * 判断(date, value)插入后values是否date递增，value递增
@@ -271,7 +363,7 @@ public class Device extends DataEntity {
      * @param value 读数
      * @return 是否符合要求
      */
-    public boolean isValueValidate(Date date, Double value) {
+    private boolean isValueValidate(Date date, Double value) {
         return orderOfDates(date) == orderOfValues(value);
     }
 
@@ -281,7 +373,7 @@ public class Device extends DataEntity {
      * @param date 日期
      * @return 位置
      */
-    public int orderOfDates(Date date) {
+    private int orderOfDates(Date date) {
         int order = 0;
         for (Date d : values.keySet()) {
             if (date.compareTo(d) <= 0)
@@ -297,7 +389,7 @@ public class Device extends DataEntity {
      * @param value 日期
      * @return 位置
      */
-    public int orderOfValues(Double value) {
+    private int orderOfValues(Double value) {
         int order = 0;
         for (Double v : values.values()) {
             if (value.compareTo(v) <= 0)
@@ -306,141 +398,6 @@ public class Device extends DataEntity {
         }
         return order;
     }
-
-    /**
-     * 返回一个sortedMap倒数第二个键(如果有的话)
-     *
-     * @param sortedMap 排序的映射
-     * @return 倒数第二个键 否则返回null
-     */
-    private Date lastButOneKey(SortedMap<Date, Double> sortedMap) {
-        if (sortedMap.size() <= 1)
-            return null;
-        Date lastDate = sortedMap.lastKey();
-        Double lastValue = sortedMap.get(sortedMap.lastKey());
-        sortedMap.remove(lastDate);
-        Date result = values.lastKey();
-        sortedMap.put(lastDate, lastValue);
-        return result;
-    }
-    //endregion
-
-    //region Getters and Setters
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getNo() {
-        return no;
-    }
-
-    public void setNo(String no) {
-        this.no = no;
-    }
-
-    public Community getCommunity() {
-        return community;
-    }
-
-    public void setCommunity(Community community) {
-        this.community = community;
-    }
-
-    public Property getProperty() {
-        return property;
-    }
-
-    public void setProperty(Property property) {
-        this.property = property;
-    }
-
-    public DeviceType getType() {
-        return type;
-    }
-
-    public void setType(DeviceType type) {
-        this.type = type;
-    }
-
-    public Gradient getGradient() {
-        return gradient;
-    }
-
-
-    public void setGradient(Gradient gradient) {
-        this.gradient = gradient;
-    }
-
-    public Map<Double, BigDecimal> getGradientMap() {
-        return gradient.getGradient();
-    }
-
-    public String getShareType() {
-        return shareType;
-    }
-
-    public void setShareType(String shareType) {
-        this.shareType = shareType;
-    }
-
-    public Double getCurrentValue() {
-        return currentValue;
-    }
-
-    /**
-     * 设置当前读数
-     *
-     * @param currentValue 当前读数
-     *                     保护当前读数和上月读数只能通过添加值和删除值实现
-     */
-    private void setCurrentValue(Double currentValue) {
-        this.currentValue = currentValue;
-    }
-
-    public Double getLastValue() {
-        return lastValue;
-    }
-
-    /**
-     * 设置上次读数
-     *
-     * @param lastValue 上次读数
-     *                  保护当前读数和上月读数只能通过添加值和删除值实现
-     */
-    private void setLastValue(Double lastValue) {
-        this.lastValue = lastValue;
-    }
-
-    public SortedMap<Date, Double> getValues() {
-        return values;
-    }
-
-    /**
-     * 设置读数表
-     *
-     * @param values 读数表
-     *               保护当前读数和上月读数只能通过添加值和删除值实现
-     */
-    public void setValues(SortedMap<Date, Double> values) {
-        this.values = values;
-    }
-
-    public Boolean getIsCalculated() {
-        return isCalculated;
-    }
-
-    private void setIsCalculatedTrue() {
-        this.isCalculated = true;
-    }
-
-    private void setIsCalculatedFalse() {
-        this.isCalculated = false;
-    }
-    //endregion
 
     /**
      * 设备类型
@@ -466,5 +423,6 @@ public class Device extends DataEntity {
         }
 
     }
+    //endregion
 
 }

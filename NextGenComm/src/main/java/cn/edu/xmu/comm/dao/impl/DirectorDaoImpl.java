@@ -13,6 +13,4 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class DirectorDaoImpl extends BaseDaoImpl<Director, Integer> implements DirectorDAO {
-
-
 }

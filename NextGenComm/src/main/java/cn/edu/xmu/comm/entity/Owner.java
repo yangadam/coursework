@@ -2,11 +2,10 @@ package cn.edu.xmu.comm.entity;
 
 import cn.edu.xmu.comm.commons.exception.DeviceException;
 import cn.edu.xmu.comm.commons.exception.DifferentCommunityException;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -25,57 +24,59 @@ import java.util.Set;
 @DynamicUpdate
 public class Owner extends User {
 
+    //region Public Methods
+
     //region Instance Variables
-    /**
-     * 所属小区
-     */
-    @ManyToOne(targetEntity = Community.class)
-    @JoinColumn(name = "community_id", nullable = false)
     private Community community;
-
-    /**
-     * 拥有的房间列表
-     */
-    @OneToMany(targetEntity = Room.class, mappedBy = "owner",
-            cascade = {CascadeType.MERGE})
     private Set<Room> rooms = new HashSet<Room>();
-
-    /**
-     * 拥有的车辆列表
-     */
-    @OneToMany(targetEntity = Car.class, mappedBy = "owner", cascade = CascadeType.ALL)
     private Set<Car> cars = new HashSet<Car>();
-
-    /**
-     * 未支付的账单项列表
-     * （注意：公维金是单独交的，但是一起算，交到不同的账户。）
-     */
-    @OneToMany(targetEntity = BillItem.class, mappedBy = "owner", cascade = CascadeType.ALL)
     private List<BillItem> unpaidBills = new ArrayList<BillItem>();
-
-    /**
-     * 支付
-     */
-    @OneToMany(targetEntity = Payment.class, mappedBy = "paidBy", cascade = CascadeType.ALL)
     private List<Payment> payments = new ArrayList<Payment>();
-
     //endregion
 
+    //region Constructors
+
+    /**
+     * 无参构造函数
+     */
     Owner() {
     }
 
+    /**
+     * 构造函数
+     *
+     * @param username    用户名
+     * @param password    密码
+     * @param name        姓名
+     * @param phoneNumber 电话
+     * @param email       邮箱
+     * @param community   小区
+     */
     public Owner(String username, String password, String name, String phoneNumber, String email, Community community) {
         super(username, password, name, phoneNumber, email);
         this.community = community;
     }
 
+    /**
+     * 构造函数
+     *
+     * @param username    用户名
+     * @param password    密码
+     * @param name        姓名
+     * @param phoneNumber 电话
+     * @param email       邮箱
+     * @param room        房间
+     * @throws DifferentCommunityException 小区不同异常
+     * @see cn.edu.xmu.comm.commons.exception.DifferentCommunityException
+     */
     public Owner(String username, String password, String name, String phoneNumber, String email, Room room)
             throws DifferentCommunityException {
         super(username, password, name, phoneNumber, email);
         addRoom(room);
     }
+    //endregion
 
-    //region Public Methods
+    //region Getters
 
     /**
      * 添加房间
@@ -94,25 +95,10 @@ public class Owner extends User {
     }
 
     /**
-     * 批量添加房间
-     *
-     * @param rooms 房间列表
-     * @throws DifferentCommunityException 小区不同
-     * @see DifferentCommunityException
-     */
-    public void addRoomBatch(List<Room> rooms) throws DifferentCommunityException {
-        for (Room room : rooms) {
-            if (community != null && !community.equals(room.getCommunity())) {
-                throw new DifferentCommunityException("添加了不同的小区");
-            }
-            community = room.getCommunity();
-            room.setOwner(this);
-        }
-        this.rooms.addAll(rooms);
-    }
-
-    /**
      * 生成账单
+     *
+     * @throws DeviceException 设备异常
+     * @see cn.edu.xmu.comm.commons.exception.DeviceException
      */
     public void generateBill() throws DeviceException {
 
@@ -160,49 +146,12 @@ public class Owner extends User {
         }
         return resultBillItems;
     }
-    //endregion
 
-    //region Getters and Setters
-    @Override
-    public Community getCommunity() {
-        return community;
-    }
-
-    public void setCommunity(Community community) {
-        this.community = community;
-    }
-
-    public Set<Room> getRooms() {
-        return rooms;
-    }
-
-    public void setRooms(Set<Room> rooms) {
-        this.rooms = rooms;
-    }
-
-    public Set<Car> getCars() {
-        return cars;
-    }
-
-    public void setCars(Set<Car> cars) {
-        this.cars = cars;
-    }
-
-    public List<BillItem> getUnpaidBills() {
-        for (BillItem billItem : unpaidBills) {
-            billItem.updateOverDueFee();
-        }
-        return unpaidBills;
-    }
-
-    public List<Payment> getPayments() {
-        return payments;
-    }
-
-    public void setPayments(List<Payment> payments) {
-        this.payments = payments;
-    }
-
+    /**
+     * 获得代缴总金额
+     *
+     * @return 总额
+     */
     public BigDecimal getTotal() {
         BigDecimal total = BigDecimal.ZERO;
         for (BillItem billItem : unpaidBills) {
@@ -211,13 +160,79 @@ public class Owner extends User {
         }
         return total;
     }
+    //endregion
 
-    public Payment makePayment(Staff recieveBy) {
-        Payment payment = new Payment(this, recieveBy);
-        this.payments.add(payment);
-        return payment;
+    /**
+     * 获得所属小区
+     *
+     * @return 所属小区
+     */
+    @Override
+    @ManyToOne(targetEntity = Community.class)
+    @JoinColumn(name = "community_id", nullable = false)
+    public Community getCommunity() {
+        return community;
     }
 
+    //region Setters
+    public void setCommunity(Community community) {
+        this.community = community;
+    }
+
+    /**
+     * 获得拥有的房间列表
+     *
+     * @return 房间列表
+     */
+    @OneToMany(targetEntity = Room.class, mappedBy = "owner",
+            cascade = {CascadeType.MERGE})
+    public Set<Room> getRooms() {
+        return rooms;
+    }
+
+    public void setRooms(Set<Room> rooms) {
+        this.rooms = rooms;
+    }
+    //endregion
+
+    /**
+     * 获得拥有的车辆列表
+     *
+     * @return 车辆列表
+     */
+    @OneToMany(targetEntity = Car.class, mappedBy = "owner", cascade = CascadeType.ALL)
+    public Set<Car> getCars() {
+        return cars;
+    }
+
+    public void setCars(Set<Car> cars) {
+        this.cars = cars;
+    }
+
+    /**
+     * 获得未支付的账单项列表
+     * （注意：公维金是单独交的，但是一起算，交到不同的账户。）
+     *
+     * @return 未支付的账单项列表
+     */
+    @OneToMany(targetEntity = BillItem.class, mappedBy = "owner", cascade = CascadeType.ALL)
+    public List<BillItem> getUnpaidBills() {
+        return unpaidBills;
+    }
+
+    /**
+     * 获得支付列表
+     *
+     * @return 支付列表
+     */
+    @OneToMany(targetEntity = Payment.class, mappedBy = "paidBy", cascade = CascadeType.ALL)
+    public List<Payment> getPayments() {
+        return payments;
+    }
+
+    public void setPayments(List<Payment> payments) {
+        this.payments = payments;
+    }
     //endregion
 
 }

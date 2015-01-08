@@ -11,7 +11,7 @@ import java.util.List;
  * description
  *
  * @author Mengmeng Yang
- * @version 1/5/2015 0005
+ * @version 1/8/2015 0008
  */
 public interface RoomDAO extends BaseDAO<Room, Integer> {
     /**
@@ -31,9 +31,28 @@ public interface RoomDAO extends BaseDAO<Room, Integer> {
      */
     List<Room> getAll(Community community);
 
+    /**
+     * 获得空闲房间号
+     *
+     * @param floorId 楼层号
+     * @return 房间号列表
+     */
+    @SuppressWarnings("unchecked")
     List<String[]> getVacantRoomNos(Integer floorId);
 
+    /**
+     * 获得非空房间号
+     *
+     * @param floorId 楼层号
+     * @return 房间号列表
+     */
+    @SuppressWarnings("unchecked")
     List<String[]> getNonVacantRoomNos(Integer floorId);
 
+    /**
+     * 删除所有房间
+     *
+     * @param community 小区
+     */
     void delete(Community community);
 }

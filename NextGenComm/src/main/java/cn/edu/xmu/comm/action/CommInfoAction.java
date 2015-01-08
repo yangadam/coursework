@@ -25,7 +25,7 @@ public class CommInfoAction extends ActionSupport {
     private BigDecimal overDueFeeRate;
 
     @Override
-    public String execute(){
+    public String execute() {
 
         Community community = SessionUtils.getCommunity();
         commName = community.getName();

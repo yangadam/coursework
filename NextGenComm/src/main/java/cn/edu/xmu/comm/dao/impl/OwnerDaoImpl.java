@@ -2,7 +2,6 @@ package cn.edu.xmu.comm.dao.impl;
 
 import cn.edu.xmu.comm.commons.persistence.BaseDaoImpl;
 import cn.edu.xmu.comm.commons.persistence.Parameter;
-import cn.edu.xmu.comm.commons.utils.CastUtils;
 import cn.edu.xmu.comm.dao.OwnerDAO;
 import cn.edu.xmu.comm.entity.BillItem;
 import cn.edu.xmu.comm.entity.Community;
@@ -21,6 +20,7 @@ import java.util.List;
 @Repository
 public class OwnerDaoImpl extends BaseDaoImpl<Owner, Integer> implements OwnerDAO {
 
+
     /**
      * 获得某小区的所有业主
      *
@@ -28,9 +28,10 @@ public class OwnerDaoImpl extends BaseDaoImpl<Owner, Integer> implements OwnerDA
      * @return 业主列表
      */
     @Override
-    public List<Owner> getAll(Community community) {
-        String ql = "select o from Owner o where o.community = :p1";
-        return searchByQL(ql, new Parameter(community));
+    @SuppressWarnings("unchecked")
+    public List<Integer> getAllId(Community community) {
+        String ql = "select o.id from Owner o where o.community = :p1";
+        return getAttrsByQL(ql, new Parameter(community));
     }
 
     /**
@@ -41,7 +42,7 @@ public class OwnerDaoImpl extends BaseDaoImpl<Owner, Integer> implements OwnerDA
      */
     @Override
     public Owner get(String name) {
-        return getByQL("from Owner where name = :p1", new Parameter(name));
+        return getByQL("select o from Owner o where o.name = :p1", new Parameter(name));
     }
 
     /**
@@ -53,7 +54,7 @@ public class OwnerDaoImpl extends BaseDaoImpl<Owner, Integer> implements OwnerDA
      */
     @Override
     public List<Owner> getByName(Community community, String name) {
-        return searchByQL("from Owner where name = :p1 and community = :p2", new Parameter(name, community));
+        return searchByQL("select o from Owner o where o.name = :p1 and o.community = :p2", new Parameter(name, community));
     }
 
     /**
@@ -64,21 +65,33 @@ public class OwnerDaoImpl extends BaseDaoImpl<Owner, Integer> implements OwnerDA
      */
     @Override
     public Owner getByPhoneNumber(String phoneNumber) {
-        return getByQL("from Owner where phoneNumber = :p1", new Parameter(phoneNumber));
+        return getByQL("select o from Owner o where o.phoneNumber = :p1", new Parameter(phoneNumber));
     }
 
+    /**
+     * 删除小区
+     *
+     * @param community 小区
+     */
     @Override
     public void delete(Community community) {
-        String ql = "delete from Owner where community = :p1";
+        String ql = "delete from Owner o where o.community = :p1";
         createQuery(ql, new Parameter(community)).executeUpdate();
     }
 
+    /**
+     * 搜索业主
+     *
+     * @param term      关键字
+     * @param community 小区
+     * @return 业主
+     */
     @Override
+    @SuppressWarnings("unchecked")
     public List<String[]> buzzSearch(String term, Community community) {
         String ql = "select o.id, o.name, o.username from Owner o " +
                 "where o.community = :p1 and (o.name like :p2 or o.username like :p2)";
-        List list = getAttrsByQL(ql, new Parameter(community, term + '%'));
-        return CastUtils.castToListStringArray(list);
+        return getAttrsByQL(ql, new Parameter(community, term + '%'));
     }
 
     /**
@@ -93,9 +106,28 @@ public class OwnerDaoImpl extends BaseDaoImpl<Owner, Integer> implements OwnerDA
         return searchByQL(ql, new Parameter(BillItem.BillItemStatus.OVERDUE, community));
     }
 
+    /**
+     * 通过房间获取业主
+     *
+     * @param roomId 房间id
+     * @return 业主
+     */
     @Override
     public Owner getOwnerByRoom(Integer roomId) {
         String ql = "select r.owner from Room r where r.id = :p1";
         return getByQL(ql, new Parameter(roomId));
     }
+
+    /**
+     * 获取所有业主
+     *
+     * @param community 小区
+     * @return 业主列表
+     */
+    @Override
+    public List<Owner> getAll(Community community) {
+        String ql = "select o from Owner o where o.community = :p1";
+        return searchByQL(ql, new Parameter(community));
+    }
+
 }

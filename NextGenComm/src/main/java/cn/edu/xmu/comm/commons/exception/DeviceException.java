@@ -4,7 +4,7 @@ import java.util.Date;
 
 /**
  * Created by Roger on 2014/12/31 0031.
- *
+ * @version 2014/12/31 0031
  */
 public class DeviceException extends Exception {
 

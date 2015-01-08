@@ -61,9 +61,9 @@
                             <div class="form-horizontal form-view">
                                 <h3> 待缴费清单 </h3>
                                 <s:iterator value="billItems" id="bill" status="st">
-                                    <h3 class="form-section"><s:property value="name"/>(<s:property
+                                    <h4 class="form-section"><s:property value="name"/>(<s:property
                                             value="description"/>
-                                        )</h3>
+                                        )&nbsp;&nbsp;&nbsp;&nbsp;<s:property value="createDate"/></h4>
 
                                     <div class="row-fluid">
                                         <div class="span6 ">
@@ -122,7 +122,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <s:form action="makePayment">
+                                <s:form id="form" action="makePayment">
                                     <div class="form-actions">
                                         <s:if test="billItems==null ||billItems.size()<1">
                                             <s:submit cssClass="btn blue big-btn pull-right" value="网上缴费"
@@ -145,7 +145,6 @@
     <%@include file="../global/globalFooter.jsp" %>
     <%@include file="../global/globalJS.jsp" %>
     <script src="../../../global/js/select2.min.js" type="text/javascript"></script>
-    <script src="../../../custom/js/app.js" type="text/javascript"></script>
     <script>
         jQuery(document).ready(function () {
             App.init();

@@ -11,10 +11,9 @@ import java.util.List;
  * description
  *
  * @author Mengmeng Yang
- * @version 1/5/2015 0005
+ * @version 1/8/2015 0008
  */
 public interface ParkingPlaceDAO extends BaseDAO<ParkingPlace, Integer> {
-
     /**
      * 停车场中是否含有停车位
      *
@@ -24,9 +23,29 @@ public interface ParkingPlaceDAO extends BaseDAO<ParkingPlace, Integer> {
      */
     boolean hasParkingPlace(ParkingLot parkingLot, ParkingPlace parkingPlace);
 
-    List<ParkingPlace> getRentParkPlace(ParkingLot parkingLot, ParkingPlace.ParkPlaceStatus parkPlaceStatus);
+    /**
+     * 获得租用停车位
+     *
+     * @param parkingLot 停车场
+     * @param status     状态
+     * @return 停车位列表
+     */
+    List<ParkingPlace> getRentParkPlace(ParkingLot parkingLot, ParkingPlace.ParkingPlaceStatus status);
 
+    /**
+     * 通过位置获得停车位
+     *
+     * @param parkingLot 停车场
+     * @param position   位置
+     * @return 停车位
+     */
     ParkingPlace get(ParkingLot parkingLot, String position);
 
+    /**
+     * 获得所有停车场
+     *
+     * @param community 小区
+     * @return 停车位列表
+     */
     List<ParkingPlace> getAll(Community community);
 }

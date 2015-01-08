@@ -10,7 +10,7 @@ import java.util.List;
  * description
  *
  * @author Mengmeng Yang
- * @version 1/5/2015 0005
+ * @version 1/8/2015 0008
  */
 public interface BuildingDAO extends BaseDAO<Building, Integer> {
     /**
@@ -23,11 +23,19 @@ public interface BuildingDAO extends BaseDAO<Building, Integer> {
     Building getByNo(Integer no, Community community);
 
     /**
+     * 获得小区的楼宇列表
+     *
      * @param community 小区
-     * @return 楼宇
+     * @return 楼宇列表
      */
     List<Building> getAll(Community community);
 
+    /**
+     * 获取楼宇id和楼宇号列表
+     *
+     * @param community 小区
+     * @return 楼宇id和楼宇号列表
+     */
     @SuppressWarnings("unchecked")
     List<String[]> getIdsAndNos(Community community);
 }

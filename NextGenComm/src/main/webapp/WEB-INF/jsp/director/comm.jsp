@@ -58,7 +58,7 @@
                             <s:form action="commInfoUpdate" class="form-horizontal">
                                 <h3 class="form-section">小区信息</h3>
 
-                                <div class="row-fluid" >
+                                <div class="row-fluid">
                                     <div class="span1"></div>
                                     <div class="span5 ">
                                         <div class="control-group">
@@ -74,9 +74,10 @@
                                 <!--/row-->
                                 <div class="row-fluid">
                                     <div class="span1"></div>
-                                     <div class="span5 ">
+                                    <div class="span5 ">
                                         <div class="control-group">
                                             <label class="control-label">垃圾费(元)：</label>
+
                                             <div class="controls span6">
                                                 <s:textfield name="garbageFee" cssClass="m-wrap span12"
                                                              value="%{garbageFee}" placeholder="请输入垃圾费"/>
@@ -105,6 +106,7 @@
                                     <div class="span5 ">
                                         <div class="control-group">
                                             <label class="control-label">管理费(元)：</label>
+
                                             <div class="controls span6">
                                                 <s:textfield name="manageFee" cssClass="m-wrap span12"
                                                              value="%{manageFee}" placeholder="请输入管理费"/>
@@ -133,6 +135,7 @@
                                     <div class="span5 ">
                                         <div class="control-group">
                                             <label class="control-label">滞纳金利率：</label>
+
                                             <div class="controls span6">
                                                 <s:textfield name="overDueFeeRate" cssClass="m-wrap span12"
                                                              value="%{overDueFeeRate}" placeholder="请输入滞纳金利率"/>

@@ -23,9 +23,10 @@
             <result name="unauthorized" type="redirect">/rememberMeLogin.do</result>
         </global-results>
 
-        <action name="feeCharge" class="directAction" method="cashier">
+        <action name="feeCharge">
             <result>/WEB-INF/jsp/cashier/feeCharge.jsp</result>
         </action>
+
     </package>
 
 </struts>

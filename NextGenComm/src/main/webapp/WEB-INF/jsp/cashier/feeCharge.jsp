@@ -56,8 +56,6 @@
                                     <input type="hidden" id="owner" class="span2 select2">
                                 </div>
                             </div>
-
-
                             <table class="table table-striped table-bordered table-hover" id="billItems">
                                 <thead>
                                 <tr>
@@ -80,7 +78,9 @@
                                                 id="total"></span>元</span>
                                     </div>
                                     <div class="span2">
-                                        <button class="btn blue" style="vertical-align: middle">去结算<i
+                                        <button id="receive" onclick="receive()" disabled="disabled"
+                                                class="btn blue"
+                                                style="vertical-align: middle">收取<i
                                                 class="m-icon-swapright m-icon-white"></i></button>
                                     </div>
                                 </div>

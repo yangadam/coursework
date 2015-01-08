@@ -1,14 +1,13 @@
 package cn.edu.xmu.comm.entity;
 
 import cn.edu.xmu.comm.commons.persistence.DataEntity;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * 支付实体
@@ -22,40 +21,21 @@ import java.util.Set;
 @DynamicUpdate
 public class Payment extends DataEntity {
 
+    //region Constructors
+
     //region Instance Variables
-    /**
-     * 支付主键
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    /**
-     * 付款人
-     */
-    @ManyToOne(targetEntity = Owner.class)
-    @JoinColumn(name = "owner_id", nullable = false)
     private Owner paidBy;
-
-    /**
-     * 收款人
-     */
-    @ManyToOne(targetEntity = Staff.class)
-    @JoinColumn(name = "user_id")
     private Staff receiveBy;
-
-    /**
-     * 账单列表
-     */
-    @OneToMany(mappedBy = "payment", targetEntity = BillItem.class)
-    private List<BillItem> billItemList = new ArrayList<BillItem>();
-
-    /**
-     * 总费用
-     */
-    private BigDecimal total;
     //endregion
 
+    //region Getters
+    private List<BillItem> billItemList = new ArrayList<BillItem>();
+    private BigDecimal total;
+
+    /**
+     * 无参构造函数
+     */
     Payment() {
     }
 
@@ -89,16 +69,31 @@ public class Payment extends DataEntity {
         }
         this.total = tempTotal;
     }
+    //endregion
 
-    //region Getters and Setters
+    /**
+     * 获得支付主键
+     *
+     * @return 支付主键
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer getId() {
         return id;
     }
 
+    //region Setters
     public void setId(Integer id) {
         this.id = id;
     }
 
+    /**
+     * 获得付款人
+     *
+     * @return 付款人
+     */
+    @ManyToOne(targetEntity = Owner.class)
+    @JoinColumn(name = "owner_id", nullable = false)
     public Owner getPaidBy() {
         return paidBy;
     }
@@ -107,14 +102,28 @@ public class Payment extends DataEntity {
         this.paidBy = paidBy;
     }
 
-    public Staff getRecieveBy() {
+    /**
+     * 获得收款人
+     *
+     * @return 收款人
+     */
+    @ManyToOne(targetEntity = Staff.class)
+    @JoinColumn(name = "user_id")
+    public Staff getReceiveBy() {
         return receiveBy;
     }
+    //endregion
 
-    public void setRecieveBy(Staff recieveBy) {
-        this.receiveBy = recieveBy;
+    public void setReceiveBy(Staff receiveBy) {
+        this.receiveBy = receiveBy;
     }
 
+    /**
+     * 获得账单列表
+     *
+     * @return 支付账单列表
+     */
+    @OneToMany(mappedBy = "payment", targetEntity = BillItem.class)
     public List<BillItem> getBillItemList() {
         return billItemList;
     }
@@ -123,6 +132,11 @@ public class Payment extends DataEntity {
         this.billItemList = billItemList;
     }
 
+    /**
+     * 获得总费用
+     *
+     * @return 总费用
+     */
     public BigDecimal getTotal() {
         return total;
     }

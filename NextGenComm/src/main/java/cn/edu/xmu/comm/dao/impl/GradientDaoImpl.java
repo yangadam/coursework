@@ -18,9 +18,16 @@ import java.util.List;
 @Repository
 public class GradientDaoImpl extends BaseDaoImpl<Gradient, Integer> implements GradientDAO {
 
+    /**
+     * 获取所有梯度
+     *
+     * @param community 小区
+     * @return 梯度列表
+     */
     @Override
     public List<Gradient> getAll(Community community) {
         String ql = "select g from Gradient g where g.community = :p1";
         return searchByQL(ql, new Parameter(community));
     }
+
 }

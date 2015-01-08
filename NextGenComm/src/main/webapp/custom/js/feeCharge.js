@@ -1,3 +1,10 @@
+var ownerId;
+function receive() {
+    $.getJSON("/receiveMoney.do?ownerId=" + ownerId, function () {
+        alert("收费成功");
+        location.reload();
+    })
+}
 var FeeCharge = function () {
 
     return {
@@ -13,28 +20,18 @@ var FeeCharge = function () {
                     "&nbsp;&nbsp;&lt;" + owner["username"] + "&gt;" + "</option>";
             }
 
-            $("#owner").on("change", function (e) {
-                var ownerId = e.val;
-                $.getJSON("/ownerBill.do?ownerId=" + ownerId, function (data) {
-                    oTable.fnClearTable();
-                    oTable.fnAddData(data["aaData"], true)
-
-                });
-
-            });
-
             $("#owner").select2({
                 placeholder: "请指定业主",
                 minimumInputLength: 2,
                 ajax: {
                     url: "/ownerSearch.do",
                     dataType: 'json',
-                    data: function (term, page) {
+                    data: function (term) {
                         return {
                             term: term
                         };
                     },
-                    results: function (data, page) {
+                    results: function (data) {
                         return {
                             results: data["owners"]
                         };
@@ -46,6 +43,15 @@ var FeeCharge = function () {
                 escapeMarkup: function (m) {
                     return m;
                 }
+            }).on("change", function (e) {
+                ownerId = e.val;
+                $.getJSON("/ownerBill.do?ownerId=" + e.val, function (data) {
+                    oTable.fnClearTable();
+                    oTable.fnAddData(data["aaData"], true);
+                    $("#total").text(data["total"]);
+                    $("#receive").removeAttr("disabled");
+                });
+
             });
 
             var oTable = $('#billItems').dataTable({

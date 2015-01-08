@@ -9,7 +9,7 @@ import java.util.Properties;
 
 /**
  * Created by Roger on 2015/1/2 0002.
- *
+ * <p/>
  * Send E-mail in the web application
  */
 public class MailUtils {
@@ -47,7 +47,8 @@ public class MailUtils {
 
     /**
      * 发送邮件
-     * @param sendTo 收件人
+     *
+     * @param sendTo  收件人
      * @param subject 主题
      * @param context 邮件内容(建议为HTML格式)
      */

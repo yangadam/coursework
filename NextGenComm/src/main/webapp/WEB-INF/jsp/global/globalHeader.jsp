@@ -19,7 +19,6 @@
                         <i class="icon-angle-down"></i>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="/generateValue.do"><i class="icon-key"></i> 测试</a></li>
                         <li><a href="/logout.do"><i class="icon-key"></i> 注销用户</a></li>
                     </ul>
                 </li>

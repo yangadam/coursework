@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 
 /**
- * 系统模块Service
+ * 系统模块Service实现
  *
  * @author Mengmeng Yang
  * @version 2014-12-21
@@ -23,12 +23,13 @@ import javax.annotation.Resource;
 @Transactional(readOnly = true)
 public class SystemServiceImpl implements SystemService {
 
+    //region Login, Logout and Remember Me
+
+    //region DAO
     @Resource
     private UserDAO userDAO;
-
     @Resource
     private TokenDAO tokenDAO;
-
 
     /**
      * 记住我登陆
@@ -82,6 +83,7 @@ public class SystemServiceImpl implements SystemService {
         tokenDAO.persist(token);
         return token.getToken();
     }
+    //endregion
 
     /**
      * 用户登出
@@ -103,5 +105,6 @@ public class SystemServiceImpl implements SystemService {
     private int clearRememberMeToken(Integer uid) {
         return tokenDAO.deleteByUid(uid);
     }
+    //endregion
 
 }

@@ -5,10 +5,11 @@ import org.springframework.stereotype.Controller;
 
 /**
  * Created by Roger on 2015/1/3 0003.
- * @
+ *
+ * @version 2015/1/3
  */
 @Controller
-public class ToTempParkingRegisteAction extends ActionSupport {
+public class ToTempParkingRegisterAction extends ActionSupport {
 
     private String license;
 

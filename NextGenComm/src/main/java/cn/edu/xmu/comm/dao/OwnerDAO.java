@@ -10,7 +10,7 @@ import java.util.List;
  * description
  *
  * @author Mengmeng Yang
- * @version 1/5/2015 0005
+ * @version 1/8/2015 0008
  */
 public interface OwnerDAO extends BaseDAO<Owner, Integer> {
     /**
@@ -19,7 +19,8 @@ public interface OwnerDAO extends BaseDAO<Owner, Integer> {
      * @param community 所属小区
      * @return 业主列表
      */
-    List<Owner> getAll(Community community);
+    @SuppressWarnings("unchecked")
+    List<Integer> getAllId(Community community);
 
     /**
      * 依据姓名获得某业主
@@ -46,11 +47,44 @@ public interface OwnerDAO extends BaseDAO<Owner, Integer> {
      */
     Owner getByPhoneNumber(String phoneNumber);
 
+    /**
+     * 删除小区
+     *
+     * @param community 小区
+     */
     void delete(Community community);
 
+    /**
+     * 搜索业主
+     *
+     * @param term      关键字
+     * @param community 小区
+     * @return 业主
+     */
+    @SuppressWarnings("unchecked")
     List<String[]> buzzSearch(String term, Community community);
 
+    /**
+     * 获取欠费用户
+     *
+     * @param community 小区
+     * @return 欠费用户列表
+     */
     List<Owner> ArrearageOwner(Community community);
 
+    /**
+     * 通过房间获取业主
+     *
+     * @param roomId 房间id
+     * @return 业主
+     */
     Owner getOwnerByRoom(Integer roomId);
+
+    /**
+     * 获取所有业主
+     *
+     * @param community 小区
+     * @return 业主列表
+     */
+    List<Owner> getAll(Community community);
 }

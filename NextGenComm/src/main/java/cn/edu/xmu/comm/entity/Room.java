@@ -5,8 +5,6 @@ import cn.edu.xmu.comm.commons.calc.IGarbageFeeCalculator;
 import cn.edu.xmu.comm.commons.calc.IManageFeeCalculator;
 import cn.edu.xmu.comm.commons.calc.IShareCalculator;
 import cn.edu.xmu.comm.commons.exception.DeviceException;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -17,7 +15,6 @@ import javax.persistence.ManyToOne;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * 房间实体
@@ -33,40 +30,33 @@ public class Room extends Property {
 
     //region Constants
     /**
-     * 费用类型字符串：公摊、物业管理费、垃圾管理费
+     * 费用类型：公摊费
      */
     public static final String SHARE = "公摊";
+    /**
+     * 费用类型：物业管理费
+     */
     public static final String MANAGE = "物业管理费";
+    /**
+     * 费用类型：垃圾管理费
+     */
     public static final String GARBAGE = "垃圾管理费";
+    /**
+     * 费用类型：公维金
+     */
     public static final String PUBFUND = "公维金";
     //endregion
 
+    //region Public Methods
     //region Instance Variables
-    /**
-     * 房间号
-     */
     private String no;
-
-    /**
-     * 房间全称
-     */
     private String fullName;
-
-    /**
-     * 所属楼层
-     */
-    @ManyToOne(targetEntity = Floor.class, cascade = {CascadeType.MERGE})
-    @JoinColumn(name = "floor_id", nullable = false)
     private Floor floor;
+    private Owner owner;
 
     /**
-     * 拥有者
+     * 无参构造函数
      */
-    @ManyToOne(targetEntity = Owner.class, cascade = {CascadeType.MERGE})
-    @JoinColumn(name = "owner_id", nullable = true)
-    private Owner owner;
-    //endregion
-
     Room() {
     }
 
@@ -81,27 +71,51 @@ public class Room extends Property {
         this.no = no;
     }
 
+    /**
+     * 获取祖先
+     *
+     * @return 祖先列表
+     */
     @Override
     public Property[] getParents() {
         return new Property[]{getFloor(), getBuilding(), getCommunity()};
     }
 
+    /**
+     * 获取祖先（包括自己）
+     *
+     * @return 祖先列表
+     */
     @Override
     public Property[] getThisAndParents() {
         return new Property[]{this, getFloor(), getBuilding(), getCommunity()};
     }
 
-    @Override
-    public void preDelete() {
-        floor.preDelete();
+    /**
+     * 获得所属楼宇
+     *
+     * @return 楼宇
+     */
+    public Building getBuilding() {
+        return floor.getBuilding();
     }
 
-    //region Public Methods
+    /**
+     * 获得所属小区
+     *
+     * @return 小区
+     */
+    @Override
+    public Community getCommunity() {
+        return getBuilding().getCommunity();
+    }
 
     /**
      * 计算户水费，户电费，户物业管理费，户公摊，户垃圾费，户公维金
      *
      * @param billItems 未支付账单
+     * @throws DeviceException 设备异常
+     * @see cn.edu.xmu.comm.commons.exception.DeviceException
      */
     public void generateRoom(List<BillItem> billItems) throws DeviceException {
         generateEnergy(billItems);
@@ -110,20 +124,21 @@ public class Room extends Property {
         generateGarbageFee(billItems);
         generatePublicFund(billItems);
     }
+    //endregion
+
+    //region Constructors
 
     /**
      * 计算户水费，户电费
      *
      * @param billItems 未支付账单
+     * @throws DeviceException 设备异常
+     * @see cn.edu.xmu.comm.commons.exception.DeviceException
      */
     public void generateEnergy(List<BillItem> billItems) throws DeviceException {
         for (Device device : getDeviceList()) {
-            BillItem billItem = new BillItem();
-            billItem.setName(device.getType().getFeeType());
-            billItem.setDescription(fullName);
-            billItem.setUsage(device.getUsage());
-            billItem.setAmount(device.calculate());
-            billItem.setOwner(owner);
+            String name = device.getType().getFeeType();
+            BillItem billItem = new BillItem(name, fullName, device.calculate(), device.getUsage(), owner);
             billItems.add(billItem);
         }
     }
@@ -132,6 +147,8 @@ public class Room extends Property {
      * 计算户公摊
      *
      * @param billItems 未支付账单
+     * @throws DeviceException 设备异常
+     * @see cn.edu.xmu.comm.commons.exception.DeviceException
      */
     public void generateShare(List<BillItem> billItems) throws DeviceException {
         BigDecimal totalAmount = BigDecimal.ZERO;
@@ -142,13 +159,12 @@ public class Room extends Property {
             BigDecimal shareAmount = calculator.calculateShare(this, device, amount);
             totalAmount = totalAmount.add(shareAmount);
         }
-        BillItem billItem = new BillItem();
-        billItem.setName(SHARE);
-        billItem.setDescription(fullName);
-        billItem.setAmount(totalAmount);
-        billItem.setOwner(owner);
+        BillItem billItem = new BillItem(SHARE, fullName, totalAmount, null, owner);
         billItems.add(billItem);
     }
+    //endregion
+
+    //region Getters
 
     /**
      * 计算户物业管理费
@@ -160,11 +176,7 @@ public class Room extends Property {
         String type = community.getManageFeeType();
         IManageFeeCalculator calculator = CalculatorFactory.getCalculator(type);
         BigDecimal amount = calculator.calculate(this);
-        BillItem billItem = new BillItem();
-        billItem.setName(MANAGE);
-        billItem.setDescription(fullName);
-        billItem.setAmount(amount);
-        billItem.setOwner(owner);
+        BillItem billItem = new BillItem(MANAGE, fullName, amount, null, owner);
         billItems.add(billItem);
     }
 
@@ -178,11 +190,7 @@ public class Room extends Property {
         String type = community.getGarbageFeeType();
         IGarbageFeeCalculator calculator = CalculatorFactory.getCalculator(type);
         BigDecimal amount = calculator.calculate(this);
-        BillItem billItem = new BillItem();
-        billItem.setName(GARBAGE);
-        billItem.setDescription(fullName);
-        billItem.setAmount(amount);
-        billItem.setOwner(owner);
+        BillItem billItem = new BillItem(GARBAGE, fullName, amount, null, owner);
         billItems.add(billItem);
     }
 
@@ -195,11 +203,7 @@ public class Room extends Property {
         Community community = getCommunity();
         PublicFund publicFund = community.getPublicFund();
         if (publicFund.isNeeded()) {
-            BillItem billItem = new BillItem();
-            billItem.setName(PUBFUND);
-            billItem.setDescription(fullName);
-            billItem.setAmount(publicFund.getChargePerRoom());
-            billItem.setOwner(owner);
+            BillItem billItem = new BillItem(PUBFUND, fullName, publicFund.getChargePerRoom(), null, owner);
             billItems.add(billItem);
         }
     }
@@ -211,22 +215,32 @@ public class Room extends Property {
      */
     public List<Device> getSharedDevice() {
         List<Device> devices = new ArrayList<Device>();
-        devices.addAll(getCommunity().getDeviceList());
-        devices.addAll(getBuilding().getDeviceList());
-        devices.addAll(floor.getDeviceList());
+        for (Property property : getParents()) {
+            devices.addAll(property.getDeviceList());
+        }
         return devices;
     }
     //endregion
 
-    //region Getters and Setters
+    /**
+     * 获得房间号
+     *
+     * @return 房间号
+     */
     public String getNo() {
         return no;
     }
 
+    //region Setters
     public void setNo(String no) {
         this.no = no;
     }
 
+    /**
+     * 获得房间全称
+     *
+     * @return 房间全称
+     */
     public String getFullName() {
         return fullName;
     }
@@ -234,7 +248,15 @@ public class Room extends Property {
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
+    //endregion
 
+    /**
+     * 获得所属楼层
+     *
+     * @return 所属楼层
+     */
+    @ManyToOne(targetEntity = Floor.class, cascade = {CascadeType.MERGE})
+    @JoinColumn(name = "floor_id", nullable = false)
     public Floor getFloor() {
         return floor;
     }
@@ -243,15 +265,13 @@ public class Room extends Property {
         this.floor = floor;
     }
 
-    public Building getBuilding() {
-        return floor.getBuilding();
-    }
-
-    @Override
-    public Community getCommunity() {
-        return getBuilding().getCommunity();
-    }
-
+    /**
+     * 获得拥有者
+     *
+     * @return 拥有者
+     */
+    @ManyToOne(targetEntity = Owner.class, cascade = {CascadeType.MERGE})
+    @JoinColumn(name = "owner_id", nullable = true)
     public Owner getOwner() {
         return owner;
     }
@@ -264,12 +284,20 @@ public class Room extends Property {
     }
     //endregion
 
+    //region Private and Friendly Methods
+
+    /**
+     * 房间登记
+     */
     void registerRoom() {
         for (Property property : getParents()) {
             property.register(this);
         }
     }
 
+    /**
+     * 房间入住
+     */
     private void checkInRoom() {
         usedHouseCount++;
         usedHouseArea = houseArea;
@@ -277,5 +305,6 @@ public class Room extends Property {
             property.checkIn(this);
         }
     }
+    //endregion
 
 }

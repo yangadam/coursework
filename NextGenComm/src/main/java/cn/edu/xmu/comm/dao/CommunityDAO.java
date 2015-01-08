@@ -9,10 +9,9 @@ import java.util.List;
  * description
  *
  * @author Mengmeng Yang
- * @version 1/5/2015 0005
+ * @version 1/8/2015 0008
  */
 public interface CommunityDAO extends BaseDAO<Community, Integer> {
-
     /**
      * 获取所有小区的名字
      *
@@ -21,6 +20,11 @@ public interface CommunityDAO extends BaseDAO<Community, Integer> {
     @SuppressWarnings("unchecked")
     List<String> getNames();
 
+    /**
+     * 通过名字查找小区
+     *
+     * @param commName 名字
+     * @return 小区
+     */
     Community getByName(String commName);
-
 }

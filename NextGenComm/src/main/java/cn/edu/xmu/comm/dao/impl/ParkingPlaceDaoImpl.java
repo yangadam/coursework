@@ -34,20 +34,41 @@ public class ParkingPlaceDaoImpl extends BaseDaoImpl<ParkingPlace, Integer> impl
         return count != 0;
     }
 
+    /**
+     * 获得租用停车位
+     *
+     * @param parkingLot 停车场
+     * @param status     状态
+     * @return 停车位列表
+     */
     @Override
-    public List<ParkingPlace> getRentParkPlace(ParkingLot parkingLot, ParkingPlace.ParkPlaceStatus parkPlaceStatus) {
-        String ql = "from ParkingPlace where parkingLot = :p1 and parkPlaceStatus = :p2";
-        return searchByQL(ql, new Parameter(parkingLot, parkPlaceStatus));
+    public List<ParkingPlace> getRentParkPlace(ParkingLot parkingLot, ParkingPlace.ParkingPlaceStatus status) {
+        String ql = "from ParkingPlace where parkingLot = :p1 and status = :p2";
+        return searchByQL(ql, new Parameter(parkingLot, status));
     }
 
+    /**
+     * 通过位置获得停车位
+     *
+     * @param parkingLot 停车场
+     * @param position   位置
+     * @return 停车位
+     */
     @Override
     public ParkingPlace get(ParkingLot parkingLot, String position) {
         return getByQL("from ParkingPlace where parkingLot = :p1 and position = :p2", new Parameter(parkingLot, position));
     }
 
+    /**
+     * 获得所有停车场
+     *
+     * @param community 小区
+     * @return 停车位列表
+     */
     @Override
     public List<ParkingPlace> getAll(Community community) {
         String ql = "select p from ParkingPlace p where p.parkingLot.community = :p1";
         return searchByQL(ql, new Parameter(community));
     }
+
 }

@@ -13,10 +13,10 @@ import java.util.Map;
 /**
  * Created by Roger on 2014/12/30 0030.
  *
- * @
+ * @version 2014/12/30 0030
  */
 @Controller
-public class TempParkingRegisteAction extends ActionSupport {
+public class TempParkingRegisterAction extends ActionSupport {
 
     @Resource
     private ParkingService parkingService;

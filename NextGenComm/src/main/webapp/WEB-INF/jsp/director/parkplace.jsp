@@ -119,7 +119,8 @@
                                     <label class="control-label">停车场</label>
 
                                     <div class="controls">
-                                        <s:select id="select" name="commName" class="span6 m-wrap" data-placeholder="请选择"
+                                        <s:select id="select" name="commName" class="span6 m-wrap"
+                                                  data-placeholder="请选择"
                                                   tabindex="1" list="{'地上停车场','地下停车场'}">
                                         </s:select>
                                         <span class="help-inline"></span>

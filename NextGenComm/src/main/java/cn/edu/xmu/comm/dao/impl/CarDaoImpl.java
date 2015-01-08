@@ -20,8 +20,10 @@ import java.util.List;
 public class CarDaoImpl extends BaseDaoImpl<Car, Integer> implements CarDAO {
 
     /**
-     * @param community
-     * @return
+     * 获得所有车辆
+     *
+     * @param community 小区
+     * @return 车辆列表
      */
     @Override
     public List<Car> getAll(Community community) {
@@ -29,8 +31,16 @@ public class CarDaoImpl extends BaseDaoImpl<Car, Integer> implements CarDAO {
         return searchByQL(ql, new Parameter(community));
     }
 
+    /**
+     * 通过车牌号获取车辆
+     *
+     * @param license 车牌号
+     * @return 车辆
+     */
+    @Override
     public Car get(String license) {
         String ql = "select c from Car c where c.license = :p1";
         return getByQL(ql, new Parameter(license));
     }
+
 }

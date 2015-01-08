@@ -7,15 +7,14 @@ import cn.edu.xmu.comm.entity.Token;
  * description
  *
  * @author Mengmeng Yang
- * @version 1/5/2015 0005
+ * @version 1/8/2015 0008
  */
 public interface TokenDAO extends BaseDAO<Token, String> {
     /**
      * 通过用户id删除token
      *
      * @param uid 用户id
-     * @return ？
+     * @return 受影响的记录数
      */
     int deleteByUid(Integer uid);
-
 }

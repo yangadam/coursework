@@ -19,12 +19,23 @@ import java.util.List;
 @Repository
 public class StaffDaoImpl extends BaseDaoImpl<Staff, Integer> implements StaffDAO {
 
+    /**
+     * 获得所有员工
+     *
+     * @param community 小区
+     * @return 员工列表
+     */
     @Override
     public List<Staff> getAll(Community community) {
         String ql = "select s from Staff s where s.community = :p1";
         return searchByQL(ql, new Parameter(community));
     }
 
+    /**
+     * 删除员工
+     *
+     * @param community 小区
+     */
     @Override
     public void delete(Community community) {
         String ql = "delete from Staff where community = :p1";
@@ -32,4 +43,5 @@ public class StaffDaoImpl extends BaseDaoImpl<Staff, Integer> implements StaffDA
         currentSession().flush();
         currentSession().clear();
     }
+
 }

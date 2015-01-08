@@ -19,7 +19,7 @@ public class TokenDaoImpl extends BaseDaoImpl<Token, String> implements TokenDAO
      * 通过用户id删除token
      *
      * @param uid 用户id
-     * @return ？
+     * @return 受影响的记录数
      */
     @Override
     public int deleteByUid(Integer uid) {

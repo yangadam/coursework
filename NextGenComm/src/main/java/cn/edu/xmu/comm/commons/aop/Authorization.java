@@ -3,11 +3,9 @@ package cn.edu.xmu.comm.commons.aop;
 import cn.edu.xmu.comm.commons.annotation.Required;
 import cn.edu.xmu.comm.commons.exception.NoPermissionException;
 import cn.edu.xmu.comm.commons.exception.NoUserInSessionException;
-import cn.edu.xmu.comm.commons.utils.Constants;
 import cn.edu.xmu.comm.commons.utils.SessionUtils;
 import cn.edu.xmu.comm.commons.utils.StringUtils;
 import cn.edu.xmu.comm.entity.User;
-import com.opensymphony.xwork2.ActionContext;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -18,7 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 /**
- * 验证是否登陆
+ * 权限拦截
  *
  * @author Mengmeng Yang
  * @version 12/28/2014 0028
@@ -29,6 +27,9 @@ public class Authorization {
 
     private static Logger logger = LoggerFactory.getLogger(Logging.class);
 
+    /**
+     * 除了登录以外的Service层方法
+     */
     @Pointcut("execution(* cn.edu.xmu.comm.service.impl.*.*(..)) " +
             "&& !execution(* cn.edu.xmu.comm.service.impl.SystemServiceImpl.*(..))")
     private void anyServiceExceptLogin() {

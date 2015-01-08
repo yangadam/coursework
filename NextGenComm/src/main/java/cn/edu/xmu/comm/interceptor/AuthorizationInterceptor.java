@@ -10,12 +10,26 @@ import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * 登陆和权限检查的拦截器
+ *
+ * @author Mengmeng Yang
+ * @version 1/7/2015 0008
+ */
 public class AuthorizationInterceptor extends AbstractInterceptor {
 
+    //日志
     private static Logger logger = LoggerFactory.getLogger(AuthorizationInterceptor.class);
-
     private String permission;
 
+    /**
+     * 登陆和权限检查
+     *
+     * @param actionInvocation 调用Action
+     * @return 结果
+     * @throws Exception 异常
+     * @see java.lang.Exception
+     */
     @Override
     public String intercept(ActionInvocation actionInvocation) throws Exception {
         User user = SessionUtils.getUser();
@@ -23,7 +37,7 @@ public class AuthorizationInterceptor extends AbstractInterceptor {
             logger.info("用户没有登录");
             return "login";
         }
-        if (permission == null || !StringUtils.isBlank(permission) && !permission.contains(user.getType())) {
+        if (!StringUtils.isBlank(permission) && !permission.contains(user.getType())) {
             logger.info("用户没有权限");
             return "unauthorized";
         }
@@ -34,10 +48,17 @@ public class AuthorizationInterceptor extends AbstractInterceptor {
         } catch (NoPermissionException ex) {
             return "unauthorized";
         } catch (Throwable e) {
-            throw new Exception(e);
+            logger.info(e.getMessage() + "\n");
+            e.printStackTrace();
+            return "login";
         }
     }
 
+    /**
+     * 权限字符串
+     *
+     * @return 权限字符串
+     */
     public String getPermission() {
         return permission;
     }

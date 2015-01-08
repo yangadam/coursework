@@ -2,7 +2,6 @@ package cn.edu.xmu.comm.dao.impl;
 
 import cn.edu.xmu.comm.commons.persistence.BaseDaoImpl;
 import cn.edu.xmu.comm.commons.persistence.Parameter;
-import cn.edu.xmu.comm.commons.utils.CastUtils;
 import cn.edu.xmu.comm.dao.BuildingDAO;
 import cn.edu.xmu.comm.entity.Building;
 import cn.edu.xmu.comm.entity.Community;
@@ -34,6 +33,8 @@ public class BuildingDaoImpl extends BaseDaoImpl<Building, Integer> implements B
     }
 
     /**
+     * 获得小区的楼宇列表
+     *
      * @param community 小区
      * @return 楼宇列表
      */
@@ -43,11 +44,17 @@ public class BuildingDaoImpl extends BaseDaoImpl<Building, Integer> implements B
         return searchByQL(ql, new Parameter(community));
     }
 
+    /**
+     * 获取楼宇id和楼宇号列表
+     *
+     * @param community 小区
+     * @return 楼宇id和楼宇号列表
+     */
     @Override
     @SuppressWarnings("unchecked")
     public List<String[]> getIdsAndNos(Community community) {
         String ql = "select b.id, b.no from Building b where b.community = :p1";
-        List list = getAttrsByQL(ql, new Parameter(community));
-        return CastUtils.castToListStringArray(list);
+        return getAttrsByQL(ql, new Parameter(community));
     }
+
 }

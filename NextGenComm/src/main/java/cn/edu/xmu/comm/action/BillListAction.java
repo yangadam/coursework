@@ -1,19 +1,17 @@
 package cn.edu.xmu.comm.action;
 
 import cn.edu.xmu.comm.commons.annotation.Required;
-import cn.edu.xmu.comm.commons.utils.Constants;
+import cn.edu.xmu.comm.commons.utils.SessionUtils;
 import cn.edu.xmu.comm.entity.BillItem;
 import cn.edu.xmu.comm.entity.Owner;
 import cn.edu.xmu.comm.entity.User;
 import cn.edu.xmu.comm.service.PropertyService;
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import org.springframework.stereotype.Controller;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Set;
 
 /**
  * description
@@ -34,7 +32,7 @@ public class BillListAction extends ActionSupport {
     @Override
     @Required(name = "owner")
     public String execute() {
-        User user = (User) ActionContext.getContext().getSession().get(Constants.USER);
+        User user = SessionUtils.getUser();
         Owner owner = propertyService.loadOwner(user);
         billItems = owner.getUnpaidBills();
         total = owner.getTotal();
@@ -56,4 +54,5 @@ public class BillListAction extends ActionSupport {
     public void setTotal(BigDecimal total) {
         this.total = total;
     }
+
 }

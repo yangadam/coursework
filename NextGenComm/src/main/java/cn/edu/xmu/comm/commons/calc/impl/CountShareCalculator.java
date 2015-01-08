@@ -23,7 +23,7 @@ public class CountShareCalculator implements IShareCalculator {
     /**
      * 按已入住用户计算分摊
      *
-     * @param room 房间
+     * @param room   房间
      * @param device 设备
      * @param amount 金额
      * @return 费用

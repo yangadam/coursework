@@ -11,7 +11,8 @@ import java.util.Date;
 
 /**
  * Created by Yiu-Wah WONG on 2015/1/3.
- * @
+ *
+ * @version 2015/1/3
  */
 @Controller
 public class TempParkingPayAction extends ActionSupport {
@@ -27,6 +28,7 @@ public class TempParkingPayAction extends ActionSupport {
     private BigDecimal fee;
     private String license;
 
+    @Override
     public String execute() {
         ParkingBill parkingBill = parkingService.finishParkBill(parkBillId);
         ownerName = parkingBill.getOwner().getName();

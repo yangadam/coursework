@@ -2,7 +2,6 @@ package cn.edu.xmu.comm.dao.impl;
 
 import cn.edu.xmu.comm.commons.persistence.BaseDaoImpl;
 import cn.edu.xmu.comm.commons.persistence.Parameter;
-import cn.edu.xmu.comm.commons.utils.CastUtils;
 import cn.edu.xmu.comm.dao.FloorDAO;
 import cn.edu.xmu.comm.entity.Building;
 import cn.edu.xmu.comm.entity.Floor;
@@ -34,14 +33,16 @@ public class FloorDaoImpl extends BaseDaoImpl<Floor, Integer> implements FloorDA
     }
 
     /**
-     * @param buildId
-     * @return
+     * 通过楼宇id获得楼层
+     *
+     * @param buildId 楼宇id
+     * @return 楼层号列表
      */
     @Override
     @SuppressWarnings("unchecked")
     public List<String[]> getIdsAndNos(Integer buildId) {
         String ql = "select f.id, f.no from Floor f where f.building.id = :p1";
-        List list = getAttrsByQL(ql, new Parameter(buildId));
-        return CastUtils.castToListStringArray(list);
+        return getAttrsByQL(ql, new Parameter(buildId));
     }
+
 }

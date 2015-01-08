@@ -10,12 +10,22 @@ import java.util.List;
  * description
  *
  * @author Mengmeng Yang
- * @version 1/5/2015 0005
+ * @version 1/8/2015 0008
  */
 public interface CarDAO extends BaseDAO<Car, Integer> {
     /**
-     * @param community
-     * @return
+     * 获得所有车辆
+     *
+     * @param community 小区
+     * @return 车辆列表
      */
     List<Car> getAll(Community community);
+
+    /**
+     * 通过车牌号获取车辆
+     *
+     * @param license 车牌号
+     * @return 车辆
+     */
+    Car get(String license);
 }

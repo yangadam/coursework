@@ -18,9 +18,17 @@ import java.util.List;
  */
 @Repository
 public class BillItemDaoImpl extends BaseDaoImpl<BillItem, Integer> implements BillItemDAO {
+
+    /**
+     * 获取业主未支付的账单项
+     *
+     * @param owner 业主
+     * @return 账单项列表
+     */
     @Override
     public List<BillItem> getUnpaidBillItems(Owner owner) {
-        String ql = "from BillItem where owner = :p1 and billItemStatus != :p2";
+        String ql = "select b from BillItem b where b.owner = :p1 and b.status != :p2";
         return searchByQL(ql, new Parameter(owner, BillItem.BillItemStatus.PAID));
     }
+
 }

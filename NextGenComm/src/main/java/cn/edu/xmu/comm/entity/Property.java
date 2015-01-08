@@ -1,11 +1,10 @@
 package cn.edu.xmu.comm.entity;
 
 import cn.edu.xmu.comm.commons.persistence.DataEntity;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,51 +21,23 @@ import java.util.Set;
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Property extends DataEntity {
 
+    //region Public Methods
+
     //region Instance Variables
-    /**
-     * 房产主键
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Integer id;
-
-    /**
-     * 统一编码
-     */
     protected String unityCode;
-
-    /**
-     * 数量
-     */
     protected Integer childCount;
-
-    /**
-     * 设备列表
-     */
-    @OneToMany(targetEntity = Device.class, mappedBy = "property",
-            cascade = CascadeType.ALL)
     protected Set<Device> deviceList = new HashSet<Device>();
-
-    /**
-     * 房间总数
-     */
-    protected Integer houseCount;
-
-    /**
-     * 已入住房间总数
-     */
-    protected Integer usedHouseCount;
-
-    /**
-     * 房产面积
-     */
-    protected Double houseArea;
-
-    /**
-     * 已使用的房产面积
-     */
-    protected Double usedHouseArea;
     //endregion
+
+    //region Constructors
+    protected Integer houseCount;
+    protected Integer usedHouseCount;
+    //endregion
+
+    //region Getters
+    protected Double houseArea;
+    protected Double usedHouseArea;
 
     /**
      * 无参构造函数
@@ -79,6 +50,11 @@ public abstract class Property extends DataEntity {
         childCount = 0;
     }
 
+    /**
+     * 构造函数
+     *
+     * @param area 面积
+     */
     protected Property(Double area) {
         houseCount = 1;
         usedHouseCount = 0;
@@ -95,18 +71,145 @@ public abstract class Property extends DataEntity {
     public abstract Community getCommunity();
 
     /**
-     * 获取房产数组（不包括本身）
+     * 获取祖先
      *
-     * @return 房产数组
+     * @return 祖先数组
      */
     public abstract Property[] getParents();
 
     /**
-     * 获取房产数组（包括本身）
+     * 获取祖先（包括本身）
      *
-     * @return 房产数组
+     * @return 祖先数组
      */
     public abstract Property[] getThisAndParents();
+
+    /**
+     * 添加设备
+     *
+     * @param device 要添加的设备
+     */
+    public void addDevice(Device device) {
+        device.setProperty(this);
+        if (device.getNo() == null) {
+            device.setNo(unityCode + "#" + deviceList.size());
+        }
+//        deviceList.add(device);
+    }
+    //endregion
+
+    /**
+     * 获得房产主键
+     *
+     * @return 房产主键
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Integer getId() {
+        return id;
+    }
+
+    //region Setters
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    /**
+     * 获得统一编码
+     *
+     * @return 统一编码
+     */
+    public String getUnityCode() {
+        return unityCode;
+    }
+
+    public void setUnityCode(String unityCode) {
+        this.unityCode = unityCode;
+    }
+
+    /**
+     * 获得孩子数量
+     *
+     * @return 孩子数量
+     */
+    public Integer getChildCount() {
+        return childCount;
+    }
+
+    public void setChildCount(Integer childCount) {
+        this.childCount = childCount;
+    }
+
+    /**
+     * 获得设备列表
+     *
+     * @return 设备列表
+     */
+    @OneToMany(targetEntity = Device.class, mappedBy = "property",
+            cascade = CascadeType.ALL)
+    public Set<Device> getDeviceList() {
+        return deviceList;
+    }
+
+    public void setDeviceList(Set<Device> deviceList) {
+        this.deviceList = deviceList;
+    }
+    //endregion
+
+    //region Protected Methods
+
+    /**
+     * 获得房间总数
+     *
+     * @return 房间总数
+     */
+    public Integer getHouseCount() {
+        return houseCount;
+    }
+
+    public void setHouseCount(Integer houseCount) {
+        this.houseCount = houseCount;
+    }
+    //endregion
+
+    /**
+     * 获得已入住房间总数
+     *
+     * @return 已入住房间总数
+     */
+    public Integer getUsedHouseCount() {
+        return usedHouseCount;
+    }
+
+    public void setUsedHouseCount(Integer usedHouseCount) {
+        this.usedHouseCount = usedHouseCount;
+    }
+
+    /**
+     * 获得房产面积
+     *
+     * @return 房产面积
+     */
+    public Double getHouseArea() {
+        return houseArea;
+    }
+
+    public void setHouseArea(Double houseArea) {
+        this.houseArea = houseArea;
+    }
+
+    /**
+     * 获得已使用的房产面积
+     *
+     * @return 已使用的房产面积
+     */
+    public Double getUsedHouseArea() {
+        return usedHouseArea;
+    }
+
+    public void setUsedHouseArea(Double usedHouseArea) {
+        this.usedHouseArea = usedHouseArea;
+    }
 
     /**
      * 注册
@@ -126,106 +229,6 @@ public abstract class Property extends DataEntity {
     protected void checkIn(Property property) {
         usedHouseCount += property.getHouseCount();
         usedHouseArea += property.getUsedHouseArea();
-    }
-
-    /**
-     * 消除
-     *
-     * @param property 房产
-     */
-    private void unregister(Property property) {
-        houseCount -= property.getHouseCount();
-        houseArea -= property.getHouseArea();
-        usedHouseCount -= property.getUsedHouseCount();
-        usedHouseArea -= property.getUsedHouseArea();
-    }
-
-    /**
-     * 删除之前
-     */
-    @PreRemove
-    public void preDelete() {
-        for (Property property : getParents()) {
-            property.unregister(this);
-        }
-    }
-
-    /**
-     * 添加设备
-     *
-     * @param device 要添加的设备
-     */
-    public void addDevice(Device device) {
-        device.setProperty(this);
-        if (device.getNo() == null) {
-            device.setNo(unityCode + "#" + deviceList.size());
-        }
-//        deviceList.add(device);
-    }
-
-    //region Getters and Setters
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getUnityCode() {
-        return unityCode;
-    }
-
-    public void setUnityCode(String unityCode) {
-        this.unityCode = unityCode;
-    }
-
-    public Integer getChildCount() {
-        return childCount;
-    }
-
-    public void setChildCount(Integer childCount) {
-        this.childCount = childCount;
-    }
-
-    public Set<Device> getDeviceList() {
-        return deviceList;
-    }
-
-    public void setDeviceList(Set<Device> deviceList) {
-        this.deviceList = deviceList;
-    }
-
-    public Integer getHouseCount() {
-        return houseCount;
-    }
-
-    public void setHouseCount(Integer houseCount) {
-        this.houseCount = houseCount;
-    }
-
-    public Integer getUsedHouseCount() {
-        return usedHouseCount;
-    }
-
-    public void setUsedHouseCount(Integer usedHouseCount) {
-        this.usedHouseCount = usedHouseCount;
-    }
-
-    public Double getHouseArea() {
-        return houseArea;
-    }
-
-    public void setHouseArea(Double houseArea) {
-        this.houseArea = houseArea;
-    }
-
-    public Double getUsedHouseArea() {
-        return usedHouseArea;
-    }
-
-    public void setUsedHouseArea(Double usedHouseArea) {
-        this.usedHouseArea = usedHouseArea;
     }
     //endregion
 

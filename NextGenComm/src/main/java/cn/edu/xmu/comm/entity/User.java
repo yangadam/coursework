@@ -2,12 +2,10 @@ package cn.edu.xmu.comm.entity;
 
 import cn.edu.xmu.comm.commons.persistence.DataEntity;
 import cn.edu.xmu.comm.commons.utils.SecurityUtils;
-import org.hibernate.annotations.*;
-import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 
 /**
  * 用户
@@ -19,76 +17,61 @@ import javax.persistence.Table;
 @DynamicInsert
 @DynamicUpdate
 @Inheritance(strategy = InheritanceType.JOINED)
-@Table(
-        uniqueConstraints = {
-                @UniqueConstraint(columnNames = {"username"})
-        }
-)
+@Table(uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"username"})
+})
 public class User extends DataEntity {
 
+    //region Public Methods
+
     //region Instance Variables
-    /**
-     * 用户主键
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    /**
-     * 用户名
-     */
-    @Column(nullable = false, unique = true)
     private String username;
-
-    /**
-     * 加密密码
-     */
-    @Column(nullable = false)
     private String password;
-
-    /**
-     * 密码盐
-     */
-    @Column(nullable = false)
     private String salt;
-
-    /**
-     * 用户是否被锁定
-     */
-    @Column(nullable = false)
-    private Boolean locked = Boolean.FALSE;
-
-    /**
-     * 姓名
-     */
-    private String name;
-
-    /**
-     * 手机号码
-     */
-    private String phoneNumber;
-
-    /**
-     * 邮箱地址
-     */
-    private String email;
-
-    /**
-     * 类型
-     */
-    @Transient
-    private String classType;
     //endregion
 
+    //region Constructors
+    private Boolean locked = Boolean.FALSE;
+    private String name;
+    //endregion
+
+    //region Getters
+    private String phoneNumber;
+    private String email;
+    @Transient
+    private String classType;
+
+    /**
+     * 无参构造函数
+     */
     User() {
     }
 
+    /**
+     * 构造函数
+     *
+     * @param username    用户名
+     * @param password    密码
+     * @param name        姓名
+     * @param phoneNumber 电话
+     * @param email       邮箱
+     */
     public User(String username, String password, String name, String phoneNumber, String email) {
         this.username = username;
         this.password = password;
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.email = email;
+    }
+
+    /**
+     * 获取小区 在子类中覆写
+     *
+     * @return null
+     */
+    public Community getCommunity() {
+        return null;
     }
 
     /**
@@ -101,40 +84,50 @@ public class User extends DataEntity {
     }
 
     /**
-     * 判断用户是否是管理员
+     * 判断用户是否是系统管理员
      *
-     * @return 判断结果
+     * @return 是系统管理员返回true
      */
     public Boolean isAdmin() {
         classType = getClass().getSimpleName().toLowerCase();
         String adminType = User.class.getSimpleName().toLowerCase();
         return classType.equals(adminType);
     }
+    //endregion
 
     /**
      * 验证密码
      *
      * @param password 原始密码
-     * @return 验证结果
+     * @return 验证通过返回true
      */
     public Boolean checkPassword(String password) {
         String encryptPwd = SecurityUtils.encrypt(password, getCredentialsSalt());
         return encryptPwd.equals(this.password);
     }
 
-    public Community getCommunity() {
-        return null;
-    }
-
-    //region Getters and Setters
+    /**
+     * 获得用户主键
+     *
+     * @return 用户主键
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer getId() {
         return id;
     }
 
+    //region Setters
     public void setId(Integer id) {
         this.id = id;
     }
 
+    /**
+     * 获得用户名
+     *
+     * @return 用户名
+     */
+    @Column(nullable = false, unique = true)
     public String getUsername() {
         return username;
     }
@@ -143,6 +136,12 @@ public class User extends DataEntity {
         this.username = username;
     }
 
+    /**
+     * 获得加密密码
+     *
+     * @return 加密密码
+     */
+    @Column(nullable = false)
     public String getPassword() {
         return password;
     }
@@ -151,10 +150,12 @@ public class User extends DataEntity {
         this.password = password;
     }
 
-    public String getCredentialsSalt() {
-        return username + salt;
-    }
-
+    /**
+     * 获得密码盐
+     *
+     * @return 密码盐
+     */
+    @Column(nullable = false)
     public String getSalt() {
         return salt;
     }
@@ -162,7 +163,14 @@ public class User extends DataEntity {
     public void setSalt(String salt) {
         this.salt = salt;
     }
+    //endregion
 
+    /**
+     * 获得用户是否被锁定
+     *
+     * @return 用户是否被锁定
+     */
+    @Column(nullable = false)
     public Boolean getLocked() {
         return locked;
     }
@@ -171,6 +179,11 @@ public class User extends DataEntity {
         this.locked = locked;
     }
 
+    /**
+     * 获得姓名
+     *
+     * @return 姓名
+     */
     public String getName() {
         return name;
     }
@@ -179,6 +192,11 @@ public class User extends DataEntity {
         this.name = name;
     }
 
+    /**
+     * 获得手机号码
+     *
+     * @return 手机号码
+     */
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -187,6 +205,11 @@ public class User extends DataEntity {
         this.phoneNumber = phoneNumber;
     }
 
+    /**
+     * 获得邮箱地址
+     *
+     * @return 邮箱地址
+     */
     public String getEmail() {
         return email;
     }
@@ -195,6 +218,9 @@ public class User extends DataEntity {
         this.email = email;
     }
 
+    public String getCredentialsSalt() {
+        return username + salt;
+    }
     //endregion
 
 }

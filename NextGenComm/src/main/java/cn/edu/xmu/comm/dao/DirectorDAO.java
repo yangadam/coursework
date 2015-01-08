@@ -7,7 +7,7 @@ import cn.edu.xmu.comm.entity.Director;
  * description
  *
  * @author Mengmeng Yang
- * @version 1/5/2015 0005
+ * @version 1/8/2015 0008
  */
 public interface DirectorDAO extends BaseDAO<Director, Integer> {
 }
