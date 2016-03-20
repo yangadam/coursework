@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:s="http://www.w3.org/1999/XSL/Transform"
+      xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>My Files</title>
+    <link href="/webjars/bootstrap/3.3.6/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.3.6/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+    <link href="../static/css/fileList.css"
+          th:href="@{/css/fileList.css}"
+          rel="stylesheet" media="screen"/>
+
+</head>
+
+<body>
+<div class="container-fluid">
+    <!--Directories-->
+    <div class="row tree-map">
+        <div class="col-xs-12">
+            <span th:text="'Current:'+ ${#httpServletRequest.getParameter('dir')}">:</span>
+            <br/>
+            <span><a id="back" href="javascript:void(0)">Back</a></span>
+        </div>
+    </div>
+    <!--功能列表-->
+    <div class="row x-list">
+        <div class="col-xs-6 col-xs-offset-4">
+            <ul>
+                <li>
+                    <form th:action="@{/user/mkdir}" method="get">
+                        <input type="hidden" name="dir" value=""/>
+                        Foler Name:<input id="dirName" type="text" name="fileName"/>
+                        <input id="createDir" type="submit" class="btn btn-default" value="Confirm"/>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!--File Show Space-->
+    <div class="row squares">
+        <s:iterator value="#request.list" var="fileInfo">
+            <div class="col-xs-2">
+                <s:if test='#fileInfo.isDirectory == 1'>
+                    <div class="row directory">
+                        <a href="user/ShowDirs?dir=">
+                        </a>
+                    </div>
+                    <a class="deleteDir" href="user/DelDir?dir=">
+                        Delete Folder</a>
+                    <br/>
+                </s:if>
+                <s:else>
+                    <div class="row file">
+                    </div>
+                    <a href="user/DownloadFile?dir=">Download</a>
+                    <a href="user/DeleteFile?dir=">Delete</a>
+                    <br/>
+
+                </s:else>
+
+                <br/>
+            </div>
+        </s:iterator>
+
+    </div>
+
+</div>
+
+<script src="/webjars/jquery/2.2.1/jquery.min.js"
+        th:src="@{/webjars/jquery/2.2.1/jquery.min.js}"></script>
+<script src="/webjars/bootstrap/3.3.6/js/bootstrap.min.js"
+        th:src="@{/webjars/bootstrap/3.3.6/js/bootstrap.min.js}"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var curDir = $("#curDir");
+        var href = curDir.val();
+        $("#back").attr("href", "user/ShowDirs.do?dir=" + href.substring(0, href.lastIndexOf("/")));
+
+        $("#createDir").click(function (event) {
+            $.ajax({
+                url: 'json/Exist.action',
+                cache: false,
+                data: {"dir": href, "fileName": $("#dirName").val()},
+                type: 'Post',
+                dataType: 'json',
+                timeout: 20000,
+                error: function () {
+                    alert("Program Wrong!");
+                },
+                success: function (json) {
+                    var exist = json.exist;
+                    if (exist == true) {
+                        alert("Foler" + $("#dirName").val() + "has existed!");
+                        event.preventDefault();
+                    }
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>
