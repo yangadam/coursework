@@ -15,7 +15,7 @@ import java.io.IOException;
  * @author Yang Mengmeng Created on Mar 13, 2016.
  */
 @RestController
-@RequestMapping(value = "/user")
+@RequestMapping(value = "/file")
 public class FileManageController {
 
     @RequestMapping(value = "deleteFile")

@@ -6,24 +6,40 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 /**
  * @author Yang Mengmeng Created on Mar 14, 2016.
  */
 @Service
-public class AuthService implements UserDetailsService {
+public class UserService implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(s);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("Username not found!");
         }
+        user.setLastLoginTime(new Date());
         return user;
     }
 
+    public void addUser(User user) {
+        String encryptPwd = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encryptPwd);
+        userRepository.save(user);
+    }
+
+    public boolean doesUserExist(String username) {
+        return userRepository.findByUsername(username) == null;
+    }
 }
