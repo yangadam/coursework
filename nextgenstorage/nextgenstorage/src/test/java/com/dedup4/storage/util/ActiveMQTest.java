@@ -11,7 +11,8 @@ import org.springframework.jms.JmsException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.fail;
 
 /**
@@ -32,8 +33,8 @@ public class ActiveMQTest {
         try {
             messageSender.send(new ActiveMQQueue("queue.test"), "Test1");
             messageSender.send("Test2");
-            assertTrue(outputCapture.toString().contains("Test1"));
-            assertTrue(outputCapture.toString().contains("Test2"));
+            assertThat(outputCapture.toString(), containsString("Test1"));
+            assertThat(outputCapture.toString(), containsString("Test2"));
         } catch (JmsException e) {
             fail("Fail to send message.");
         }

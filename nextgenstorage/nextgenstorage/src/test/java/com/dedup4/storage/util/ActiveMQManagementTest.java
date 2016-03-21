@@ -7,15 +7,15 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 
 /**
  * Created on Feb 27, 2016
  *
  * @author Yang Mengmeng
  */
-//@RunWith(SpringJUnit4ClassRunner.class)
-//@ContextConfiguration(locations = { "classpath:spring-context-jms.xml" })
 public class ActiveMQManagementTest {
 
     private ActiveMQManagement management;
@@ -32,11 +32,11 @@ public class ActiveMQManagementTest {
 
         management.addQueue("queue.a");
         queues = management.getQueues();
-        assertEquals(size + 1, queues.size());
+        assertThat(queues.size(), is(equalTo(size + 1)));
 
         management.removeQueue("queue.a");
         queues = management.getQueues();
-        assertEquals(size, queues.size());
+        assertThat(queues.size(), is(equalTo(size)));
     }
 
     @Test
@@ -46,11 +46,11 @@ public class ActiveMQManagementTest {
 
         management.addTopic("topic.a");
         topics = management.getTopics();
-        assertEquals(size + 1, topics.size());
+        assertThat(topics.size(), is(equalTo(size + 1)));
 
         management.removeTopic("topic.a");
         topics = management.getTopics();
-        assertEquals(size, topics.size());
+        assertThat(topics.size(), is(equalTo(size)));
     }
 
 }

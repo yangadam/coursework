@@ -7,7 +7,8 @@ import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
 
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 
 /**
  *
@@ -42,12 +43,12 @@ public class SshHelperTest {
 
     @Test
     public void testExecuteCommand() {
-        assertTrue(helper.executeCommand("ls"));
+        assertThat(helper.executeCommand("ls"), is(true));
     }
 
     @Test
     public void testUpload() {
-        assertTrue(helper.upload(tempFile.getParentFile().toPath(), ".", fileName));
+        assertThat(helper.upload(tempFile.getParentFile().toPath(), ".", fileName), is(true));
     }
 
 }
