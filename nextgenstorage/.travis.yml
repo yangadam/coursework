@@ -4,4 +4,7 @@ jdk:
   - oraclejdk8
 
 script:
-  - "$M2_HOME"/bin/mvn clean build
+  - cd nextgenstorage
+  - mvn clean
+  - mvn install -DskipTests=true
+  - mvn test
