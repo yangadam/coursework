@@ -2,21 +2,12 @@ package com.dedup4.storage.domain;
 
 import java.util.Date;
 
-public class SystemLog {
+public class SystemLog extends IdentityData {
 
-    private String id;
     private Date time;
     private String type; // error/warn/info
     private String owner;
     private String detail;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public Date getTime() {
         return time;

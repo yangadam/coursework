@@ -4,24 +4,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.Date;
 
-public class User implements UserDetails {
+public class User extends TimeInfoData implements UserDetails {
 
-    private String id;
     private String username;
     private String password;
     private String name;
-    private Date registerDate;
-    private Date lastLoginTime;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     @Override
     public String getUsername() {
@@ -47,22 +35,6 @@ public class User implements UserDetails {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Date getRegisterDate() {
-        return registerDate;
-    }
-
-    public void setRegisterDate(Date registerDate) {
-        this.registerDate = registerDate;
-    }
-
-    public Date getLastLoginTime() {
-        return lastLoginTime;
-    }
-
-    public void setLastLoginTime(Date lastLoginTime) {
-        this.lastLoginTime = lastLoginTime;
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.dedup4.storage.util;
 import org.apache.activemq.broker.jmx.QueueViewMBean;
 import org.apache.activemq.broker.jmx.TopicViewMBean;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
@@ -16,6 +17,7 @@ import static org.hamcrest.Matchers.is;
  *
  * @author Yang Mengmeng
  */
+@Ignore
 public class ActiveMQManagementTest {
 
     private ActiveMQManagement management;

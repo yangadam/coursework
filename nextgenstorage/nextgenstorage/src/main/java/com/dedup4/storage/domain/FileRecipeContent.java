@@ -1,19 +1,12 @@
 package com.dedup4.storage.domain;
 
-public class FileRecipeContent {
+public class FileRecipeContent extends TimeInfoData {
 
-    private String id;
     private String fileRecipeId;
+
     private String containerId;
+
     private String chunkId;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getFileRecipeId() {
         return fileRecipeId;

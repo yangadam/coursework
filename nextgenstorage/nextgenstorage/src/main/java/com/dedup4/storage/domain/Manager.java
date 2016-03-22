@@ -1,19 +1,12 @@
 package com.dedup4.storage.domain;
 
-public class Manager {
+public class Manager extends TimeInfoData {
 
-    private String id;
     private String mail;
+
     private String password;
+
     private String type;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getMail() {
         return mail;

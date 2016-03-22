@@ -2,20 +2,12 @@ package com.dedup4.storage.domain;
 
 import java.util.Date;
 
-public class UserOperation {
-    private String id;
+public class UserOperation extends IdentityData {
+
     private Date time;
     private String location;
     private String detail;
     private String type;// manager/user
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public Date getTime() {
         return time;

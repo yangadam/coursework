@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.Date;
-
 /**
  * @author Yang Mengmeng Created on Mar 20, 2016.
  */
@@ -33,14 +31,13 @@ public class RegisterController {
 
     @RequestMapping(method = RequestMethod.POST)
     public String register(@ModelAttribute User user) {
-        user.setRegisterDate(new Date());
         try {
             userService.addUser(user);
         } catch (Exception e) {
             LOGGER.info("Error to add user: " + e);
-            return "register";
+            return "redirect:/register";
         }
-        return "login";
+        return "redirect:/login";
     }
 
 }
