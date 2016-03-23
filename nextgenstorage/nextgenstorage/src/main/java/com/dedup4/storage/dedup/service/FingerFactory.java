@@ -1,72 +1,71 @@
 package com.dedup4.storage.dedup.service;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-
+import com.dedup4.storage.dedup.util.Constants;
+import com.dedup4.storage.dedup.util.MD5;
 import org.rabinfingerprint.fingerprint.RabinFingerprintLong;
 import org.rabinfingerprint.fingerprint.RabinFingerprintLongWindowed;
 import org.rabinfingerprint.polynomial.Polynomial;
 
-import com.dedup4.storage.dedup.util.Constants;
-import com.dedup4.storage.dedup.util.MD5;
+import java.io.BufferedInputStream;
+import java.io.IOException;
 
 public class FingerFactory {
 
-	public static interface ChunkBoundaryDetector {
-		public boolean isBoundary(RabinFingerprintLong fingerprint, int chunkLength);
-	}
+    private final RabinFingerprintLongWindowed fingerWindow;
+    private final ChunkBoundaryDetector boundaryDetector;
 
-	public static interface ChunkVisitor {
-		public void visit(byte[] fingerprint, int chunkStart, int chunkLength, byte[] chunk) throws IOException;
-	}
+    public FingerFactory(Polynomial p, long bytesPerWindow, ChunkBoundaryDetector boundaryDetector) {
+        this.fingerWindow = new RabinFingerprintLongWindowed(p, bytesPerWindow);
+        this.boundaryDetector = boundaryDetector;
+    }
 
-	private final RabinFingerprintLongWindowed fingerWindow;
-	private final ChunkBoundaryDetector boundaryDetector;
+    private RabinFingerprintLongWindowed newWindowedFingerprint() {
+        return new RabinFingerprintLongWindowed(fingerWindow);
+    }
 
-	public FingerFactory(Polynomial p, long bytesPerWindow, ChunkBoundaryDetector boundaryDetector) {
-		this.fingerWindow = new RabinFingerprintLongWindowed(p, bytesPerWindow);
-		this.boundaryDetector = boundaryDetector;
-	}
+    /**
+     * Fingerprint the file into chunks called "Fingers". The chunk boundaries
+     * are determined using a windowed fingerprinter
+     * {@link RabinFingerprintLongWindowed}.
+     * <p>
+     * The chunk detector is position independent. Therefore, even if a file is
+     * rearranged or partially corrupted, the untouched chunks can be
+     * efficiently discovered.
+     */
+    public void getChunkFingerprints(BufferedInputStream bis, ChunkVisitor visitor) throws IOException {
+        final RabinFingerprintLong window = newWindowedFingerprint();
+        int chunkStart = 0;
+        int chunkLength = 0;
 
-	private RabinFingerprintLongWindowed newWindowedFingerprint() {
-		return new RabinFingerprintLongWindowed(fingerWindow);
-	}
+        long fileSize = bis.available();
+        byte[] buf = new byte[4 * 1024 * 1024];
+        byte[] content = new byte[Constants.CHUNK_MAX_SIZE];
 
-	/**
-	 * Fingerprint the file into chunks called "Fingers". The chunk boundaries
-	 * are determined using a windowed fingerprinter
-	 * {@link RabinFingerprintLongWindowed}.
-	 * 
-	 * The chunk detector is position independent. Therefore, even if a file is
-	 * rearranged or partially corrupted, the untouched chunks can be
-	 * efficiently discovered.
-	 */
-	public void getChunkFingerprints(BufferedInputStream bis, ChunkVisitor visitor) throws IOException {
-		final RabinFingerprintLong window = newWindowedFingerprint();
-		int chunkStart = 0;
-		int chunkLength = 0;
+        int numRead;
+        while ((numRead = bis.read(buf)) != -1) {
+            for (int i = 0; i < numRead; i++) {
+                window.pushByte(buf[i]);
+                content[chunkLength++] = buf[i];
 
-		long fileSize = bis.available();
-		byte[] buf = new byte[4 * 1024 * 1024];
-		byte[] content = new byte[Constants.CHUNK_MAX_SIZE];
+                if (boundaryDetector.isBoundary(window, chunkLength)) {
+                    visitor.visit(MD5.getMD5(content, chunkLength), chunkStart, chunkLength, content);
+                    chunkStart += chunkLength;
+                    chunkLength = 0;
+                }
 
-		int numRead = 0;
-		while ((numRead = bis.read(buf)) != -1) {
-			for (int i = 0; i < numRead; i++) {
-				window.pushByte(buf[i]);
-				content[chunkLength++] = buf[i];
+            } // end while.
+        }
 
-				if (boundaryDetector.isBoundary(window, chunkLength)) {
-					visitor.visit(MD5.getMD5(content, chunkLength), chunkStart, chunkLength, content);
-					chunkStart += chunkLength;
-					chunkLength = 0;
-				}
+        if (chunkStart + chunkLength == fileSize) {
+            visitor.visit(MD5.getMD5(content), chunkStart, chunkLength, content);
+        }
+    } // end while.
 
-			} // end while.
-		}
-		
-		if (chunkStart + chunkLength == fileSize) {
-			visitor.visit(MD5.getMD5(content), chunkStart, chunkLength, content);
-		}
-	} // end while.
+    public interface ChunkBoundaryDetector {
+        boolean isBoundary(RabinFingerprintLong fingerprint, int chunkLength);
+    }
+
+    public interface ChunkVisitor {
+        void visit(byte[] fingerprint, int chunkStart, int chunkLength, byte[] chunk) throws IOException;
+    }
 }

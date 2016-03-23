@@ -38,9 +38,9 @@ public class ChunkContainer {
 
 	public ChunkContainer(int containerID, String FileName) {
 		this.containerID = containerID;
-		this.containerPath = String.format(Constants.CONTAINER_LOCATION + "\\\\" + FileName + "\\\\" + this.containerID);
-		this.containerInfoPath = String.format(Constants.CONTAINER_LOCATION
-				 + "\\\\" + FileName + "\\\\" + this.containerID + "Info.txt");
+		this.containerPath = Constants.CONTAINER_LOCATION + "\\\\" + FileName + "\\\\" + this.containerID;
+		this.containerInfoPath = Constants.CONTAINER_LOCATION
+				+ "\\\\" + FileName + "\\\\" + this.containerID + "Info.txt";
 		/**
 		 * Mark.
 		 */

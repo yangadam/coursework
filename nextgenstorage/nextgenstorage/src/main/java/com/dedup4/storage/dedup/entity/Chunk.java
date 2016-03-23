@@ -61,6 +61,15 @@ public class Chunk {
 		this.startPos = startPos;
 	}
 
+	public static String mergeInts(char ch, int... ints) {
+		return String.valueOf(ints[0]) +
+				ch +
+				ints[1] +
+				ch +
+				ints[2] +
+				"\n";
+	}
+	
 	/**
 	 * write into container meta data.
 	 */
@@ -68,16 +77,6 @@ public class Chunk {
 		return mergeInts(',', containerID, startPos, length);
 	}
 	
-	public static String mergeInts(char ch, int... ints) {
-		return new StringBuilder().append(ints[0])
-								  .append(ch)
-								  .append(ints[1])
-								  .append(ch)
-								  .append(ints[2])
-								  .append("\n").toString();
-	}
-	
-
 	/**
 	 * write into file recipe. should add container id in the front.
 	 */
@@ -132,16 +131,16 @@ public class Chunk {
 		return startPos;
 	}
 
+	public void setStartPos(int startPos) {
+		this.startPos = startPos;
+	}
+
 	public int getContainerID() {
 		return containerID;
 	}
 
 	public void setContainerID(int containerID) {
 		this.containerID = containerID;
-	}
-
-	public void setStartPos(int startPos) {
-		this.startPos = startPos;
 	}
 
 }
