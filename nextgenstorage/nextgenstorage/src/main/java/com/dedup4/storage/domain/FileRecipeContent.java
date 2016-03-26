@@ -1,6 +1,6 @@
 package com.dedup4.storage.domain;
 
-public class FileRecipeContent extends TimeInfoData {
+public class FileRecipeContent extends UpdateInfo {
 
     private String fileRecipeId;
 

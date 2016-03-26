@@ -1,6 +1,6 @@
 package com.dedup4.storage.domain;
 
-public class FileRecipe extends TimeInfoData {
+public class FileRecipe extends UpdateInfo {
 
     private int refCount;
 

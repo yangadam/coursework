@@ -1,6 +1,6 @@
 package com.dedup4.storage.domain;
 
-public class Manager extends TimeInfoData {
+public class Manager extends UpdateInfo {
 
     private String mail;
 

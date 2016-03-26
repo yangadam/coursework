@@ -1,6 +1,6 @@
 package com.dedup4.storage.domain;
 
-public class Profile extends TimeInfoData {
+public class Profile extends UpdateInfo {
 
     private String userId;
 

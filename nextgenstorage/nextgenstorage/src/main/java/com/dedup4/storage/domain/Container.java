@@ -1,6 +1,6 @@
 package com.dedup4.storage.domain;
 
-public class Container extends TimeInfoData {
+public class Container extends UpdateInfo {
 
     private String path;
 

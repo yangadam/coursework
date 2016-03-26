@@ -11,7 +11,7 @@
                 } else {
                     $('div.sidebar-collapse').removeClass('collapse')
                 }
-            });
+            }); 
         },
 
         initialization: function () {

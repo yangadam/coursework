@@ -1,6 +1,6 @@
 package com.dedup4.storage.domain;
 
-public class ChunkInfo extends TimeInfoData {
+public class ChunkInfo extends UpdateInfo {
 
     private String fingerprint;
 

@@ -5,7 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
-public class User extends TimeInfoData implements UserDetails {
+public class User extends UpdateInfo implements UserDetails {
 
     private String username;
     private String password;
