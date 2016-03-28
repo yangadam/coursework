@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * @author Yang Mengmeng Created on Mar 26, 2016.
  */
@@ -36,5 +38,15 @@ public class HadoopNodeController {
         }
         return hadoopNode.getName();
     }
+
+    /**
+     * @return hadoop node as list
+     */
+    @RequestMapping(method = RequestMethod.GET)
+    public List<HadoopNode> list() {
+        return hadoopNodeRepository.findAll();
+    }
+
+
 
 }

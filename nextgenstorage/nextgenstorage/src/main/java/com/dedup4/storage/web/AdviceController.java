@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
 import java.util.List;
 
 /**
@@ -43,14 +44,17 @@ public class AdviceController {
      * @return title of advice if success, otherwise null
      */
     @RequestMapping(value = "add", method = RequestMethod.POST)
-    public String add(@RequestBody Advice advice) {
-        try {
-            adviceRepository.insert(advice);
-        } catch (Exception e) {
-            LOGGER.error("Error when adding advice into database", e);
-            return null;
+    public String add(@RequestBody Advice advice, Principal principal) {
+        if (principal.getName() != null) {
+            advice.setUsername(principal.getName());
+            try {
+                adviceRepository.insert(advice);
+                return advice.getTitle();
+            } catch (Exception e) {
+                LOGGER.error("Error when adding advice into database", e);
+            }
         }
-        return advice.getTitle();
+        return null;
     }
 
 }

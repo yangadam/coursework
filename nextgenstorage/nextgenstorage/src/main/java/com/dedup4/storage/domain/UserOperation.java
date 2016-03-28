@@ -7,7 +7,8 @@ public class UserOperation extends IdentityData {
     private Date time;
     private String location;
     private String detail;
-    private String type;// manager/user
+    private Type type;// manager/user
+    private String username;
 
     public Date getTime() {
         return time;
@@ -33,12 +34,24 @@ public class UserOperation extends IdentityData {
         this.detail = detail;
     }
 
-    public String getType() {
+    public Type getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(Type type) {
         this.type = type;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public enum Type {
+        UPLOAD, DOWNLOAD
     }
 
 }

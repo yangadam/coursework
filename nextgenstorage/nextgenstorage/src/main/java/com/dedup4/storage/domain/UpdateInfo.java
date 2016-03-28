@@ -7,38 +7,38 @@ import java.util.Date;
  */
 public class UpdateInfo extends IdentityData {
 
-    private Date createDate;
+    private Date createdDate;
 
-    private Date lastUpdatedTime;
+    private Date lastModifiedDate;
 
-    private String lastUpdateUser;
+    private String lastModifiedUser;
 
     public UpdateInfo() {
-        this.createDate = new Date();
-        this.lastUpdatedTime = new Date();
+        this.createdDate = new Date();
+        this.lastModifiedDate = new Date();
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    public Date getCreatedDate() {
+        return createdDate;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 
-    public Date getLastUpdatedTime() {
-        return lastUpdatedTime;
+    public Date getLastModifiedDate() {
+        return lastModifiedDate;
     }
 
-    public void setLastUpdatedTime(Date lastUpdatedTime) {
-        this.lastUpdatedTime = lastUpdatedTime;
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 
-    public String getLastUpdateUser() {
-        return lastUpdateUser;
+    public String getLastModifiedUser() {
+        return lastModifiedUser;
     }
 
-    public void setLastUpdateUser(String lastUpdateUser) {
-        this.lastUpdateUser = lastUpdateUser;
+    public void setLastModifiedUser(String lastModifiedUser) {
+        this.lastModifiedUser = lastModifiedUser;
     }
 }

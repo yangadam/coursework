@@ -29,41 +29,82 @@ public class UserService implements UserDetailsService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    /**
+     * Load user by username and update last modified date
+     *
+     * @param username username
+     * @return user
+     * @throws UsernameNotFoundException
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("Username not found!");
         }
-        user.setLastUpdatedTime(new Date());
+        user.setLastModifiedDate(new Date());
         userRepository.save(user);
         return user;
     }
 
+    /**
+     * Encrypt password and then insert user to database
+     *
+     * @param user user to add
+     */
     public void addUser(User user) {
         String encryptPwd = passwordEncoder.encode(user.getPassword());
         user.setPassword(encryptPwd);
         userRepository.insert(user);
     }
 
+    /**
+     * Judge if username exists
+     *
+     * @param username username
+     * @return true if user with this username exists
+     */
     public boolean doesUserExist(String username) {
         return userRepository.findByUsername(username) == null;
     }
 
+    /**
+     * Get all users
+     *
+     * @return users as list
+     */
     public List<User> findAll() {
         return userRepository.findAll(new Sort(Sort.Direction.DESC, "createDate"));
     }
 
+    /**
+     * Get a user by username
+     *
+     * @param username username
+     * @return user
+     */
     public User getByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
+    /**
+     * Update the information of user
+     *
+     * @param user user to update
+     * @return user updated
+     */
     public User updateUser(User user) {
         User userFound = userRepository.findByUsername(user.getUsername());
         user.setId(userFound.getId());
         return userRepository.save(user);
     }
 
+    /**
+     * Change the password of user
+     *
+     * @param user user to change password
+     * @return user if old password matches, otherwise null
+     */
     public User changePassword(User user) {
         User userFound = userRepository.findByUsername(user.getUsername());
         if (passwordEncoder.matches(user.getPassword(), userFound.getPassword())) {

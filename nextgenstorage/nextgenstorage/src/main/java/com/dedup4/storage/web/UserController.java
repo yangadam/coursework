@@ -79,6 +79,10 @@ public class UserController {
         }
     }
 
+    /**
+     * @param user user to change password
+     * @return user changed password
+     */
     @RequestMapping(value = "changePassword", method = RequestMethod.POST)
     public String changePassword(@RequestBody User user) {
         try {
