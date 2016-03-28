@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<Accordion maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+  <panes>
+    <TitledPane text="HDFS" textAlignment="LEFT">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+      </content>
+         <font>
+            <Font name="System" size="12.0"/>
+         </font>
+    </TitledPane>
+    <TitledPane text="DedupFS" textAlignment="LEFT">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+      </content>
+         <font>
+            <Font name="System" size="12.0" />
+         </font>
+    </TitledPane>
+    <TitledPane text="MongoDB" textAlignment="LEFT">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+      </content>
+         <font>
+            <Font name="System" size="12.0" />
+         </font>
+    </TitledPane>
+  </panes>
+</Accordion>
