@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="1036.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.HdfsOverviewController">
+   <children>
+      <TreeTableView fx:id="hdfsTreeTableView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <columns>
+          <TreeTableColumn fx:id="pathSuffixColumn" prefWidth="300.0" text="Path Suffix" />
+            <TreeTableColumn fx:id="permissionColumn" prefWidth="75.0" text="Permission" />
+            <TreeTableColumn fx:id="lengthColumn" prefWidth="87.0" text="Length" />
+            <TreeTableColumn fx:id="ownerColumn" prefWidth="71.0" text="Owner" />
+            <TreeTableColumn fx:id="groupColumn" prefWidth="73.0" text="Group" />
+            <TreeTableColumn fx:id="modificationTimeColumn" prefWidth="131.0" text="Modification Time" />
+            <TreeTableColumn fx:id="accessTimeColumn" prefWidth="135.0" text="Access Time" />
+            <TreeTableColumn fx:id="blockSizeColumn" minWidth="0.0" prefWidth="89.0" text="Block Size" />
+            <TreeTableColumn fx:id="replicationColumn" prefWidth="74.0" text="Replication" />
+        </columns>
+      </TreeTableView>
+   </children>
+</AnchorPane>
