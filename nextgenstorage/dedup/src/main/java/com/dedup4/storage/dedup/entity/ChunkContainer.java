@@ -4,131 +4,131 @@ import com.dedup4.storage.dedup.util.Constants;
 
 public class ChunkContainer {
 
-	/**
-	 * Container is a array of many chunks.
-	 */
-	Chunk[] chunkArray;
+    /**
+     * Container is a array of many chunks.
+     */
+    Chunk[] chunkArray;
 
-	/**
-	 * Chunk count of container.
-	 */
-	int chunkCount = 0;
+    /**
+     * Chunk count of container.
+     */
+    int chunkCount = 0;
 
-	/**
-	 * written or not.
-	 */
-	boolean writen = false;
+    /**
+     * written or not.
+     */
+    boolean writen = false;
 
-	/**
-	 * Store path of container.
-	 */
-	String containerPath;
+    /**
+     * Store path of container.
+     */
+    String containerPath;
 
-	/**
-	 * Container information store path.
-	 */
-	String containerInfoPath;
+    /**
+     * Container information store path.
+     */
+    String containerInfoPath;
 
-	/**
-	 * Container ID.
-	 */
-	int containerID;
-	
-	int containerLength = 0;
+    /**
+     * Container ID.
+     */
+    int containerID;
 
-	public ChunkContainer(int containerID, String FileName) {
-		this.containerID = containerID;
-		this.containerPath = Constants.CONTAINER_LOCATION + "\\\\" + FileName + "\\\\" + this.containerID;
-		this.containerInfoPath = Constants.CONTAINER_LOCATION
-				+ "\\\\" + FileName + "\\\\" + this.containerID + "Info.txt";
-		/**
-		 * Mark.
-		 */
-		chunkArray = new Chunk[Constants.CONTAINER_MAX_SIZE];
-	}
-	
-	public ChunkContainer(int containerID) {
-		this.containerID = containerID;
-		chunkArray = new Chunk[Constants.CONTAINER_MAX_SIZE];
-	}
+    int containerLength = 0;
 
-	/**
-	 * Add Chunk into ChunkContainer.
-	 * 
-	 * @param chunk
-	 */
-	public void addChunk(Chunk chunk) {
-		chunkArray[chunkCount++] = chunk;
-		containerLength += chunk.getLength();
-	}
+    public ChunkContainer(int containerID, String FileName) {
+        this.containerID = containerID;
+        this.containerPath = Constants.CONTAINER_LOCATION + "\\\\" + FileName + "\\\\" + this.containerID;
+        this.containerInfoPath = Constants.CONTAINER_LOCATION
+                + "\\\\" + FileName + "\\\\" + this.containerID + "Info.txt";
+        /**
+         * Mark.
+         */
+        chunkArray = new Chunk[Constants.CONTAINER_MAX_SIZE];
+    }
 
-	/**
-	 * Check the container is full or not.
-	 * 
-	 * @return
-	 */
-	public long remainSize() {
-		return (Constants.CONTAINER_MAX_SIZE) - chunkCount;
-	}
+    public ChunkContainer(int containerID) {
+        this.containerID = containerID;
+        chunkArray = new Chunk[Constants.CONTAINER_MAX_SIZE];
+    }
 
-	/**
-	 * Getters and Setters.
-	 */
-	public Chunk[] getChunkArray() {
-		return chunkArray;
-	}
+    /**
+     * Add Chunk into ChunkContainer.
+     *
+     * @param chunk
+     */
+    public void addChunk(Chunk chunk) {
+        chunkArray[chunkCount++] = chunk;
+        containerLength += chunk.getLength();
+    }
 
-	public void setChunkArray(Chunk[] chunkArray) {
-		this.chunkArray = chunkArray;
-	}
+    /**
+     * Check the container is full or not.
+     *
+     * @return
+     */
+    public long remainSize() {
+        return (Constants.CONTAINER_MAX_SIZE) - chunkCount;
+    }
 
-	public int getChunkCount() {
-		return chunkCount;
-	}
+    /**
+     * Getters and Setters.
+     */
+    public Chunk[] getChunkArray() {
+        return chunkArray;
+    }
 
-	public void setChunkCount(int chunkCount) {
-		this.chunkCount = chunkCount;
-	}
+    public void setChunkArray(Chunk[] chunkArray) {
+        this.chunkArray = chunkArray;
+    }
 
-	public boolean isWriten() {
-		return writen;
-	}
+    public int getChunkCount() {
+        return chunkCount;
+    }
 
-	public void setWriten(boolean writen) {
-		this.writen = writen;
-	}
-	
-	public String getContainerPath() {
-		return containerPath;
-	}
+    public void setChunkCount(int chunkCount) {
+        this.chunkCount = chunkCount;
+    }
 
-	public void setContainerPath(String containerPath) {
-		this.containerPath = containerPath;
-	}
+    public boolean isWriten() {
+        return writen;
+    }
 
-	public String getContainerInfoPath() {
-		return containerInfoPath;
-	}
+    public void setWriten(boolean writen) {
+        this.writen = writen;
+    }
 
-	public void setContainerInfoPath(String containerInfoPath) {
-		this.containerInfoPath = containerInfoPath;
-	}
+    public String getContainerPath() {
+        return containerPath;
+    }
 
-	public int getContainerID() {
-		return containerID;
-	}
+    public void setContainerPath(String containerPath) {
+        this.containerPath = containerPath;
+    }
 
-	public void setContainerkID(int chunkID) {
-		this.containerID = chunkID;
-	}
+    public String getContainerInfoPath() {
+        return containerInfoPath;
+    }
 
-	public int getContainerLength() {
-		return containerLength;
-	}
+    public void setContainerInfoPath(String containerInfoPath) {
+        this.containerInfoPath = containerInfoPath;
+    }
 
-	public void setContainerLength(int containerLength) {
-		this.containerLength = containerLength;
-	}
-	
-	
+    public int getContainerID() {
+        return containerID;
+    }
+
+    public void setContainerkID(int chunkID) {
+        this.containerID = chunkID;
+    }
+
+    public int getContainerLength() {
+        return containerLength;
+    }
+
+    public void setContainerLength(int containerLength) {
+        this.containerLength = containerLength;
+    }
+
+
 }
