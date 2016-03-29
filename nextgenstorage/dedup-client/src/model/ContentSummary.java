@@ -34,10 +34,23 @@ public class ContentSummary {
 		return spaceQuota;
 	}
 
+	public String getDisplayText() {
+		return "Directory Count," + directoryCount + ","
+			 + "File Count," + fileCount + ","
+			 + "Length," + length + ","
+			 + "Quota," + quota + ","
+			 + "Space Consumed," + ","
+			 + "Space Quota," + spaceQuota;
+	}
+
 	@Override
 	public String toString() {
-		return MoreObjects.toStringHelper(this).add("directoryCount", directoryCount).add("fileCount", fileCount)
-				.add("length", length).add("quota", quota).add("spaceConsumed", spaceConsumed)
+		return MoreObjects.toStringHelper(this)
+				.add("directoryCount", directoryCount)
+				.add("fileCount", fileCount)
+				.add("length", length)
+				.add("quota", quota)
+				.add("spaceConsumed", spaceConsumed)
 				.add("spaceQuota", spaceQuota).toString();
 	}
 }

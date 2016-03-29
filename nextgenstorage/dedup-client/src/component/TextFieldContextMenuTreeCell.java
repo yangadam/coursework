@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.apache.http.client.ClientProtocolException;
 
+import application.MainApp;
 import javafx.event.ActionEvent;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
@@ -13,6 +14,7 @@ import javafx.scene.control.TreeTableCell;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import model.FileStatus;
+import util.http.hdfs.HdfsAccess;
 import view.HdfsOverviewController;
 
 public class TextFieldContextMenuTreeCell extends TreeTableCell<FileStatus, String>{
@@ -20,13 +22,17 @@ public class TextFieldContextMenuTreeCell extends TreeTableCell<FileStatus, Stri
 	private TextField textField;
 	private final ContextMenu contextMenu = new ContextMenu();
 
-	public TextFieldContextMenuTreeCell() {
+	private MainApp mainApp;
+
+	public TextFieldContextMenuTreeCell(MainApp mainApp) {
+		this.mainApp = mainApp;
+
 		MenuItem viewItem = new MenuItem("View");
 		MenuItem refreshItem = new MenuItem("Refresh");
 		MenuItem propertiesItem = new MenuItem("Properties");
-
 		contextMenu.getItems().addAll(viewItem, refreshItem, propertiesItem);
 
+		// Add refresh action.
 		refreshItem.setOnAction((ActionEvent t) -> {
 			TreeItem<FileStatus> currentTreeItem = getTreeTableRow().getTreeItem();
 			FileStatus currentFileStatus = currentTreeItem.getValue();
@@ -40,6 +46,23 @@ public class TextFieldContextMenuTreeCell extends TreeTableCell<FileStatus, Stri
 				newFileStatus.setPathSuffix(currentFileStatus.getPathSuffix());
 				newFileStatus.setAbsolutePath(currentFileStatus.getAbsolutePath());
 				currentTreeItem.setValue(newFileStatus);
+			}
+		});
+
+		// Add view action
+		viewItem.setOnAction((ActionEvent t) -> {
+			try {
+				FileStatus fileStatus = getTreeTableRow().getTreeItem().getValue();
+				String text;
+				if(fileStatus.isDirectory()) {
+					text = HdfsAccess.getInstance().getDirectoryContentSummary(fileStatus.getAbsolutePath()).getDisplayText();
+				} else {
+					text = HdfsAccess.getInstance().open(fileStatus.getAbsolutePath(), null);
+				}
+
+				mainApp.showFileOverview(text);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		});
 	}
@@ -110,7 +133,7 @@ public class TextFieldContextMenuTreeCell extends TreeTableCell<FileStatus, Stri
 
 		try {
 			String newAbsolutePath = getNewAbsoultePath(parentFileStatus, newValue);
-			HdfsOverviewController.access.rename(fileStatus.getAbsolutePath(), newAbsolutePath);
+			HdfsAccess.getInstance().rename(fileStatus.getAbsolutePath(), newAbsolutePath);
 			fileStatus.setAbsolutePath(newAbsolutePath);
 
 			parentTreeItem.getChildren().remove(0, parentTreeItem.getChildren().size());

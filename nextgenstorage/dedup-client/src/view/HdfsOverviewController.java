@@ -50,8 +50,6 @@ public class HdfsOverviewController {
 
 	private MainApp mainApp;
 
-	public final static HdfsAccess access = new HdfsAccess("139.129.17.212", "50070", null);
-
 	public HdfsOverviewController() {}
 
 	@FXML
@@ -59,7 +57,7 @@ public class HdfsOverviewController {
 		hdfsTreeTableView.setEditable(true);
 
 		pathSuffixColumn.setCellValueFactory(cellData -> cellData.getValue().getValue().pathSuffixProperty());
-		pathSuffixColumn.setCellFactory((TreeTableColumn<FileStatus, String> p) -> new TextFieldContextMenuTreeCell());
+		pathSuffixColumn.setCellFactory((TreeTableColumn<FileStatus, String> p) -> new TextFieldContextMenuTreeCell(mainApp));
 
 		permissionColumn.setCellValueFactory(cellData -> cellData.getValue().getValue().permissionProperty());
 
@@ -78,12 +76,12 @@ public class HdfsOverviewController {
 
 		// First load.
 		try {
-			FileStatus rootFileStatus = access.getStatus("/");
+			FileStatus rootFileStatus = HdfsAccess.getInstance().getStatus("/");
 			rootFileStatus.setAbsolutePath("/");
 
 			final TreeItem<FileStatus> root = new TreeItem<>(rootFileStatus, new ImageView(new Image("file:../../resources/images/folder.png")));
 			root.setExpanded(true);
-			FileStatuses statuses = access.listDirectory("/");
+			FileStatuses statuses = HdfsAccess.getInstance().listDirectory("/");
 			dealStatuses(statuses, root);
 			hdfsTreeTableView.setRoot(root);
 		} catch (UnsupportedOperationException e) {
@@ -95,7 +93,7 @@ public class HdfsOverviewController {
 
 	public static void openFolder(TreeItem<FileStatus> parentTreeItem, String absolutePath) {
 		try {
-			FileStatuses statuses = access.listDirectory(absolutePath);
+			FileStatuses statuses = HdfsAccess.getInstance().listDirectory(absolutePath);
 			dealStatuses(statuses, parentTreeItem);
 			parentTreeItem.getValue().setOpened(true);
 		} catch (UnsupportedOperationException e) {
@@ -107,7 +105,7 @@ public class HdfsOverviewController {
 
 	public static FileStatus getFileStatus(String absolutePath) {
 		try {
-			return access.getStatus(absolutePath);
+			return HdfsAccess.getInstance().getStatus(absolutePath);
 		} catch (UnsupportedOperationException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

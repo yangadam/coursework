@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.SplitPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -89,6 +90,7 @@ public class MainApp extends Application {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("../view/HdfsOverview.fxml"));
 			AnchorPane treeTableView = (AnchorPane)loader.load();
+
 			AnchorPane hdfsAnchorPane = (AnchorPane)leftPane.getPanes().get(0).getContent();
 			hdfsAnchorPane.getChildren().add(treeTableView);
 			AnchorPane.setBottomAnchor(treeTableView, Double.valueOf(-10));
@@ -102,6 +104,29 @@ public class MainApp extends Application {
 			e.printStackTrace();
 		}
 	}
+
+	public void showFileOverview(String text) {
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource("../view/FileOverview.fxml"));
+			AnchorPane fileOverviewPane = (AnchorPane)loader.load();
+			TextArea fileTextArea = (TextArea)fileOverviewPane.getChildren().get(0);
+			fileTextArea.setText(text);
+			fileTextArea.setWrapText(true);
+
+			AnchorPane rightPane = (AnchorPane)mainPaneLayout.getItems().get(1);
+
+			rightPane.getChildren().add(fileTextArea);
+			AnchorPane.setBottomAnchor(fileTextArea, Double.valueOf(0));
+			AnchorPane.setLeftAnchor(fileTextArea, Double.valueOf(0));
+			AnchorPane.setTopAnchor(fileTextArea, Double.valueOf(0));
+			AnchorPane.setRightAnchor(fileTextArea, Double.valueOf(0));
+				// Set Controller
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 
 	public static void main(String[] args) {
 		launch(args);

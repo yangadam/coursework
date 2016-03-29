@@ -8,13 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import model.ContentSummary;
-import model.FileChecksum;
-import model.FileStatus;
-import model.FileStatuses;
-import util.http.base.HttpClientHelper;
-import util.http.base.HttpClientHelper.METHOD;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.entity.InputStreamEntity;
@@ -23,7 +16,27 @@ import com.google.gson.Gson;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
+import model.ContentSummary;
+import model.FileChecksum;
+import model.FileStatus;
+import model.FileStatuses;
+import util.http.base.HttpClientHelper.METHOD;
+
 public class HdfsAccess {
+	// Load properties from file.
+	private static HdfsAccess INSTANCE = null;
+
+	public static HdfsAccess getInstance() {
+		if(INSTANCE == null) {
+			synchronized (HdfsAccess.class) {
+				if (INSTANCE == null) {
+					INSTANCE = new HdfsAccess("139.129.17.212", "50070", null);
+				}
+			}
+		}
+		return INSTANCE;
+	}
+
 	private HdfsHttpClientHelper hdfsHttpClientHelper;
 
 	public HdfsAccess(HdfsHttpAddress hdfsHttpAddress) {
