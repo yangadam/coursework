@@ -1,4 +1,4 @@
-package util.http;
+package util.http.hdfs;
 
 
 import java.io.File;
@@ -12,7 +12,8 @@ import model.ContentSummary;
 import model.FileChecksum;
 import model.FileStatus;
 import model.FileStatuses;
-import util.http.HttpClientHelper.METHOD;
+import util.http.base.HttpClientHelper;
+import util.http.base.HttpClientHelper.METHOD;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;

@@ -9,7 +9,7 @@ import com.google.common.base.MoreObjects;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import util.http.HdfsAccess;
+import util.http.hdfs.HdfsAccess;
 
 public class FileStatus {
 	static final SimpleDateFormat TIME_FORMATTER = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");

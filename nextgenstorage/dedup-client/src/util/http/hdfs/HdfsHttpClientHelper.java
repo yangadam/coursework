@@ -1,6 +1,8 @@
-package util.http;
+package util.http.hdfs;
 
 import java.util.Map;
+
+import util.http.base.HttpClientHelper;
 
 public class HdfsHttpClientHelper extends HttpClientHelper {
 

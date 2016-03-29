@@ -1,4 +1,4 @@
-package util.http;
+package util.http.base;
 
 public abstract class HttpAddress {
 	final static String HTTP_DEFAULT_PROTOCOL = "http";
@@ -21,7 +21,11 @@ public abstract class HttpAddress {
 		return protocol + "://" + host + ":" + port;
 	}
 
-	public abstract String getCurrentURL();
+	public String getCurrentURL() {
+		return currentURL;
+	}
 
-	public abstract void setCurrentURL(String currentURL);
+	public void setCurrentURL(String currentURL) {
+		this.currentURL = currentURL;
+	}
 }

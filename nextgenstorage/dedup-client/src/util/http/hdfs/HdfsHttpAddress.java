@@ -1,9 +1,11 @@
-package util.http;
+package util.http.hdfs;
 
 import java.util.Map;
 import java.util.Map.Entry;
 
 import com.google.common.base.Preconditions;
+
+import util.http.base.HttpAddress;
 
 
 public class HdfsHttpAddress extends HttpAddress {
@@ -32,16 +34,6 @@ public class HdfsHttpAddress extends HttpAddress {
 		appendOptions(url, options);
 		setCurrentURL(url.toString());
 		return currentURL;
-	}
-
-	@Override
-	public String getCurrentURL() {
-		return super.currentURL;
-	}
-
-	@Override
-	public void setCurrentURL(String currentURL) {
-		super.currentURL = currentURL;
 	}
 
 	private void appendPath(StringBuilder url, String path) {

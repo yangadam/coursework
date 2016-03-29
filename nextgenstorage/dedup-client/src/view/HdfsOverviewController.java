@@ -14,7 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import model.FileStatus;
 import model.FileStatuses;
-import util.http.HdfsAccess;
+import util.http.hdfs.HdfsAccess;
 
 public class HdfsOverviewController {
 
