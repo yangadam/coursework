@@ -21,6 +21,11 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @RequestMapping(method = RequestMethod.GET)
+    public List<User> getAllUser() {
+        return userService.findAll();
+    }
+
     /**
      * @return users as list if success, otherwise null
      */

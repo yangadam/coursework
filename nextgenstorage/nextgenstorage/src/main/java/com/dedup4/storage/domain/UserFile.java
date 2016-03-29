@@ -12,6 +12,7 @@ public class UserFile extends IdentityData {
     private boolean open;
     private String fingerprint;
     private String fileRecipeId;
+    private int downloadCount;
 
     public String getUserId() {
         return userId;
@@ -75,6 +76,14 @@ public class UserFile extends IdentityData {
 
     public void setFileRecipeId(String fileRecipeId) {
         this.fileRecipeId = fileRecipeId;
+    }
+
+    public int getDownloadCount() {
+        return downloadCount;
+    }
+
+    public void setDownloadCount(int downloadCount) {
+        this.downloadCount = downloadCount;
     }
 
 }

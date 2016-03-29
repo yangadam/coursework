@@ -5,10 +5,7 @@ import com.dedup4.storage.repository.HadoopNodeRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -47,6 +44,16 @@ public class HadoopNodeController {
         return hadoopNodeRepository.findAll();
     }
 
+    @RequestMapping(value = "restart", method = RequestMethod.GET)
+    public Boolean restart(@RequestParam String host) {
+        // TODO
+        return true;
+    }
 
+    @RequestMapping(value = "stop", method = RequestMethod.GET)
+    public Boolean stop(@RequestParam String host) {
+        // TODO
+        return true;
+    }
 
 }
