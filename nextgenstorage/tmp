@@ -1,0 +1,160 @@
+HdfsHttpClientHelper
+
+public HdfsHttpClientHelper setCurrentHdfsURL(String currentURL) {
+	httpAddress.setCurrentURL(currentURL);
+	return this;
+}
+
+HdfsHttpAddress
+public String getNameNodeStatusURL() {
+	return protocol + "://" + host + ":" + port + "/jmx?qry=Hadoop:service=NameNode,name=NameNodeStatus";
+}
+	
+public String getFSNamesystemStateURL() {
+	return protocol + "://" + host + ":" + port + "/jmx?qry=Hadoop:service=NameNode,name=FSNamesystemState";
+}
+	
+public String getMemoryURL() {
+	return protocol + "://" + host + ":" + port + "/jmx?qry=java.lang:type=Memory";
+}
+	
+public String getNameNodeInfoURL() {
+	return protocol + "://" + host + ":" + port + "/jmx?qry=Hadoop:service=NameNode,name=NameNodeInfo";
+}
+
+HdfsHttpClientHelper
+	public HdfsHttpClientHelper setNameNodeStatusURL() {
+		HdfsHttpAddress hdfsHttpAddress = (HdfsHttpAddress)httpAddress;
+		hdfsHttpAddress.setCurrentURL(hdfsHttpAddress.getNameNodeStatusURL());
+		return this;
+	}
+	
+	public HdfsHttpClientHelper setNameNodeInfoURL() {
+		HdfsHttpAddress hdfsHttpAddress = (HdfsHttpAddress)httpAddress;
+		hdfsHttpAddress.setCurrentURL(hdfsHttpAddress.getNameNodeInfoURL());
+		return this;
+	}
+	
+	public HdfsHttpClientHelper setFSNamesystemStateURL() {
+		HdfsHttpAddress hdfsHttpAddress = (HdfsHttpAddress)httpAddress;
+		hdfsHttpAddress.setCurrentURL(hdfsHttpAddress.getFSNamesystemStateURL());
+		return this;
+	}
+	
+	public HdfsHttpClientHelper SetMemoryURL() {
+		HdfsHttpAddress hdfsHttpAddress = (HdfsHttpAddress)httpAddress;
+		hdfsHttpAddress.setCurrentURL(hdfsHttpAddress.getMemoryURL());
+		return this;
+	}
+	
+HdfsAccess
+
+	// Cluster Statuses.
+	
+	/**
+	 * [Get] Get NameNode Status
+	 * @return
+	 * @throws UnsupportedOperationException
+	 * @throws IOException
+	 */
+	public String getNameNodeStatus() throws UnsupportedOperationException, IOException {
+		return hdfsHttpClientHelper
+				.setNameNodeStatusURL()
+				.getHttpResultContent(METHOD.GET);
+	}
+	
+	/**
+	 * [GET] Get NameNode Info
+	 * @return
+	 * @throws UnsupportedOperationException
+	 * @throws IOException
+	 */
+	public String getNameNodeInfo() throws UnsupportedOperationException, IOException {
+		return hdfsHttpClientHelper
+				.setNameNodeInfoURL()
+				.getHttpResultContent(METHOD.GET);
+	}
+	
+	/**
+	 * [GET] Get FSNamesystem State
+	 * @return
+	 * @throws IOException 
+	 * @throws UnsupportedOperationException 
+	 */
+	public String getFSNamesystemState() throws UnsupportedOperationException, IOException {
+		return hdfsHttpClientHelper
+				.setFSNamesystemStateURL()
+				.getHttpResultContent(METHOD.GET);
+	}
+	
+	/**
+	 * [GET] Get Memory
+	 * @return
+	 * @throws UnsupportedOperationException
+	 * @throws IOException
+	 */
+	public String getMemory() throws UnsupportedOperationException, IOException {
+		return hdfsHttpClientHelper
+				.SetMemoryURL()
+				.getHttpResultContent(METHOD.GET);
+	}
+	
+	public class NameNodeStatus {
+	private String name;
+	private String modelerType;
+	private String State;
+	private String NNRole;
+	private String HostAndPort;
+	private boolean SecurityEnabled;
+}
+
+
+public class FSNamesystemState {
+	private String name;
+	private String modelerType;
+	private long CapacityTotal;
+	private long CapacityUsed;
+	private long CapacityRemaining;
+	private int TotalLoad;
+	private String SnapshotStats;
+	private int BlocksTotal;
+	private int MaxObjects;
+	private int FilesTotal;
+	private int PendingReplicationBlocks;
+	private int UnderReplicatedBlocks;
+	private int ScheduledReplicationBlocks;
+	private int PendingDeletionBlocks;
+	private long BlockDeletionStartTime;
+	private String FSState;
+	private int NumLiveDataNodes;
+	private int NumDeadDataNodes;
+	private int NumDecomLiveDataNodes;
+	private int NumDecomDeadDataNodes;
+	private int NumDecommissioningDataNodes;
+	private int NumStaleDataNodes;
+	private int NumStaleStorages;
+}
+
+
+public class Memory {
+	private String name;
+	private String modelerType;
+	private boolean Verbose;
+	private int ObjectPendingFinalizationCount;
+	private HeapMemoryUsageType HeapMemoryUsage;
+	private NonHeapMemoryUsageType NonHeapMemoryUsage;
+	private String ObjectName;
+}
+
+public class HeapMemoryUsageType {
+	private long committed;
+	private long max;
+	private long used;
+}
+
+public class NonHeapMemoryUsageType {
+	private long committed;
+	private long init;
+	private long max;
+	private long used;
+}
