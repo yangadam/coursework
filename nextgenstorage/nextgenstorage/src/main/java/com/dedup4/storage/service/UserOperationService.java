@@ -41,7 +41,7 @@ public class UserOperationService {
         Date to = new Date();
         to = clearDateClock(to);
         Date from = DateUtils.addDays(to, -1);
-        return userOperationRepository.countByTypeAndCreateDateBetween(UserOperation.Type.DOWNLOAD, from, to);
+        return userOperationRepository.countByTypeAndTimeBetween(UserOperation.Type.DOWNLOAD, from, to);
     }
 
     /**
@@ -52,7 +52,7 @@ public class UserOperationService {
      * @return date as list
      */
     public List<Date> getDownloadStatistics(Date from, Date to) {
-        return userOperationRepository.findCreateDateByTypeAndCreateDateBetween(UserOperation.Type.DOWNLOAD, from, to);
+        return userOperationRepository.findTimeByTypeAndTimeBetween(UserOperation.Type.DOWNLOAD, from, to);
     }
 
 }

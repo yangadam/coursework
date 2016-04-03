@@ -6,5 +6,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.Date;
 
 public interface UserFileRepository extends MongoRepository<UserFile, String> {
-    int countByCreatedDateBetween(Date from, Date to);
+    int countByUploadDateBetween(Date from, Date to);
 }

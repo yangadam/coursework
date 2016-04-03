@@ -17,8 +17,8 @@
     <div class="container">
         <h1>Welcome</h1>
         <form class="form" action="index.html" th:action="@{/login}" method="POST">
-            <input type="text" placeholder="Username" name="username">
-            <input type="password" placeholder="Password" name="password">
+            <input type="text" placeholder="Username" name="username"/>
+            <input type="password" placeholder="Password" name="password"/>
             <button type="submit" id="login-button">Login</button>
         </form>
     </div>
@@ -38,16 +38,7 @@
 
 </div>
 
-<script type="text/javascript" src="../static/js/jquery-1.10.2.js"></script>
-<script type="text/javascript">
-    /*
-     $('#login-button').click(function(event){
-     event.preventDefault();
-     $('form').fadeOut(500);
-     $('.wrapper').addClass('form-success');
-     });
-     */
-</script>
+<script type="text/javascript" src="../static/js/jquery-1.10.2.js" th:src="@{/js/jquery-1.10.2.js}"></script>
 
 </body>
 </html>

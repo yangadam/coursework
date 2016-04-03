@@ -36,7 +36,7 @@ public class UserFileController {
     public int yesterdayUpload() {
         Date to = new Date();
         Date from = DateUtils.addDays(to, -1);
-        return userFileRepository.countByCreatedDateBetween(from, to);
+        return userFileRepository.countByUploadDateBetween(from, to);
     }
 
 }

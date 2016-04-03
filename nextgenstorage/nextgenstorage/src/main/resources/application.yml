@@ -1,9 +1,10 @@
 spring:
     data:
         mongodb:
-            uri: mongodb://139.129.10.28:20000/next_gen_storage
-            repositories:
-                enabled: true
+            port: 0
+#            uri: mongodb://139.129.10.28:20000/next_gen_storage
+#            repositories:
+#                enabled: true
     activemq:
         broker-url: tcp://139.129.17.212:61616
         user: dedup4

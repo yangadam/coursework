@@ -14,7 +14,7 @@ public interface UserOperationRepository extends MongoRepository<UserOperation, 
 
     int countByType(UserOperation.Type type);
 
-    int countByTypeAndCreateDateBetween(UserOperation.Type type, Date from, Date to);
+    int countByTypeAndTimeBetween(UserOperation.Type type, Date from, Date to);
 
-    List<Date> findCreateDateByTypeAndCreateDateBetween(UserOperation.Type type, Date from, Date to);
+    List<Date> findTimeByTypeAndTimeBetween(UserOperation.Type type, Date from, Date to);
 }
