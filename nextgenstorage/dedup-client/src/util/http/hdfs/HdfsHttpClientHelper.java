@@ -19,4 +19,28 @@ public class HdfsHttpClientHelper extends HttpClientHelper {
 
 		return this;
 	}
+
+	public HdfsHttpClientHelper setNameNodeStatusURL() {
+		HdfsHttpAddress hdfsHttpAddress = (HdfsHttpAddress)httpAddress;
+		hdfsHttpAddress.setCurrentURL(hdfsHttpAddress.getNameNodeStatusURL());
+		return this;
+	}
+
+	public HdfsHttpClientHelper setNameNodeInfoURL() {
+		HdfsHttpAddress hdfsHttpAddress = (HdfsHttpAddress)httpAddress;
+		hdfsHttpAddress.setCurrentURL(hdfsHttpAddress.getNameNodeInfoURL());
+		return this;
+	}
+
+	public HdfsHttpClientHelper setFSNamesystemStateURL() {
+		HdfsHttpAddress hdfsHttpAddress = (HdfsHttpAddress)httpAddress;
+		hdfsHttpAddress.setCurrentURL(hdfsHttpAddress.getFSNamesystemStateURL());
+		return this;
+	}
+
+	public HdfsHttpClientHelper SetMemoryURL() {
+		HdfsHttpAddress hdfsHttpAddress = (HdfsHttpAddress)httpAddress;
+		hdfsHttpAddress.setCurrentURL(hdfsHttpAddress.getMemoryURL());
+		return this;
+	}
 }

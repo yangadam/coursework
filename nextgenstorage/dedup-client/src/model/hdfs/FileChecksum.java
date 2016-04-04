@@ -1,4 +1,4 @@
-package model;
+package model.hdfs;
 
 import com.google.common.base.MoreObjects;
 

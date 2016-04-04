@@ -1,24 +1,49 @@
 package application;
 
 import java.io.IOException;
+import java.util.Properties;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Side;
 import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.SplitPane;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.Tooltip;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import model.hdfs.FileStatus;
+import util.commons.Unit;
 import view.HdfsOverviewController;
+import view.LeftPaneController;
 
 public class MainApp extends Application {
 
+	private final static int LEFT_PANE_INDEX = 0;
+	private final static int MIDDLE_PANE_INDEX = 1;
+	private final static int RIGHT_PANE_INDEX = 2;
+
+	private final static int LEFT_ACCORDION_HDFS = 0;
+	private final static int LEFT_ACCORDION_DEDUP4FS = 1;
+	private final static int LEFT_ACCORDION_MONGODB = 2;
+
 	private Stage primaryStage;
 	private AnchorPane rootLayout;
+
+
 	private SplitPane mainPaneLayout;
-	private Accordion leftPane;
+	private AnchorPane rightAnchorPane;
+	private TabPane middleTabPane;
+
+	private Accordion leftAccordion;
+	private Accordion rightAccordion;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -27,17 +52,13 @@ public class MainApp extends Application {
 		this.primaryStage.getIcons().add(new Image("file:../../resources/images/logo.png"));
 
 		initRootLayout();
-
 		initSplitPaneLayout();
-
+		initRightPane();
 		initLeftPane();
-
+		initMiddlePane();
 		showHdfsOverview();
 	}
 
-	/**
-	 * Initializes the root layout.
-	 */
 	public void initRootLayout() {
 		try {
 			FXMLLoader loader = new FXMLLoader();
@@ -64,22 +85,40 @@ public class MainApp extends Application {
 			AnchorPane.setBottomAnchor(mainPaneLayout, Double.valueOf(0));
 			AnchorPane.setLeftAnchor(mainPaneLayout, Double.valueOf(0));
 			AnchorPane.setRightAnchor(mainPaneLayout, Double.valueOf(0));
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void initRightPane() {
+		rightAnchorPane = (AnchorPane)mainPaneLayout.getItems().get(RIGHT_PANE_INDEX);
+		rightAccordion = (Accordion)rightAnchorPane.getChildren().get(0);
+	}
+
+	public void initMiddlePane() {
+		middleTabPane = (TabPane)mainPaneLayout.getItems().get(MIDDLE_PANE_INDEX);
+		middleTabPane.setRotateGraphic(false);
+		middleTabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
+		middleTabPane.setSide(Side.TOP);
+		middleTabPane.setFocusTraversable(true);
 	}
 
 	public void initLeftPane() {
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("../view/LeftPane.fxml"));
-			leftPane = (Accordion) loader.load();
-			AnchorPane anchorPane = (AnchorPane)mainPaneLayout.getItems().get(0);
-			anchorPane.getChildren().add(leftPane);
-			AnchorPane.setBottomAnchor(leftPane, Double.valueOf(0));
-			AnchorPane.setLeftAnchor(leftPane, Double.valueOf(-4));
-			AnchorPane.setTopAnchor(leftPane, Double.valueOf(-2));
-			AnchorPane.setRightAnchor(leftPane, Double.valueOf(-4));
+			leftAccordion = (Accordion) loader.load();
+
+			AnchorPane anchorPane = (AnchorPane)mainPaneLayout.getItems().get(LEFT_PANE_INDEX);
+			anchorPane.getChildren().add(leftAccordion);
+			AnchorPane.setBottomAnchor(leftAccordion, Double.valueOf(0));
+			AnchorPane.setLeftAnchor(leftAccordion, Double.valueOf(-4));
+			AnchorPane.setTopAnchor(leftAccordion, Double.valueOf(-2));
+			AnchorPane.setRightAnchor(leftAccordion, Double.valueOf(-4));
+
+			LeftPaneController controller = loader.getController();
+			controller.setMainApp(this);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -91,7 +130,7 @@ public class MainApp extends Application {
 			loader.setLocation(MainApp.class.getResource("../view/HdfsOverview.fxml"));
 			AnchorPane treeTableView = (AnchorPane)loader.load();
 
-			AnchorPane hdfsAnchorPane = (AnchorPane)leftPane.getPanes().get(0).getContent();
+			AnchorPane hdfsAnchorPane = (AnchorPane)leftAccordion.getPanes().get(0).getContent();
 			hdfsAnchorPane.getChildren().add(treeTableView);
 			AnchorPane.setBottomAnchor(treeTableView, Double.valueOf(-10));
 			AnchorPane.setLeftAnchor(treeTableView, Double.valueOf(-10));
@@ -105,28 +144,33 @@ public class MainApp extends Application {
 		}
 	}
 
-	public void showFileOverview(String text) {
+	public void showFileOverview(String text, FileStatus fileStatus) {
 		try {
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(MainApp.class.getResource("../view/FileOverview.fxml"));
-			AnchorPane fileOverviewPane = (AnchorPane)loader.load();
-			TextArea fileTextArea = (TextArea)fileOverviewPane.getChildren().get(0);
-			fileTextArea.setText(text);
-			fileTextArea.setWrapText(true);
+			AnchorPane textPane = new AnchorPane();
 
-			AnchorPane rightPane = (AnchorPane)mainPaneLayout.getItems().get(1);
+			// File
+			TextArea textArea = new TextArea();
+			textArea.setText(text);
+			textArea.setEditable(false);
+			textArea.setWrapText(true);
+			textPane.getChildren().add(textArea);
+			AnchorPane.setBottomAnchor(textArea, 0d);
+			AnchorPane.setLeftAnchor(textArea, 0d);
+			AnchorPane.setRightAnchor(textArea, 0d);
+			AnchorPane.setTopAnchor(textArea, 0d);
 
-			rightPane.getChildren().add(fileTextArea);
-			AnchorPane.setBottomAnchor(fileTextArea, Double.valueOf(0));
-			AnchorPane.setLeftAnchor(fileTextArea, Double.valueOf(0));
-			AnchorPane.setTopAnchor(fileTextArea, Double.valueOf(0));
-			AnchorPane.setRightAnchor(fileTextArea, Double.valueOf(0));
-				// Set Controller
+			Tab textAreaTab = new Tab(fileStatus.getPathSuffix());
+			textAreaTab.setContent(textPane);
+			textAreaTab.setTooltip(new Tooltip(fileStatus.getAbsolutePath()));
+			middleTabPane.getTabs().add(textAreaTab);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
+	public Accordion getRightAccordion() {
+		return rightAccordion;
+	}
 
 	public static void main(String[] args) {
 		launch(args);

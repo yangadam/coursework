@@ -12,8 +12,8 @@ import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import model.FileStatus;
-import model.FileStatuses;
+import model.hdfs.FileStatus;
+import model.hdfs.FileStatuses;
 import util.http.hdfs.HdfsAccess;
 
 public class HdfsOverviewController {

@@ -1,4 +1,4 @@
-package model;
+package model.hdfs;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package model;
+package model.hdfs;
 
 import com.google.common.base.MoreObjects;
 
@@ -39,7 +39,7 @@ public class ContentSummary {
 			 + "File Count," + fileCount + ","
 			 + "Length," + length + ","
 			 + "Quota," + quota + ","
-			 + "Space Consumed," + ","
+			 + "Space Consumed," + spaceConsumed + ","
 			 + "Space Quota," + spaceQuota;
 	}
 

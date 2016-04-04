@@ -60,4 +60,20 @@ public class HdfsHttpAddress extends HttpAddress {
 			}
 		}
 	}
+
+	public String getNameNodeStatusURL() {
+		return protocol + "://" + host + ":" + port + "/jmx?qry=Hadoop:service=NameNode,name=NameNodeStatus";
+	}
+
+	public String getFSNamesystemStateURL() {
+		return protocol + "://" + host + ":" + port + "/jmx?qry=Hadoop:service=NameNode,name=FSNamesystemState";
+	}
+
+	public String getMemoryURL() {
+		return protocol + "://" + host + ":" + port + "/jmx?qry=java.lang:type=Memory";
+	}
+
+	public String getNameNodeInfoURL() {
+		return protocol + "://" + host + ":" + port + "/jmx?qry=Hadoop:service=NameNode,name=NameNodeInfo";
+	}
 }

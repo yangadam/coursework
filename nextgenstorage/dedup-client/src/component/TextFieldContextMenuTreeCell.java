@@ -13,7 +13,7 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableCell;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import model.FileStatus;
+import model.hdfs.FileStatus;
 import util.http.hdfs.HdfsAccess;
 import view.HdfsOverviewController;
 
@@ -59,8 +59,7 @@ public class TextFieldContextMenuTreeCell extends TreeTableCell<FileStatus, Stri
 				} else {
 					text = HdfsAccess.getInstance().open(fileStatus.getAbsolutePath(), null);
 				}
-
-				mainApp.showFileOverview(text);
+				mainApp.showFileOverview(text, fileStatus);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

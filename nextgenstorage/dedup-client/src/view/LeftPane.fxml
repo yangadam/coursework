@@ -6,17 +6,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<Accordion maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<Accordion maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.LeftPaneController">
   <panes>
-    <TitledPane text="HDFS" textAlignment="LEFT">
-      <content>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-      </content>
-         <font>
-            <Font name="System" size="12.0"/>
-         </font>
-    </TitledPane>
-    <TitledPane text="DedupFS" textAlignment="LEFT">
+    <TitledPane onMouseClicked="#handleExpandHdfs" text="HDFS" textAlignment="LEFT">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
       </content>
@@ -24,7 +16,15 @@
             <Font name="System" size="12.0" />
          </font>
     </TitledPane>
-    <TitledPane text="MongoDB" textAlignment="LEFT">
+    <TitledPane onMouseClicked="#handleExpandDedup4FS" text="DedupFS" textAlignment="LEFT">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+      </content>
+         <font>
+            <Font name="System" size="12.0" />
+         </font>
+    </TitledPane>
+    <TitledPane onMouseClicked="#handleExpandMongoDB" text="MongoDB" textAlignment="LEFT">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
       </content>

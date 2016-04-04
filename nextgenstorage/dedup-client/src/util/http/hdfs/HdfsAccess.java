@@ -15,17 +15,21 @@ import org.apache.http.entity.InputStreamEntity;
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
+import com.sun.media.jfxmedia.events.NewFrameEvent;
 
-import model.ContentSummary;
-import model.FileChecksum;
-import model.FileStatus;
-import model.FileStatuses;
+import model.hdfs.ContentSummary;
+import model.hdfs.FSNamesystemState;
+import model.hdfs.FileChecksum;
+import model.hdfs.FileStatus;
+import model.hdfs.FileStatuses;
+import model.hdfs.Memory;
 import util.http.base.HttpClientHelper.METHOD;
 
 public class HdfsAccess {
 	// Load properties from file.
 	private static HdfsAccess INSTANCE = null;
 
+	// TODO
 	public static HdfsAccess getInstance() {
 		if(INSTANCE == null) {
 			synchronized (HdfsAccess.class) {
@@ -450,6 +454,59 @@ public class HdfsAccess {
 				.getHttpResultStatusCode(METHOD.PUT) == STATUS.OK;
 	}
 
+	// Cluster Statuses.
+
+	/**
+	 * [Get] Get NameNode Status
+	 * @return
+	 * @throws UnsupportedOperationException
+	 * @throws IOException
+	 */
+	public String getNameNodeStatus() throws UnsupportedOperationException, IOException {
+		return hdfsHttpClientHelper
+				.setNameNodeStatusURL()
+				.getHttpResultContent(METHOD.GET);
+	}
+
+	/**
+	 * [GET] Get NameNode Info
+	 * @return
+	 * @throws UnsupportedOperationException
+	 * @throws IOException
+	 */
+	public String getNameNodeInfo() throws UnsupportedOperationException, IOException {
+		return hdfsHttpClientHelper
+				.setNameNodeInfoURL()
+				.getHttpResultContent(METHOD.GET);
+	}
+
+	/**
+	 * [GET] Get FSNamesystem State
+	 * @return
+	 * @throws IOException
+	 * @throws UnsupportedOperationException
+	 */
+	public FSNamesystemState getFSNamesystemState() throws UnsupportedOperationException, IOException {
+		String jsonStr = hdfsHttpClientHelper
+						 .setFSNamesystemStateURL()
+						 .getHttpResultContent(METHOD.GET);
+		return new Gson().fromJson(parseStatus(jsonStr), FSNamesystemState.class);
+	}
+
+
+	/**
+	 * [GET] Get Memory
+	 * @return
+	 * @throws UnsupportedOperationException
+	 * @throws IOException
+	 */
+	public Memory getMemory() throws UnsupportedOperationException, IOException {
+		String jsonStr = hdfsHttpClientHelper
+				.SetMemoryURL()
+				.getHttpResultContent(METHOD.GET);
+		return new Gson().fromJson(parseStatus(jsonStr), Memory.class);
+	}
+
 	private boolean setTimes(String remotePath, String modificationtime, String accesstime)
 			throws ClientProtocolException, IOException {
 		Map<String, String> options = new HashMap<>();
@@ -529,6 +586,9 @@ public class HdfsAccess {
 		return result.toString();
 	}
 
+	private String parseStatus(String jsonStr) {
+		return new JsonParser().parse(jsonStr).getAsJsonObject().get("beans").getAsJsonArray().get(0).toString();
+	}
 
 	public static void main(String[] args) {
 		try {
@@ -538,25 +598,30 @@ public class HdfsAccess {
 //			options.put("buffersize", "4096");
 //			options.put("permission", "755");
 
-			HdfsAccess hdfsRESTfulUtil = new HdfsAccess("vm-45e5-3412", "50070", "bigdatagfts");
-//			System.out.println(hdfsRESTfulUtil.upload("C:/Users/YM59750/Desktop/test.sh", "/test2.sh", null));
-//			System.out.println(hdfsRESTfulUtil.append("C:/Users/YM59750/Desktop/test.sh", "/test2.sh", null));
-//			System.out.println(hdfsRESTfulUtil.open("/test.sh", null));
-//			System.out.println(hdfsRESTfulUtil.mkdir("/restful", null));
-//			System.out.println(hdfsRESTfulUtil.rename("/tmp2.sql", "/tmp3.sql"));
-//			System.out.println(hdfsRESTfulUtil.removeFile("/tmp3.sql"));
-//			System.out.println(hdfsRESTfulUtil.removeDirectory("/restful"));
-//			System.out.println(hdfsRESTfulUtil.getStatus("/test2.sh"));
-//			System.out.println(hdfsRESTfulUtil.listDirectory("/user"));
-//			System.out.println(hdfsRESTfulUtil.getDirectoryContentSummary("/"));
-//			System.out.println(hdfsRESTfulUtil.getFileChecksum("/test2.sh"));
-//			System.out.println(hdfsRESTfulUtil.getHomeDirectory());
-//			System.out.println(hdfsRESTfulUtil.setPermission("/test2.sh", 755));
+			HdfsAccess hdfsAccess = new HdfsAccess("139.129.17.212", "50070", null);
+//			System.out.println(hdfsAccess.upload("C:/Users/YM59750/Desktop/test.sh", "/test2.sh", null));
+//			System.out.println(hdfsAccess.append("C:/Users/YM59750/Desktop/test.sh", "/test2.sh", null));
+//			System.out.println(hdfsAccess.open("/test.sh", null));
+//			System.out.println(hdfsAccess.mkdir("/restful", null));
+//			System.out.println(hdfsAccess.rename("/tmp2.sql", "/tmp3.sql"));
+//			System.out.println(hdfsAccess.removeFile("/tmp3.sql"));
+//			System.out.println(hdfsAccess.removeDirectory("/restful"));
+//			System.out.println(hdfsAccess.getStatus("/test2.sh"));
+//			System.out.println(hdfsAccess.listDirectory("/user"));
+//			System.out.println(hdfsAccess.getDirectoryContentSummary("/"));
+//			System.out.println(hdfsAccess.getFileChecksum("/test2.sh"));
+//			System.out.println(hdfsAccess.getHomeDirectory());
+//			System.out.println(hdfsAccess.setPermission("/test2.sh", 755));
 //			short replication = 4;
-//			System.out.println(hdfsRESTfulUtil.setReplicationFactor("/test2.sh", replication));
-//			System.out.println(hdfsRESTfulUtil.setAccessTime("/test2.sh", String.valueOf(System.currentTimeMillis())));
-//			System.out.println(hdfsRESTfulUtil.setModificationTime("/tmp2.sql", String.valueOf(System.currentTimeMillis())));
-			System.out.println(hdfsRESTfulUtil.getDelegationToken("bigdatagfts"));
+//			System.out.println(hdfsAccess.setReplicationFactor("/test2.sh", replication));
+//			System.out.println(hdfsAccess.setAccessTime("/test2.sh", String.valueOf(System.currentTimeMillis())));
+//			System.out.println(hdfsAccess.setModificationTime("/tmp2.sql", String.valueOf(System.currentTimeMillis())));
+//			System.out.println(hdfsAccess.getDelegationToken("bigdatagfts"));
+//			FSNamesystemState fsNamesystemState = hdfsAccess.getFSNamesystemState();
+
+//			System.out.println(fsNamesystemState.getCapacityTotal());
+
+			System.out.println(hdfsAccess.getMemory());
 
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
