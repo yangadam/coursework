@@ -27,7 +27,7 @@ public class MessageController {
     private MessageRepository messageRepository;
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<Message> get() {
+    public List<Message> list() {
         return messageRepository.findAll();
     }
 

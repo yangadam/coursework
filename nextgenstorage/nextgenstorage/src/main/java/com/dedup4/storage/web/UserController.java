@@ -59,7 +59,7 @@ public class UserController {
      * @param user user to be add
      * @return user name if success, otherwise null
      */
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @RequestMapping(value = "add", method = RequestMethod.POST)
     public String addUser(@RequestBody User user) {
         try {
             userService.addUser(user);

@@ -12,9 +12,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Test {
     public static void main(String[] args) {
-        Dedup dedup = new Dedup("F:\\test\\");
+        Dedup dedup = new Dedup("C:\\temp\\");
 
-        String fileMetaDataPath = "F:\\testResult\\container.info";
+        String fileMetaDataPath = "C:\\temp\\container.info";
 
         try (BufferedReader br = new BufferedReader(new FileReader(fileMetaDataPath))) {
             String line;
@@ -26,7 +26,7 @@ public class Test {
         }
 
         File[] files = new File[4];
-        files[0] = new File("F:\\testData\\video\\test6.avi");
+        files[0] = new File("C:\\temp\\file\\test.pdf");
 
         try {
             dedup.operate(files[0]);
@@ -37,11 +37,11 @@ public class Test {
         dedup.save();
 
         try {
-            Dedup dedup2 = Dedup.load("F:\\test\\dedup.ser");
+            Dedup dedup2 = Dedup.load("C:\\temp\\test\\dedup.ser");
             System.out.println(dedup2 != null ? dedup2.getCapacity() : 0);
             System.out.println(dedup2 != null ? dedup2.getStorePath() : null);
             if (dedup2 != null) {
-                dedup2.operate(new File("F:\\testData\\video\\test6.avi"));
+                dedup2.operate(new File("C:\\temp\\file\\test.pdf"));
             }
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();

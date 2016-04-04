@@ -1,92 +1,53 @@
 package com.dedup4.storage.web;
 
-import com.dedup4.storage.domain.User;
-import com.dedup4.storage.domain.UserFile;
-import com.dedup4.storage.repository.UserFileRepository;
-import com.dedup4.storage.util.HdfsUtil;
+import com.dedup4.storage.domain.File;
+import com.dedup4.storage.repository.FileRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.Date;
+import java.security.Principal;
 
 /**
  * @author Yang Mengmeng Created on Mar 13, 2016.
  */
 @RestController
-@RequestMapping("/user/upload")
+@RequestMapping("/upload")
 public class UploadController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UploadController.class);
 
     @Autowired
-    private UserFileRepository userFileRepository;
-
-    @RequestMapping(method = RequestMethod.GET)
-    public void fileUploadForm() {
-    }
+    private FileRepository fileRepository;
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<?> handleFileUpload(@RequestParam("dir") String dir,
-                                              @RequestParam("name") String fileName,
-                                              @RequestParam MultipartFile file) {
+    public Boolean upload(@RequestParam String path,
+                          MultipartFile file,
+                          Principal principal) {
         LOGGER.info("uploading.... ");
-
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserFile userFile = new UserFile();
-        userFile.setFileName(fileName);
-        userFile.setSize(file.getSize());
-        userFile.setUploadDate(new Date());
-        userFile.setUserId(user.getId());
-
-        userFileRepository.insert(userFile);
-        LOGGER.info("File Inserted.");
-
-        HdfsUtil hdfsUtil = new HdfsUtil("/users/");
-        if (dir == null)
-            dir = "";
-        String filePath = user.getUsername() + dir + "/" + fileName;
-        filePath = generateFilePath(hdfsUtil, filePath);
+        String currentUser = principal.getName();
+        String tempFileName = file.getOriginalFilename() + currentUser + System.currentTimeMillis();
         try {
-            hdfsUtil.uploadFile(multipartToFile(file), filePath);
-            // TODO: 3/12/2016
-            //messageSender.send("A file uploaded: " + fileName);
-            return new ResponseEntity<>(HttpStatus.OK);
+            file.transferTo(new java.io.File(tempFileName));
         } catch (IOException e) {
-            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+            LOGGER.info("Error when save file.");
+            return false;
         }
-    }
-
-    private String generateFilePath(HdfsUtil hdfsUtil, String filePath) {
-        String newPath = filePath;
-        int count = 1;
-        try {
-            while (hdfsUtil.exists(filePath)) {
-                newPath = filePath.substring(0, filePath.lastIndexOf('.')) + "(" + count + ")"
-                        + filePath.substring(filePath.lastIndexOf('.'));
-                count++;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        File rootFolder = fileRepository.findByOwner(currentUser);
+        if (rootFolder == null) {
+            rootFolder = File.createRootFolder(currentUser);
         }
-        return newPath;
+        File logicFile = rootFolder.addFile(path, file.getOriginalFilename(), file.getSize());
+        logicFile.setTempFileName(tempFileName);
+        fileRepository.save(rootFolder);
+        LOGGER.info("File Inserted.");
+        return true;
     }
-
-    public File multipartToFile(MultipartFile multipart) throws IllegalStateException, IOException {
-        File convFile = new File(multipart.getOriginalFilename());
-        multipart.transferTo(convFile);
-        return convFile;
-    }
-
 
 }
