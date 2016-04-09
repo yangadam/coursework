@@ -1,13 +1,10 @@
 package com.dedup4.storage.webapp.web;
 
-import com.dedup4.storage.webapp.domain.FileRecipe;
+import com.dedup4.storage.common.domain.FileRecipe;
 import com.dedup4.storage.webapp.service.FileOperationService;
-import com.dedup4.storage.webapp.util.HdfsUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,18 +59,6 @@ public class DownloadController {
         }
 
         return null;
-    }
-
-    public InputStream getDownload(String fileName, String dir) throws IOException {
-        HdfsUtil hdfsUtil = new HdfsUtil("/users/");
-        UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        fileName = new String(fileName.getBytes(), "ISO8859-1");
-        if (dir == null) {
-            dir = "";
-        }
-        String fullFilePath = user.getUsername() + dir + "/" + fileName;
-        // TODO check its location
-        return hdfsUtil.readFile(fullFilePath);
     }
 
 }

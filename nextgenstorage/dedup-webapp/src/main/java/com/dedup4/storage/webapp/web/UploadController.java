@@ -1,8 +1,9 @@
 package com.dedup4.storage.webapp.web;
 
-import com.dedup4.storage.webapp.domain.FileRecipe;
-import com.dedup4.storage.webapp.domain.LogicFile;
+import com.dedup4.storage.common.domain.FileRecipe;
+import com.dedup4.storage.common.domain.LogicFile;
 import com.dedup4.storage.webapp.service.FileOperationService;
+import com.dedup4.storage.webapp.util.MultipartFileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,29 +32,24 @@ public class UploadController {
     @Autowired
     private FileOperationService fileOperationService;
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = "/legacy", method = RequestMethod.POST)
     public Boolean upload(@RequestParam String path,
-                          @RequestParam String md5,
                           MultipartFile file,
                           Principal principal) {
-        LOGGER.info("uploading.... ");
-        try {
-            File tempFile = new java.io.File("/tmp/dedup/upload/" + md5);
-            file.transferTo(tempFile);
-            //noinspection ResultOfMethodCallIgnored
-            tempFile.createNewFile();
-        } catch (IOException e) {
-            LOGGER.error("Error when save file.", e);
-            return false;
-        }
-        LogicFile logicFile = fileOperationService.saveLogicFile(principal.getName(),
-                path, file.getOriginalFilename(), md5, file.getSize());
-        fileOperationService.saveFileRecipe(logicFile);
-        LOGGER.info("File Inserted.");
-        return true;
+        return this.receiveFile(path, file, principal.getName());
     }
 
-    @RequestMapping(value = "checkMd5", method = RequestMethod.GET)
+    @Deprecated
+    @RequestMapping(value = "/legacy", method = RequestMethod.POST)
+    public Boolean legacyUpload(@RequestParam String path,
+                                @RequestParam String md5,
+                                MultipartFile file,
+                                Principal principal) {
+        return false;
+    }
+
+    @Deprecated
+    @RequestMapping(value = "legacy/checkMd5", method = RequestMethod.GET)
     public Boolean checkMd5(@RequestParam String path, @RequestParam String md5, Principal principal) {
         FileRecipe fileRecipe = fileOperationService.getByMd5(md5);
         if (fileRecipe != null) {
@@ -62,6 +58,32 @@ public class UploadController {
             return true;
         }
         return false;
+    }
+
+    private Boolean receiveFile(String path, MultipartFile file, String currentUser) {
+        LOGGER.info("uploading.... ");
+
+        String md5 = MultipartFileUtil.md5(file);
+        FileRecipe fileRecipe = fileOperationService.getByMd5(md5);
+        if (fileRecipe != null) {
+            fileOperationService.saveLogicFile(currentUser, path,
+                    fileRecipe.getActualFileName(), md5, fileRecipe.getFileSize());
+            return true;
+        }
+        try {
+            File tempFile = new java.io.File("/tmp/dedup/upload/" + md5);
+            if (!tempFile.exists()) {
+                file.transferTo(tempFile);
+            }
+        } catch (IOException e) {
+            LOGGER.error("Error when save file.", e);
+            return false;
+        }
+        LogicFile logicFile = fileOperationService.saveLogicFile(currentUser,
+                path, file.getOriginalFilename(), md5, file.getSize());
+        fileOperationService.saveFileRecipe(logicFile);
+        LOGGER.info("File Inserted.");
+        return true;
     }
 
 }

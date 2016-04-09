@@ -1,6 +1,6 @@
 package com.dedup4.storage.webapp.service;
 
-import com.dedup4.storage.webapp.domain.UserOperation;
+import com.dedup4.storage.common.domain.UserOperation;
 import com.dedup4.storage.webapp.repository.UserOperationRepository;
 import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package com.dedup4.storage.webapp.repository;
 
-import com.dedup4.storage.webapp.domain.UserOperation;
+import com.dedup4.storage.common.domain.UserOperation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Date;

@@ -1,4 +1,4 @@
-package com.dedup4.storage.filepicker;
+package com.dedup4.storage.filepicker.config;
 
 import com.dedup4.storage.common.util.MessageSender;
 import org.springframework.context.annotation.Bean;

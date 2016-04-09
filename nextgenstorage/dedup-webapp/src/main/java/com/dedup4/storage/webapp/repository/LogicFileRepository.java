@@ -1,6 +1,6 @@
 package com.dedup4.storage.webapp.repository;
 
-import com.dedup4.storage.webapp.domain.LogicFile;
+import com.dedup4.storage.common.domain.LogicFile;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 /**

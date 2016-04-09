@@ -1,6 +1,6 @@
 package com.dedup4.storage.webapp.web;
 
-import com.dedup4.storage.webapp.domain.LogicFile;
+import com.dedup4.storage.common.domain.LogicFile;
 import com.dedup4.storage.webapp.repository.LogicFileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
