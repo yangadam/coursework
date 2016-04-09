@@ -30,7 +30,6 @@ public class ChunkStore {
         String fileName = filePath.substring(filePath.lastIndexOf("\\") + 1);
         String fileMetaPath = Constants.FILEMETADATA_LOCATION + "\\" + fileName + ".txt";
 
-        // TODO
         File file = new File(fileMetaPath);
         if (file.exists()) {
             fileMetaPath = Constants.FILEMETADATA_LOCATION + "\\" + fileName + System.currentTimeMillis() + ".txt";

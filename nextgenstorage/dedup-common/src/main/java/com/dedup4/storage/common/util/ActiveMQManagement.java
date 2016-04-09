@@ -3,6 +3,8 @@ package com.dedup4.storage.common.util;
 import org.apache.activemq.broker.jmx.BrokerViewMBean;
 import org.apache.activemq.broker.jmx.QueueViewMBean;
 import org.apache.activemq.broker.jmx.TopicViewMBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jmx.support.MBeanServerConnectionFactoryBean;
 
 import javax.management.MBeanServerConnection;
@@ -22,6 +24,8 @@ import java.util.Map;
  */
 public class ActiveMQManagement {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ActiveMQManagement.class);
+
     private MBeanServerConnection connection;
 
     private BrokerViewMBean broker;
@@ -38,8 +42,7 @@ public class ActiveMQManagement {
             ObjectName name = new ObjectName("org.apache.activemq:type=Broker,brokerName=localhost");
             broker = MBeanServerInvocationHandler.newProxyInstance(connection, name, BrokerViewMBean.class, true);
         } catch (MalformedObjectNameException | IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            LOGGER.error("Unable to init.", e);
         }
     }
 
@@ -52,7 +55,7 @@ public class ActiveMQManagement {
         try {
             broker.addQueue(queueName);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Unable to add queue.", e);
         }
     }
 
@@ -65,8 +68,7 @@ public class ActiveMQManagement {
         try {
             broker.addTopic(topicName);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            LOGGER.error("Unable to add topic.", e);
         }
     }
 
@@ -79,8 +81,7 @@ public class ActiveMQManagement {
         try {
             broker.removeQueue(queueName);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            LOGGER.error("Unable to remove queue.", e);
         }
     }
 
@@ -93,8 +94,7 @@ public class ActiveMQManagement {
         try {
             broker.removeTopic(topicName);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            LOGGER.error("Unable to remove topic.", e);
         }
     }
 

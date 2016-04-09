@@ -19,7 +19,6 @@ public class MyBoundaryDectors {
 
         @Override
         public boolean isBoundary(RabinFingerprintLong fingerprint, int chunkLength) {
-            // TODO Auto-generated method stub
             return (((fingerprint.getFingerprintLong() % matchedD2 == chunkPattern) || chunkLength >= Constants.CHUNK_MAX_SIZE) && chunkLength >= Constants.CHUNK_MIN_SIZE);
         }
     }
@@ -35,7 +34,6 @@ public class MyBoundaryDectors {
 
         @Override
         public boolean isBoundary(RabinFingerprintLong fingerprint, int chunkLength) {
-            // TODO Auto-generated method stub
             return (((fingerprint.getFingerprintLong() % matchedD == chunkPattern) || chunkLength >= Constants.CHUNK_MAX_SIZE) && chunkLength >= Constants.CHUNK_MIN_SIZE);
         }
     }

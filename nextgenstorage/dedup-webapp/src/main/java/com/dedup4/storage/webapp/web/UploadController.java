@@ -41,10 +41,8 @@ public class UploadController {
 
     @Deprecated
     @RequestMapping(value = "/legacy", method = RequestMethod.POST)
-    public Boolean legacyUpload(@RequestParam String path,
-                                @RequestParam String md5,
-                                MultipartFile file,
-                                Principal principal) {
+    public Boolean legacyUpload(@RequestParam String path, @RequestParam String md5,
+                                MultipartFile file, Principal principal) {
         return false;
     }
 
@@ -71,7 +69,7 @@ public class UploadController {
             return true;
         }
         try {
-            File tempFile = new java.io.File("/tmp/dedup/upload/" + md5);
+            File tempFile = new File("/tmp/dedup/upload/" + md5);
             if (!tempFile.exists()) {
                 file.transferTo(tempFile);
             }

@@ -45,4 +45,7 @@ public class FileOperationService {
     }
 
 
+    public FileRecipe updateFileRecipe(FileRecipe fileRecipe) {
+        return fileRecipeRepository.save(fileRecipe);
+    }
 }

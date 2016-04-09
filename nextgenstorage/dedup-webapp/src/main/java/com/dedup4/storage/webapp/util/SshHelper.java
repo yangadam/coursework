@@ -6,6 +6,8 @@ import org.apache.sshd.client.session.ClientSession;
 import org.apache.sshd.client.subsystem.sftp.SftpClient;
 import org.apache.sshd.client.subsystem.sftp.SftpClient.CloseableHandle;
 import org.apache.sshd.common.util.io.NoCloseOutputStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.StreamUtils;
 
 import java.io.IOException;
@@ -20,6 +22,8 @@ import java.util.concurrent.TimeUnit;
  * @author Yang Mengmeng Created on Mar 20, 2016
  */
 public class SshHelper {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(SshHelper.class);
 
     private SshClient client = SshClient.setUpDefaultClient();
     private String username;
@@ -99,12 +103,10 @@ public class SshHelper {
                 sftpClient.write(handle, 0, bytes, 0, bytes.length);
                 return true;
             } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                LOGGER.error("", e);
             }
         } catch (IOException | InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            LOGGER.error("", e);
         }
         return false;
     }
