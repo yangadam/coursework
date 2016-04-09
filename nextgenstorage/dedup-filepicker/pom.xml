@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://maven.apache.org/POM/4.0.0"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.dedup4.storage</groupId>
-    <artifactId>dedup-core</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <groupId>com.dedup.storage</groupId>
+    <artifactId>dedup-filepicker</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>dedup-filepicker</name>
+    <description>Auto transfer file to HDFS</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -23,13 +26,6 @@
             <groupId>com.dedup4.storage</groupId>
             <artifactId>dedup-common</artifactId>
             <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.rabinfingerprint</groupId>
-            <artifactId>rabinfingerprint</artifactId>
-            <version>1.0.0.RELEASE</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/rabinfingerprint.jar</systemPath>
         </dependency>
     </dependencies>
 
