@@ -15,6 +15,7 @@
     </parent>
 
     <properties>
+        <java.version>1.8</java.version>
         <bootstrap.version>3.3.6</bootstrap.version>
         <jquery.version>2.2.1</jquery.version>
         <font-awesome.version>4.5.0</font-awesome.version>
