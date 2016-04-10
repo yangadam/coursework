@@ -32,7 +32,7 @@ public class UploadController {
     @Autowired
     private FileOperationService fileOperationService;
 
-    @RequestMapping(value = "/legacy", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public Boolean upload(@RequestParam String path,
                           MultipartFile file,
                           Principal principal) {
