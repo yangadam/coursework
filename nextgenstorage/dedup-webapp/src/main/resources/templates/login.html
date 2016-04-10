@@ -6,8 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Login</title>
 
-    <link rel="stylesheet" type="text/css" href="../static/css/login.css"/>
-
+    <link href="../../css/login.css"
+          th:href="@{/css/login.css}"
+          rel="stylesheet" media="screen"/>
+    <script src="../../js/jquery-1.10.2.js"></script>
+    <!--<script src="webjars/jquery/2.2.1/jquery.min.js"></script>-->
 </head>
 <body>
 
@@ -38,7 +41,8 @@
 
 </div>
 
-<script type="text/javascript" src="../static/js/jquery-1.10.2.js" th:src="@{/js/jquery-1.10.2.js}"></script>
+
+<!--th:src="@{/webjars/jquery/2.2.1/jquery.min.js}"></script>-->
 
 </body>
 </html>
