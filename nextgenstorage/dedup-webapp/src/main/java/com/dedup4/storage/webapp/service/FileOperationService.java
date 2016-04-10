@@ -19,18 +19,27 @@ public class FileOperationService {
     @Autowired
     private FileRecipeRepository fileRecipeRepository;
 
-    public FileRecipe getByMd5(String md5) {
-        return fileRecipeRepository.findOne(md5);
-    }
-
-    public LogicFile saveLogicFile(String currentUser, String path, String name, String md5, long size) {
+    public LogicFile getRootFolder(String currentUser) {
         LogicFile rootFolder = logicFileRepository.findByOwner(currentUser);
         if (rootFolder == null) {
             rootFolder = LogicFile.createRootFolder(currentUser);
         }
+        return logicFileRepository.save(rootFolder);
+    }
+
+    public LogicFile saveLogicFile(String currentUser, String path, String name, String md5, long size) {
+        LogicFile rootFolder = getRootFolder(currentUser);
         LogicFile logicFile = rootFolder.addFile(path, name, size);
         logicFile.setMd5(md5);
         return logicFileRepository.save(rootFolder);
+    }
+
+    public LogicFile updateLogicFile(LogicFile logicFile) {
+        return logicFileRepository.save(logicFile);
+    }
+
+    public FileRecipe getByMd5(String md5) {
+        return fileRecipeRepository.findOne(md5);
     }
 
     public FileRecipe saveFileRecipe(LogicFile logicFile) {
@@ -39,13 +48,13 @@ public class FileOperationService {
     }
 
     public FileRecipe getFile(String currentUser, String path, String name) {
-        LogicFile rootFolder = logicFileRepository.findByOwner(currentUser);
+        LogicFile rootFolder = getRootFolder(currentUser);
         LogicFile logicFile = rootFolder.getFileByPath(path + "/" + name);
         return this.getByMd5(logicFile.getMd5());
     }
 
-
     public FileRecipe updateFileRecipe(FileRecipe fileRecipe) {
         return fileRecipeRepository.save(fileRecipe);
     }
+
 }
