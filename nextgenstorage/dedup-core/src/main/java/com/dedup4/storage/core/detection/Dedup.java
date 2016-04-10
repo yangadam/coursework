@@ -12,6 +12,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class Dedup implements Serializable {
+
     static final String FP_FILE_SUFFIX = ".rec";
     static final double DEFAULT_FPP = 0.01;
     static final int DEFAULT_EXPECT_INSERT = 10_000_000;

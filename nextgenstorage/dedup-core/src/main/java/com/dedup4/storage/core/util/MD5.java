@@ -1,11 +1,17 @@
 package com.dedup4.storage.core.util;
 
 import com.google.common.base.Preconditions;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class MD5 {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(MD5.class);
+
     public static int LEN = 16;
 
     static char[] hexChars = {
@@ -27,9 +33,7 @@ public class MD5 {
         Preconditions.checkArgument(startPos + len <= chunkBytes.length);
 
         byte[] subChunkBytes = new byte[len];
-        for (int i = 0; i < len; i++) {
-            subChunkBytes[i] = chunkBytes[startPos + i];
-        }
+        System.arraycopy(chunkBytes, startPos, subChunkBytes, 0, len);
         return getMD5Str(subChunkBytes);
     }
 
@@ -40,57 +44,23 @@ public class MD5 {
     }
 
     public static byte[] getMD5(byte[] chunkBytes, int len) {
-        MessageDigest md5 = null;
-
         try {
-            md5 = MessageDigest.getInstance("MD5");
+            MessageDigest md5 = MessageDigest.getInstance("MD5");
+            md5.update(chunkBytes, 0, len);
+            return md5.digest();
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            LOGGER.error("", e);
+            return StringUtils.EMPTY.getBytes();
         }
-
-        md5.update(chunkBytes, 0, len);
-        byte[] result = md5.digest();
-        return result;
     }
 
     public static String toHexString(byte[] b) {
         StringBuilder sb = new StringBuilder(b.length * 2);
-        for (int i = 0; i < b.length; i++) {
-            sb.append(hexChars[(b[i] & 0xf0) >>> 4]);
-            sb.append(hexChars[b[i] & 0x0f]);
+        for (byte aB : b) {
+            sb.append(hexChars[(aB & 0xf0) >>> 4]);
+            sb.append(hexChars[aB & 0x0f]);
         }
         return sb.toString();
-    }
-
-    // Test
-    public static void main(String[] args) {
-//		final int _1KB = 1024;
-//		final int numTest = 1000000;
-//		Random ramd = new Random();
-//		
-//		try(FileOutputStream writer = new FileOutputStream("E:\\fingerprints.txt")) {
-//			for(int i = 0; i < numTest; i++) {
-//				byte[] data = new byte[(ramd.nextInt(15) + 2) * _1KB];
-//				ramd.nextBytes(data);
-//				writer.write(MD5.getMD5(data));
-//			}
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-
-//		try(FileInputStream reader = new FileInputStream("E:\\fingerprints.txt")) {
-//			for(int i = 0; i < 1000; i++) {
-//				byte[] fingerprint = new byte[16];
-//				reader.read(fingerprint);
-//				System.out.println(MD5.toHexString(fingerprint));
-//			}
-//		} catch (FileNotFoundException e) {
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//		
-
     }
 
 }
