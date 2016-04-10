@@ -1,7 +1,7 @@
 package com.dedup4.storage.webapp.web;
 
 import com.dedup4.storage.common.domain.LogicFile;
-import com.dedup4.storage.webapp.repository.LogicFileRepository;
+import com.dedup4.storage.webapp.service.FileOperationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,20 +17,20 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = "/file")
-public class FileController {
+public class LogicFileController {
 
     @Autowired
-    private LogicFileRepository logicFileRepository;
+    private FileOperationService fileOperationService;
 
     @RequestMapping(method = RequestMethod.GET)
     public LogicFile treeView(Principal principal) {
-        return logicFileRepository.findByOwner(principal.getName());
+        return fileOperationService.getRootFolder(principal.getName());
     }
 
     @RequestMapping(value = "folder", method = RequestMethod.GET)
     public List<LogicFile> show(@RequestParam String path,
                                 Principal principal) {
-        LogicFile rootFolder = logicFileRepository.findByOwner(principal.getName());
+        LogicFile rootFolder = fileOperationService.getRootFolder(principal.getName());
         LogicFile folder = rootFolder.getFileByPath(path);
         if (folder.isFolder()) {
             return folder.getChildren();
@@ -42,7 +42,7 @@ public class FileController {
     public Boolean delete(@RequestParam String path,
                           @RequestParam String name,
                           Principal principal) {
-        LogicFile rootFolder = logicFileRepository.findByOwner(principal.getName());
+        LogicFile rootFolder = fileOperationService.getRootFolder(principal.getName());
         LogicFile folder = rootFolder.getFileByPath(path);
         return folder.delete(name);
     }
@@ -51,9 +51,9 @@ public class FileController {
     public Boolean addFolder(@RequestParam String path,
                              @RequestParam String name,
                              Principal principal) {
-        LogicFile rootFolder = logicFileRepository.findByOwner(principal.getName());
+        LogicFile rootFolder = fileOperationService.getRootFolder(principal.getName());
         LogicFile folderAdded = rootFolder.addFolder(path, name);
-        logicFileRepository.save(rootFolder);
+        fileOperationService.updateLogicFile(rootFolder);
         return folderAdded != null;
     }
 
@@ -61,14 +61,14 @@ public class FileController {
     public Boolean exist(@RequestParam String path,
                          @RequestParam String name,
                          Principal principal) {
-        LogicFile rootFolder = logicFileRepository.findByOwner(principal.getName());
+        LogicFile rootFolder = fileOperationService.getRootFolder(principal.getName());
         LogicFile folder = rootFolder.getFileByPath(path);
         return folder.exist(name);
     }
 
     @RequestMapping(value = "hasSubDir")
     public Boolean hasSubDir(@RequestParam String path, Principal principal) {
-        LogicFile rootFolder = logicFileRepository.findByOwner(principal.getName());
+        LogicFile rootFolder = fileOperationService.getRootFolder(principal.getName());
         LogicFile folder = rootFolder.getFileByPath(path);
         return folder.hasSubFolder();
     }
