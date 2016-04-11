@@ -8,10 +8,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableScheduling
 @EnableJms
-public class FilepickerApplication {
+public class FileDeliverApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(FilepickerApplication.class, args);
+        SpringApplication.run(FileDeliverApplication.class, args);
     }
 
 }

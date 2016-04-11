@@ -1,4 +1,4 @@
-package com.dedup4.storage.webapp.util;
+package com.dedup4.storage.filepicker.util;
 
 import org.apache.sshd.client.SshClient;
 import org.apache.sshd.client.channel.ChannelExec;
