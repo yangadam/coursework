@@ -120,6 +120,7 @@ public class LogicFile extends UpdateInfo {
             return this;
         }
         int pos = temp.indexOf('/');
+        pos = (pos == -1 ? temp.length() - 1 : pos);
         LogicFile child = getFileByName(temp.substring(0, pos));
         if (child != null) {
             return child.getFileByPath(temp.substring(pos + 1));
