@@ -37,8 +37,8 @@ public class WebappApplication {
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    @JmsListener(destination = "queue.pickfile.web")
-    public void receiveFilePick(String text) {
+    @JmsListener(destination = "queue.dedup.web")
+    public void receiveFileDeliver(String text) {
         FileRecipe fileRecipe = fileOperationService.getByMd5(text);
         fileRecipe.setOnHdfs(true);
         fileOperationService.updateFileRecipe(fileRecipe);
