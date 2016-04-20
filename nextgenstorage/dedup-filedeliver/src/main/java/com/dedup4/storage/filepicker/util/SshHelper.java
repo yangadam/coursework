@@ -1,4 +1,4 @@
-package com.dedup4.storage.webapp.util;
+package com.dedup4.storage.filepicker.util;
 
 import org.apache.sshd.client.SshClient;
 import org.apache.sshd.client.channel.ChannelExec;
@@ -8,6 +8,9 @@ import org.apache.sshd.client.subsystem.sftp.SftpClient.CloseableHandle;
 import org.apache.sshd.common.util.io.NoCloseOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StreamUtils;
 
 import java.io.IOException;
@@ -21,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author Yang Mengmeng Created on Mar 20, 2016
  */
+@Component
 public class SshHelper {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SshHelper.class);
@@ -58,7 +62,11 @@ public class SshHelper {
      * @param username username
      * @param password password
      */
-    public SshHelper(String host, int port, String username, String password) {
+    @Autowired
+    public SshHelper(@Value("${dedup.server.host}") String host,
+                     @Value("${dedup.server.port}") int port,
+                     @Value("${dedup.server.user}") String username,
+                     @Value("${dedup.server.pwd}") String password) {
         this.host = host;
         this.port = port;
         this.username = username;
@@ -96,7 +104,7 @@ public class SshHelper {
         client.start();
         try (ClientSession session = createClientSession()) {
             SftpClient sftpClient = session.createSftpClient();
-            try (CloseableHandle handle = sftpClient.open(remoteFolder + "/" + fileName,
+            try (CloseableHandle handle = sftpClient.open(remoteFolder + '/' + fileName,
                     EnumSet.of(SftpClient.OpenMode.Write, SftpClient.OpenMode.Create));
                  InputStream in = Files.newInputStream(clientFolder.resolve(fileName))) {
                 byte[] bytes = StreamUtils.copyToByteArray(in);
