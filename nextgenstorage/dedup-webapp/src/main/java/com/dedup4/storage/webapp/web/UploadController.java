@@ -69,7 +69,7 @@ public class UploadController {
             return true;
         }
         try {
-            File tempFile = new File("/tmp/dedup/upload/" + md5);
+            File tempFile = new File("D:/tmp/" + md5);
             if (!tempFile.exists()) {
                 file.transferTo(tempFile);
             }

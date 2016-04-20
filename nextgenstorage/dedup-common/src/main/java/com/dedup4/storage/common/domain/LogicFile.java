@@ -3,6 +3,7 @@ package com.dedup4.storage.common.domain;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,11 +19,18 @@ public class LogicFile extends UpdateInfo {
     private String owner;
     private String md5;
 
+    /**
+     * For MongoDB usage
+     */
+    public LogicFile(){}
+
     private LogicFile(String name, String owner) {
         this.setName(name);
         this.setOwner(owner);
         this.setIsFolder(true);
         this.setChildren(new ArrayList<>());
+        this.setCreatedDate(new Date());
+        this.setLastModifiedDate(new Date());
     }
 
     private LogicFile(String name, long size, String owner) {
@@ -30,6 +38,8 @@ public class LogicFile extends UpdateInfo {
         this.setSize(size);
         this.setOwner(owner);
         this.setIsFolder(false);
+        this.setCreatedDate(new Date());
+        this.setLastModifiedDate(new Date());
     }
 
     public static LogicFile createRootFolder(String username) {
@@ -120,10 +130,10 @@ public class LogicFile extends UpdateInfo {
             return this;
         }
         int pos = temp.indexOf('/');
-        pos = (pos == -1 ? temp.length() - 1 : pos);
+        pos = (pos == -1 ? temp.length() : pos);
         LogicFile child = getFileByName(temp.substring(0, pos));
         if (child != null) {
-            return child.getFileByPath(temp.substring(pos + 1));
+            return child.getFileByPath(temp.substring(pos));
         }
         return null;
     }

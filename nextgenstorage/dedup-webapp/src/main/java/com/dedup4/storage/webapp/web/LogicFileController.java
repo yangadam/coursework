@@ -44,7 +44,9 @@ public class LogicFileController {
                           Principal principal) {
         LogicFile rootFolder = fileOperationService.getRootFolder(principal.getName());
         LogicFile folder = rootFolder.getFileByPath(path);
-        return folder.delete(name);
+        folder.delete(name);
+        fileOperationService.updateLogicFile(rootFolder);
+        return true;
     }
 
     @RequestMapping(value = "mkdir")
