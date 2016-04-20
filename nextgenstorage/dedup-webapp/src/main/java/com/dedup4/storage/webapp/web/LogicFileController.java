@@ -59,6 +59,18 @@ public class LogicFileController {
         return folderAdded != null;
     }
 
+    @RequestMapping(value = "rename")
+    public Boolean rename(@RequestParam String path,
+                          @RequestParam String oldName,
+                          @RequestParam String newName,
+                          Principal principal) {
+        LogicFile rootFolder = fileOperationService.getRootFolder(principal.getName());
+        LogicFile file = rootFolder.getFileByPath(path + '/' + oldName);
+        file.setName(newName);
+        fileOperationService.updateLogicFile(rootFolder);
+        return true;
+    }
+
     @RequestMapping(value = "exist")
     public Boolean exist(@RequestParam String path,
                          @RequestParam String name,
