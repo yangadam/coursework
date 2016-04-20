@@ -15,3 +15,6 @@ spring:
             - classpath:/hdfs-site.xml
         fsshell:
             enabled: true
+multipart:
+    maxFileSize: 5GB
+    maxRequestSize: 5GB
