@@ -123,7 +123,7 @@ public class LogicFile extends UpdateInfo {
 
     public LogicFile getFileByPath(String path) {
         String temp = path.trim();
-        if (temp.startsWith("/")) {
+        while (temp.startsWith("/")) {
             temp = temp.substring(1);
         }
         if (StringUtils.isBlank(temp)) {
