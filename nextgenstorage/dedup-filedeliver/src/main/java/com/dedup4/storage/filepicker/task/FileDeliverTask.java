@@ -28,12 +28,16 @@ public class FileDeliverTask {
     @Autowired
     private MessageSender messageSender;
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     @Scheduled(cron = "30 * * * * ?")
     public void deliverFiles() {
         LOGGER.info("Start to deliver files.");
         File root = (File.listRoots())[0];
         String absPath = root.getAbsolutePath() + path;
         File folder = new File(absPath);
+        if (!folder.exists()) {
+            folder.mkdir();
+        }
         if (folder.isDirectory()) {
             File[] files = folder.listFiles();
             for (File file : files != null ? files : new File[0]) {

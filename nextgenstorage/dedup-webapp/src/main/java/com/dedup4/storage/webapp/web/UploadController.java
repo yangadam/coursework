@@ -58,6 +58,7 @@ public class UploadController {
         return false;
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     private Boolean receiveFile(String path, MultipartFile file, String currentUser) {
         LOGGER.info("uploading.... ");
 
@@ -69,7 +70,13 @@ public class UploadController {
             return true;
         }
         try {
-            File tempFile = new File("D:/tmp/" + md5);
+            File root = (File.listRoots())[0];
+            String absPath = root.getAbsolutePath() + "tmp/dedup/upload";
+            File folder = new File(absPath);
+            if (!folder.exists()) {
+                folder.mkdir();
+            }
+            File tempFile = new File(absPath + '/' + md5);
             if (!tempFile.exists()) {
                 file.transferTo(tempFile);
             }

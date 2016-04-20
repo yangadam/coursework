@@ -36,28 +36,33 @@ public class DownloadController {
         response.setContentType("application/force-download");
         response.setHeader("Content-Disposition", "attachment;fileName=\"" + name + "\"");
         try {
-            InputStream inputStream = getInputStream(file);
-            OutputStream outputStream = response.getOutputStream();
-            FileCopyUtils.copy(inputStream, outputStream);
-            response.flushBuffer();
-            inputStream.close();
-            outputStream.close();
+            try (InputStream inputStream = getInputStream(file);
+                 OutputStream outputStream = response.getOutputStream()) {
+                if (inputStream != null) {
+                    FileCopyUtils.copy(inputStream, outputStream);
+                    response.flushBuffer();
+                }
+            }
         } catch (IOException e) {
             LOGGER.error("Fail to download file.", e);
         }
     }
 
     private InputStream getInputStream(FileRecipe file) {
-        if (file.isOnHdfs()
+        if (file.isOnHdfs() // TODO
                 ) {
-
+            return null;
         } else try {
-            return new FileInputStream(new File("upload/" + file.getTempFileName()));
+            File root = (File.listRoots())[0];
+            String absPath = root.getAbsolutePath() + "tmp/dedup/upload";
+            File tempFile = new File(absPath + '/' + file.getTempFileName());
+            if (tempFile.exists()) {
+                return new FileInputStream(tempFile);
+            }
         } catch (FileNotFoundException e) {
             LOGGER.error("File not found.", e);
             return null;
         }
-
         return null;
     }
 
