@@ -1,16 +1,20 @@
 package com.dedup4.storage.common.domain;
 
+/**
+ * @author Yang Mengmeng Created on Mar 22, 2016.
+ */
 public class FileRecipe extends UpdateInfo {
 
     private String actualFileName;
     private long fileSize;
-    private Boolean onHdfs;
+    private Boolean deduped;
+    private String metadataId;
 
     public FileRecipe(String md5, String actualFileName, long fileSize) {
         this.setId(md5);
         this.actualFileName = actualFileName;
         this.fileSize = fileSize;
-        this.onHdfs = false;
+        this.deduped = false;
     }
 
     public String getActualFileName() {
@@ -29,12 +33,20 @@ public class FileRecipe extends UpdateInfo {
         this.fileSize = fileSize;
     }
 
-    public Boolean isOnHdfs() {
-        return onHdfs;
+    public Boolean isDeduped() {
+        return deduped;
     }
 
-    public void setOnHdfs(Boolean onHdfs) {
-        this.onHdfs = onHdfs;
+    public void setDeduped(Boolean deduped) {
+        this.deduped = deduped;
+    }
+
+    public String getMetadataId() {
+        return metadataId;
+    }
+
+    public void setMetadataId(String metadataId) {
+        this.metadataId = metadataId;
     }
 
     public String getTempFileName() {
