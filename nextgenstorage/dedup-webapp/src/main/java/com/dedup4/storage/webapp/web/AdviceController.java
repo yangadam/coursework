@@ -29,10 +29,24 @@ public class AdviceController {
      * @return all advice as list if success, otherwise null
      */
     @RequestMapping(method = RequestMethod.GET)
-    public List<Advice> list() {
+    public List<Advice> listAll() {
         List<Advice> adviceList = null;
         try {
             adviceList = adviceRepository.findAll();
+        } catch (Exception e) {
+            LOGGER.error("Error when getting all advice from database", e);
+        }
+        return adviceList;
+    }
+
+    /**
+     * @return advice sent by user as list if success, otherwise null
+     */
+    @RequestMapping(name = "personal", method = RequestMethod.GET)
+    public List<Advice> list(Principal principal) {
+        List<Advice> adviceList = null;
+        try {
+            adviceList = adviceRepository.findByUername(principal.getName());
         } catch (Exception e) {
             LOGGER.error("Error when getting all advice from database", e);
         }

@@ -40,10 +40,14 @@ public class WebappApplication {
     @JmsListener(destination = "queue.dedup.web")
     public void receiveFileDeliver(String text) {
         FileRecipe fileRecipe = fileOperationService.getByMd5(text);
-        fileRecipe.setOnHdfs(true);
+        fileRecipe.setDeduped(true);
         fileOperationService.updateFileRecipe(fileRecipe);
-        File fileToDelete = new File("/tmp/dedup/upload/" + text);
-        fileToDelete.delete();
+        File root = (File.listRoots())[0];
+        String absPath = root.getAbsolutePath() + "tmp/dedup/upload";
+        File fileToDelete = new File(absPath + '/' + text);
+        if (fileToDelete.exists()) {
+            fileToDelete.delete();
+        }
     }
 
 }

@@ -1,7 +1,7 @@
 package com.dedup4.storage.core.config;
 
 import com.dedup4.storage.common.util.MessageSender;
-import com.dedup4.storage.core.FileService;
+import com.dedup4.storage.core.facade.FileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
