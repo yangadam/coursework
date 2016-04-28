@@ -31,7 +31,8 @@ public class FileOperationService {
         LogicFile rootFolder = getRootFolder(currentUser);
         LogicFile logicFile = rootFolder.addFile(path, name, size);
         logicFile.setMd5(md5);
-        return logicFileRepository.save(rootFolder);
+        logicFileRepository.save(rootFolder);
+        return logicFile;
     }
 
     public LogicFile updateLogicFile(LogicFile logicFile) {
@@ -49,7 +50,12 @@ public class FileOperationService {
 
     public FileRecipe getFile(String currentUser, String path, String name) {
         LogicFile rootFolder = getRootFolder(currentUser);
-        LogicFile logicFile = rootFolder.getFileByPath(path + "/" + name);
+        String fullPath;
+        if (path.endsWith("/"))
+            fullPath = path + name;
+        else
+            fullPath = path + "/" + name;
+        LogicFile logicFile = rootFolder.getFileByPath(fullPath);
         return this.getByMd5(logicFile.getMd5());
     }
 

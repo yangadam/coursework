@@ -6,8 +6,8 @@ public class FileRecipe extends UpdateInfo {
     private long fileSize;
     private Boolean onHdfs;
 
-    public FileRecipe(String md5, String actualFileName, long fileSize) {
-        this.setId(md5);
+    public FileRecipe(String id, String actualFileName, long fileSize) {
+        this.setId(id);
         this.actualFileName = actualFileName;
         this.fileSize = fileSize;
         this.onHdfs = false;

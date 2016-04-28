@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.URLEncoder;
 import java.security.Principal;
 
 /**
@@ -33,8 +34,12 @@ public class DownloadController {
                                Principal principal,
                                HttpServletResponse response) {
         FileRecipe file = fileOperationService.getFile(principal.getName(), path, name);
-        response.setContentType("application/force-download");
-        response.setHeader("Content-Disposition", "attachment;fileName=\"" + name + "\"");
+        //response.setContentType("application/force-download;charset=UTF-8");
+        try {
+            response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode(name, "UTF-8"));
+        }catch (Exception e){
+            LOGGER.error("Failed to encode.");
+        }
         try {
             try (InputStream inputStream = getInputStream(file);
                  OutputStream outputStream = response.getOutputStream()) {

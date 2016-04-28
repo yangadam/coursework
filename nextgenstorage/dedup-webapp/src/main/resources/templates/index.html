@@ -25,6 +25,9 @@
         .file-input-row {
             margin-top: 8px;
         }
+        .panel {
+            margin-bottom: 5px;;
+        }
     </style>
 
 </head>
@@ -111,6 +114,7 @@
             </li>
             <!-- /.dropdown -->
         </ul>
+
     </nav>
     <!--/. NAV TOP  -->
     <nav class="navbar-default navbar-side navbar-left" role="navigation">
@@ -198,6 +202,41 @@
                         </div>
                     </div>
                     <!-- End of list of file s and directories -->
+
+                    <!-- Modal for modification -->
+                    <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" style="display: none;">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h4 class="modal-title">文件（夹）信息修改</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div class="row">
+                                                <div class="form-group col-xs-12">
+                                                    <label>名称</label>
+                                                    <input class="form-control" id="oldName" readOnly="true"  />
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-xs-12">
+                                                    <label>新名称</label>
+                                                    <input class="form-control" id="newName" placeholder="新文件（夹）名称" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                    <button type="button" class="btn btn-primary" id="modalSaveBtn">保存</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
             <footer>

@@ -99,7 +99,7 @@ public class HdfsUtil {
         String path = "/users/" + delHdfsPath + "/" + fileName;
         Path topath = new Path(path.trim());
 
-        boolean ok = hdfs.delete(topath, false);
+        boolean ok = hdfs.delete(topath, true);
         LOGGER.info(ok ? "deletion succeed" : "deletion failed");
 
         // 输出当前目录
