@@ -16,5 +16,5 @@ spring:
         fsshell:
             enabled: true
 multipart:
-    maxFileSize: 5GB
-    maxRequestSize: 5GB
+    maxFileSize: 5000000KB
+    maxRequestSize: 5000000KB

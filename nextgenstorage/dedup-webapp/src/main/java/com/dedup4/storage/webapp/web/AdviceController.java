@@ -42,11 +42,11 @@ public class AdviceController {
     /**
      * @return advice sent by user as list if success, otherwise null
      */
-    @RequestMapping(name = "personal", method = RequestMethod.GET)
+    @RequestMapping(value = "personal", method = RequestMethod.GET)
     public List<Advice> list(Principal principal) {
         List<Advice> adviceList = null;
         try {
-            adviceList = adviceRepository.findByUername(principal.getName());
+            adviceList = adviceRepository.findByUsername(principal.getName());
         } catch (Exception e) {
             LOGGER.error("Error when getting all advice from database", e);
         }

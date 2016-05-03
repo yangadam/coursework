@@ -1,7 +1,6 @@
 package com.dedup4.storage.webapp.web;
 
 import com.dedup4.storage.common.domain.FileRecipe;
-import com.dedup4.storage.webapp.service.DownloadService;
 import com.dedup4.storage.webapp.service.FileOperationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,8 +28,8 @@ public class DownloadController {
     @Autowired
     private FileOperationService fileOperationService;
 
-    @Autowired
-    private DownloadService downloadService;
+//    @Autowired
+//    private DownloadService downloadService;
 
     @RequestMapping(method = RequestMethod.GET)
     public void handleDownload(@RequestParam String path,
@@ -59,7 +58,8 @@ public class DownloadController {
 
     private InputStream getInputStream(FileRecipe file) {
         if (file.isDeduped()) {
-            return downloadService.download(file);
+            return null;
+//            return downloadService.download(file);
         } else try {
             File root = (File.listRoots())[0];
             String absPath = root.getAbsolutePath() + "tmp/dedup/upload";
