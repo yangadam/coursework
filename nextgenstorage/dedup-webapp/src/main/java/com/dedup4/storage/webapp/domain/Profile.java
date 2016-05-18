@@ -1,29 +1,23 @@
 package com.dedup4.storage.webapp.domain;
 
-import com.dedup4.storage.common.domain.UpdateInfo;
+import java.util.Date;
 
-public class Profile extends UpdateInfo {
+public class Profile {
 
-    private String userId;
-
-    private String sex;
+    private String name;
 
     private String mail;
 
-    public String getUserId() {
-        return userId;
+    private String gender;
+
+    private Date birthday;
+
+    public String getName() {
+        return name;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getSex() {
-        return sex;
-    }
-
-    public void setSex(String sex) {
-        this.sex = sex;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getMail() {
@@ -32,6 +26,22 @@ public class Profile extends UpdateInfo {
 
     public void setMail(String mail) {
         this.mail = mail;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
     }
 
 }

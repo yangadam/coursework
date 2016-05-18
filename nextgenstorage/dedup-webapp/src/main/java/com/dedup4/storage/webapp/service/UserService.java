@@ -110,7 +110,7 @@ public class UserService implements UserDetailsService {
         if (passwordEncoder.matches(user.getPassword(), userFound.getPassword())) {
             String encryptPwd = passwordEncoder.encode(user.getPassword());
             user.setPassword(encryptPwd);
-            userRepository.insert(user);
+            userRepository.save(user);
             return user;
         }
         return null;

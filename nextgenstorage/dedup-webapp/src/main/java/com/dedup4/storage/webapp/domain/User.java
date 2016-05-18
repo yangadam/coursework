@@ -10,7 +10,8 @@ public class User extends UpdateInfo implements UserDetails {
 
     private String username;
     private String password;
-    private String name;
+    private String type;
+    private Profile profile;
 
     @Override
     public String getUsername() {
@@ -30,12 +31,20 @@ public class User extends UpdateInfo implements UserDetails {
         this.password = password;
     }
 
-    public String getName() {
-        return name;
+    public String getType() {
+        return type;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
     }
 
     @Override

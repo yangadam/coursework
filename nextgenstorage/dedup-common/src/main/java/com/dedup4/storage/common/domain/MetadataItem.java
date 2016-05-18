@@ -6,7 +6,7 @@ package com.dedup4.storage.common.domain;
 public class MetadataItem {
     private String containerId;
     private String offset;
-    private String lenth;
+    private String length;
 
     public String getContainerId() {
         return containerId;
@@ -24,11 +24,11 @@ public class MetadataItem {
         this.offset = offset;
     }
 
-    public String getLenth() {
-        return lenth;
+    public String getLength() {
+        return length;
     }
 
-    public void setLenth(String lenth) {
-        this.lenth = lenth;
+    public void setLength(String length) {
+        this.length = length;
     }
 }

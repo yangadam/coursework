@@ -24,8 +24,8 @@ public class MessageTrigger {
     @Autowired
     private FileService fileService;
 
-    @JmsListener(destination = "queue.pickfile.dedup")
-    public void receiveDefault(String text) {
+    @JmsListener(destination = "queue.filedeliver.dedup")
+    public void receive(String text) {
         LOGGER.info(text);
         // TODO deduplicate file
         String path = (File.listRoots())[0].getAbsolutePath() + "tmp/dedup";
