@@ -23,9 +23,9 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler i
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
         if (authentication.getName().equals("admin")) {
-            this.setDefaultTargetUrl("/index");
-        } else {
             this.setDefaultTargetUrl("/admin");
+        } else {
+            this.setDefaultTargetUrl("/index");
         }
         this.handle(httpServletRequest, httpServletResponse, authentication);
         this.clearAuthenticationAttributes(httpServletRequest);
