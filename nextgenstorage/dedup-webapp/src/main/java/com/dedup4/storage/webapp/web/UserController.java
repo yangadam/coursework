@@ -71,6 +71,20 @@ public class UserController {
     }
 
     /**
+     * @param username user to be remove
+     * @return user name if success, otherwise null
+     */
+    @RequestMapping(value = "remove", method = RequestMethod.POST)
+    public String removeUser(@RequestParam String username) {
+        try {
+            return userService.remove(username);
+        } catch (Exception e) {
+            LOGGER.error("Error when adding user into database", e);
+            return null;
+        }
+    }
+
+    /**
      * @param user user to update
      * @return username if success, otherwise null
      */
