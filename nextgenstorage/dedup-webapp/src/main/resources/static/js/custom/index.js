@@ -33,7 +33,8 @@ $(document).ready(function () {
                 row = row + "<span>" + file.name + "</span></span></div>";
 
             row = row + "<div class='col-xs-1'><span>" + (file.size/1024/1024).toFixed(1) + "MB</span></div>"
-                + "<div class='col-xs-3'><span>" + getLocalTime(file.createdDate) + "</span></div>"
+                + "<div class='col-xs-1'><span>" + "非公开" + "</span></div>"
+                + "<div class='col-xs-2'><span>" + getLocalTime(file.createdDate) + "</span></div>"
                 + "<div class='col-xs-3 col-xs-offset-1'>"
                 + "<div class='row'>"
                 + "<div class='col-xs-3'><a href='javascript:void(0)' class='btn btn-primary delete'>删除</a></div>";
@@ -42,6 +43,7 @@ $(document).ready(function () {
             else
                 row = row + "<div class='col-xs-3'></div>";
             row = row + "<div class='col-xs-3'><a href='javascript:void(0)' class='btn btn-primary modify'>修改</a></div>"
+                + "<div class='col-xs-3'><a href='javascript:void(0)' class='btn btn-primary modify'>获取</a></div>"
                 + "</div>"
                 + "</div>"
                 + "</div>";
@@ -51,6 +53,8 @@ $(document).ready(function () {
     }
 
     function deleteFile(path, name){
+        if (!confirm("确认要删除文件 " + name + " 吗？"))
+            return;
         $.ajax({
             type : "GET",
             url : "/file/delete",
@@ -231,6 +235,8 @@ $(document).ready(function () {
     */
 
     $("#deleteSelected").click(function(){
+        if (!confirm("确认要删除文件选中的文件吗？"))
+            return;
         $("#fileList > div").each(function () {
             var checked = $(this).children(":eq(0)").children(":eq(0)").is(":checked");
             if ( checked== true){
