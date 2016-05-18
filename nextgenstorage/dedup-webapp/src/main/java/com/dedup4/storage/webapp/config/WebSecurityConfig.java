@@ -19,6 +19,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
 
+    @Autowired
+    private LoginSuccessHandler loginSuccessHandler;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new StandardPasswordEncoder();
@@ -31,7 +34,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests().anyRequest().authenticated()
                 .and()
-                .formLogin().loginPage("/login").defaultSuccessUrl("/index", true).permitAll()
+                .formLogin().loginPage("/login").successHandler(loginSuccessHandler).permitAll()
                 .and()
                 .logout().logoutUrl("/logout").logoutSuccessUrl("/login").permitAll();
     }

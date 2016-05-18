@@ -16,6 +16,7 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
         registry.addViewController("/index");
         registry.addViewController("/login");
         registry.addViewController("/register");
+        registry.addViewController("/admin");
     }
 
 }
