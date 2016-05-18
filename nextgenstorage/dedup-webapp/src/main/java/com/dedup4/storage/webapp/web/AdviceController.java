@@ -1,7 +1,7 @@
 package com.dedup4.storage.webapp.web;
 
-import com.dedup4.storage.webapp.domain.Advice;
-import com.dedup4.storage.webapp.repository.AdviceRepository;
+import com.dedup4.storage.webapp.domain.Feedback;
+import com.dedup4.storage.webapp.repository.FeedbackRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,49 +23,49 @@ public class AdviceController {
     private static final Logger LOGGER = LoggerFactory.getLogger(AdviceController.class);
 
     @Autowired
-    private AdviceRepository adviceRepository;
+    private FeedbackRepository feedbackRepository;
 
     /**
-     * @return all advice as list if success, otherwise null
+     * @return all feedback as list if success, otherwise null
      */
     @RequestMapping(method = RequestMethod.GET)
-    public List<Advice> listAll() {
-        List<Advice> adviceList = null;
+    public List<Feedback> listAll() {
+        List<Feedback> feedbackList = null;
         try {
-            adviceList = adviceRepository.findAll();
+            feedbackList = feedbackRepository.findAll();
         } catch (Exception e) {
-            LOGGER.error("Error when getting all advice from database", e);
+            LOGGER.error("Error when getting all feedback from database", e);
         }
-        return adviceList;
+        return feedbackList;
     }
 
     /**
-     * @return advice sent by user as list if success, otherwise null
+     * @return feedback sent by user as list if success, otherwise null
      */
     @RequestMapping(value = "personal", method = RequestMethod.GET)
-    public List<Advice> list(Principal principal) {
-        List<Advice> adviceList = null;
+    public List<Feedback> list(Principal principal) {
+        List<Feedback> feedbackList = null;
         try {
-            adviceList = adviceRepository.findByUsername(principal.getName());
+            feedbackList = feedbackRepository.findByUsername(principal.getName());
         } catch (Exception e) {
-            LOGGER.error("Error when getting all advice from database", e);
+            LOGGER.error("Error when getting all feedback from database", e);
         }
-        return adviceList;
+        return feedbackList;
     }
 
     /**
-     * @param advice advice
-     * @return title of advice if success, otherwise null
+     * @param feedback feedback
+     * @return title of feedback if success, otherwise null
      */
     @RequestMapping(value = "add", method = RequestMethod.POST)
-    public String add(@RequestBody Advice advice, Principal principal) {
+    public String add(@RequestBody Feedback feedback, Principal principal) {
         if (principal.getName() != null) {
-            advice.setUsername(principal.getName());
+            feedback.setUsername(principal.getName());
             try {
-                adviceRepository.insert(advice);
-                return advice.getTitle();
+                feedbackRepository.insert(feedback);
+                return feedback.getTitle();
             } catch (Exception e) {
-                LOGGER.error("Error when adding advice into database", e);
+                LOGGER.error("Error when adding feedback into database", e);
             }
         }
         return null;

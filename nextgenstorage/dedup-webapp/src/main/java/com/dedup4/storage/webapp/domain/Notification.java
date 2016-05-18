@@ -3,23 +3,13 @@ package com.dedup4.storage.webapp.domain;
 import com.dedup4.storage.common.domain.UpdateInfo;
 
 /**
- * @author Yang Mengmeng Created on Mar 26, 2016.
+ * @author Yang Mengmeng Created on Mar 29, 2016.
  */
-public class Advice extends UpdateInfo {
-
-    private String username;
+public class Notification extends UpdateInfo {
 
     private String title;
 
     private String content;
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
     public String getTitle() {
         return title;
@@ -36,5 +26,4 @@ public class Advice extends UpdateInfo {
     public void setContent(String content) {
         this.content = content;
     }
-
 }
