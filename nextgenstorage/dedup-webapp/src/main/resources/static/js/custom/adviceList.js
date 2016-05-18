@@ -10,18 +10,20 @@ $(document).ready(function(){
             for(var i = 0; i < size; i++){
                 var advice = msg[i];
                 var row = "<tr>" + "<td>" + advice.username + "</td>"
-                    + "<td>" + advice.title + "</td>"
-                    + "<td>" + advice.content + "</td>"
-                    + "<td><a href='javascript:void(0)' class='btn btn-danger response'>回复</a></td>"
+                    + "<td><a href='javascript:void(0)' class='adviceContent'>" + advice.title + "</a></td>"
+                    + "<td style='display: none'>" + advice.content + "</td>"
+                    + "<td>" + advice.date + "</td>"
                     + "</tr>";
                 $("#adviceTable  tbody").append(row);
             }
         }
     });
 
-    $(".delete").click(function () {
-        var username = $(this).parent().prev().prev().prev().text();
-        var title = $(this).parent().prev().prev().text();
-        // TODO use this username to delete the user.
+    $(".adviceContent").on('click', function(){
+        var content = $(this).html();
+        var title = $(this).parent().prev().html();
+        $("#contentModal").html(content);
+        $("#titleModal").html(title);
+        $("#infoModal").show();
     });
 });

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>我要反馈</title>
+    <title>基本资料</title>
     <!-- Bootstrap Styles-->
     <link href="../../css/bootstrap.css" rel="stylesheet"/>
     <!-- FontAwesome Styles-->
@@ -87,7 +87,7 @@
                     <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-user">
-                    <li><a href="basicInfo"><i class="fa fa-user fa-fw"></i> 个人信息</a>
+                    <li><a href="basicInfoAdmin"><i class="fa fa-user fa-fw"></i> 个人信息</a>
                     </li>
                     <li class="divider"></li>
                     <li><a href="javascript:void(0)"><i class="fa fa-sign-out fa-fw"></i> 注销</a>
@@ -103,36 +103,63 @@
         <div id="sideNav"><i class="fa fa-caret-right"></i></div>
         <div class="sidebar-collapse">
             <ul class="nav" id="main-menu">
-
                 <li>
-                    <a href="index"><i class="fa fa-file"></i>我的文件</a>
-                </li>
-                <li>
-                    <a href="javascript:void(0)"><i class="fa fa-edit"></i> 个人信息<span class="fa arrow"></span></a>
+                    <a class="active-menu" href="javascript:void(0)"><i class="fa fa-edit"></i> 个人信息<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a href="basicInfo">查看</a>
+                            <a href="basicInfoAdmin">查看</a>
                         </li>
                         <li>
-                            <a href="modifyBasicInfo">修改</a>
+                            <a href="modifyBasicInfoAdmin">修改</a>
                         </li>
                     </ul>
                 </li>
                 <li>
-                    <a href="changePwd"><i class="fa fa-qrcode"></i>修改密码</a>
+                    <a href="changePwdAdmin"><i class="fa fa-qrcode"></i>修改密码</a>
                 </li>
                 <li>
-                    <a class="active-menu" href="javascript:void(0)"><i class="fa fa-table"></i> 消息管理<span class="fa arrow"></span></a>
+                    <a href="javascript:void(0)"><i class="fa fa-sitemap"></i> 用户管理<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a href="messages">消息列表</a>
+                            <a href="userList">用户列表</a>
                         </li>
                         <li>
-                            <a href="advise">投诉建议</a>
+                            <a href="addUser">添加用户</a>
                         </li>
                     </ul>
                 </li>
+                <li>
+                    <a href="javascript:void(0)"><i class="fa fa-bar-chart-o"></i> 信息统计<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="loginStatistics">登录数据</a>
+                        </li>
+                        <li>
+                            <a href="uploadStatistics">上传数据</a>
+                        </li>
+                        <li>
+                            <a href="downloadStatistics">下载数据</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript:void(0)"><i class="fa fa-table"></i> 消息管理<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="noticeList">公告列表</a>
+                        </li>
+                        <li>
+                            <a href="sendNotice">发送公告</a>
+                        </li>
+                        <li>
+                            <a href="adviceList">建议列表</a>
+                        </li>
+                        <li>
+                            <a href="complaintList">投诉列表</a>
+                        </li>
 
+                    </ul>
+                </li>
             </ul>
 
         </div>
@@ -145,38 +172,56 @@
                 <div class="col-md-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            投诉建议
+                            查看个人信息
                         </div>
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-md-4 col-md-offset-4">
                                     <div class="row">
                                         <div class="form-group">
-                                            <label>类型</label>
-                                            <select class="form-control" id="type">
-                                                <option value="complaint">投诉</option>
-                                                <option value="suggestion">建议</option>
-                                            </select>
+                                            <label>用户名</label>
+                                            <input id="username" class="form-control" disabled="true" />
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="form-group">
-                                            <label>标题</label>
-                                            <input class="form-control" id="title" />
+                                            <label>昵称</label>
+                                            <input id="nickname" class="form-control" disabled="true" />
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="form-group">
-                                            <label>详情</label>
-                                            <textarea rows="10" class="form-control" id="content"></textarea>
+                                            <label>邮箱</label>
+                                            <input id="email" class="form-control" disabled="true" />
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <a href="javascript:void(0)" class="btn btn-primary" id="submitBtn">提交</a>
+                                        <div class="form-group">
+                                            <label>性别</label>
+                                            <div class="radio">
+                                                <label>
+                                                    <input type="radio" name="optionsRadios" id="maleOption"
+                                                           value="male" checked="checked" disabled="true" /> 男
+                                                </label>
+                                            </div>
+                                            <div class="radio">
+                                                <label>
+                                                    <input type="radio" name="optionsRadios" id="femaleOption"
+                                                           value="female" disabled="true" /> 女
+                                                </label>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="row" style="margin-top: 10px;">
-                                        <div class="alert alert-info" id="successInfo" style="display: none;">
-                                            <strong>提交成功！</strong>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <label>出生年月</label>
+                                            <input id="birthday" class="form-control" disabled="true" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <label>注册日期</label>
+                                            <input id="registerDate" class="form-control" disabled="true"/>
                                         </div>
                                     </div>
                                 </div>
@@ -206,9 +251,7 @@
 
 <!-- Custom Js -->
 <script src="../../js/common.js"></script>
-<script src="../../js/custom/advise.js"></script>
-
-
+<script src="../../js/custom/basicInfo.js"></script>
 
 </body>
 

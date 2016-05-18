@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>NextGenStorage Admin</title>
+    <title>发送公告</title>
     <!-- Bootstrap Styles-->
     <link href="../../css/bootstrap.css" rel="stylesheet"/>
     <!-- FontAwesome Styles-->
@@ -27,10 +27,60 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="javascript:void(0)"><strong>NGS Admin</strong></a>
+            <a class="navbar-brand" href="index.html"><strong>NextGenStorage</strong></a>
         </div>
 
         <ul class="nav navbar-top-links navbar-right">
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                    <i class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-messages">
+                    <li>
+                        <a href="#">
+                            <div>
+                                <strong>John Doe</strong>
+                                    <span class="pull-right text-muted">
+                                        <em>Today</em>
+                                    </span>
+                            </div>
+                            <div>Lorem Ipsum has been the industry's standard dummy text ever since the 1500s...</div>
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="#">
+                            <div>
+                                <strong>John Smith</strong>
+                                    <span class="pull-right text-muted">
+                                        <em>Yesterday</em>
+                                    </span>
+                            </div>
+                            <div>Lorem Ipsum has been the industry's standard dummy text ever since an kwilnw...</div>
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="#">
+                            <div>
+                                <strong>John Smith</strong>
+                                    <span class="pull-right text-muted">
+                                        <em>Yesterday</em>
+                                    </span>
+                            </div>
+                            <div>Lorem Ipsum has been the industry's standard dummy text ever since the...</div>
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a class="text-center" href="#">
+                            <strong>Read All Messages</strong>
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+                    </li>
+                </ul>
+                <!-- /.dropdown-messages -->
+            </li>
             <!-- /.dropdown -->
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
@@ -93,7 +143,7 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="javascript:void(0)"><i class="fa fa-table"></i> 消息管理<span class="fa arrow"></span></a>
+                    <a class="active-menu" href="javascript:void(0)"><i class="fa fa-table"></i> 消息管理<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li>
                             <a href="noticeList">公告列表</a>
@@ -116,30 +166,44 @@
 
     </nav>
     <!-- /. NAV SIDE  -->
-
     <div id="page-wrapper">
         <div id="page-inner">
             <div class="row">
                 <div class="col-md-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            管理员任务
+                            发送公告
                         </div>
                         <div class="panel-body">
                             <div class="row">
-                                <p>
-                                <ul>
-                                    <li>增加或删除用户</li>
-                                    <li>回复用户的投诉</li>
-                                    <li>发布公告</li>
-                                    <li>查看系统数据统计</li>
-                                </ul>
-                                </p>
+                                <div class="col-md-4 col-md-offset-4">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <label>标题</label>
+                                            <input class="form-control" id="title" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <label>详情</label>
+                                            <textarea rows="10" class="form-control" id="content"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <a href="javascript:void(0)" class="btn btn-primary" id="submitBtn">发送</a>
+                                    </div>
+                                    <div class="row" style="margin-top: 10px;">
+                                        <div class="alert alert-info" id="successInfo" style="display: none;">
+                                            <strong>发送成功！</strong>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
             <footer>
                 <p>All right reserved. Developed by: <a href="javascript:void(0)">Dedup4 Team</a></p>
             </footer>
@@ -160,6 +224,9 @@
 
 <!-- Custom Js -->
 <script src="../../js/common.js"></script>
+<script src="../../js/custom/sendNotice.js"></script>
+
+
 
 </body>
 

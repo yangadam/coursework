@@ -1,6 +1,4 @@
-/**
- * Created by xmuli on 2016/4/4.
- */
+
 $(document).ready(function(){
     $.ajax({
         type: "GET",
@@ -10,8 +8,9 @@ $(document).ready(function(){
             for(var i = 0; i < size; i++){
                 var user = msg[i];
                 var row = "<tr>" + "<td>" + user.username + "</td>"
-                    + "<td>" + user.name + "</td>"
-                    + "<td>" + "...." + "</td>"
+                    + "<td>" + user.nickname + "</td>"
+                    + "<td>" + user.date + "</td>"
+                    + "<td>" + user.size + "</td>"
                     + "<td><a href='javascript:void(0)' class='btn btn-danger delete'>删除</a></td>"
                     + "</tr>";
                 $("#userTable  tbody").append(row);
@@ -19,8 +18,9 @@ $(document).ready(function(){
         }
     });
     
-    $(".delete").click(function () {
-        var username = $(this).parent().prev().prev().text();
+    $("#userTable .delete").click(function () {
+        $(this).parent().parent().remove();
+        //var username = $(this).parent().prev().prev().text();
         // TODO use this username to delete the user.
     });
 });

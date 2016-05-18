@@ -5,22 +5,28 @@ $(document).ready(function(){
     $("#addBtn").click(function(){
         var username = $("#username").val();
         var password = $("#password").val();
-        if (username == "" || password == "")
+        var nickname = $("#nickname").val();
+        var email = $("#email").val();
+        var birthday = $("#birthday").val();
+        var sex = "male";
+        if ($("#femaleOption").attr("checked") == true) {
+            sex = "female";
+        }
+        if (username == "" || password == "" || nickname == "" || email == "")
             return;
         $.ajax({
             type: "POST",
             url: "/user/exist",
             data: {username:username},
             success: function(msg){
-                // TODO whether it's existed
                 if (msg == true){
-                    $("#userExistedInfo").show();
+                    $("#errorInfo").show();
                 }
                 else{
                     $.ajax({
                         type: "POST",
                         url: "/user/add",
-                        data: {username:username, password:password},
+                        data: {username:username, password:password, nickname: nickname, email: email, sex: sex, birthday: birthday},
                         success: function (msg) {
                             $("#addSuccessInfo").show();
                         }
