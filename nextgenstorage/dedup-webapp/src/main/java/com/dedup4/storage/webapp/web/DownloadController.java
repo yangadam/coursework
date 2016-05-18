@@ -1,7 +1,9 @@
 package com.dedup4.storage.webapp.web;
 
 import com.dedup4.storage.common.domain.FileRecipe;
+import com.dedup4.storage.webapp.domain.UserOperation;
 import com.dedup4.storage.webapp.service.FileOperationService;
+import com.dedup4.storage.webapp.service.UserOperationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,8 @@ public class DownloadController {
     @Autowired
     private FileOperationService fileOperationService;
 
+    @Autowired
+    private UserOperationService userOperationService;
 //    @Autowired
 //    private DownloadService downloadService;
 
@@ -51,6 +55,7 @@ public class DownloadController {
                     response.flushBuffer();
                 }
             }
+            userOperationService.updateStat(UserOperation.Type.DOWNLOAD, file.getFileSize());
         } catch (IOException e) {
             LOGGER.error("Fail to download file.", e);
         }

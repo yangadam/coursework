@@ -1,8 +1,7 @@
 package com.dedup4.storage.webapp.service;
 
-import com.dedup4.storage.common.domain.UserOperation;
+import com.dedup4.storage.webapp.domain.UserOperation;
 import com.dedup4.storage.webapp.repository.UserOperationRepository;
-import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,41 +17,19 @@ public class UserOperationService {
     @Autowired
     private UserOperationRepository userOperationRepository;
 
-    private static Date clearDateClock(Date date) {
-        return DateUtils.setHours(DateUtils.setMinutes(DateUtils.setSeconds(
-                DateUtils.setMilliseconds(date, 0), 0), 0), 0);
+    public List<UserOperation> getStat(UserOperation.Type type, Date from, Date to) {
+        return userOperationRepository.findByTypeAndDateBetween(type, from, to);
     }
 
-    /**
-     * Total download count
-     *
-     * @return total download count
-     */
-    public int countTotalDownload() {
-        return userOperationRepository.countByType(UserOperation.Type.DOWNLOAD);
-    }
-
-    /**
-     * Yesterday download count
-     *
-     * @return yesterday download count
-     */
-    public int countYesterdayDownload() {
-        Date to = new Date();
-        to = clearDateClock(to);
-        Date from = DateUtils.addDays(to, -1);
-        return userOperationRepository.countByTypeAndTimeBetween(UserOperation.Type.DOWNLOAD, from, to);
-    }
-
-    /**
-     * Download time information between two dates
-     *
-     * @param from start date
-     * @param to   end date
-     * @return date as list
-     */
-    public List<Date> getDownloadStatistics(Date from, Date to) {
-        return userOperationRepository.findTimeByTypeAndTimeBetween(UserOperation.Type.DOWNLOAD, from, to);
+    public void updateStat(UserOperation.Type type, long size) {
+        UserOperation op = userOperationRepository.findByTypeAndDate(type, new Date());
+        if (op == null) {
+            op = new UserOperation(type, size);
+        } else {
+            op.setCount(op.getCount() + 1);
+            op.setSize(op.getSize() + size);
+        }
+        userOperationRepository.save(op);
     }
 
 }

@@ -60,7 +60,9 @@ public class MessageController {
     }
 
     @RequestMapping(value = "feedback/reply")
-    public void replyFeedback(@RequestBody Feedback feedback) {
+    public void replyFeedback(@RequestBody Feedback feedback, Principal principal) {
+        feedback.setReplyUsername(principal.getName());
+        feedback.setReplyDate(new Date());
         messageService.replyFeedback(feedback);
     }
 

@@ -1,5 +1,6 @@
 package com.dedup4.storage.webapp.web;
 
+import com.dedup4.storage.webapp.domain.UserOperation;
 import com.dedup4.storage.webapp.service.UserOperationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,42 +15,44 @@ import java.util.List;
  * @author Yang Mengmeng Created on Mar 28, 2016.
  */
 @RestController
-@RequestMapping("/operation")
+@RequestMapping("/stat")
 public class UserOperationController {
 
     @Autowired
     private UserOperationService userOperationService;
 
-    /**
-     * Total download count
-     *
-     * @return total download count
-     */
-    @RequestMapping(value = "totalCount", method = RequestMethod.GET)
-    public int totalDownloadCount() {
-        return userOperationService.countTotalDownload();
+    @RequestMapping(value = "login", method = RequestMethod.GET)
+    public int loginStat(@RequestParam Date from, @RequestParam Date to) {
+        List<UserOperation> operations = userOperationService.getStat(UserOperation.Type.LOGIN, from, to);
+        int totalCount = 0;
+        for (UserOperation operation : operations) {
+            totalCount += operation.getCount();
+        }
+        return totalCount;
     }
 
-    /**
-     * Yesterday download count
-     *
-     * @return yesterday download count
-     */
-    @RequestMapping(value = "yesterdayCount", method = RequestMethod.GET)
-    public int yesterdayDownloadCount() {
-        return userOperationService.countYesterdayDownload();
+    @RequestMapping(value = "upload", method = RequestMethod.GET)
+    public long[] uploadStat(@RequestParam Date from, @RequestParam Date to) {
+        List<UserOperation> operations = userOperationService.getStat(UserOperation.Type.UPLOAD, from, to);
+        int totalCount = 0;
+        long totalSize = 0;
+        for (UserOperation operation : operations) {
+            totalCount += operation.getCount();
+            totalSize += operation.getSize();
+        }
+        return new long[]{totalCount, totalSize};
     }
 
-    /**
-     * Download statistics between two dates
-     *
-     * @param from start date
-     * @param to   end date
-     * @return download time as list
-     */
-    @RequestMapping(value = "statistics", method = RequestMethod.GET)
-    public List<Date> dd(@RequestParam Date from, @RequestParam Date to) {
-        return userOperationService.getDownloadStatistics(from, to);
+    @RequestMapping(value = "download", method = RequestMethod.GET)
+    public long[] downloadStat(@RequestParam Date from, @RequestParam Date to) {
+        List<UserOperation> operations = userOperationService.getStat(UserOperation.Type.DOWNLOAD, from, to);
+        int totalCount = 0;
+        long totalSize = 0;
+        for (UserOperation operation : operations) {
+            totalCount += operation.getCount();
+            totalSize += operation.getSize();
+        }
+        return new long[]{totalCount, totalSize};
     }
 
 }

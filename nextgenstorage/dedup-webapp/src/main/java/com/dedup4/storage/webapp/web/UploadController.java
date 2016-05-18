@@ -2,7 +2,9 @@ package com.dedup4.storage.webapp.web;
 
 import com.dedup4.storage.common.domain.FileRecipe;
 import com.dedup4.storage.common.domain.LogicFile;
+import com.dedup4.storage.webapp.domain.UserOperation;
 import com.dedup4.storage.webapp.service.FileOperationService;
+import com.dedup4.storage.webapp.service.UserOperationService;
 import com.dedup4.storage.webapp.util.MultipartFileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +33,9 @@ public class UploadController {
 
     @Autowired
     private FileOperationService fileOperationService;
+
+    @Autowired
+    private UserOperationService userOperationService;
 
     @RequestMapping(method = RequestMethod.POST)
     public Boolean upload(@RequestParam String path,
@@ -88,6 +93,7 @@ public class UploadController {
                 path, file.getOriginalFilename(), md5, file.getSize());
         fileOperationService.saveFileRecipe(logicFile);
         LOGGER.info("File Inserted.");
+        userOperationService.updateStat(UserOperation.Type.UPLOAD, file.getSize());
         return true;
     }
 

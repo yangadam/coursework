@@ -1,6 +1,8 @@
 package com.dedup4.storage.webapp.service;
 
 import com.dedup4.storage.webapp.domain.User;
+import com.dedup4.storage.webapp.domain.UserOperation;
+import com.dedup4.storage.webapp.repository.UserOperationRepository;
 import com.dedup4.storage.webapp.repository.UserRepository;
 import com.dedup4.storage.webapp.util.MailSender;
 import com.dedup4.storage.webapp.util.PwdGenerator;
@@ -31,6 +33,9 @@ public class UserService implements UserDetailsService {
     private UserRepository userRepository;
 
     @Autowired
+    private UserOperationRepository userOperationRepository;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     /**
@@ -48,6 +53,13 @@ public class UserService implements UserDetailsService {
         }
         user.setLastModifiedDate(new Date());
         userRepository.save(user);
+        UserOperation op = userOperationRepository.findByTypeAndDate(UserOperation.Type.LOGIN, new Date());
+        if (op == null) {
+            op = new UserOperation(UserOperation.Type.LOGIN);
+        } else {
+            op.setCount(op.getCount() + 1);
+        }
+        userOperationRepository.save(op);
         return user;
     }
 
