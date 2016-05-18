@@ -102,9 +102,7 @@
                     <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-user">
-                    <li><a href="#"><i class="fa fa-user fa-fw"></i> 用户信息</a>
-                    </li>
-                    <li><a href="#"><i class="fa fa-gear fa-fw"></i> 设置</a>
+                    <li><a href="basicInfo"><i class="fa fa-user fa-fw"></i> 用户信息</a>
                     </li>
                     <li class="divider"></li>
                     <li><a href="#"><i class="fa fa-sign-out fa-fw"></i> 登出</a>
@@ -123,34 +121,34 @@
             <ul class="nav" id="main-menu">
 
                 <li>
-                    <a class="active-menu" href="javascript:void(0)"><i class="fa fa-dashboard"></i>我的文件</a>
+                    <a class="active-menu" href="index"><i class="fa fa-file"></i>我的文件</a>
                 </li>
                 <li>
-                    <a href="javascript:void(0)"><i class="fa fa-sitemap"></i> 我的资料<span class="fa arrow"></span></a>
+                    <a href="javascript:void(0)"><i class="fa fa-edit"></i> 个人信息<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a href="#">基本资料</a>
+                            <a href="basicInfo">查看</a>
                         </li>
                         <li>
-                            <a href="#">密码修改</a>
+                            <a href="modifyBasicInfo">修改</a>
                         </li>
                     </ul>
                 </li>
                 <li>
-                    <a href="javascript:void(0)"><i class="fa fa-qrcode"></i>热门下载</a>
+                    <a href="changePwd"><i class="fa fa-qrcode"></i>修改密码</a>
                 </li>
                 <li>
-                    <a href="javascript:void(0)"><i class="fa fa-table"></i>为您推荐</a>
+                    <a href="javascript:void(0)"><i class="fa fa-table"></i> 消息管理<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="messages">消息列表</a>
+                        </li>
+                        <li>
+                            <a href="advise">投诉建议</a>
+                        </li>
+                    </ul>
                 </li>
-                <li>
-                    <a href="javascript:void(0)"><i class="fa fa-bar-chart-o"></i>网站消息</a>
-                </li>
-                <li>
-                    <a href="javascript:void(0)"><i class="fa fa-edit"></i>我要反馈</a>
-                </li>
-                <li>
-                    <a href="javascript:void(0)"><i class="fa fa-fw fa-file"></i>操作记录</a>
-                </li>
+
             </ul>
 
         </div>
@@ -203,7 +201,7 @@
                     </div>
                     <!-- End of list of file s and directories -->
 
-                    <!-- Modal for modification
+
                     <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" style="display: none;">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -259,9 +257,9 @@
                             </div>
                         </div>
                     </div>
-                    -->
+
                     <!-- Modal for modification -->
-                   <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" style="display: none;">
+                   <div class="modal fade" id="shareModal" tabindex="-1" role="dialog" style="display: none;">
                        <div class="modal-dialog">
                            <div class="modal-content">
                                <div class="modal-header">
@@ -279,7 +277,7 @@
                                            <div class="row">
                                                <div class="form-group col-xs-12">
                                                    <label>复制以下链接到浏览器地址栏</label>
-                                                   <input class="form-control" id="newName" value="localhost:8080/download/dedup4/453837" />
+                                                   <input class="form-control" id="shareLink" value="localhost:8080/download/dedup4/453837" />
                                                </div>
                                            </div>
                                        </div>

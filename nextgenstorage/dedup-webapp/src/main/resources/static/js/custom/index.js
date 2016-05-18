@@ -43,7 +43,7 @@ $(document).ready(function () {
             else
                 row = row + "<div class='col-xs-3'></div>";
             row = row + "<div class='col-xs-3'><a href='javascript:void(0)' class='btn btn-primary modify'>修改</a></div>"
-                + "<div class='col-xs-3'><a href='javascript:void(0)' class='btn btn-primary modify'>获取</a></div>"
+                + "<div class='col-xs-3'><a href='javascript:void(0)' class='btn btn-primary get'>获取</a></div>"
                 + "</div>"
                 + "</div>"
                 + "</div>";
@@ -143,6 +143,12 @@ $(document).ready(function () {
         $("#infoModal").modal("show");
     });
 
+    $("#fileList").on("click", ".get", function(){
+        var fileName = getFileName($(this));
+        $("#shareLink").val(fileName);
+        $("#shareModal").modal("show");
+    });
+
     $("#modalSaveBtn").click(function(){
         var path = curPath;
         var oldName = $("#oldName").val();
@@ -240,7 +246,7 @@ $(document).ready(function () {
         $("#fileList > div").each(function () {
             var checked = $(this).children(":eq(0)").children(":eq(0)").is(":checked");
             if ( checked== true){
-                $(this).children(":eq(4)").children(":eq(0)").children(":eq(0)").children(":eq(0)").trigger("click");
+                $(this).children(":eq(5)").children(":eq(0)").children(":eq(0)").children(":eq(0)").trigger("click");
             }
         });
     });

@@ -6,14 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>NextGenStorage Admin</title>
     <!-- Bootstrap Styles-->
-    <link href="../static/css/bootstrap.css" rel="stylesheet"/>
+    <link href="../../css/bootstrap.css" rel="stylesheet"/>
     <!-- FontAwesome Styles-->
-    <link href="../static/css/font-awesome.css" rel="stylesheet"/>
+    <link href="../../css/font-awesome.css" rel="stylesheet"/>
     <!-- Custom Styles-->
-    <link href="../static/css/default.css" rel="stylesheet"/>
-    <link href="../static/css/index.css" rel="stylesheet"/>
+    <link href="../../css/default.css" rel="stylesheet"/>
+    <link href="../../css/index.css" rel="stylesheet"/>
     <!-- Google Fonts-->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+
+    <link rel="stylesheet" type="text/css" href="../../css/bootstrap-datetimepicker.min.css" />
 
 </head>
 
@@ -37,7 +39,7 @@
                     <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-user">
-                    <li><a href="#"><i class="fa fa-user fa-fw"></i> 个人信息</a>
+                    <li><a href="basicInfoAdmin"><i class="fa fa-user fa-fw"></i> 个人信息</a>
                     </li>
                     <li class="divider"></li>
                     <li><a href="javascript:void(0)"><i class="fa fa-sign-out fa-fw"></i> 注销</a>
@@ -54,58 +56,58 @@
         <div class="sidebar-collapse">
             <ul class="nav" id="main-menu">
                 <li>
-                    <a href="javascript:void(0)"><i class="fa fa-sitemap"></i> 个人信息<span class="fa arrow"></span></a>
+                    <a href="javascript:void(0)"><i class="fa fa-edit"></i> 个人信息<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a href="javascript:void(0)">查看</a>
+                            <a href="basicInfoAdmin">查看</a>
                         </li>
                         <li>
-                            <a href="javascript:void(0)">修改</a>
+                            <a href="modifyBasicInfoAdmin">修改</a>
                         </li>
                     </ul>
                 </li>
                 <li>
-                    <a href="javascript:void(0)"><i class="fa fa-desktop"></i>修改密码</a>
+                    <a href="changePwdAdmin"><i class="fa fa-qrcode"></i>修改密码</a>
                 </li>
                 <li>
-                    <a href="javascript:void(0)"><i class="fa fa-sitemap"></i> 用户管理<span class="fa arrow"></span></a>
+                    <a class="active-menu" href="javascript:void(0)"><i class="fa fa-sitemap"></i> 用户管理<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a href="javascript:void(0)">用户列表</a>
+                            <a href="userList">用户列表</a>
                         </li>
                         <li>
-                            <a href="javascript:void(0)">添加用户</a>
+                            <a href="addUser">添加用户</a>
                         </li>
                     </ul>
                 </li>
                 <li>
-                    <a href="javascript:void(0)"><i class="fa fa-sitemap"></i> 信息统计<span class="fa arrow"></span></a>
+                    <a href="javascript:void(0)"><i class="fa fa-bar-chart-o"></i> 信息统计<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a href="javascript:void(0)">登录数据</a>
+                            <a href="loginStatistics">登录数据</a>
                         </li>
                         <li>
-                            <a href="javascript:void(0)">上传数据</a>
+                            <a href="uploadStatistics">上传数据</a>
                         </li>
                         <li>
-                            <a href="javascript:void(0)">下载数据</a>
+                            <a href="downloadStatistics">下载数据</a>
                         </li>
                     </ul>
                 </li>
                 <li>
-                    <a href="javascript:void(0)"><i class="fa fa-sitemap"></i> 消息管理<span class="fa arrow"></span></a>
+                    <a href="javascript:void(0)"><i class="fa fa-table"></i> 消息管理<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a href="javascript:void(0)">公告列表</a>
+                            <a href="noticeList">公告列表</a>
                         </li>
                         <li>
-                            <a href="javascript:void(0)">发送公告</a>
+                            <a href="sendNotice">发送公告</a>
                         </li>
                         <li>
-                            <a href="javascript:void(0)">建议列表</a>
+                            <a href="adviceList">建议列表</a>
                         </li>
                         <li>
-                            <a href="javascript:void(0)">投诉列表</a>
+                            <a href="complaintList">投诉列表</a>
                         </li>
 
                     </ul>
@@ -131,19 +133,19 @@
                                     <div class="row">
                                         <div class="form-group">
                                             <label>用户名</label>
-                                            <input class="form-control" id="username" value="293472042"/>
+                                            <input class="form-control" id="username" required="true"/>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="form-group">
                                             <label>昵称</label>
-                                            <input class="form-control" id="nickname" value="张三"/>
+                                            <input class="form-control" id="nickname" required="true"/>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="form-group">
                                             <label>邮箱</label>
-                                            <input class="form-control" id="email" value="293472042@qq.com"/>
+                                            <input class="form-control" id="email" required="true"/>
                                         </div>
                                     </div>
 
@@ -152,14 +154,14 @@
                                             <label>性别</label>
                                             <div class="radio">
                                                 <label>
-                                                    <input type="radio" name="optionsRadios" id="optionsRadios1"
-                                                           value="male"> 男
+                                                    <input type="radio" name="optionsRadios" id="maleOption"
+                                                           value="male" checked="true" /> 男
                                                 </label>
                                             </div>
                                             <div class="radio">
                                                 <label>
-                                                    <input type="radio" name="optionsRadios" id="optionsRadios2"
-                                                           value="female" checked> 女
+                                                    <input type="radio" name="optionsRadios" id="femaleOption"
+                                                           value="female" /> 女
                                                 </label>
                                             </div>
                                         </div>
@@ -167,15 +169,23 @@
                                     <div class="row">
                                         <div class="form-group">
                                             <label>出生年月</label>
-                                            <input class="form-control" value="1995-05"/>
+                                            <div class="input-group date form_date col-md-10" data-date="" data-date-format="yyyy MM dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                                                <input class="form-control" size="16" type="text" value="" readonly="true" />
+                                                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                            </div>
+                                            <input type="hidden" id="birthday" /><br/>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <a href="javascript:void" class="btn btn-primary" id="addBtn">添加</a>
+                                        <a href="javascript:void(0)" class="btn btn-primary" id="addBtn">添加</a>
                                     </div>
                                     <div class="row" style="margin-top: 10px;">
-                                        <div class="alert alert-info" id="successInfo">
+                                        <div class="alert alert-info" id="successInfo" style="display: none;">
                                             <strong>添加成功！</strong>
+                                        </div>
+                                        <div class="alert alert-danger" id="errorInfo" style="display: none;">
+                                            <strong>添加失败！</strong>
                                         </div>
                                     </div>
 
@@ -195,20 +205,38 @@
     <!-- /. PAGE INNER  -->
 </div>
 <!-- /. PAGE WRAPPER  -->
-</div>
 <!-- /. WRAPPER  -->
 <!-- JS Scripts-->
 <!-- jQuery Js -->
-<script src="../static/js/jquery-1.10.2.js"></script>
+<script src="../../js/jquery-1.10.2.js"></script>
 <!-- Bootstrap Js -->
-<script src="../static/js/bootstrap.min.js"></script>
+<script src="../../js/bootstrap.min.js"></script>
 
 <!-- Metis Menu Js -->
-<script src="../static/js/jquery.metisMenu.js"></script>
+<script src="../../js/jquery.metisMenu.js"></script>
+
+<script type="text/javascript" src="../../js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="../../js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
 
 <!-- Custom Js -->
-<script src="../static/js/common.js"></script>
-<script src="../static/js/custom/addUser.js"></script>
+<script src="../../js/common.js"></script>
+<script src="../../js/custom/addUser.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('.form_date').datetimepicker({
+            language: 'zh-CN',
+            weekStart: 1,
+            todayBtn:  1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            minView: 2,
+            forceParse: 0
+        });
+    });
+
+</script>
 
 </body>
 

@@ -1,8 +1,5 @@
-/**
- * Created by xmuli on 2016/4/5.
- */
 $(document).ready(function(){
-    $("#updateBtn").click(function(){
+    $("#submitBtn").click(function(){
         var old = $("#password").val();
         var new1 = $("#newPassword1").val();
         var new2 = $("#newPassword2").val();
@@ -12,7 +9,7 @@ $(document).ready(function(){
         $.ajax({
             type : "POST",
             data: {newPassword:new1, password:old},
-            url : "",
+            url : "/modifyPassword",
             success : function (msg) {
                 if (msg == null){
                     $("#passwordWrongInfo").show();

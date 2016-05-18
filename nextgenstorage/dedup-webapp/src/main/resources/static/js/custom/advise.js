@@ -1,27 +1,20 @@
-/**
- * Created by xmuli on 2016/4/5.
- */
 $(document).ready(function(){
     $("#submitBtn").click(function(){
+        var type = $("#type").val();
         var title = $("#title").val();
         var content = $("#content").val();
-        var type = $("#type").val();
         if (title == "" || content == "")
             return;
-        $.ajax({
-            type: "POST",
-            url: "/advice/add",
-            data: {title:title,content:content,type:type},
-            success: function(msg){
-                if (msg == null){
-                    //fail
-                    $("#failInfo").show();
-                }
-                else{
-                    //success
+        else{
+            $.ajax({
+                type : "GET",
+                url : "/message/advise",
+                data : {type : type, title : title, content : content},
+                success : function(msg){
                     $("#successInfo").show();
                 }
-            }
-        });
+            });
+        }
     });
+
 });

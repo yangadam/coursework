@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>基本资料</title>
     <!-- Bootstrap Styles-->
-    <link href="../static/css/bootstrap.css" rel="stylesheet"/>
+    <link href="../../css/bootstrap.css" rel="stylesheet"/>
     <!-- FontAwesome Styles-->
-    <link href="../static/css/font-awesome.css" rel="stylesheet"/>
+    <link href="../../css/font-awesome.css" rel="stylesheet"/>
     <!-- Custom Styles-->
-    <link href="../static/css/default.css" rel="stylesheet"/>
-    <link href="../static/css/index.css" rel="stylesheet"/>
+    <link href="../../css/default.css" rel="stylesheet"/>
+    <link href="../../css/index.css" rel="stylesheet"/>
     <!-- Google Fonts-->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
 
@@ -87,7 +87,7 @@
                     <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-user">
-                    <li><a href="#"><i class="fa fa-user fa-fw"></i> 个人信息</a>
+                    <li><a href="basicInfo"><i class="fa fa-user fa-fw"></i> 个人信息</a>
                     </li>
                     <li class="divider"></li>
                     <li><a href="javascript:void(0)"><i class="fa fa-sign-out fa-fw"></i> 注销</a>
@@ -105,27 +105,30 @@
             <ul class="nav" id="main-menu">
 
                 <li>
-                    <a class="active-menu" href="javascript:void(0)"><i class="fa fa-dashboard"></i>我的文件</a>
+                    <a href="index"><i class="fa fa-file"></i>我的文件</a>
                 </li>
                 <li>
-                    <a href="javascript:void(0)"><i class="fa fa-sitemap"></i> 个人信息<span class="fa arrow"></span></a>
+                    <a class="active-menu" href="javascript:void(0)"><i class="fa fa-edit"></i> 个人信息<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a href="javascript:void(0)">查看</a>
+                            <a href="basicInfo">查看</a>
                         </li>
                         <li>
-                            <a href="javascript:void(0)">修改</a>
+                            <a href="modifyBasicInfo">修改</a>
                         </li>
                     </ul>
                 </li>
                 <li>
-                    <a href="javascript:void(0)"><i class="fa fa-sitemap"></i> 消息管理<span class="fa arrow"></span></a>
+                    <a href="changePwd"><i class="fa fa-qrcode"></i>修改密码</a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)"><i class="fa fa-table"></i> 消息管理<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a href="javascript:void(0)">消息列表</a>
+                            <a href="messages">消息列表</a>
                         </li>
                         <li>
-                            <a href="javascript:void(0)">投诉建议</a>
+                            <a href="advise">投诉建议</a>
                         </li>
                     </ul>
                 </li>
@@ -150,19 +153,19 @@
                                     <div class="row">
                                         <div class="form-group">
                                             <label>用户名</label>
-                                            <input class="form-control" value="448465956" disabled />
+                                            <input id="username" class="form-control" disabled="true" />
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="form-group">
                                             <label>昵称</label>
-                                            <input class="form-control" value="敏敏" disabled />
+                                            <input id="nickname" class="form-control" disabled="true" />
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="form-group">
                                             <label>邮箱</label>
-                                            <input class="form-control" value="448465956@qq.com" disabled />
+                                            <input id="email" class="form-control" disabled="true" />
                                         </div>
                                     </div>
                                     <div class="row">
@@ -170,14 +173,14 @@
                                             <label>性别</label>
                                             <div class="radio">
                                                 <label>
-                                                    <input type="radio" name="optionsRadios" id="optionsRadios1"
-                                                           value="male" checked> 男
+                                                    <input type="radio" name="optionsRadios" id="maleOption"
+                                                           value="male" checked="checked" disabled="true" /> 男
                                                 </label>
                                             </div>
                                             <div class="radio">
                                                 <label>
-                                                    <input type="radio" name="optionsRadios" id="optionsRadios2"
-                                                           value="female"> 女
+                                                    <input type="radio" name="optionsRadios" id="femaleOption"
+                                                           value="female" disabled="true" /> 女
                                                 </label>
                                             </div>
                                         </div>
@@ -185,13 +188,13 @@
                                     <div class="row">
                                         <div class="form-group">
                                             <label>出生年月</label>
-                                            <input class="form-control" disabled value="1993-04" />
+                                            <input id="birthday" class="form-control" disabled="true" />
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="form-group">
                                             <label>注册日期</label>
-                                            <input class="form-control" disabled value="2016-05-03"/>
+                                            <input id="registerDate" class="form-control" disabled="true"/>
                                         </div>
                                     </div>
                                 </div>
@@ -212,16 +215,16 @@
 <!-- /. WRAPPER  -->
 <!-- JS Scripts-->
 <!-- jQuery Js -->
-<script src="../static/js/jquery-1.10.2.js"></script>
+<script src="../../js/jquery-1.10.2.js"></script>
 <!-- Bootstrap Js -->
-<script src="../static/js/bootstrap.min.js"></script>
+<script src="../../js/bootstrap.min.js"></script>
 
 <!-- Metis Menu Js -->
-<script src="../static/js/jquery.metisMenu.js"></script>
+<script src="../../js/jquery.metisMenu.js"></script>
 
 <!-- Custom Js -->
-<script src="../static/js/common.js"></script>
-
+<script src="../../js/common.js"></script>
+<script src="../../js/custom/basicInfo.js"></script>
 
 </body>
 

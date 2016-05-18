@@ -16,7 +16,26 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
         registry.addViewController("/index");
         registry.addViewController("/login");
         registry.addViewController("/register");
+        registry.addViewController("/messages");
+        registry.addViewController("/addUser");
         registry.addViewController("/admin");
+        registry.addViewController("/adviceList");
+        registry.addViewController("/advise");
+        registry.addViewController("/basicInfo");
+        registry.addViewController("/changePwd");
+        registry.addViewController("/complaintList");
+        registry.addViewController("/downloadStatistics");
+        registry.addViewController("/loginStatistics");
+        registry.addViewController("/modifyBasicInfo");
+        registry.addViewController("/noticeList");
+        registry.addViewController("/resetPwd");
+        registry.addViewController("/sharing");
+        registry.addViewController("/uploadStatistics");
+        registry.addViewController("/userList");
+        registry.addViewController("/sendNotice");
+        registry.addViewController("/basicInfoAdmin");
+        registry.addViewController("/changePwdAdmin");
+        registry.addViewController("/modifyBasicInfoAdmin");
     }
 
 }

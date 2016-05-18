@@ -5,21 +5,18 @@ $(document).ready(function(){
     $.ajax({
         type : "GET",
         url : "/basicInfo/get",
-        success : function(){
-
+        success : function(obj){
+            $("#username").val(obj.username);
+            $("#nickname").val(obj.nickname);
+            $("#email").val(obj.email);
+            $("#birthday").val(obj.birthday);
+            $("#registerDate").val(obj.registerDate);
+            if (obj.sex == "female"){
+                $("#maleOption").attr("checked", false);
+                $("#femaleOption").attr("checked", true);
+            }
         }
 
     });
 
-    $("#updateBtn").click(function(){
-        var name = $("#name").val();
-        if (name == "") return;
-        $.ajax({
-            type: "GET",
-            url: "/basicInfo/update",
-            success: function(){
-
-            }
-        });
-    });
 });
