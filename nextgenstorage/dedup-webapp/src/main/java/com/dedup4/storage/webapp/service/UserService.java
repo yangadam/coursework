@@ -2,6 +2,9 @@ package com.dedup4.storage.webapp.service;
 
 import com.dedup4.storage.webapp.domain.User;
 import com.dedup4.storage.webapp.repository.UserRepository;
+import com.dedup4.storage.webapp.util.MailSender;
+import com.dedup4.storage.webapp.util.PwdGenerator;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import java.util.Date;
 import java.util.List;
 
@@ -112,6 +116,24 @@ public class UserService implements UserDetailsService {
             user.setPassword(encryptPwd);
             userRepository.save(user);
             return user;
+        }
+        return null;
+    }
+
+    public String resetPassword(String username, String mail) {
+        User user = userRepository.findByUsername(username);
+        String actualMail = user.getProfile().getMail();
+        if (StringUtils.isNoneBlank(actualMail) && actualMail.equals(mail)) {
+            String randPwd = PwdGenerator.generate();
+            String encryptPwd = passwordEncoder.encode(randPwd);
+            try {
+                new MailSender().sendMail(mail, "New Password", randPwd);
+            } catch (MessagingException e) {
+                return null;
+            }
+            user.setPassword(encryptPwd);
+            userRepository.save(user);
+            return username;
         }
         return null;
     }
