@@ -11,7 +11,7 @@
     <properties>
         <junit.version>4.11</junit.version>
         <mysql.version>5.1.34</mysql.version>
-        <struts2.version>2.3.20</struts2.version>
+        <struts2.version>2.5.25</struts2.version>
         <spring.version>4.1.4.BUILD-SNAPSHOT</spring.version>
         <hibernate.version>4.3.7.Final</hibernate.version>
         <cglib.version>3.1</cglib.version>
