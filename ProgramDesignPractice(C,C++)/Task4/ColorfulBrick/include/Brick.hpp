@@ -1,0 +1,9 @@
+#pragma once
+#include "Golden.hpp"
+#include "Greenblue.hpp"
+#include "Grey.hpp"
+#include "Lightblue.hpp"
+#include "Lightgreen.hpp"
+#include "Lightpink.hpp"
+#include "Purple.hpp"
+#include "Orange.hpp"

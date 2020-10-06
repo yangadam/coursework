@@ -1,9 +1,0 @@
-#pragma once
-#include "Golden.h"
-#include "Greenblue.h"
-#include "Grey.h"
-#include "Lightblue.h"
-#include "Lightgreen.h"
-#include "Lightpink.h"
-#include "Purple.h"
-#include "Orange.h"
