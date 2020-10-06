@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+    <!-- 开发者模式 -->
+    <constant name="struts.devMode" value="true"/>
+    <!-- 设定支持动态方法调用，默认为false -->
+    <constant name="struts.enable.DynamicMethodInvocation" value="true"/>
+    <!-- 设置最大上传文件为 10 MB -->
+    <constant name="struts.multipart.maxSize" value="10485760"/>
+    <!-- 默认主题 -->
+    <constant name="struts.ui.theme" value="simple"/>
+    <!-- 将Action交给Spring管理 -->
+    <constant name="struts.objectFactory" value="spring"/>
+    <!-- Struts处理的扩展名 -->
+    <constant name="struts.action.extension" value="do"/>
+
+    <package name="default" extends="struts-default">
+        <interceptors>
+            <interceptor name="permission" class="cn.edu.xmu.comm.interceptor.AuthorizationInterceptor"/>
+        </interceptors>
+
+        <global-results>
+            <result name="login" type="redirect">login.do</result>
+            <result name="unauthorized" type="redirect">login.do</result>
+            <result name="admin" type="redirect">admin.do</result>
+            <result name="director" type="redirect">director.do</result>
+            <result name="clerk" type="redirect">clerk.do</result>
+            <result name="guard" type="redirect">guard.do</result>
+            <result name="owner" type="redirect">owner.do</result>
+            <result name="cashier" type="redirect">cashier.do</result>
+        </global-results>
+    </package>
+
+    <include file="struts/struts-root.xml"/>
+    <include file="struts/struts-admin.xml"/>
+    <include file="struts/struts-director.xml"/>
+    <include file="struts/struts-clerk.xml"/>
+    <include file="struts/struts-guard.xml"/>
+    <include file="struts/struts-cashier.xml"/>
+    <include file="struts/struts-owner.xml"/>
+    <include file="struts/struts-json.xml"/>
+
+
+</struts>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+    <package name="data" extends="json-default">
+
+        <interceptors>
+            <interceptor name="permission" class="cn.edu.xmu.comm.interceptor.AuthorizationInterceptor"/>
+            <interceptor-stack name="permissionStack">
+                <interceptor-ref name="permission">
+                    <param name="permission">clerk,director</param>
+                </interceptor-ref>
+            </interceptor-stack>
+        </interceptors>
+
+        <global-results>
+            <result type="json">
+                <param name="root">data</param>
+                <param name="excludeNullProperties">true</param>
+            </result>
+            <result name="login" type="redirect">/rememberMeLogin.do</result>
+            <result name="unauthorized" type="redirect">/rememberMeLogin.do</result>
+        </global-results>
+
+        <action name="listComm" class="commListAction">
+            <interceptor-ref name="permission">
+                <param name="permission">admin</param>
+            </interceptor-ref>
+            <interceptor-ref name="basicStack"/>
+        </action>
+        <action name="listBuild" class="buildListAction"/>
+        <action name="listDir" class="directorListAction">
+            <interceptor-ref name="permission">
+                <param name="permission">admin</param>
+            </interceptor-ref>
+            <interceptor-ref name="basicStack"/>
+        </action>
+        <action name="listOwner" class="ownerListAction"/>
+        <action name="commNames" class="commNamesAction">
+            <interceptor-ref name="permission">
+                <param name="permission">admin</param>
+            </interceptor-ref>
+            <interceptor-ref name="basicStack"/>
+        </action>
+        <action name="buildNo" class="buildNoAction">
+            <interceptor-ref name="permission"/>
+            <interceptor-ref name="basicStack"/>
+        </action>
+        <action name="floorNo" class="floorNoAction">
+            <interceptor-ref name="permission"/>
+            <interceptor-ref name="basicStack"/>
+        </action>
+        <action name="listRoom" class="roomListAction">
+            <interceptor-ref name="permission"/>
+            <interceptor-ref name="basicStack"/>
+        </action>
+        <action name="listStaff" class="staffListAction">
+            <interceptor-ref name="permission">
+                <param name="permission">director</param>
+            </interceptor-ref>
+            <interceptor-ref name="basicStack"/>
+        </action>
+        <action name="vacantRoomNo" class="roomNoAction" method="vacant"/>
+        <action name="nonVacantRoomNo" class="roomNoAction" method="noneVacant"/>
+        <action name="ownerSearch" class="ownerSearchAction">
+            <interceptor-ref name="permission"/>
+            <interceptor-ref name="basicStack"/>
+        </action>
+        <action name="deviceSearch" class="deviceSearchAction"/>
+        <action name="roomInfo" class="roomInfoAction">
+            <interceptor-ref name="permission"/>
+            <interceptor-ref name="basicStack"/>
+        </action>
+        <action name="unchargedParkBill" class="tempParkingUnchargedListAction">
+            <interceptor-ref name="permission">
+                <param name="permission">guard</param>
+            </interceptor-ref>
+            <interceptor-ref name="basicStack"/>
+        </action>
+        <action name="deviceList" class="deviceListAction"/>
+        <action name="count" class="deviceCountAction"/>
+        <action name="shareList" class="shareListAction"/>
+        <action name="chargedParkBill" class="tempParkingChargedListAction">
+            <interceptor-ref name="permission">
+                <param name="permission">guard</param>
+            </interceptor-ref>
+            <interceptor-ref name="basicStack"/>
+        </action>
+        <action name="tempParkingRegister" class="tempParkingRegisterAction">
+            <interceptor-ref name="permission">
+                <param name="permission">guard</param>
+            </interceptor-ref>
+            <interceptor-ref name="basicStack"/>
+        </action>
+        <action name="ownerByRoom" class="ownerByRoomAction">
+            <interceptor-ref name="permission"/>
+            <interceptor-ref name="basicStack"/>
+        </action>
+        <action name="tempParkBillAdd" class="tempParkBillAddAction">
+            <interceptor-ref name="permission">
+                <param name="permission">guard</param>
+            </interceptor-ref>
+            <interceptor-ref name="basicStack"/>
+        </action>
+        <action name="listPark" class="parkingListAction">
+            <interceptor-ref name="permission"/>
+            <interceptor-ref name="basicStack"/>
+        </action>
+        <action name="vacantPark" class="vacantParkAction">
+            <interceptor-ref name="permission"/>
+            <interceptor-ref name="basicStack"/>
+        </action>
+        <action name="listCar" class="carListAction">
+            <interceptor-ref name="permission"/>
+            <interceptor-ref name="basicStack"/>
+        </action>
+        <action name="listArrearage" class="arrearageListAction"/>
+        <action name="ownerBill" class="ownerBillAction">
+            <interceptor-ref name="permission">
+                <param name="permission">cashier</param>
+            </interceptor-ref>
+            <interceptor-ref name="basicStack"/>
+        </action>
+        <action name="receiveMoney" class="receiveMoneyAction">
+            <interceptor-ref name="permission">
+                <param name="permission">cashier</param>
+            </interceptor-ref>
+            <interceptor-ref name="basicStack"/>
+        </action>
+
+
+    </package>
+
+</struts>

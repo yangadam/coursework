@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+    <package name="admin" namespace="/admin" extends="default">
+
+        <interceptors>
+            <interceptor-stack name="permissionStack">
+                <interceptor-ref name="permission">
+                    <param name="permission">admin</param>
+                </interceptor-ref>
+                <interceptor-ref name="defaultStack"/>
+            </interceptor-stack>
+        </interceptors>
+
+        <default-interceptor-ref name="permissionStack"/>
+
+        <global-results>
+            <result name="login" type="redirect">/rememberMeLogin.do</result>
+            <result name="unauthorized" type="redirect">/rememberMeLogin.do</result>
+        </global-results>
+
+        <action name="community" class="directAction" method="admin">
+            <result>/WEB-INF/jsp/admin/comm.jsp</result>
+        </action>
+
+        <action name="addComm" class="commAddAction">
+            <result type="redirect">community.do</result>
+            <result name="input">community.do</result>
+        </action>
+
+        <action name="delComm" class="commDelAction">
+            <result type="redirect">community.do</result>
+            <result name="input">community.do</result>
+        </action>
+
+        <action name="director" class="directAction" method="admin">
+            <result>/WEB-INF/jsp/admin/director.jsp</result>
+        </action>
+
+        <action name="addMng" class="directorAddAction">
+            <result type="redirect">director.do</result>
+            <result name="input">director.do</result>
+        </action>
+
+    </package>
+
+</struts>
