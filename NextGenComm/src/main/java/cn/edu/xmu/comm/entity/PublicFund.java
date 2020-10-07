@@ -22,6 +22,8 @@ import java.math.BigDecimal;
 @DynamicUpdate
 public class PublicFund extends DataEntity {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private BigDecimal threshold;
     private String account;
@@ -63,8 +65,6 @@ public class PublicFund extends DataEntity {
      *
      * @return 公维金主键
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer getId() {
         return id;
     }

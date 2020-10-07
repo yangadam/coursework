@@ -8,10 +8,7 @@ import cn.edu.xmu.comm.commons.exception.DeviceException;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +25,6 @@ import java.util.List;
 @DynamicUpdate
 public class Room extends Property {
 
-    //region Constants
     /**
      * 费用类型：公摊费
      */
@@ -45,13 +41,16 @@ public class Room extends Property {
      * 费用类型：公维金
      */
     public static final String PUBFUND = "公维金";
-    //endregion
 
-    //region Public Methods
-    //region Instance Variables
     private String no;
     private String fullName;
+
+    @ManyToOne(targetEntity = Floor.class, cascade = {CascadeType.MERGE})
+    @JoinColumn(name = "floor_id", nullable = false)
     private Floor floor;
+
+    @ManyToOne(targetEntity = Owner.class, cascade = {CascadeType.MERGE})
+    @JoinColumn(name = "owner_id", nullable = true)
     private Owner owner;
 
     /**
@@ -96,6 +95,7 @@ public class Room extends Property {
      *
      * @return 楼宇
      */
+    @Transient
     public Building getBuilding() {
         return floor.getBuilding();
     }
@@ -124,9 +124,6 @@ public class Room extends Property {
         generateGarbageFee(billItems);
         generatePublicFund(billItems);
     }
-    //endregion
-
-    //region Constructors
 
     /**
      * 计算户水费，户电费
@@ -162,9 +159,6 @@ public class Room extends Property {
         BillItem billItem = new BillItem(SHARE, fullName, totalAmount, null, owner);
         billItems.add(billItem);
     }
-    //endregion
-
-    //region Getters
 
     /**
      * 计算户物业管理费
@@ -220,7 +214,6 @@ public class Room extends Property {
         }
         return devices;
     }
-    //endregion
 
     /**
      * 获得房间号
@@ -231,7 +224,6 @@ public class Room extends Property {
         return no;
     }
 
-    //region Setters
     public void setNo(String no) {
         this.no = no;
     }
@@ -248,15 +240,12 @@ public class Room extends Property {
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
-    //endregion
 
     /**
      * 获得所属楼层
      *
      * @return 所属楼层
      */
-    @ManyToOne(targetEntity = Floor.class, cascade = {CascadeType.MERGE})
-    @JoinColumn(name = "floor_id", nullable = false)
     public Floor getFloor() {
         return floor;
     }
@@ -270,8 +259,6 @@ public class Room extends Property {
      *
      * @return 拥有者
      */
-    @ManyToOne(targetEntity = Owner.class, cascade = {CascadeType.MERGE})
-    @JoinColumn(name = "owner_id", nullable = true)
     public Owner getOwner() {
         return owner;
     }
@@ -282,9 +269,6 @@ public class Room extends Property {
         }
         this.owner = owner;
     }
-    //endregion
-
-    //region Private and Friendly Methods
 
     /**
      * 房间登记
@@ -305,6 +289,4 @@ public class Room extends Property {
             property.checkIn(this);
         }
     }
-    //endregion
-
 }

@@ -21,7 +21,6 @@ public class SessionUtils {
         return (User) get(Constants.USER);
     }
 
-
     /**
      * 获取Session中存入的小区
      *

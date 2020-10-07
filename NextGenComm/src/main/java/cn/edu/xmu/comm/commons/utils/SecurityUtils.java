@@ -19,7 +19,6 @@ public class SecurityUtils {
     private static final String MD5 = "MD5";
     private static SecureRandom random = new SecureRandom();
 
-
     /**
      * 加密用户
      *

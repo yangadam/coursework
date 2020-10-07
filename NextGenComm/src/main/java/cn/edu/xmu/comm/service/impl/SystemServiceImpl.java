@@ -3,10 +3,10 @@ package cn.edu.xmu.comm.service.impl;
 import cn.edu.xmu.comm.commons.exception.PasswordIncorrectException;
 import cn.edu.xmu.comm.commons.exception.UserNotFoundException;
 import cn.edu.xmu.comm.commons.utils.SecurityUtils;
-import cn.edu.xmu.comm.dao.TokenDAO;
-import cn.edu.xmu.comm.dao.UserDAO;
 import cn.edu.xmu.comm.entity.Token;
 import cn.edu.xmu.comm.entity.User;
+import cn.edu.xmu.comm.repository.TokenRepository;
+import cn.edu.xmu.comm.repository.UserRepository;
 import cn.edu.xmu.comm.service.SystemService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,13 +23,10 @@ import javax.annotation.Resource;
 @Transactional(readOnly = true)
 public class SystemServiceImpl implements SystemService {
 
-    //region Login, Logout and Remember Me
-
-    //region DAO
     @Resource
-    private UserDAO userDAO;
+    private UserRepository userRepository;
     @Resource
-    private TokenDAO tokenDAO;
+    private TokenRepository tokenRepository;
 
     /**
      * 记住我登陆
@@ -39,8 +36,8 @@ public class SystemServiceImpl implements SystemService {
      */
     @Override
     public User rememberMeLogin(String tokenStr) {
-        Token token = tokenDAO.get(tokenStr);
-        return token == null ? null : userDAO.get(token.getId());
+        Token token = tokenRepository.getOne(tokenStr);
+        return token == null ? null : userRepository.getOne(token.getId());
     }
 
     /**
@@ -58,7 +55,7 @@ public class SystemServiceImpl implements SystemService {
     @Transactional(readOnly = false)
     public User login(String username, String password)
             throws UserNotFoundException, PasswordIncorrectException {
-        User user = userDAO.getByUsername(username);
+        User user = userRepository.findByUsername(username);
         if (user == null) {
             throw new UserNotFoundException("用户名不正确！");
         }
@@ -80,10 +77,9 @@ public class SystemServiceImpl implements SystemService {
     public String makeRememberMeToken(User user) {
         String tokenStr = SecurityUtils.generateSalt(36);
         Token token = new Token(tokenStr, user.getId());
-        tokenDAO.persist(token);
+        tokenRepository.save(token);
         return token.getToken();
     }
-    //endregion
 
     /**
      * 用户登出
@@ -103,8 +99,6 @@ public class SystemServiceImpl implements SystemService {
      */
     @Transactional(readOnly = false)
     private int clearRememberMeToken(Integer uid) {
-        return tokenDAO.deleteByUid(uid);
+        return tokenRepository.deleteByUid(uid);
     }
-    //endregion
-
 }

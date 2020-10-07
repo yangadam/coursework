@@ -19,11 +19,13 @@ import java.util.List;
 @DynamicUpdate
 public class Building extends Property {
 
-    //region Public Methods
-
-    //region Private Instance Variables
+    @Column(nullable = false)
     private Integer no;
+    @ManyToOne(targetEntity = Community.class, cascade = {CascadeType.MERGE})
+    @JoinColumn(name = "community_id", nullable = false)
     private Community community;
+    @OneToMany(targetEntity = Floor.class, mappedBy = "building",
+            cascade = CascadeType.ALL)
     private List<Floor> floorList = new ArrayList<Floor>();
 
     /**
@@ -31,9 +33,6 @@ public class Building extends Property {
      */
     Building() {
     }
-    //endregion
-
-    //region Constructors
 
     /**
      * 构造函数
@@ -56,9 +55,6 @@ public class Building extends Property {
     public Property[] getParents() {
         return new Property[]{getCommunity()};
     }
-    //endregion
-
-    //region Getters
 
     /**
      * 获取祖先（包括自己）
@@ -93,19 +89,16 @@ public class Building extends Property {
         floorList.add(floor);
         childCount++;
     }
-    //endregion
 
     /**
      * 获得楼宇号
      *
      * @return 楼宇号
      */
-    @Column(nullable = false)
     public Integer getNo() {
         return no;
     }
 
-    //region Setters
     public void setNo(Integer no) {
         this.no = no;
     }
@@ -116,12 +109,9 @@ public class Building extends Property {
      * @return 所属小区
      */
     @Override
-    @ManyToOne(targetEntity = Community.class, cascade = {CascadeType.MERGE})
-    @JoinColumn(name = "community_id", nullable = false)
     public Community getCommunity() {
         return community;
     }
-    //endregion
 
     public void setCommunity(Community community) {
         this.community = community;
@@ -132,8 +122,6 @@ public class Building extends Property {
      *
      * @return 包含的楼层列表
      */
-    @OneToMany(targetEntity = Floor.class, mappedBy = "building",
-            cascade = CascadeType.ALL)
     public List<Floor> getFloorList() {
         return floorList;
     }
@@ -141,6 +129,4 @@ public class Building extends Property {
     public void setFloorList(List<Floor> floorList) {
         this.floorList = floorList;
     }
-    //endregion
-
 }

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 
-
 @Controller
 public class CommInfoUpdateAction extends ActionSupport {
 
@@ -29,7 +28,6 @@ public class CommInfoUpdateAction extends ActionSupport {
 
     private String overDueFeeType;
 
-
     @Override
     public String execute() {
 
@@ -45,7 +43,6 @@ public class CommInfoUpdateAction extends ActionSupport {
         propertyService.updateCommunity(community);
         return SUCCESS;
     }
-
 
     public BigDecimal getGarbageFee() {
         return garbageFee;

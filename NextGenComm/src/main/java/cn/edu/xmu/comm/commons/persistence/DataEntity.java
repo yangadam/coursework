@@ -12,14 +12,9 @@ import java.util.Date;
 @MappedSuperclass
 public class DataEntity {
 
-    //region Instance Variables
     private Date createDate;
     private Date updateDate;
-    //endregion
 
-    //region Getters
-
-    //region Lifecircle Methods
     @PrePersist
     public void prePersist() {
         this.updateDate = new Date();
@@ -30,7 +25,6 @@ public class DataEntity {
     public void preUpdate() {
         this.updateDate = new Date();
     }
-    //endregion
 
     /**
      * 获得创建日期
@@ -42,11 +36,9 @@ public class DataEntity {
         return createDate;
     }
 
-    //region Setters
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
-    //endregion
 
     /**
      * 获得最后更新日期
@@ -61,6 +53,5 @@ public class DataEntity {
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
     }
-    //endregion
 
 }

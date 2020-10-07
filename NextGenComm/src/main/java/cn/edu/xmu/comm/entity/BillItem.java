@@ -22,22 +22,22 @@ import java.util.Date;
 @DynamicUpdate
 public class BillItem extends DataEntity {
 
-    //region Public Methods
-
-    //region Private Instance variables
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Column(nullable = false)
     private String name;
     private String description;
+    @Column(name = "musage")
     private Double usage;
-    //endregion
-
-    //region Constructors
+    @Column(nullable = false, scale = 2)
     private BigDecimal amount;
     private BillItemStatus status;
+    @ManyToOne(targetEntity = Owner.class)
+    @JoinColumn(name = "owner_id")
     private Owner owner;
-    //endregion
-
-    //region Getters
+    @ManyToOne(targetEntity = Payment.class)
+    @JoinColumn(name = "payment_id", nullable = true)
     private Payment payment;
     private Integer duration;
     private BigDecimal overDueFee;
@@ -150,20 +150,16 @@ public class BillItem extends DataEntity {
         // 记录更新日期
         return overDueFee;
     }
-    //endregion
 
     /**
      * 获得账单项主键
      *
      * @return 账单项主键
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer getId() {
         return id;
     }
 
-    //region Setters
     public void setId(Integer id) {
         this.id = id;
     }
@@ -173,7 +169,6 @@ public class BillItem extends DataEntity {
      *
      * @return 账单项名称
      */
-    @Column(nullable = false)
     public String getName() {
         return name;
     }
@@ -200,7 +195,6 @@ public class BillItem extends DataEntity {
      *
      * @return 用量
      */
-    @Column(name = "musage")
     public Double getUsage() {
         return usage;
     }
@@ -214,7 +208,6 @@ public class BillItem extends DataEntity {
      *
      * @return 金额
      */
-    @Column(nullable = false, scale = 2)
     public BigDecimal getAmount() {
         updateOverDueFee();
         return amount;
@@ -223,9 +216,6 @@ public class BillItem extends DataEntity {
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
-    //endregion
-
-    //region Inner Enum
 
     /**
      * 获得账单项状态
@@ -236,7 +226,6 @@ public class BillItem extends DataEntity {
     public BillItemStatus getStatus() {
         return status;
     }
-    //endregion
 
     public void setStatus(BillItemStatus status) {
         this.status = status;
@@ -247,8 +236,6 @@ public class BillItem extends DataEntity {
      *
      * @return 业主
      */
-    @ManyToOne(targetEntity = Owner.class)
-    @JoinColumn(name = "owner_id")
     public Owner getOwner() {
         return owner;
     }
@@ -262,8 +249,6 @@ public class BillItem extends DataEntity {
      *
      * @return 支付
      */
-    @ManyToOne(targetEntity = Payment.class)
-    @JoinColumn(name = "payment_id", nullable = true)
     public Payment getPayment() {
         return payment;
     }
@@ -317,9 +302,6 @@ public class BillItem extends DataEntity {
         long ei = el - sl;
         return (int) (ei / (1000 * 60 * 60 * 24));
     }
-    //endregion
-
-    //region Private Methods
 
     /**
      * 账单项状态，PAID：已付款账单项、UNPAID：未付款账单项
@@ -338,6 +320,5 @@ public class BillItem extends DataEntity {
             return typeName;
         }
     }
-    //endregion
 
 }

@@ -16,14 +16,11 @@ import javax.persistence.*;
 @DynamicUpdate
 public class Staff extends User {
 
-    //region Public Methods
-
-    //region Private Instance Variables
+    @ManyToOne(targetEntity = Community.class)
+    @JoinColumn(name = "community_id", nullable = false)
     private Community community;
 
-    //endregion
-
-    //region Constructors
+    @Enumerated(EnumType.ORDINAL)
     private StaffType staffType;
 
     /**
@@ -31,9 +28,6 @@ public class Staff extends User {
      */
     Staff() {
     }
-    //endregion
-
-    //region Getters
 
     /**
      * 构造函数
@@ -61,7 +55,6 @@ public class Staff extends User {
     public String getType() {
         return staffType.pageResult;
     }
-    //endregion
 
     /**
      * 获得小区
@@ -69,36 +62,27 @@ public class Staff extends User {
      * @return 小区
      */
     @Override
-    @ManyToOne(targetEntity = Community.class)
-    @JoinColumn(name = "community_id", nullable = false)
     public Community getCommunity() {
         return community;
     }
 
-    //region Setters
     public void setCommunity(Community community) {
         this.community = community;
     }
-    //endregion
-
-    //region Inner Enum
 
     /**
      * 获得员工类型
      *
      * @return 员工类型
      */
-    @Enumerated(EnumType.ORDINAL)
     public StaffType getStaffType() {
         return staffType;
     }
-    //endregion
 
     public void setStaffType(StaffType staffType) {
         this.staffType = staffType;
     }
 
-    //region Private Methods
     private StaffType judgeType(String type) {
         StaffType[] types = StaffType.values();
         for (StaffType st : types) {
@@ -108,7 +92,6 @@ public class Staff extends User {
         }
         return null;
     }
-    //endregion
 
     /**
      * 员工类型
@@ -132,6 +115,5 @@ public class Staff extends User {
             return position;
         }
     }
-    //endregion
 
 }

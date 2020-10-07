@@ -21,15 +21,18 @@ import java.util.TreeMap;
 @DynamicUpdate
 public class Gradient extends DataEntity {
 
-    //region Constructors
-
-    //region Private Instance Variables
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Device.DeviceType type;
+    @ElementCollection
+    @CollectionTable(
+            name = "gradient_def",
+            joinColumns = @JoinColumn(name = "gradient_id")
+    )
+    @OrderBy
+    @Column(name = "gradient_VALUE")
     private SortedMap<Double, BigDecimal> gradient = new TreeMap<Double, BigDecimal>();
-    //endregion
-
-    //region Getters and Setters
 
     /**
      * 无参构造函数
@@ -62,20 +65,16 @@ public class Gradient extends DataEntity {
         }
         gradient.put(Double.MAX_VALUE, prices[readings.length]);
     }
-    //endregion
 
     /**
      * 获得梯度主键
      *
      * @return 梯度主键
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer getId() {
         return id;
     }
 
-    //region Setters
     public void setId(Integer id) {
         this.id = id;
     }
@@ -89,7 +88,6 @@ public class Gradient extends DataEntity {
     public Device.DeviceType getType() {
         return type;
     }
-    //endregion
 
     public void setType(Device.DeviceType type) {
         this.type = type;
@@ -100,13 +98,6 @@ public class Gradient extends DataEntity {
      *
      * @return 梯度定义
      */
-    @ElementCollection
-    @CollectionTable(
-            name = "gradient_def",
-            joinColumns = @JoinColumn(name = "gradient_id")
-    )
-    @OrderBy
-    @Column(name = "gradient_VALUE")
     public Map<Double, BigDecimal> getGradient() {
         return gradient;
     }
@@ -114,6 +105,5 @@ public class Gradient extends DataEntity {
     public void setGradient(SortedMap<Double, BigDecimal> gradient) {
         this.gradient = gradient;
     }
-    //endregion
 
 }

@@ -5,8 +5,8 @@ import cn.edu.xmu.comm.commons.exception.DeviceException;
 import cn.edu.xmu.comm.commons.exception.MailException;
 import cn.edu.xmu.comm.commons.utils.MailUtils;
 import cn.edu.xmu.comm.commons.utils.SessionUtils;
-import cn.edu.xmu.comm.dao.*;
 import cn.edu.xmu.comm.entity.*;
+import cn.edu.xmu.comm.repository.*;
 import cn.edu.xmu.comm.service.FinanceService;
 import org.apache.commons.lang3.Validate;
 import org.springframework.stereotype.Service;
@@ -28,24 +28,19 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class FinanceServiceImpl implements FinanceService {
 
-    //region BillItem Service
+    @Resource
+    private BillItemRepository billItemRepository;
 
-    //region DAO
     @Resource
-    private BillItemDAO billItemDAO;
-    //endregion
-
-    //region Device Service
+    private CommunityRepository communityRepository;
     @Resource
-    private CommunityDAO communityDAO;
+    private DeviceRepository deviceRepository;
     @Resource
-    private DeviceDAO deviceDAO;
+    private GradientRepsitory gradientRepsitory;
     @Resource
-    private GradientDAO gradientDAO;
+    private OwnerRepository ownerRepository;
     @Resource
-    private OwnerDAO ownerDAO;
-    @Resource
-    private PaymentDAO paymentDAO;
+    private PaymentRepository paymentRepository;
 
     /**
      * 生成所有业主账单
@@ -60,18 +55,15 @@ public class FinanceServiceImpl implements FinanceService {
         long start = System.currentTimeMillis();
         Community community = SessionUtils.getCommunity();
         System.out.print(new Date());
-        List<Integer> ids = ownerDAO.getAllId(community);
+        List<Integer> ids = ownerRepository.getIds(community);
         for (Integer id : ids) {
-            Owner owner = ownerDAO.get(id);
+            Owner owner = ownerRepository.getOne(id);
             owner.generateBill();
-            ownerDAO.flush();
+            ownerRepository.flush();
         }
         long end = System.currentTimeMillis();
         System.out.println("生成账单公用时" + ((end - start) / 1000) + "秒");
     }
-    //endregion
-
-    //region Gradient Service
 
     /**
      * 获取已录入读数的设备
@@ -82,7 +74,7 @@ public class FinanceServiceImpl implements FinanceService {
     @Required(name = "clerk")
     public List<Device> getInputedDevice() {
         Community community = SessionUtils.getCommunity();
-        return deviceDAO.getInputedDevice(community);
+        return deviceRepository.getInputedDevice(community);
     }
 
     /**
@@ -95,7 +87,7 @@ public class FinanceServiceImpl implements FinanceService {
     @Required(name = "clerk")
     public List<String[]> searchDevice(String term) {
         Community community = SessionUtils.getCommunity();
-        return deviceDAO.buzzSearch(term, community);
+        return deviceRepository.fuzzSearch(term, community);
     }
 
     /**
@@ -107,7 +99,7 @@ public class FinanceServiceImpl implements FinanceService {
     @Required(name = "clerk")
     public Long getInputedDeviceCount() {
         Community community = SessionUtils.getCommunity();
-        return deviceDAO.getInputedCount(community);
+        return deviceRepository.getInputedCount(community);
     }
 
     /**
@@ -119,7 +111,7 @@ public class FinanceServiceImpl implements FinanceService {
     @Required(name = "clerk")
     public Long getDeviceCount() {
         Community community = SessionUtils.getCommunity();
-        return deviceDAO.getCount(community);
+        return deviceRepository.countByCommunity(community);
     }
 
     /**
@@ -133,13 +125,13 @@ public class FinanceServiceImpl implements FinanceService {
     @Required(name = "clerk")
     @Transactional(readOnly = false)
     public void addDeviceValue(Integer deviceId, Date date, Double value) {
-        Device device = deviceDAO.get(deviceId);
+        Device device = deviceRepository.getOne(deviceId);
         try {
             device.addValue(date, value);
         } catch (DeviceException e) {
             e.printStackTrace();
         }
-        deviceDAO.merge(device);
+        deviceRepository.save(device);
     }
 
     /**
@@ -152,13 +144,10 @@ public class FinanceServiceImpl implements FinanceService {
     @Required(name = "clerk")
     @Transactional(readOnly = false)
     public void updateDeviceValue(Integer id, Double value) {
-        Device device = deviceDAO.get(id);
+        Device device = deviceRepository.getOne(id);
         device.updateLastValue(value);
-        deviceDAO.merge(device);
+        deviceRepository.save(device);
     }
-    //endregion
-
-    //region Mail Service
 
     /**
      * 添加梯度
@@ -172,15 +161,12 @@ public class FinanceServiceImpl implements FinanceService {
     @Transactional(readOnly = false)
     public Gradient addGradient(BigDecimal unitPrice, Device.DeviceType type) {
         Community community = SessionUtils.getCommunity();
-        community = communityDAO.get(community.getId());
+        community = communityRepository.getOne(community.getId());
         Gradient gradient = new Gradient(unitPrice, type);
         community.getGradients().add(gradient);
-        gradientDAO.persist(gradient);
+        gradientRepsitory.save(gradient);
         return gradient;
     }
-    //endregion
-
-    //region Owner Service
 
     /**
      * 添加梯度
@@ -195,17 +181,14 @@ public class FinanceServiceImpl implements FinanceService {
     @Transactional(readOnly = false)
     public Gradient addGradient(Double[] readings, BigDecimal[] prices, Device.DeviceType type) {
         Community community = SessionUtils.getCommunity();
-        community = communityDAO.get(community.getId());
+        community = communityRepository.getOne(community.getId());
         Validate.isTrue(readings.length + 1 == prices.length, "梯度数值数目有错误。");
         Gradient gradient = new Gradient(readings, prices, type);
         community.getGradients().add(gradient);
-        gradientDAO.persist(gradient);
-        communityDAO.merge(community);
+        gradientRepsitory.save(gradient);
+        communityRepository.save(community);
         return gradient;
     }
-    //endregion
-
-    //region Payment Service
 
     /**
      * 将梯度应用到设备
@@ -219,7 +202,7 @@ public class FinanceServiceImpl implements FinanceService {
     public void applyGradient(Gradient gradient, Device device) {
         Validate.isTrue(gradient.getType().equals(device.getType()), "梯度与设备不匹配");
         device.setGradient(gradient);
-        deviceDAO.merge(device);
+        deviceRepository.save(device);
     }
 
     /**
@@ -232,10 +215,9 @@ public class FinanceServiceImpl implements FinanceService {
     @Transactional(readOnly = false)
     public void applyPrivateGradient(Integer gradientId) {
         Community community = SessionUtils.getCommunity();
-        Gradient gradient = gradientDAO.get(gradientId);
-        deviceDAO.applyPrivateGradient(gradient, community);
+        Gradient gradient = gradientRepsitory.getOne(gradientId);
+        deviceRepository.applyPrivateGradient(gradient, community, gradient.getType());
     }
-    //endregion
 
     /**
      * 将梯度应用到所有类型相同的公摊表
@@ -247,8 +229,8 @@ public class FinanceServiceImpl implements FinanceService {
     @Transactional(readOnly = false)
     public void applyShareGradient(Integer gradientId) {
         Community community = SessionUtils.getCommunity();
-        Gradient gradient = gradientDAO.get(gradientId);
-        deviceDAO.applyShareGradient(gradient, community);
+        Gradient gradient = gradientRepsitory.getOne(gradientId);
+        deviceRepository.applyShareGradient(gradient, community, gradient.getType());
     }
 
     /**
@@ -260,7 +242,7 @@ public class FinanceServiceImpl implements FinanceService {
     @Required(name = "director")
     public List<Gradient> getGradients() {
         Community community = SessionUtils.getCommunity();
-        return gradientDAO.getAll(community);
+        return gradientRepsitory.findByCommunity(community);
     }
 
     /**
@@ -274,7 +256,7 @@ public class FinanceServiceImpl implements FinanceService {
     @Override
     @Required(name = "clerk")
     public void sendOverDueMail(Integer ownerId, MailUtils mailUtils) throws MailException {
-        Owner owner = ownerDAO.get(ownerId);
+        Owner owner = ownerRepository.getOne(ownerId);
         String email = owner.getEmail();
         if (email == null) {
             throw new MailException("没有邮件地址", owner);
@@ -293,7 +275,7 @@ public class FinanceServiceImpl implements FinanceService {
     @Required(name = "clerk")
     public List<Owner> getArrearageOwner() {
         Community community = SessionUtils.getCommunity();
-        return ownerDAO.ArrearageOwner(community);
+        return ownerRepository.arrearageOwner(community);
     }
 
     /**
@@ -303,14 +285,14 @@ public class FinanceServiceImpl implements FinanceService {
     @Required(name = "owner")
     @Transactional(readOnly = false)
     public void makePayment() {
-        Owner owner = ownerDAO.get(SessionUtils.getUser().getId());
+        Owner owner = ownerRepository.getOne(SessionUtils.getUser().getId());
         List<BillItem> billItems = owner.getUnpaidBills();
         Payment payment = owner.makePayment(null, billItems);
         if (payment != null) {
-            paymentDAO.persist(payment);
+            paymentRepository.save(payment);
         }
-        billItemDAO.merge(billItems);
-        ownerDAO.merge(owner);
+        billItemRepository.saveAll(billItems);
+        ownerRepository.save(owner);
     }
 
     /**
@@ -322,18 +304,15 @@ public class FinanceServiceImpl implements FinanceService {
     @Required(name = "cashier")
     @Transactional(readOnly = false)
     public void charge(Integer ownerId) {
-        Owner owner = ownerDAO.get(ownerId);
+        Owner owner = ownerRepository.getOne(ownerId);
         List<BillItem> billItems = owner.getUnpaidBills();
         Payment payment = owner.makePayment(null, billItems);
         if (payment != null) {
-            paymentDAO.persist(payment);
+            paymentRepository.save(payment);
         }
-        billItemDAO.merge(billItems);
-        ownerDAO.merge(owner);
+        billItemRepository.saveAll(billItems);
+        ownerRepository.save(owner);
     }
-    //endregion
-
-    //region Private Methods
 
     /**
      * 邮件抬头
@@ -384,6 +363,4 @@ public class FinanceServiceImpl implements FinanceService {
         body.append("</table></div>");
         return head.append(body).toString();
     }
-    //endregion
-
 }

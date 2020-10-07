@@ -24,7 +24,6 @@ public class BuildAddAction extends ActionSupport {
     private Integer buildNo;
     private Integer floorCount;
 
-
     @Override
     @Required(name = "director,clerk")
     public String execute() {

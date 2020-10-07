@@ -18,15 +18,14 @@ import java.math.BigDecimal;
 @DynamicUpdate
 public class ParkingPlace {
 
-    //region Update ParkPlace Status
-
-    //region Instance Variables
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @ManyToOne(targetEntity = ParkingLot.class)
+    @JoinColumn(name = "parkinglot_id", nullable = false)
     private ParkingLot parkingLot;
     private String position;
-    //endregion
 
-    //region Constructors
     private BigDecimal monthlyFee;
     private ParkingPlaceStatus status;
 
@@ -36,9 +35,6 @@ public class ParkingPlace {
     public ParkingPlace() {
 
     }
-    //endregion
-
-    //region Getters and Setters
 
     /**
      * 构造函数
@@ -87,20 +83,16 @@ public class ParkingPlace {
     public void rentParkPlace() {
         setStatus(ParkingPlaceStatus.RENT);
     }
-    //endregion
 
     /**
      * 获得停车位主键
      *
      * @return 停车位主键
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer getId() {
         return id;
     }
 
-    //region Setters
     public void setId(Integer id) {
         this.id = id;
     }
@@ -110,8 +102,6 @@ public class ParkingPlace {
      *
      * @return 所属停车场
      */
-    @ManyToOne(targetEntity = ParkingLot.class)
-    @JoinColumn(name = "parkinglot_id", nullable = false)
     public ParkingLot getParkingLot() {
         return parkingLot;
     }
@@ -128,14 +118,10 @@ public class ParkingPlace {
     public String getPosition() {
         return position;
     }
-    //endregion
-
-    //region InnerEnum
 
     public void setPosition(String position) {
         this.position = position;
     }
-    //endregion
 
     /**
      * 获得每月管理费
@@ -163,6 +149,7 @@ public class ParkingPlace {
     public void setStatus(ParkingPlaceStatus status) {
         this.status = status;
     }
+
     /**
      * 车位状态
      */
@@ -180,6 +167,5 @@ public class ParkingPlace {
             return typeName;
         }
     }
-    //endregion
 
 }

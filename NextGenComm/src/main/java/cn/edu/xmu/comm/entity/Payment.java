@@ -21,15 +21,16 @@ import java.util.List;
 @DynamicUpdate
 public class Payment extends DataEntity {
 
-    //region Constructors
-
-    //region Instance Variables
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @ManyToOne(targetEntity = Owner.class)
+    @JoinColumn(name = "owner_id", nullable = false)
     private Owner paidBy;
+    @ManyToOne(targetEntity = Staff.class)
+    @JoinColumn(name = "user_id")
     private Staff receiveBy;
-    //endregion
-
-    //region Getters
+    @OneToMany(mappedBy = "payment", targetEntity = BillItem.class)
     private List<BillItem> billItemList = new ArrayList<BillItem>();
     private BigDecimal total;
 
@@ -69,20 +70,16 @@ public class Payment extends DataEntity {
         }
         this.total = tempTotal;
     }
-    //endregion
 
     /**
      * 获得支付主键
      *
      * @return 支付主键
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer getId() {
         return id;
     }
 
-    //region Setters
     public void setId(Integer id) {
         this.id = id;
     }
@@ -92,8 +89,6 @@ public class Payment extends DataEntity {
      *
      * @return 付款人
      */
-    @ManyToOne(targetEntity = Owner.class)
-    @JoinColumn(name = "owner_id", nullable = false)
     public Owner getPaidBy() {
         return paidBy;
     }
@@ -107,12 +102,9 @@ public class Payment extends DataEntity {
      *
      * @return 收款人
      */
-    @ManyToOne(targetEntity = Staff.class)
-    @JoinColumn(name = "user_id")
     public Staff getReceiveBy() {
         return receiveBy;
     }
-    //endregion
 
     public void setReceiveBy(Staff receiveBy) {
         this.receiveBy = receiveBy;
@@ -123,7 +115,6 @@ public class Payment extends DataEntity {
      *
      * @return 支付账单列表
      */
-    @OneToMany(mappedBy = "payment", targetEntity = BillItem.class)
     public List<BillItem> getBillItemList() {
         return billItemList;
     }
@@ -144,6 +135,5 @@ public class Payment extends DataEntity {
     public void setTotal(BigDecimal total) {
         this.total = total;
     }
-    //endregion
 
 }

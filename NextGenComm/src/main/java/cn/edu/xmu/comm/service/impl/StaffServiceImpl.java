@@ -3,12 +3,12 @@ package cn.edu.xmu.comm.service.impl;
 import cn.edu.xmu.comm.commons.annotation.Required;
 import cn.edu.xmu.comm.commons.utils.SecurityUtils;
 import cn.edu.xmu.comm.commons.utils.SessionUtils;
-import cn.edu.xmu.comm.dao.CommunityDAO;
-import cn.edu.xmu.comm.dao.DirectorDAO;
-import cn.edu.xmu.comm.dao.StaffDAO;
 import cn.edu.xmu.comm.entity.Community;
 import cn.edu.xmu.comm.entity.Director;
 import cn.edu.xmu.comm.entity.Staff;
+import cn.edu.xmu.comm.repository.CommunityRepository;
+import cn.edu.xmu.comm.repository.DirectorRepository;
+import cn.edu.xmu.comm.repository.StaffRepository;
 import cn.edu.xmu.comm.service.StaffService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,18 +26,12 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class StaffServiceImpl implements StaffService {
 
-    //region Director Service
-
-    //region DAO
     @Resource
-    private DirectorDAO directorDAO;
+    private DirectorRepository directorRepository;
     @Resource
-    private StaffDAO staffDAO;
-    //endregion
-
-    //region Staff Service
+    private StaffRepository staffRepository;
     @Resource
-    private CommunityDAO communityDAO;
+    private CommunityRepository communityRepository;
 
     /**
      * 添加物业主任
@@ -53,15 +47,14 @@ public class StaffServiceImpl implements StaffService {
     @Transactional(readOnly = false)
     public Director addDirector(String username, String password, String name, String phoneNumber,
                                 String email, String commName) {
-        Community community = communityDAO.getByName(commName);
+        Community community = communityRepository.findByName(commName);
         Director director = new Director(username, password, name, phoneNumber, email);
         community.assignDirector(director);
         SecurityUtils.encryptUser(director);
-        directorDAO.persist(director);
-        communityDAO.merge(community);
+        directorRepository.save(director);
+        communityRepository.save(community);
         return director;
     }
-    //endregion
 
     /**
      * 获得所有物业主任
@@ -71,7 +64,7 @@ public class StaffServiceImpl implements StaffService {
     @Override
     @Required(name = "admin")
     public List<Director> getAllDirectors() {
-        return directorDAO.getAll();
+        return directorRepository.findAll();
     }
 
     /**
@@ -92,8 +85,8 @@ public class StaffServiceImpl implements StaffService {
     public Staff addStaff(String username, String password, String name, String phoneNumber, String email, Community community, String type) {
         Staff staff = new Staff(username, password, name, phoneNumber, email, community, type);
         SecurityUtils.encryptUser(staff);
-        staffDAO.persist(staff);
-        communityDAO.merge(community);
+        staffRepository.save(staff);
+        communityRepository.save(community);
         return staff;
     }
 
@@ -106,8 +99,6 @@ public class StaffServiceImpl implements StaffService {
     @Required(name = "director")
     public List<Staff> getAllStaff() {
         Community community = SessionUtils.getCommunity();
-        return staffDAO.getAll(community);
+        return staffRepository.findByCommunity(community);
     }
-    //endregion
-
 }

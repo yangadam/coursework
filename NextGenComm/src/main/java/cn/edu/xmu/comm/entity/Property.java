@@ -21,21 +21,18 @@ import java.util.Set;
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Property extends DataEntity {
 
-    //region Public Methods
-
-    //region Instance Variables
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Integer id;
     protected String unityCode;
     protected Integer childCount;
+    @OneToMany(targetEntity = Device.class, mappedBy = "property",
+            cascade = CascadeType.ALL)
     protected Set<Device> deviceList = new HashSet<Device>();
-    //endregion
 
-    //region Constructors
     protected Integer houseCount;
     protected Integer usedHouseCount;
-    //endregion
 
-    //region Getters
     protected Double houseArea;
     protected Double usedHouseArea;
 
@@ -94,22 +91,17 @@ public abstract class Property extends DataEntity {
         if (device.getNo() == null) {
             device.setNo(unityCode + "#" + deviceList.size());
         }
-//        deviceList.add(device);
     }
-    //endregion
 
     /**
      * 获得房产主键
      *
      * @return 房产主键
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer getId() {
         return id;
     }
 
-    //region Setters
     public void setId(Integer id) {
         this.id = id;
     }
@@ -145,8 +137,6 @@ public abstract class Property extends DataEntity {
      *
      * @return 设备列表
      */
-    @OneToMany(targetEntity = Device.class, mappedBy = "property",
-            cascade = CascadeType.ALL)
     public Set<Device> getDeviceList() {
         return deviceList;
     }
@@ -154,9 +144,6 @@ public abstract class Property extends DataEntity {
     public void setDeviceList(Set<Device> deviceList) {
         this.deviceList = deviceList;
     }
-    //endregion
-
-    //region Protected Methods
 
     /**
      * 获得房间总数
@@ -170,7 +157,6 @@ public abstract class Property extends DataEntity {
     public void setHouseCount(Integer houseCount) {
         this.houseCount = houseCount;
     }
-    //endregion
 
     /**
      * 获得已入住房间总数
@@ -230,6 +216,4 @@ public abstract class Property extends DataEntity {
         usedHouseCount += property.getHouseCount();
         usedHouseArea += property.getUsedHouseArea();
     }
-    //endregion
-
 }

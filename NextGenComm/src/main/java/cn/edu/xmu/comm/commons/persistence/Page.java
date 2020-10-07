@@ -42,7 +42,6 @@ public class Page<T> {
      */
     private List<T> list = new ArrayList<T>();
 
-
     /**
      * 构造函数（默认每页10条记录，当前第一页）
      *

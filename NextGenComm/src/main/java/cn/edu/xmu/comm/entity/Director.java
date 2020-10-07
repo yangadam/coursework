@@ -3,8 +3,10 @@ package cn.edu.xmu.comm.entity;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
+import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 
 /**
  * 物业主任
@@ -17,10 +19,7 @@ import javax.persistence.OneToOne;
 @DynamicUpdate
 public class Director extends User {
 
-
-    //region Constructors
-
-    //region Private Instance Variables
+    @OneToOne(targetEntity = Community.class, mappedBy = "director")
     private Community community;
 
     /**
@@ -28,9 +27,6 @@ public class Director extends User {
      */
     Director() {
     }
-    //endregion
-
-    //region Getters
 
     /**
      * 构造函数
@@ -44,7 +40,6 @@ public class Director extends User {
     public Director(String username, String password, String name, String phoneNumber, String email) {
         super(username, password, name, phoneNumber, email);
     }
-    //endregion
 
     /**
      * 获得所属小区
@@ -52,16 +47,12 @@ public class Director extends User {
      * @return 所属小区
      */
     @Override
-    @OneToOne(targetEntity = Community.class, mappedBy = "director")
     public Community getCommunity() {
         return community;
     }
-    //endregion
 
-    //region Setters
     public void setCommunity(Community community) {
         this.community = community;
     }
-    //endregion
 
 }

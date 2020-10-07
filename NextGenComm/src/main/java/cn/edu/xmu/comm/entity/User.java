@@ -22,21 +22,19 @@ import javax.persistence.*;
 })
 public class User extends DataEntity {
 
-    //region Public Methods
-
-    //region Instance Variables
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Column(nullable = false, unique = true)
     private String username;
+    @Column(nullable = false)
     private String password;
+    @Column(nullable = false)
     private String salt;
-    //endregion
-
-    //region Constructors
+    @Column(nullable = false)
     private Boolean locked = Boolean.FALSE;
     private String name;
-    //endregion
 
-    //region Getters
     private String phoneNumber;
     private String email;
     @Transient
@@ -93,7 +91,6 @@ public class User extends DataEntity {
         String adminType = User.class.getSimpleName().toLowerCase();
         return classType.equals(adminType);
     }
-    //endregion
 
     /**
      * 验证密码
@@ -111,13 +108,10 @@ public class User extends DataEntity {
      *
      * @return 用户主键
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer getId() {
         return id;
     }
 
-    //region Setters
     public void setId(Integer id) {
         this.id = id;
     }
@@ -127,7 +121,6 @@ public class User extends DataEntity {
      *
      * @return 用户名
      */
-    @Column(nullable = false, unique = true)
     public String getUsername() {
         return username;
     }
@@ -141,7 +134,6 @@ public class User extends DataEntity {
      *
      * @return 加密密码
      */
-    @Column(nullable = false)
     public String getPassword() {
         return password;
     }
@@ -155,7 +147,6 @@ public class User extends DataEntity {
      *
      * @return 密码盐
      */
-    @Column(nullable = false)
     public String getSalt() {
         return salt;
     }
@@ -163,14 +154,12 @@ public class User extends DataEntity {
     public void setSalt(String salt) {
         this.salt = salt;
     }
-    //endregion
 
     /**
      * 获得用户是否被锁定
      *
      * @return 用户是否被锁定
      */
-    @Column(nullable = false)
     public Boolean getLocked() {
         return locked;
     }
@@ -221,6 +210,4 @@ public class User extends DataEntity {
     public String getCredentialsSalt() {
         return username + salt;
     }
-    //endregion
-
 }

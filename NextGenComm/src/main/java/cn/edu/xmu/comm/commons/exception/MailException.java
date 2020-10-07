@@ -4,6 +4,7 @@ import cn.edu.xmu.comm.entity.Owner;
 
 /**
  * Created by Roger on 2015/1/2 0002.
+ *
  * @version 2015/1/2 0002
  */
 public class MailException extends Exception {

@@ -2,13 +2,8 @@ package cn.edu.xmu.comm.service.impl;
 
 import cn.edu.xmu.comm.commons.annotation.Required;
 import cn.edu.xmu.comm.commons.utils.SessionUtils;
-import cn.edu.xmu.comm.dao.OwnerDAO;
-import cn.edu.xmu.comm.dao.ParkingBillDAO;
-import cn.edu.xmu.comm.dao.ParkingLotDAO;
-import cn.edu.xmu.comm.dao.ParkingPlaceDAO;
-import cn.edu.xmu.comm.dao.impl.CarDaoImpl;
-import cn.edu.xmu.comm.dao.impl.CommunityDaoImpl;
 import cn.edu.xmu.comm.entity.*;
+import cn.edu.xmu.comm.repository.*;
 import cn.edu.xmu.comm.service.ParkingService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,24 +21,19 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class ParkingServiceImpl implements ParkingService {
 
-    //region Car Service
+    @Resource
+    private CarRepository carRepository;
+    @Resource
+    private CommunityRepository communityRepository;
+    @Resource
+    private OwnerRepository ownerRepository;
 
-    //region DAO
     @Resource
-    private CarDaoImpl carDAO;
+    private ParkingBillRepository parkingBillRepository;
     @Resource
-    private CommunityDaoImpl communityDAO;
+    private ParkingLotRepository parkingLotRepository;
     @Resource
-    private OwnerDAO ownerDAO;
-    //endregion
-
-    //region ParkingPlace Service
-    @Resource
-    private ParkingBillDAO parkingBillDAO;
-    @Resource
-    private ParkingLotDAO parkingLotDAO;
-    @Resource
-    private ParkingPlaceDAO parkingPlaceDAO;
+    private ParkingPlaceRepository parkingPlaceRepository;
 
     /**
      * 添加租用车位的车辆
@@ -57,12 +47,9 @@ public class ParkingServiceImpl implements ParkingService {
     @Transactional(readOnly = false)
     public Car addCar(String license, Owner owner) {
         Car car = new Car(license, owner);
-        carDAO.persist(car);
+        carRepository.save(car);
         return car;
     }
-    //endregion
-
-    //region ParkingBill Service
 
     /**
      * 获得所有车辆
@@ -73,7 +60,7 @@ public class ParkingServiceImpl implements ParkingService {
     @Required(name = "clerk,guard")
     public List<Car> getAllCars() {
         Community community = SessionUtils.getCommunity();
-        return carDAO.getAll(community);
+        return carRepository.findByCommunity(community);
     }
 
     /**
@@ -85,13 +72,13 @@ public class ParkingServiceImpl implements ParkingService {
     @Override
     @Required(name = "clerk,guard")
     public Boolean isRentCar(String license) {
-        Car car = carDAO.get(license);
+        Car car = carRepository.findByLicense(license);
         if (car == null) {
             return false;
         }
         ParkingPlace parkingPlace = car.getParkingPlace();
         ParkingLot parkingLotRent = getRentParkingLot();
-        return parkingPlaceDAO.hasParkingPlace(parkingLotRent, parkingPlace);
+        return parkingPlaceRepository.existsByParkingLotAndId(parkingLotRent, parkingPlace.getId());
     }
 
     /**
@@ -103,9 +90,9 @@ public class ParkingServiceImpl implements ParkingService {
     @Required(name = "clerk,guard")
     public Boolean hasFreeTempParkPlace() {
         Community community = SessionUtils.getCommunity();
-        ParkingLot tempParkingLot = parkingLotDAO.getTempParkingLot(community);
+        ParkingLot tempParkingLot = parkingLotRepository.getTempParkingLot(community);
         Integer sizeTempParkingLot = tempParkingLot.getSize();
-        Integer sizeTempParking = parkingBillDAO.getSizeOfUnfinishedBill(community);
+        Integer sizeTempParking = parkingBillRepository.countByCommunityAndEndTimeIsNull(community);
         return sizeTempParkingLot > sizeTempParking;
     }
 
@@ -117,8 +104,8 @@ public class ParkingServiceImpl implements ParkingService {
     @Override
     public List<ParkingPlace> getFreeParkPlaceRent() {
         Community community = SessionUtils.getCommunity();
-        ParkingLot parkingLot = parkingLotDAO.getRentParkingLot(community);
-        return parkingPlaceDAO.getRentParkPlace(parkingLot, ParkingPlace.ParkingPlaceStatus.FREE);
+        ParkingLot parkingLot = parkingLotRepository.getRentParkingLot(community);
+        return parkingPlaceRepository.findByParkingLotAndStatus(parkingLot, ParkingPlace.ParkingPlaceStatus.FREE);
     }
 
     /**
@@ -132,16 +119,13 @@ public class ParkingServiceImpl implements ParkingService {
     @Required(name = "clerk,guard")
     @Transactional(readOnly = false)
     public void confirmCarRentParkPlace(String license, Integer ownerId, Integer parkPlaceId) {
-        Owner owner = ownerDAO.get(ownerId);
-        ParkingPlace parkingPlace = parkingPlaceDAO.get(parkPlaceId);
+        Owner owner = ownerRepository.getOne(ownerId);
+        ParkingPlace parkingPlace = parkingPlaceRepository.getOne(parkPlaceId);
         Car car = new Car(license, owner, Car.CarStatus.RENT, parkingPlace);
         parkingPlace.rentParkPlace();
-        carDAO.persist(car);
-        parkingPlaceDAO.merge(parkingPlace);
+        carRepository.save(car);
+        parkingPlaceRepository.save(parkingPlace);
     }
-    //endregion
-
-    //region ParkingLot Service
 
     /**
      * 添加车位
@@ -153,12 +137,12 @@ public class ParkingServiceImpl implements ParkingService {
     @Required(name = "clerk,guard")
     @Transactional(readOnly = false)
     public void addParkingPlace(Integer parkingLotId, String position) {
-        ParkingLot parkingLot = parkingLotDAO.get(parkingLotId);
+        ParkingLot parkingLot = parkingLotRepository.getOne(parkingLotId);
         ParkingPlace parkingPlace = new ParkingPlace(position, parkingLot);
         parkingLot.getParkingPlaces().add(parkingPlace);
         parkingPlace.setParkingLot(parkingLot);
-        parkingPlaceDAO.persist(parkingPlace);
-        parkingLotDAO.merge(parkingLot);
+        parkingPlaceRepository.save(parkingPlace);
+        parkingLotRepository.save(parkingLot);
     }
 
     /**
@@ -173,11 +157,11 @@ public class ParkingServiceImpl implements ParkingService {
     @Transactional(readOnly = false)
     public ParkingBill addParkBill(Integer ownerId, String license) {
         Community community = SessionUtils.getCommunity();
-        Owner owner = ownerDAO.get(ownerId);
+        Owner owner = ownerRepository.getOne(ownerId);
         ParkingBill parkingBill = new ParkingBill(license, community, owner, new Date(System.currentTimeMillis()));
-        parkingBillDAO.persist(parkingBill);
-        communityDAO.merge(parkingBill.getCommunity());
-        ownerDAO.merge(parkingBill.getOwner());
+        parkingBillRepository.save(parkingBill);
+        communityRepository.save(parkingBill.getCommunity());
+        ownerRepository.save(parkingBill.getOwner());
         return parkingBill;
     }
 
@@ -190,7 +174,7 @@ public class ParkingServiceImpl implements ParkingService {
     @Required(name = "clerk,guard")
     public List<ParkingBill> getAllFinishParkBill() {
         Community community = SessionUtils.getCommunity();
-        return parkingBillDAO.getAllFinishParkBill(community);
+        return parkingBillRepository.findByCommunityAndEndTimeIsNotNull(community);
     }
 
     /**
@@ -202,9 +186,8 @@ public class ParkingServiceImpl implements ParkingService {
     @Required(name = "clerk,guard")
     public List<ParkingBill> getAllUnfinishParkBill() {
         Community community = SessionUtils.getCommunity();
-        return parkingBillDAO.getAllUnfinishedParkBill(community);
+        return parkingBillRepository.findByCommunityAndEndTimeIsNull(community);
     }
-    //endregion
 
     /**
      * 依据id获取停车单
@@ -215,7 +198,7 @@ public class ParkingServiceImpl implements ParkingService {
     @Override
     @Required(name = "clerk,guard")
     public ParkingBill getParkBill(Integer id) {
-        return parkingBillDAO.get(id);
+        return parkingBillRepository.getOne(id);
     }
 
     /**
@@ -227,9 +210,9 @@ public class ParkingServiceImpl implements ParkingService {
     @Override
     @Transactional(readOnly = false)
     public ParkingBill finishParkBill(Integer parkBillId) {
-        ParkingBill parkBill = parkingBillDAO.get(parkBillId);
+        ParkingBill parkBill = parkingBillRepository.getOne(parkBillId);
         generateParkBill(parkBill);
-        parkingBillDAO.merge(parkBill);
+        parkingBillRepository.save(parkBill);
         return parkBill;
     }
 
@@ -242,7 +225,7 @@ public class ParkingServiceImpl implements ParkingService {
     @Required(name = "clerk,guard")
     public ParkingLot getRentParkingLot() {
         Community community = SessionUtils.getCommunity();
-        return parkingLotDAO.getRentParkingLot(community);
+        return parkingLotRepository.getRentParkingLot(community);
     }
 
     /**
@@ -254,7 +237,7 @@ public class ParkingServiceImpl implements ParkingService {
     @Required(name = "clerk,guard")
     public ParkingLot getTempParkingLot() {
         Community community = SessionUtils.getCommunity();
-        return parkingLotDAO.getTempParkingLot(community);
+        return parkingLotRepository.getTempParkingLot(community);
     }
 
     /**
@@ -266,7 +249,7 @@ public class ParkingServiceImpl implements ParkingService {
     @Required(name = "clerk,guard")
     public List<ParkingPlace> getAllParkingPlace() {
         Community community = SessionUtils.getCommunity();
-        return parkingPlaceDAO.getAll(community);
+        return parkingPlaceRepository.findByParkingLotCommunity(community);
     }
 
     /**
@@ -282,5 +265,4 @@ public class ParkingServiceImpl implements ParkingService {
         parkingBill.generateParkBill();
         return parkingBill;
     }
-    //endregion
 }

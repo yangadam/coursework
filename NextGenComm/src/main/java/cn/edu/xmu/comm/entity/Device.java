@@ -30,23 +30,32 @@ import java.util.TreeMap;
 })
 public class Device extends DataEntity {
 
-    //region Public Methods;
-
-    //region Private Instance Variables
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String no;
+    @ManyToOne(targetEntity = Community.class)
+    @JoinColumn(name = "community_id", nullable = false)
     private Community community;
+    @ManyToOne(targetEntity = Property.class)
+    @JoinColumn(name = "property_id", nullable = false)
     private Property property;
+    @ElementCollection
+    @CollectionTable(
+            name = "device_value",
+            joinColumns = @JoinColumn(name = "device_id")
+    )
+    @OrderBy
+    @Column(name = "device_values")
     private SortedMap<Date, Double> values = new TreeMap<Date, Double>();
-    //endregion
 
-    //region Constructors
+    @Enumerated(EnumType.STRING)
     private DeviceType type;
+    @ManyToOne(targetEntity = Gradient.class)
+    @JoinColumn(name = "gradient_id")
     private Gradient gradient = null;
     private String shareType;
-    //endregion
 
-    //region Getters
     private Double currentValue;
     private Double lastValue;
     private Boolean isCalculated;
@@ -55,6 +64,18 @@ public class Device extends DataEntity {
      * 无参构造函数
      */
     Device() {
+    }
+
+    /**
+     * 构造函数（私有表）
+     *
+     * @param no       设备号
+     * @param property 设备所属位置
+     * @param value    初始值
+     * @param type     设备类型
+     */
+    public Device(String no, Property property, Double value, String type) {
+        this(no, property, value, DeviceType.valueOf(type), null);
     }
 
     /**
@@ -177,20 +198,16 @@ public class Device extends DataEntity {
         Date date = values.lastKey();
         updateValue(date, value);
     }
-    //endregion
 
     /**
      * 获得设备主键
      *
      * @return 设备主键
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer getId() {
         return id;
     }
 
-    //region Setters
     public void setId(Integer id) {
         this.id = id;
     }
@@ -213,8 +230,6 @@ public class Device extends DataEntity {
      *
      * @return 所属小区
      */
-    @ManyToOne(targetEntity = Community.class)
-    @JoinColumn(name = "community_id", nullable = false)
     public Community getCommunity() {
         return community;
     }
@@ -228,8 +243,6 @@ public class Device extends DataEntity {
      *
      * @return 拥有该设备的房产
      */
-    @ManyToOne(targetEntity = Property.class)
-    @JoinColumn(name = "property_id", nullable = false)
     public Property getProperty() {
         return property;
     }
@@ -243,13 +256,6 @@ public class Device extends DataEntity {
      *
      * @return 设备读数
      */
-    @ElementCollection
-    @CollectionTable(
-            name = "device_value",
-            joinColumns = @JoinColumn(name = "device_id")
-    )
-    @OrderBy
-    @Column(name = "device_values")
     public SortedMap<Date, Double> getValues() {
         return values;
     }
@@ -267,22 +273,16 @@ public class Device extends DataEntity {
     public DeviceType getType() {
         return type;
     }
-    //endregion
-
-    //region Inner Enum
 
     public void setType(DeviceType type) {
         this.type = type;
     }
-    //endregion
 
     /**
      * 获得梯度
      *
      * @return 梯度
      */
-    @ManyToOne(targetEntity = Gradient.class)
-    @JoinColumn(name = "gradient_id")
     public Gradient getGradient() {
         return gradient;
     }
@@ -351,9 +351,6 @@ public class Device extends DataEntity {
     private Date getLastTime() {
         return values.lastKey();
     }
-    //endregion
-
-    //region Private Methods
 
     /**
      * 判断(date, value)插入后values是否date递增，value递增
@@ -423,6 +420,5 @@ public class Device extends DataEntity {
         }
 
     }
-    //endregion
 
 }

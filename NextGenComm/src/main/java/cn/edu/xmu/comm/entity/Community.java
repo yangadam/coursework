@@ -28,23 +28,26 @@ import java.util.Set;
 })
 public class Community extends Property {
 
-    //region Public Methods
-
-    //region Instance Variables
+    @Column(nullable = false)
     private String name;
+    @OneToOne(targetEntity = Director.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "deirector_id")
     private Director director;
+    @OneToMany(mappedBy = "community", targetEntity = Building.class,
+            cascade = CascadeType.ALL)
     private List<Building> buildingList = new ArrayList<Building>();
+    @OneToMany(mappedBy = "community", targetEntity = ParkingLot.class, cascade = CascadeType.ALL)
     private List<ParkingLot> parkingLotList = new ArrayList<ParkingLot>();
+    @OneToOne(targetEntity = PublicFund.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "public_fund_id")
     private PublicFund publicFund;
+    @OneToMany(targetEntity = Gradient.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "community_id", nullable = false)
     private Set<Gradient> gradients = new HashSet<Gradient>();
-    //endregion
 
-    //region Constructors
     private String manageFeeType;
     private BigDecimal manageFee;
-    //endregion
 
-    //region Getters
     private String garbageFeeType;
     private BigDecimal garbageFee;
     private String overDueFeeType;
@@ -140,19 +143,16 @@ public class Community extends Property {
         }
         return null;
     }
-    //endregion
 
     /**
      * 获得小区名称
      *
      * @return 小区名称
      */
-    @Column(nullable = false)
     public String getName() {
         return name;
     }
 
-    //region Setters
     public void setName(String name) {
         this.name = name;
     }
@@ -162,8 +162,6 @@ public class Community extends Property {
      *
      * @return 物业主任
      */
-    @OneToOne(targetEntity = Director.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "deirector_id")
     public Director getDirector() {
         return director;
     }
@@ -177,8 +175,6 @@ public class Community extends Property {
      *
      * @return 包含的楼宇列表
      */
-    @OneToMany(mappedBy = "community", targetEntity = Building.class,
-            cascade = CascadeType.ALL)
     public List<Building> getBuildingList() {
         return buildingList;
     }
@@ -192,7 +188,6 @@ public class Community extends Property {
      *
      * @return 包含的停车场
      */
-    @OneToMany(mappedBy = "community", targetEntity = ParkingLot.class, cascade = CascadeType.ALL)
     public List<ParkingLot> getParkingLotList() {
         return parkingLotList;
     }
@@ -206,8 +201,6 @@ public class Community extends Property {
      *
      * @return 管理的公维金
      */
-    @OneToOne(targetEntity = PublicFund.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "public_fund_id")
     public PublicFund getPublicFund() {
         return publicFund;
     }
@@ -221,8 +214,6 @@ public class Community extends Property {
      *
      * @return 计算费用的梯度
      */
-    @OneToMany(targetEntity = Gradient.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "community_id", nullable = false)
     public Set<Gradient> getGradients() {
         return gradients;
     }
@@ -230,7 +221,6 @@ public class Community extends Property {
     public void setGradients(Set<Gradient> gradients) {
         this.gradients = gradients;
     }
-    //endregion
 
     /**
      * 获得物业管理费的计算方式
@@ -309,9 +299,6 @@ public class Community extends Property {
     public void setOverDueFeeRate(BigDecimal overDueFeeRate) {
         this.overDueFeeRate = overDueFeeRate;
     }
-    //endregion
-
-    //region Override Methods
 
     /**
      * 判断是否相等
@@ -326,7 +313,4 @@ public class Community extends Property {
         Community community = (Community) o;
         return !(name != null ? !name.equals(community.name) : community.name != null);
     }
-    //endregion
-
-
 }

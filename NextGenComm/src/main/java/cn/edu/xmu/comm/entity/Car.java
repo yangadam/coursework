@@ -22,25 +22,23 @@ import java.util.List;
 })
 public class Car extends DataEntity {
 
-    //region Constants
     /**
      * 生成的账单项的名称
      */
     public static final String NAME = "车位管理费";
-    //endregion
 
-    //region Public Methods
-    //region Private Instance Variables
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    //endregion
 
-    //region Constructors
     private String license;
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Owner.class)
+    @JoinColumn(name = "owner_id", nullable = false)
     private Owner owner;
     private CarStatus status;
-    //endregion
 
-    //region Getters
+    @OneToOne(fetch = FetchType.EAGER, targetEntity = ParkingPlace.class)
+    @JoinColumn(name = "park_place_id", nullable = true)
     private ParkingPlace parkingPlace;
 
     /**
@@ -90,20 +88,16 @@ public class Car extends DataEntity {
         billItem.setOwner(owner);
         billItems.add(billItem);
     }
-    //endregion
 
     /**
      * 获得主键
      *
      * @return 主键
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer getId() {
         return id;
     }
 
-    //region Setters
     public void setId(Integer id) {
         this.id = id;
     }
@@ -126,19 +120,13 @@ public class Car extends DataEntity {
      *
      * @return 业主
      */
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Owner.class)
-    @JoinColumn(name = "owner_id", nullable = false)
     public Owner getOwner() {
         return owner;
     }
-    //endregion
-
-    //region Inner Enum
 
     public void setOwner(Owner owner) {
         this.owner = owner;
     }
-    //endregion
 
     /**
      * 获得车辆状态
@@ -159,8 +147,6 @@ public class Car extends DataEntity {
      *
      * @return 拥有的车位
      */
-    @OneToOne(fetch = FetchType.EAGER, targetEntity = ParkingPlace.class)
-    @JoinColumn(name = "park_place_id", nullable = true)
     public ParkingPlace getParkingPlace() {
         return parkingPlace;
     }
@@ -168,6 +154,7 @@ public class Car extends DataEntity {
     public void setParkingPlace(ParkingPlace parkingPlace) {
         this.parkingPlace = parkingPlace;
     }
+
     /**
      * 车位状态
      */
@@ -185,6 +172,5 @@ public class Car extends DataEntity {
             return typeName;
         }
     }
-    //endregion
 
 }

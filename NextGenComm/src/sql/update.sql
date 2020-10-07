@@ -1,2 +1,3 @@
 use comm;
-update billitem set isCalculated = 1;
+update billitem
+set isCalculated = 1;

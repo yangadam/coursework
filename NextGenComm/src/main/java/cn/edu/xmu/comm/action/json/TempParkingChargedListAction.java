@@ -55,5 +55,4 @@ public class TempParkingChargedListAction extends ActionSupport {
         this.data = data;
     }
 
-
 }

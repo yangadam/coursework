@@ -18,23 +18,27 @@ import java.util.Date;
 @DynamicUpdate
 public class ParkingBill {
 
-    //region Public Methods
-
-    //region Instance Variables
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    //endregion
-
-    //region Constructors
     private String license;
+    @Temporal(TemporalType.TIMESTAMP)
     private Date startTime;
-    //endregion
-
-    //region Getters
+    @Temporal(TemporalType.TIMESTAMP)
     private Date endTime;
     private BigDecimal fee;
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Owner.class)
+    @JoinColumn(name = "owner_id", nullable = false)
     private Owner owner;
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Community.class)
+    @JoinColumn(name = "community_id", nullable = false)
     private Community community;
 
+    /**
+     * 无参构造函数
+     */
+    public ParkingBill() {
+    }
 
     /**
      * 构造函数
@@ -58,20 +62,16 @@ public class ParkingBill {
         IParkingCalculator parkingCalculator = new GradientParkingCalculator();
         parkingCalculator.calculate(this);
     }
-    //endregion
 
     /**
      * 获得停车单主键
      *
      * @return 停车单主键
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer getId() {
         return id;
     }
 
-    //region Setters
     public void setId(Integer id) {
         this.id = id;
     }
@@ -94,7 +94,6 @@ public class ParkingBill {
      *
      * @return 开始时间
      */
-    @Temporal(TemporalType.TIMESTAMP)
     public Date getStartTime() {
         return startTime;
     }
@@ -108,11 +107,9 @@ public class ParkingBill {
      *
      * @return 离开时间
      */
-    @Temporal(TemporalType.TIMESTAMP)
     public Date getEndTime() {
         return endTime;
     }
-    //endregion
 
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
@@ -136,8 +133,6 @@ public class ParkingBill {
      *
      * @return 访问的业主
      */
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Owner.class)
-    @JoinColumn(name = "owner_id", nullable = false)
     public Owner getOwner() {
         return owner;
     }
@@ -151,8 +146,6 @@ public class ParkingBill {
      *
      * @return 所在的社区
      */
-    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Community.class)
-    @JoinColumn(name = "community_id", nullable = false)
     public Community getCommunity() {
         return community;
     }
@@ -160,6 +153,4 @@ public class ParkingBill {
     public void setCommunity(Community community) {
         this.community = community;
     }
-    //endregion
-
 }

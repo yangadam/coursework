@@ -19,14 +19,16 @@ import javax.persistence.Id;
 @DynamicUpdate
 public class Token extends DataEntity {
 
-    //region Constructors
-
-    //region Private Instance Variables
+    @Id
     private String token;
+    @Column(nullable = false)
     private Integer uid;
-    //endregion
 
-    //region Getters
+    /**
+     * 无参构造函数
+     */
+    public Token() {
+    }
 
     /**
      * 构造函数
@@ -38,14 +40,12 @@ public class Token extends DataEntity {
         this.uid = uid;
         this.token = token;
     }
-    //endregion
 
     /**
      * 获得临时密码（主键）
      *
      * @return 临时密码
      */
-    @Id
     public String getToken() {
         return token;
     }
@@ -53,22 +53,17 @@ public class Token extends DataEntity {
     public void setToken(String token) {
         this.token = token;
     }
-    //endregion
 
     /**
      * 获得用户主键
      *
      * @return 用户主键
      */
-    @Column(nullable = false)
     public Integer getId() {
         return uid;
     }
 
-    //region Setters
     public void setId(Integer uid) {
         this.uid = uid;
     }
-    //endregion
-
 }

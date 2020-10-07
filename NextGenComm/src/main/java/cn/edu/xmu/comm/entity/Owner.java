@@ -24,17 +24,17 @@ import java.util.Set;
 @DynamicUpdate
 public class Owner extends User {
 
-    //region Public Methods
-
-    //region Instance Variables
+    @ManyToOne(targetEntity = Community.class)
+    @JoinColumn(name = "community_id", nullable = false)
     private Community community;
+    @OneToMany(targetEntity = Room.class, mappedBy = "owner", cascade = {CascadeType.MERGE})
     private Set<Room> rooms = new HashSet<Room>();
+    @OneToMany(targetEntity = Car.class, mappedBy = "owner", cascade = CascadeType.ALL)
     private Set<Car> cars = new HashSet<Car>();
+    @OneToMany(targetEntity = BillItem.class, mappedBy = "owner", cascade = CascadeType.ALL)
     private List<BillItem> unpaidBills = new ArrayList<BillItem>();
+    @OneToMany(targetEntity = Payment.class, mappedBy = "paidBy", cascade = CascadeType.ALL)
     private List<Payment> payments = new ArrayList<Payment>();
-    //endregion
-
-    //region Constructors
 
     /**
      * 无参构造函数
@@ -74,9 +74,6 @@ public class Owner extends User {
         super(username, password, name, phoneNumber, email);
         addRoom(room);
     }
-    //endregion
-
-    //region Getters
 
     /**
      * 添加房间
@@ -160,7 +157,6 @@ public class Owner extends User {
         }
         return total;
     }
-    //endregion
 
     /**
      * 获得所属小区
@@ -168,13 +164,10 @@ public class Owner extends User {
      * @return 所属小区
      */
     @Override
-    @ManyToOne(targetEntity = Community.class)
-    @JoinColumn(name = "community_id", nullable = false)
     public Community getCommunity() {
         return community;
     }
 
-    //region Setters
     public void setCommunity(Community community) {
         this.community = community;
     }
@@ -184,8 +177,6 @@ public class Owner extends User {
      *
      * @return 房间列表
      */
-    @OneToMany(targetEntity = Room.class, mappedBy = "owner",
-            cascade = {CascadeType.MERGE})
     public Set<Room> getRooms() {
         return rooms;
     }
@@ -193,14 +184,12 @@ public class Owner extends User {
     public void setRooms(Set<Room> rooms) {
         this.rooms = rooms;
     }
-    //endregion
 
     /**
      * 获得拥有的车辆列表
      *
      * @return 车辆列表
      */
-    @OneToMany(targetEntity = Car.class, mappedBy = "owner", cascade = CascadeType.ALL)
     public Set<Car> getCars() {
         return cars;
     }
@@ -215,7 +204,6 @@ public class Owner extends User {
      *
      * @return 未支付的账单项列表
      */
-    @OneToMany(targetEntity = BillItem.class, mappedBy = "owner", cascade = CascadeType.ALL)
     public List<BillItem> getUnpaidBills() {
         return unpaidBills;
     }
@@ -225,7 +213,6 @@ public class Owner extends User {
      *
      * @return 支付列表
      */
-    @OneToMany(targetEntity = Payment.class, mappedBy = "paidBy", cascade = CascadeType.ALL)
     public List<Payment> getPayments() {
         return payments;
     }
@@ -233,6 +220,4 @@ public class Owner extends User {
     public void setPayments(List<Payment> payments) {
         this.payments = payments;
     }
-    //endregion
-
 }

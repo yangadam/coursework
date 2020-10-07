@@ -19,11 +19,13 @@ import java.util.List;
 @DynamicUpdate
 public class Floor extends Property {
 
-    //region Public Methods
-
-    //region Private Instance Variables
+    @Column(nullable = false)
     private Integer no;
+    @ManyToOne(targetEntity = Building.class, cascade = {CascadeType.MERGE})
+    @JoinColumn(name = "building_id", nullable = false)
     private Building building;
+    @OneToMany(targetEntity = Room.class, mappedBy = "floor",
+            cascade = CascadeType.ALL)
     private List<Room> roomList = new ArrayList<Room>();
 
     /**
@@ -31,9 +33,6 @@ public class Floor extends Property {
      */
     Floor() {
     }
-    //endregion
-
-    //region Constructors
 
     /**
      * 构造函数
@@ -53,9 +52,6 @@ public class Floor extends Property {
     public Community getCommunity() {
         return null;
     }
-    //endregion
-
-    //region Getters
 
     /**
      * 获取祖先
@@ -89,19 +85,16 @@ public class Floor extends Property {
         room.registerRoom();
         roomList.add(room);
     }
-    //endregion
 
     /**
      * 获得层数
      *
      * @return 层数
      */
-    @Column(nullable = false)
     public Integer getNo() {
         return no;
     }
 
-    //region Setters
     public void setNo(Integer no) {
         this.no = no;
     }
@@ -111,12 +104,9 @@ public class Floor extends Property {
      *
      * @return 所属楼宇
      */
-    @ManyToOne(targetEntity = Building.class, cascade = {CascadeType.MERGE})
-    @JoinColumn(name = "building_id", nullable = false)
     public Building getBuilding() {
         return building;
     }
-    //endregion
 
     public void setBuilding(Building building) {
         this.building = building;
@@ -127,8 +117,6 @@ public class Floor extends Property {
      *
      * @return 包含的房间列表
      */
-    @OneToMany(targetEntity = Room.class, mappedBy = "floor",
-            cascade = CascadeType.ALL)
     public List<Room> getRoomList() {
         return roomList;
     }
@@ -136,6 +124,5 @@ public class Floor extends Property {
     public void setRoomList(List<Room> roomList) {
         this.roomList = roomList;
     }
-    //endregion
 
 }

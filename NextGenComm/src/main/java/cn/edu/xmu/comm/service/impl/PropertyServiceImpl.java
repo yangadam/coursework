@@ -7,9 +7,8 @@ import cn.edu.xmu.comm.commons.calc.impl.FloorShareCalculator;
 import cn.edu.xmu.comm.commons.exception.DifferentCommunityException;
 import cn.edu.xmu.comm.commons.utils.SecurityUtils;
 import cn.edu.xmu.comm.commons.utils.SessionUtils;
-import cn.edu.xmu.comm.dao.*;
-import cn.edu.xmu.comm.dao.impl.DeviceDaoImpl;
 import cn.edu.xmu.comm.entity.*;
+import cn.edu.xmu.comm.repository.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,32 +26,23 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class PropertyServiceImpl implements cn.edu.xmu.comm.service.PropertyService {
 
+    @Resource
+    private BuildingRepository buildingRepository;
+    @Resource
+    private CommunityRepository communityRepository;
+    @Resource
+    private DeviceRepository deviceRepository;
 
-    //region Building Service
-
-    //region DAO
     @Resource
-    private BuildingDAO buildingDAO;
+    private FloorRepository floorRepository;
     @Resource
-    private CommunityDAO communityDAO;
+    private OwnerRepository ownerRepository;
     @Resource
-    private DeviceDaoImpl deviceDAO;
-    //endregion
-
-    //region Community Service
+    private ParkingLotRepository parkingLotRepository;
     @Resource
-    private FloorDAO floorDAO;
+    private StaffRepository staffRepository;
     @Resource
-    private OwnerDAO ownerDAO;
-    @Resource
-    private ParkingLotDAO parkingLotDAO;
-    @Resource
-    private StaffDAO staffDAO;
-    @Resource
-    private RoomDAO roomDAO;
-    //endregion
-
-    //region Device Service
+    private RoomRepository roomRepository;
 
     /**
      * 添加楼宇
@@ -66,10 +56,10 @@ public class PropertyServiceImpl implements cn.edu.xmu.comm.service.PropertyServ
     @Required
     @Transactional(readOnly = false)
     public Building addBuilding(Integer no, Integer floorCount, Community community) {
-        community = communityDAO.get(community.getId());
+        community = communityRepository.getOne(community.getId());
         Building building = new Building(no, floorCount);
         community.addBuilding(building);
-        buildingDAO.persist(building);
+        buildingRepository.save(building);
         return building;
     }
 
@@ -82,7 +72,7 @@ public class PropertyServiceImpl implements cn.edu.xmu.comm.service.PropertyServ
     @Required
     public List<Building> getAllBuildings() {
         Community community = SessionUtils.getCommunity();
-        return buildingDAO.getAll(community);
+        return buildingRepository.findByCommunity(community);
     }
 
     /**
@@ -94,7 +84,7 @@ public class PropertyServiceImpl implements cn.edu.xmu.comm.service.PropertyServ
     @Required
     public List<String[]> getBuildNos() {
         Community community = SessionUtils.getCommunity();
-        return buildingDAO.getIdsAndNos(community);
+        return buildingRepository.getIdsAndNosByCommunity(community);
     }
 
     /**
@@ -110,12 +100,12 @@ public class PropertyServiceImpl implements cn.edu.xmu.comm.service.PropertyServ
         Community community = new Community(name);
         PublicFund publicFund = new PublicFund(BigDecimal.valueOf(1000), "", BigDecimal.ZERO, BigDecimal.valueOf(40));
         community.setPublicFund(publicFund);
-        communityDAO.persist(community);
+        communityRepository.save(community);
         ParkingLot tempParkingLot = newTempParkingLot(community);
         ParkingLot rentParkingLot = newRentParkingLot(community);
         community.getParkingLotList().add(tempParkingLot);
         community.getParkingLotList().add(rentParkingLot);
-        communityDAO.merge(community);
+        communityRepository.save(community);
         return community;
     }
 
@@ -128,11 +118,11 @@ public class PropertyServiceImpl implements cn.edu.xmu.comm.service.PropertyServ
     @Required
     @Transactional(readOnly = false)
     public void delCommunity(Integer commId) {
-        Community community = communityDAO.get(commId);
-        roomDAO.delete(community);
-        ownerDAO.delete(community);
-        staffDAO.delete(community);
-        communityDAO.delete(community);
+        Community community = communityRepository.getOne(commId);
+        roomRepository.deleteByCommunity(community);
+        ownerRepository.deleteByCommunity(community);
+        staffRepository.deleteByCommunity(community);
+        communityRepository.delete(community);
     }
 
     /**
@@ -144,11 +134,8 @@ public class PropertyServiceImpl implements cn.edu.xmu.comm.service.PropertyServ
     @Required
     @Transactional(readOnly = false)
     public void updateCommunity(Community community) {
-        communityDAO.merge(community);
+        communityRepository.save(community);
     }
-    //endregion
-
-    //region Floor Service
 
     /**
      * 获取所有小区
@@ -158,11 +145,8 @@ public class PropertyServiceImpl implements cn.edu.xmu.comm.service.PropertyServ
     @Override
     @Required
     public List<Community> getAllCommunities() {
-        return communityDAO.getAll();
+        return communityRepository.findAll();
     }
-    //endregion
-
-    //region Owner Service
 
     /**
      * 获取所有小区的名字列表
@@ -172,7 +156,7 @@ public class PropertyServiceImpl implements cn.edu.xmu.comm.service.PropertyServ
     @Override
     @Required
     public List<String> getCommunityNames() {
-        return communityDAO.getNames();
+        return communityRepository.getNames();
     }
 
     /**
@@ -189,7 +173,7 @@ public class PropertyServiceImpl implements cn.edu.xmu.comm.service.PropertyServ
     @Transactional(readOnly = false)
     public Device addDevice(String no, Property property, Double value, Device.DeviceType type) {
         Device device = new Device(no, property, value, type);
-        deviceDAO.persist(device);
+        deviceRepository.save(device);
         return device;
     }
 
@@ -208,7 +192,7 @@ public class PropertyServiceImpl implements cn.edu.xmu.comm.service.PropertyServ
     @Transactional(readOnly = false)
     public Device addDevice(String no, Property property, Double value, Device.DeviceType type, String shareType) {
         Device device = new Device(no, property, value, type, shareType);
-        deviceDAO.persist(device);
+        deviceRepository.save(device);
         return device;
     }
 
@@ -222,7 +206,7 @@ public class PropertyServiceImpl implements cn.edu.xmu.comm.service.PropertyServ
     @Required
     @Transactional(readOnly = false)
     public void initialDefaultDevice(Community community, String shareType) {
-        community = communityDAO.get(community.getId());
+        community = communityRepository.getOne(community.getId());
         Double zero = 0.0;
         if (community.getDeviceList().isEmpty()) {
             addDevice(community.getUnityCode() + "#1", community, zero, Device.DeviceType.WATER, CountShareCalculator.class.getSimpleName());
@@ -298,11 +282,8 @@ public class PropertyServiceImpl implements cn.edu.xmu.comm.service.PropertyServ
     @Override
     @Required
     public List<String[]> getFloorNos(Integer buildId) {
-        return floorDAO.getIdsAndNos(buildId);
+        return floorRepository.getIdsAndNos(buildId);
     }
-    //endregion
-
-    //region ParkingLot Service
 
     /**
      * 添加业主,并指定小区
@@ -321,7 +302,7 @@ public class PropertyServiceImpl implements cn.edu.xmu.comm.service.PropertyServ
     public Owner addOwner(String username, String password, String name, String phoneNumber, String email, Community community) {
         Owner owner = new Owner(username, password, name, phoneNumber, email, community);
         SecurityUtils.encryptUser(owner);
-        ownerDAO.persist(owner);
+        ownerRepository.save(owner);
         return owner;
     }
 
@@ -343,13 +324,10 @@ public class PropertyServiceImpl implements cn.edu.xmu.comm.service.PropertyServ
             throws DifferentCommunityException {
         Owner owner = new Owner(username, password, name, phoneNumber, email, room);
         SecurityUtils.encryptUser(owner);
-        ownerDAO.persist(owner);
-        roomDAO.merge(room);
+        ownerRepository.save(owner);
+        roomRepository.save(room);
         return owner;
     }
-    //endregion
-
-    //region Room Service
 
     /**
      * 将业主添加到房间
@@ -363,11 +341,11 @@ public class PropertyServiceImpl implements cn.edu.xmu.comm.service.PropertyServ
     @Required
     @Transactional(readOnly = false)
     public void addOwnerToRoom(Integer ownerId, Integer roomId) throws DifferentCommunityException {
-        Owner owner = ownerDAO.get(ownerId);
-        Room room = roomDAO.get(roomId);
+        Owner owner = ownerRepository.getOne(ownerId);
+        Room room = roomRepository.getOne(roomId);
         owner.addRoom(room);
-        roomDAO.merge(room);
-        ownerDAO.merge(owner);
+        roomRepository.save(room);
+        ownerRepository.save(owner);
     }
 
     /**
@@ -379,7 +357,7 @@ public class PropertyServiceImpl implements cn.edu.xmu.comm.service.PropertyServ
     @Override
     @Required
     public Owner getOwner(Integer ownerId) {
-        return ownerDAO.get(ownerId);
+        return ownerRepository.getOne(ownerId);
     }
 
     /**
@@ -391,7 +369,7 @@ public class PropertyServiceImpl implements cn.edu.xmu.comm.service.PropertyServ
     @Required
     public List<Owner> getAllOwners() {
         Community community = SessionUtils.getCommunity();
-        return ownerDAO.getAll(community);
+        return ownerRepository.findByCommunity(community);
     }
 
     /**
@@ -404,7 +382,7 @@ public class PropertyServiceImpl implements cn.edu.xmu.comm.service.PropertyServ
     @Required
     public List<String[]> searchOwner(String term) {
         Community community = SessionUtils.getCommunity();
-        return ownerDAO.buzzSearch(term, community);
+        return ownerRepository.fuzzSearch(term, community);
     }
 
     /**
@@ -416,7 +394,7 @@ public class PropertyServiceImpl implements cn.edu.xmu.comm.service.PropertyServ
     @Override
     @Required
     public Owner loadOwner(User user) {
-        return ownerDAO.get(user.getId());
+        return ownerRepository.getOne(user.getId());
     }
 
     /**
@@ -429,10 +407,9 @@ public class PropertyServiceImpl implements cn.edu.xmu.comm.service.PropertyServ
     @Required
     public Boolean hasOwner(Integer ownerId) {
         Community community = SessionUtils.getCommunity();
-        Owner owner = ownerDAO.get(ownerId);
+        Owner owner = ownerRepository.getOne(ownerId);
         return owner != null && community.getId().equals(owner.getCommunity().getId());
     }
-    //endregion
 
     /**
      * 新建临时停车场
@@ -453,7 +430,7 @@ public class PropertyServiceImpl implements cn.edu.xmu.comm.service.PropertyServ
         tempParkingLot.getGradient().put(150, BigDecimal.valueOf(15));
         tempParkingLot.getGradient().put(210, BigDecimal.valueOf(20));
         tempParkingLot.setName(community.getName() + "临时停车场");
-        parkingLotDAO.persist(tempParkingLot);
+        parkingLotRepository.save(tempParkingLot);
         return tempParkingLot;
     }
 
@@ -471,7 +448,7 @@ public class PropertyServiceImpl implements cn.edu.xmu.comm.service.PropertyServ
         rentParkingLot.setType(ParkingLot.ParkingLotStatus.RENT);
         rentParkingLot.setCommunity(community);
         rentParkingLot.setName(community.getName() + "租用停车场");
-        parkingLotDAO.persist(rentParkingLot);
+        parkingLotRepository.save(rentParkingLot);
         return rentParkingLot;
     }
 
@@ -488,10 +465,10 @@ public class PropertyServiceImpl implements cn.edu.xmu.comm.service.PropertyServ
     @Transactional(readOnly = false)
     public Room addRoom(String no, Double area, Integer floorId) {
         Room room = new Room(no, area);
-        Floor floor = floorDAO.get(floorId);
+        Floor floor = floorRepository.getOne(floorId);
         floor.addRoom(room);
-        roomDAO.persist(room);
-        floorDAO.merge(floor);
+        roomRepository.save(room);
+        floorRepository.save(floor);
         return room;
     }
 
@@ -504,7 +481,7 @@ public class PropertyServiceImpl implements cn.edu.xmu.comm.service.PropertyServ
     @Override
     @Required
     public Room getRoom(Integer roomId) {
-        return roomDAO.get(roomId);
+        return roomRepository.getOne(roomId);
     }
 
     /**
@@ -516,7 +493,7 @@ public class PropertyServiceImpl implements cn.edu.xmu.comm.service.PropertyServ
     @Override
     @Required
     public List<Room> getAllRooms(Integer floorId) {
-        Floor floor = floorDAO.get(floorId);
+        Floor floor = floorRepository.getOne(floorId);
         return floor.getRoomList();
     }
 
@@ -529,7 +506,7 @@ public class PropertyServiceImpl implements cn.edu.xmu.comm.service.PropertyServ
     @Override
     @Required
     public List<String[]> getRoomNos(Integer floorId) {
-        return floorDAO.getIdsAndNos(floorId);
+        return floorRepository.getIdsAndNos(floorId);
     }
 
     /**
@@ -541,7 +518,7 @@ public class PropertyServiceImpl implements cn.edu.xmu.comm.service.PropertyServ
     @Override
     @Required
     public List<String[]> getVacantRoomNos(Integer floorId) {
-        return roomDAO.getVacantRoomNos(floorId);
+        return roomRepository.getVacantRoomNos(floorId);
     }
 
     /**
@@ -553,8 +530,6 @@ public class PropertyServiceImpl implements cn.edu.xmu.comm.service.PropertyServ
     @Override
     @Required
     public List<String[]> getNonVacantRoomNos(Integer floorId) {
-        return roomDAO.getNonVacantRoomNos(floorId);
+        return roomRepository.getNonVacantRoomNos(floorId);
     }
-    //endregion
-
 }
