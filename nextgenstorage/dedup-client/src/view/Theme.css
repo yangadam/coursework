@@ -1,0 +1,13 @@
+#splitPane *.split-pane-divider {
+    -fx-background-color: gray;
+    -fx-border-color: null;
+    -fx-padding: 1px;
+}
+
+#leftPane {
+	-fx-background-color: white;
+}
+
+#middlePane {
+	-fx-background-color:gray;
+}

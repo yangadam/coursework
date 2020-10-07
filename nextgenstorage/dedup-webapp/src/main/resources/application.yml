@@ -1,0 +1,20 @@
+spring:
+    data:
+        mongodb:
+#          port: 0
+           uri: mongodb://139.129.10.28:20000/dev
+           repositories:
+               enabled: true
+    activemq:
+        broker-url: tcp://139.129.17.212:61616
+        user: dedup4
+        password: dedup4
+    hadoop:
+        resources:
+            - classpath:/core-site.xml
+            - classpath:/hdfs-site.xml
+        fsshell:
+            enabled: true
+multipart:
+    maxFileSize: 5000000KB
+    maxRequestSize: 5000000KB

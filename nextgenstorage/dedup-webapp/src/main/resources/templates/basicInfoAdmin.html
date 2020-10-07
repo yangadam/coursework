@@ -1,0 +1,258 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>基本资料</title>
+    <!-- Bootstrap Styles-->
+    <link href="../../css/bootstrap.css" rel="stylesheet"/>
+    <!-- FontAwesome Styles-->
+    <link href="../../css/font-awesome.css" rel="stylesheet"/>
+    <!-- Custom Styles-->
+    <link href="../../css/default.css" rel="stylesheet"/>
+    <link href="../../css/index.css" rel="stylesheet"/>
+    <!-- Google Fonts-->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+
+</head>
+
+<body>
+<div id="wrapper">
+    <nav class="navbar navbar-default top-navbar" role="navigation">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                <span class="sr-only">Toggle</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="index.html"><strong>NextGenStorage</strong></a>
+        </div>
+
+        <ul class="nav navbar-top-links navbar-right">
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                    <i class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-messages">
+                    <li>
+                        <a href="#">
+                            <div>
+                                <strong>John Doe</strong>
+                                    <span class="pull-right text-muted">
+                                        <em>Today</em>
+                                    </span>
+                            </div>
+                            <div>Lorem Ipsum has been the industry's standard dummy text ever since the 1500s...</div>
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="#">
+                            <div>
+                                <strong>John Smith</strong>
+                                    <span class="pull-right text-muted">
+                                        <em>Yesterday</em>
+                                    </span>
+                            </div>
+                            <div>Lorem Ipsum has been the industry's standard dummy text ever since an kwilnw...</div>
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="#">
+                            <div>
+                                <strong>John Smith</strong>
+                                    <span class="pull-right text-muted">
+                                        <em>Yesterday</em>
+                                    </span>
+                            </div>
+                            <div>Lorem Ipsum has been the industry's standard dummy text ever since the...</div>
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a class="text-center" href="#">
+                            <strong>Read All Messages</strong>
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+                    </li>
+                </ul>
+                <!-- /.dropdown-messages -->
+            </li>
+            <!-- /.dropdown -->
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                    <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-user">
+                    <li><a href="basicInfoAdmin"><i class="fa fa-user fa-fw"></i> 个人信息</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li><a href="javascript:void(0)"><i class="fa fa-sign-out fa-fw"></i> 注销</a>
+                    </li>
+                </ul>
+                <!-- /.dropdown-user -->
+            </li>
+            <!-- /.dropdown -->
+        </ul>
+    </nav>
+    <!--/. NAV TOP  -->
+    <nav class="navbar-default navbar-side navbar-left" role="navigation">
+        <div id="sideNav"><i class="fa fa-caret-right"></i></div>
+        <div class="sidebar-collapse">
+            <ul class="nav" id="main-menu">
+                <li>
+                    <a class="active-menu" href="javascript:void(0)"><i class="fa fa-edit"></i> 个人信息<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="basicInfoAdmin">查看</a>
+                        </li>
+                        <li>
+                            <a href="modifyBasicInfoAdmin">修改</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="changePwdAdmin"><i class="fa fa-qrcode"></i>修改密码</a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)"><i class="fa fa-sitemap"></i> 用户管理<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="userList">用户列表</a>
+                        </li>
+                        <li>
+                            <a href="addUser">添加用户</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript:void(0)"><i class="fa fa-bar-chart-o"></i> 信息统计<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="loginStatistics">登录数据</a>
+                        </li>
+                        <li>
+                            <a href="uploadStatistics">上传数据</a>
+                        </li>
+                        <li>
+                            <a href="downloadStatistics">下载数据</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript:void(0)"><i class="fa fa-table"></i> 消息管理<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="noticeList">公告列表</a>
+                        </li>
+                        <li>
+                            <a href="sendNotice">发送公告</a>
+                        </li>
+                        <li>
+                            <a href="adviceList">建议列表</a>
+                        </li>
+                        <li>
+                            <a href="complaintList">投诉列表</a>
+                        </li>
+
+                    </ul>
+                </li>
+            </ul>
+
+        </div>
+
+    </nav>
+    <!-- /. NAV SIDE  -->
+    <div id="page-wrapper">
+        <div id="page-inner">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            查看个人信息
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-4 col-md-offset-4">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <label>用户名</label>
+                                            <input id="username" class="form-control" disabled="true" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <label>昵称</label>
+                                            <input id="nickname" class="form-control" disabled="true" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <label>邮箱</label>
+                                            <input id="email" class="form-control" disabled="true" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <label>性别</label>
+                                            <div class="radio">
+                                                <label>
+                                                    <input type="radio" name="optionsRadios" id="maleOption"
+                                                           value="male" checked="checked" disabled="true" /> 男
+                                                </label>
+                                            </div>
+                                            <div class="radio">
+                                                <label>
+                                                    <input type="radio" name="optionsRadios" id="femaleOption"
+                                                           value="female" disabled="true" /> 女
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <label>出生年月</label>
+                                            <input id="birthday" class="form-control" disabled="true" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <label>注册日期</label>
+                                            <input id="registerDate" class="form-control" disabled="true"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <footer>
+                <p>All right reserved. Developed by: <a href="javascript:void(0)">Dedup4 Team</a></p>
+            </footer>
+        </div>
+        <!-- /. PAGE INNER  -->
+    </div>
+    <!-- /. PAGE WRAPPER  -->
+</div>
+<!-- /. WRAPPER  -->
+<!-- JS Scripts-->
+<!-- jQuery Js -->
+<script src="../../js/jquery-1.10.2.js"></script>
+<!-- Bootstrap Js -->
+<script src="../../js/bootstrap.min.js"></script>
+
+<!-- Metis Menu Js -->
+<script src="../../js/jquery.metisMenu.js"></script>
+
+<!-- Custom Js -->
+<script src="../../js/common.js"></script>
+<script src="../../js/custom/basicInfo.js"></script>
+
+</body>
+
+</html>
