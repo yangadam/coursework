@@ -20,7 +20,7 @@
         <jquery.version>2.2.1</jquery.version>
         <font-awesome.version>4.5.0</font-awesome.version>
         <jsch.version>0.1.53</jsch.version>
-        <jackson.version>2.9.10.7</jackson.version>
+        <jackson.version>2.9.10.8</jackson.version>
         <sshd.version>1.1.0</sshd.version>
     </properties>
 
