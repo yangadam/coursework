@@ -17,7 +17,7 @@
     <properties>
         <java.version>1.8</java.version>
         <spring-data-hadoop-boot.version>2.3.0.RELEASE</spring-data-hadoop-boot.version>
-        <hadoop.version>2.7.2</hadoop.version>
+        <hadoop.version>2.10.1</hadoop.version>
         <logback.version>1.2.0</logback.version>
         <guava.version>19.0</guava.version>
         <lang3.version>3.4</lang3.version>
